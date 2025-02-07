@@ -1,14 +1,22 @@
 project:
   type: book
+  output-dir: _book
 
 book:
-  title: "open-sql"
-  author: "Norah Jones"
-  date: "2/7/2025"
+  title: "Open SQL"
+  reader-mode: true
+  author: "Pete Benbow"
+
+  page-footer:
+    left: |
+      Open SQL was written by Pete Benbow
+    right: |
+      This book was written with <a href="https://quarto.org/">Quarto</a>.
   chapters:
     - index.qmd
     - intro.qmd
-    - summary.qmd
+    - 01-why-learn-sql.qmd
+    - 02-installing-postgresql.qmd
     - references.qmd
 
 bibliography: references.bib

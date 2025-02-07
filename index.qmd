@@ -1,9 +1,16 @@
 # Preface {.unnumbered}
 
-This is a Quarto book.
+Welcome to Open SQL, the free online textbook for learning SQL!
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+This book teaches you the fundamentals of working with relational databases and 
+the SQL programming language. You will learn how to explore and interact with 
+databases, extract insights from them, and build your own databases for storing 
+and sharing knowledge.
 
-```{r}
-1 + 1
-```
+This text is aimed at beginning learners who want to master the basics of SQL 
+and database programming. You may be a student whose class is using Open SQL as 
+a textbook, a data analyst who needs to use SQL for your job, or an experienced 
+professional who wants to master new skills and broaden your horizons. In any 
+case, you should find this book to be an accessible (and free!) way to meet your 
+learning objectives.
+

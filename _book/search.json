@@ -1,0 +1,42 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Open SQL",
+    "section": "",
+    "text": "Preface\nWelcome to Open SQL, the free online textbook for learning SQL!\nThis book teaches you the fundamentals of working with relational databases and the SQL programming language. You will learn how to explore and interact with databases, extract insights from them, and build your own databases for storing and sharing knowledge.\nThis text is aimed at beginning learners who want to master the basics of SQL and database programming. You may be a student whose class is using Open SQL as a textbook, a data analyst who needs to use SQL for your job, or an experienced professional who wants to master new skills and broaden your horizons. In any case, you should find this book to be an accessible (and free!) way to meet your learning objectives.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "1  Introduction",
+    "section": "",
+    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "3  Summary",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "References"
+    ]
+  }
+]
