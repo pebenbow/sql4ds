@@ -1,2 +1,186 @@
-# Installing PostgreSQL
+# Setting Up Your Environment
 
+Before you can run your first SQL query, you need a database to query. Throughout this book, we will use **PostgreSQL**, one of the most widely used open-source relational database systems in the world, as our database engine.
+
+Rather than asking you to install and configure PostgreSQL directly on your machine, we are going to use **Docker**. Docker lets you run software inside a self-contained environment called a *container*. Think of a container as a lightweight, portable box that holds an application and everything it needs to run, regardless of what operating system or configuration your computer has.
+
+For this book, a pre-configured PostgreSQL container has been built and published to Docker Hub at `pebenbow/open-sql-docker`. When you run this container, you get a PostgreSQL 17 server that is already set up with the sample databases used throughout this textbook. Everyone in the course works with an identical environment, which eliminates the "it works on my machine" problem entirely.
+
+## Installing Docker Desktop
+
+Docker Desktop is the application that manages containers on your computer. Follow the instructions for your operating system below.
+
+### Windows
+
+1. Ensure your system meets the requirements: Windows 10 64-bit (version 21H2 or later) or Windows 11. Docker Desktop on Windows uses the **Windows Subsystem for Linux 2 (WSL 2)** backend.
+
+2. If you have not already enabled WSL 2, open PowerShell as Administrator and run:
+
+   ```powershell
+   wsl --install
+   ```
+
+   Restart your computer when prompted.
+
+3. Download Docker Desktop for Windows from [https://docs.docker.com/desktop/install/windows-install/](https://docs.docker.com/desktop/install/windows-install/).
+
+4. Run the installer (`Docker Desktop Installer.exe`). Accept the defaults, ensuring **"Use WSL 2 instead of Hyper-V"** is checked.
+
+5. Once installation completes, launch Docker Desktop from the Start menu. The Docker whale icon will appear in your system tray when it is running.
+
+6. Verify the installation by opening a terminal (PowerShell or Command Prompt) and running:
+
+   ```bash
+   docker --version
+   ```
+
+   You should see output like `Docker version 27.x.x, build ...`.
+
+### macOS
+
+1. Download Docker Desktop for Mac from [https://docs.docker.com/desktop/install/mac-install/](https://docs.docker.com/desktop/install/mac-install/).
+
+   Choose the correct installer for your hardware:
+   - **Apple silicon (M1/M2/M3/M4):** Download the `Apple Silicon` installer.
+   - **Intel chip:** Download the `Intel Chip` installer.
+
+   If you are unsure which chip your Mac has, click the Apple menu () → **About This Mac**.
+
+2. Open the downloaded `.dmg` file, drag **Docker** to your Applications folder, and launch it.
+
+3. macOS will prompt you for your password to allow Docker to install its networking components. This is expected.
+
+4. The Docker whale icon will appear in your menu bar when Docker Desktop is running.
+
+5. Verify the installation by opening **Terminal** and running:
+
+   ```bash
+   docker --version
+   ```
+
+### Linux
+
+Docker Desktop is available for several Linux distributions. The installation steps vary by distribution, so follow the guide for your system on the Docker documentation site: [https://docs.docker.com/desktop/install/linux/](https://docs.docker.com/desktop/install/linux/).
+
+If you prefer not to install Docker Desktop on Linux, you can install the Docker Engine (CLI only) directly. See [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/) and choose your distribution from the list.
+
+After installation, verify Docker is running:
+
+```bash
+docker --version
+docker run hello-world
+```
+
+The second command downloads a small test image and prints a confirmation message. If you see "Hello from Docker!", the installation was successful.
+
+::: {.callout-tip}
+On Linux, Docker commands typically require `sudo`. To run Docker without `sudo`, add your user to the `docker` group:
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+Then log out and back in for the change to take effect.
+:::
+
+## Pulling the Course Image
+
+With Docker Desktop installed and running, you can download the course image from Docker Hub. Open a terminal and run:
+
+```bash
+docker pull pebenbow/open-sql-docker:latest
+```
+
+Docker will download the image in layers and display progress as it goes. This only needs to be done once (or when you want to update to a newer version of the image).
+
+## Running the Container
+
+### Basic Setup (Recommended)
+
+The following command starts the course container with a **persistent data volume** so that any changes you make to the database are saved even if you stop or restart the container:
+
+```bash
+docker run --name open-sql \
+  -p 5432:5432 \
+  -v open-sql-data:/var/lib/postgresql/data \
+  -e POSTGRES_PASSWORD=postgres \
+  pebenbow/open-sql-docker:latest
+```
+
+Let's break down each flag:
+
+| Flag | Purpose |
+|------|---------|
+| `--name open-sql` | Gives the container a memorable name so you can start/stop it by name |
+| `-p 5432:5432` | Maps port 5432 on your computer to port 5432 inside the container |
+| `-v open-sql-data:/var/lib/postgresql/data` | Creates a named volume (`open-sql-data`) for persistent storage |
+| `-e POSTGRES_PASSWORD=postgres` | Sets the database password |
+
+The first time you run this command, Docker creates the volume and initializes the database. On subsequent runs, the existing volume (and all your data) will be used automatically.
+
+To run the container in the background (so it doesn't occupy your terminal), add `-d` (detached mode):
+
+```bash
+docker run -d --name open-sql \
+  -p 5432:5432 \
+  -v open-sql-data:/var/lib/postgresql/data \
+  -e POSTGRES_PASSWORD=postgres \
+  pebenbow/open-sql-docker:latest
+```
+
+### If You Already Have PostgreSQL Installed
+
+If you already have PostgreSQL running on your machine, it is likely using port 5432, which would conflict with the container. In that case, map the container to a different host port. Port **5433** is a common choice:
+
+```bash
+docker run -d --name open-sql \
+  -p 5433:5432 \
+  -v open-sql-data:/var/lib/postgresql/data \
+  -e POSTGRES_PASSWORD=postgres \
+  pebenbow/open-sql-docker:latest
+```
+
+The format `-p HOST_PORT:CONTAINER_PORT` means "connect port `HOST_PORT` on my machine to port `CONTAINER_PORT` inside the container." The database inside the container still listens on 5432; you just reach it from the outside via 5433.
+
+::: {.callout-note}
+Remember this port number. Any time this book shows a connection using port `5432`, substitute `5433` (or whichever port you chose) if you used an alternate port mapping.
+:::
+
+## Starting and Stopping the Container
+
+Once you have created the container with `docker run`, you manage it with `docker start` and `docker stop` rather than `docker run`:
+
+```bash
+# Start the container
+docker start open-sql
+
+# Stop the container
+docker stop open-sql
+
+# Check whether the container is running
+docker ps
+```
+
+You do not need to keep the container running all the time. Start it when you sit down to work through the book, and stop it when you are done.
+
+## Connecting to the Database
+
+Your connection credentials for the course container are:
+
+| Setting | Value                           |
+|---------|---------------------------------|
+| Host | `localhost` |
+| Port | `5432` (or `5433` if you used the alternate port) |
+| Database | Depends on the lesson, but start with `postgres` whenever creating new databases |
+| Username | `postgres` |
+| Password | `postgres` |
+
+You can verify the connection is working from the terminal using `psql` (the PostgreSQL command-line client). If you do not have `psql` installed locally, you can run it from inside the container itself:
+
+```bash
+docker exec -it open-sql psql -U postgres
+```
+
+If you see the `postgres=#` prompt, your container is running correctly and you are ready to start writing SQL.
+
+Type `\q` to exit the `psql` prompt.

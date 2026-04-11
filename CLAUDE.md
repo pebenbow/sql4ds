@@ -34,8 +34,37 @@ Chapter files are numbered by convention (`01-`, `02-`, etc.) and must be listed
 
 The `getting-started.qmd` file is a **part heading** (not a content chapter) — it groups chapters under a section in the TOC.
 
+## Database Connection Pattern
+
+The book executes live SQL against a PostgreSQL 17 Docker container (`pebenbow/open-sql-docker`). The connection is managed via `_common.R`, which must be sourced at the top of every chapter that contains SQL code blocks:
+
+````r
+```{r}
+#| include: false
+source("_common.R")   # opens `con`, a DBI connection to the container
+```
+````
+
+SQL chunks then reference that connection:
+
+````sql
+```{sql}
+#| connection: con
+SELECT * FROM some_table LIMIT 5;
+```
+````
+
+The container must be running before `quarto render` or `quarto preview`:
+
+```bash
+docker start open-sql
+```
+
+If the container has not been created yet, see `02-installing-postgresql.qmd` for the full `docker run` command. Students who mapped the container to a non-default port set `PGPORT=5433` (or their chosen port) in their environment before rendering.
+
 ## Content Conventions
 
+- Avoid em dashes entirely. Use a comma, period, parentheses, or a semicolon depending on the grammatical context. Em dashes read as a hallmark of AI-generated text and should not appear anywhere in the book.
 - Prose is written in Quarto Markdown; use `##` for top-level section headings within a chapter (the chapter title uses `#`)
 - Code examples should be runnable and demonstrate SQL concepts using PostgreSQL unless otherwise noted
 - Bibliography entries go in `references.bib` (BibTeX format); cite with `[@knuth84]`-style keys
