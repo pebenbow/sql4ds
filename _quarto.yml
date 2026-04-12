@@ -3,29 +3,39 @@ project:
   output-dir: _book
 
 book:
-  title: "Open SQL"
+  title: "SQL for Data Science"
+  subtitle: "Exploring SQL and the World of Databases"
   reader-mode: true
   author: "Pete Benbow"
 
   page-footer:
     left: |
-      Open SQL was written by Pete Benbow
+      _SQL for Data Science_ was written by Pete Benbow
     right: |
       This book was written with <a href="https://quarto.org/">Quarto</a>.
   chapters:
     - index.qmd
     - intro.qmd
-    - 01-why-learn-sql.qmd
-    - 02-installing-postgresql.qmd
+    
+    - part: getting-started.qmd
+      chapters:
+        - 01-why-learn-sql.qmd
+        - 02-installing-postgresql.qmd
+
+    - part: querying-data.qmd
+      chapters:
+        - 03-select-statements.qmd
+        - 04-data-types.qmd
+
+    - part: working-with-multiple-tables.qmd
+      chapters:
+        - 05-joins.qmd
+        - 06-normal-forms.qmd
+
     - references.qmd
 
 bibliography: references.bib
 
 format:
   html:
-    theme: cosmo
-  pdf:
-    documentclass: scrreprt
-
-
-
+    theme: materia

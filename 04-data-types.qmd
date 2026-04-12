@@ -1,0 +1,345 @@
+# Data Types and Type Conversion
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+con <- dbConnect(
+  Postgres(),
+  host     = "localhost",
+  port     = as.integer(Sys.getenv("PGPORT", unset = "5432")),
+  dbname   = "countries",
+  user     = "postgres",
+  password = Sys.getenv("PGPASS", unset = "postgres")
+)
+```
+
+In the previous chapter, you encountered a line that looked like this:
+
+```sql
+ROUND(population::numeric / area, 1) AS pop_per_sq_km
+```
+
+The `::numeric` piece is a **type cast**: an instruction that tells PostgreSQL to treat one value as a different data type. This chapter explains why that was necessary, what data types PostgreSQL provides, and how to convert between them.
+
+Every value stored in a database has a data type, which tells the database how to store the value, how much space to allocate, and what operations are valid on it. Adding two integers produces a different result than concatenating two strings, and dividing a whole number by another whole number produces a different result than dividing two decimals. Choosing the right data type for each column is one of the most consequential decisions you make when designing a database.
+
+## Inspecting Column Types
+
+Before discussing types in the abstract, it helps to see what types the `countries` table actually uses. The most straightforward way to do this is to query the database's `information_schema`, a set of background objects in every PostgreSQL database that describe the structure of the database itself, like a metadata catalog.
+
+There are numerous tables in `information_schema` you can explore
+
+```{sql}
+#| connection: con
+#| label: pg-informationschema
+#| max.print: 20
+SELECT column_name, data_type
+FROM information_schema.columns 
+WHERE table_name = 'countries'
+ORDER BY ordinal_position;
+```
+
+An alternative approach uses the `pg_typeof()` function to return the data type of any **expression** in your query. This includes columns in tables, but it can also be used to see the data type that is produced by an arithmetic expression, like in the example here.
+
+```{sql}
+#| connection: con
+#| label: pg-typeof
+SELECT country,
+    pg_typeof(population) AS pop_typeof,
+    pg_typeof(area) AS area_typeof,
+    ROUND(population::numeric / area, 1) AS pop_per_sq_km,
+    pg_typeof(ROUND(population::numeric / area, 1)) AS density_typeof
+FROM countries
+WHERE area IS NOT NULL;
+```
+
+The result maps each column to a concrete type. The sections below work through each of these type families, explain what they mean, and show where they appear in the table.
+
+## Text Types
+
+PostgreSQL provides three types for storing text.
+
+### CHAR(n)
+
+`CHAR(n)` stores a fixed-length string of exactly `n` characters. If the value you insert is shorter than `n`, PostgreSQL pads it with trailing spaces to reach the declared length. If it is longer, you get an error.
+
+Fixed-length character types made sense decades ago when storage was expensive and padding simplified low-level file management. They are rarely used in modern database design, but you will encounter them in older systems and legacy schemas, so it is worth knowing what they are.
+
+### VARCHAR(n)
+
+`VARCHAR(n)` stores a variable-length string up to a maximum of `n` characters. No padding is added; the value is stored exactly as written. Most of the text columns in the `countries` table are `VARCHAR(200)`, meaning they can hold up to 200 characters. You can also specify `VARCHAR` without the length limit `n`, which creates a column that can store as much text as you need.
+
+`VARCHAR` is also often written out as `character varying`, like in the queries above from the `information_schema` table.
+
+### TEXT
+
+`TEXT` stores a variable-length string with no upper limit on length. In PostgreSQL, `TEXT` and `VARCHAR` are implemented identically under the hood; the only practical difference is that `VARCHAR(n)` enforces a length cap, whereas `TEXT` and `VARCHAR` (without `n`) do not.
+
+In most other databases, `VARCHAR(n)` is the default choice for text columns. I spent the first several years of my career working almost exclusively in Microsoft SQL Server, where the `TEXT` data type was deprecated decades ago because using `TEXT` took up much more storage space and led to slower queries, so the best practice I learned was always to use `VARCHAR(n)` data types. However, PostgreSQL implements `TEXT` differently from other variations of SQL databases. Using `TEXT` in PostgreSQL poses no performance or storage concerns, so it avoids the overhead of enforcing a length constraint that is rarely meaningful in practice. 
+
+For more on this, read [Don't use varchar(n) by default](https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don't_use_varchar(n)_by_default){target="_blank"} from the PostgreSQL wiki.
+
+Thus, if you do not have a specific reason to cap the length of a column, `TEXT` is a reasonable default.
+
+## Numeric Types
+
+PostgreSQL distinguishes between exact and approximate numeric storage.
+
+### Integer Types
+
+Integer types store whole numbers with no decimal component. PostgreSQL provides three sizes:
+
+| Type       | Storage | Range                                          |
+|------------|---------|------------------------------------------------|
+| `SMALLINT` | 2 bytes | -32,768 to 32,767                              |
+| `INTEGER`  | 4 bytes | -2,147,483,648 to 2,147,483,647               |
+| `BIGINT`   | 8 bytes | -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807 |
+
+The `yr` column in the `countries` table is an `INTEGER`, appropriate for a four-digit year. The `population` column is a `BIGINT` because country-level population figures for large nations exceed the range of a regular `INTEGER` (India's 2022 population, for example, is over 1.4 billion).
+
+Choose the smallest type that comfortably fits your data. `SMALLINT` saves space in large tables, but `INTEGER` is the most common choice for general-purpose whole-number columns. Use `BIGINT` when values could exceed roughly two billion.
+
+::: {.callout-note}
+PostgreSQL also provides `SERIAL`, `SMALLSERIAL`, and `BIGSERIAL` as shorthand for auto-incrementing integer columns. They are commonly used for primary keys, a topic which we will cover in an upcoming chapter. Modern PostgreSQL (version 10 and later) prefers `GENERATED ALWAYS AS IDENTITY` for new tables, but you will see `SERIAL` frequently in existing schemas.
+:::
+
+### NUMERIC and DECIMAL
+
+`NUMERIC(precision, scale)` stores exact decimal numbers. The `precision` is the total number of significant digits, and `scale` is the number of digits to the right of the decimal point. `DECIMAL` is a synonym for `NUMERIC`; they are interchangeable data types.
+
+For example, `NUMERIC(8, 2)` can store values up to 999,999.99 with exactly two decimal places. The `area` column in the `countries` table is plain `NUMERIC` with no precision or scale specified, which means it can hold a decimal number of any size with any number of decimal digits.
+
+Because `NUMERIC` uses exact arithmetic, it is the correct choice for financial and monetary data where rounding errors are unacceptable.
+
+### MONEY
+
+PostgreSQL includes a `MONEY` type specifically for currency amounts. It stores values as an 8-byte integer internally and always displays them with exactly two decimal places, formatted according to the database server's locale setting. On a server configured for `en_US.utf8`, for example, the value `1234.56` is stored and displayed as `$1,234.56`, complete with dollar sign and thousands separator.
+
+```{sql}
+#| connection: con
+#| label: money-type
+SELECT
+    1234.56::money                AS amount,
+    pg_typeof(1234.56::money)     AS stored_as,
+    1234.56::money::text          AS text_representation;
+```
+
+At first glance, `MONEY` looks convenient for financial data. In practice, it has several rough edges worth understanding.
+
+**Locale-dependent output.** The formatted output of a `MONEY` value depends on the `lc_monetary` locale configured on the server. Two databases with different locale settings will display the same stored value differently, and a value accepted as valid input on one server may be rejected as invalid on another. This makes `MONEY` values fragile to move between systems.
+
+**Arithmetic produces unexpected types.** Dividing a `MONEY` value by an integer returns `MONEY`, which is intuitive. Dividing a `MONEY` value by another `MONEY` value, however, returns `DOUBLE PRECISION`, not `MONEY` or `NUMERIC`. This means computing a ratio or percentage between two monetary amounts quietly introduces floating-point approximation into a calculation you might expect to be exact.
+
+```{sql}
+#| connection: con
+#| label: money-arithmetic
+SELECT
+    1234.56::money / 2                   AS divided_by_int,
+    pg_typeof(1234.56::money / 2)        AS type_after_int_division,
+    1234.56::money / 100::money          AS divided_by_money,
+    pg_typeof(1234.56::money / 100::money) AS type_after_money_division;
+```
+
+**Casting requires care.** In PostgreSQL 17, `MONEY` can be cast directly to `NUMERIC`. In older versions, the cast had to pass through `TEXT` first (`money_col::text::numeric`) because the `MONEY` to `NUMERIC` cast path was not defined. Even today, the `TEXT` representation of a `MONEY` value includes the currency symbol and locale-specific formatting, so code that depends on `MONEY::TEXT` producing a plain number will break on servers with different locale settings.
+
+::: {.callout-warning}
+The PostgreSQL wiki's "Don't Do This" guide lists `MONEY` as a type to avoid, for the reasons above. For financial data, `NUMERIC(precision, 2)` is the safer and more portable choice: it provides exact arithmetic, predictable output regardless of server locale, and straightforward casting to other numeric types. You will encounter `MONEY` in existing databases, so it is important to recognize it, but new columns storing currency should use `NUMERIC`.
+:::
+
+### REAL and DOUBLE PRECISION
+
+`REAL` (4 bytes) and `DOUBLE PRECISION` (8 bytes) store floating-point numbers, which are approximations rather than exact values. They follow the IEEE 754 standard used by most programming languages for `float` and `double` types. The `longitude` and `latitude` columns in the `countries` table are both `REAL`, providing roughly six significant decimal digits of precision, which is more than adequate for geographic coordinates.
+
+::: {.callout-warning}
+Floating-point arithmetic can introduce tiny rounding errors that accumulate with repeated calculations. This makes `REAL` and `DOUBLE PRECISION` unsuitable for financial amounts, where a result like $9.99999999 instead of $10.00 is a real problem. Use `NUMERIC` for any values that require exact decimal arithmetic.
+:::
+
+## Boolean
+
+The `BOOLEAN` type stores a truth value: `TRUE`, `FALSE`, or `NULL`. Boolean columns are used to record yes/no or on/off attributes, such as whether a row has been processed or whether a flag is active.
+
+While the `countries` table has no boolean columns, you produce boolean values whenever you write a comparison expression in a query. The following query adds a computed column that evaluates to `TRUE` for countries with populations above 100 million and `FALSE` for all others.
+
+```{sql}
+#| connection: con
+#| label: boolean-expression
+SELECT
+    country,
+    population,
+    population > 100000000 AS is_major_country
+FROM countries
+ORDER BY population DESC;
+```
+
+Notice that PostgreSQL displays boolean values as `t` and `f` in the terminal. Applications and reporting tools typically render them as `true`/`false` or checkboxes depending on context.
+
+## Date and Time Types
+
+PostgreSQL provides dedicated types for dates, times, and durations. Using these types instead of plain text or integers allows the database to validate values, perform date arithmetic, and handle time zones correctly.
+
+### DATE
+
+`DATE` stores a calendar date: year, month, and day, with no time component. The `lastupdated` column in the `countries` table is a `DATE`.
+
+```{sql}
+#| connection: con
+#| label: date-column
+SELECT country, lastupdated
+FROM countries
+ORDER BY lastupdated DESC;
+```
+
+Date literals in PostgreSQL are written as quoted strings in ISO 8601 format: `'2024-12-16'`. The database validates that the string represents a real date; `'2024-02-30'` would produce an error.
+
+### TIME
+
+`TIME` stores a time of day without an associated date. It comes in two variants: `TIME WITHOUT TIME ZONE` (also written as `TIME`) and `TIME WITH TIME ZONE` (also written as `TIMETZ`). In practice, `TIME WITH TIME ZONE` is rarely useful on its own, because a time of day without a date provides limited context for time-zone conversions. `TIMESTAMP` (below) is the more common choice when both date and time are needed.
+
+### TIMESTAMP
+
+`TIMESTAMP` stores both a date and a time down to the microsecond. It also has two variants: `TIMESTAMP WITHOUT TIME ZONE` and `TIMESTAMP WITH TIME ZONE` (also written as `TIMESTAMPTZ`).
+
+::: {.callout-note}
+If you are coming from MySQL or SQL Server, you may be looking for a `DATETIME` type. PostgreSQL does not have one. `TIMESTAMP` covers the same use case. When you see `DATETIME` in SQL written for other databases, translate it to `TIMESTAMP` for PostgreSQL.
+:::
+
+The function `NOW()` returns the current date and time as a `TIMESTAMP WITH TIME ZONE`, and `CURRENT_DATE` returns today's date as a `DATE`.
+
+```{sql}
+#| connection: con
+#| label: timestamp-now
+SELECT
+    NOW()         AS current_timestamp,
+    CURRENT_DATE  AS today,
+    CURRENT_TIME  AS time_now;
+```
+
+### INTERVAL
+
+`INTERVAL` stores a span of time: a duration rather than a specific point on the calendar. Intervals are written as quoted strings with a unit, such as `INTERVAL '1 year'`, `INTERVAL '3 months'`, or `INTERVAL '45 days'`.
+
+::: {.callout-note}
+Some database systems and documentation use the term `DURATION` for this concept. In PostgreSQL, the type is always called `INTERVAL`.
+:::
+
+Intervals are most useful for date arithmetic. Adding an interval to a date or timestamp shifts it forward by the specified amount.
+
+```{sql}
+#| connection: con
+#| label: interval-arithmetic
+SELECT
+    country,
+    lastupdated,
+    lastupdated + INTERVAL '1 year'  AS plus_one_year,
+    lastupdated - INTERVAL '6 months' AS minus_six_months
+FROM countries;
+```
+
+Notice that adding an interval to a `DATE` column produces a `TIMESTAMP` result rather than a `DATE`. PostgreSQL promotes the result to a timestamp because an interval can include a time component, so the database cannot guarantee the result will still be a pure date.
+
+## Type Conversion
+
+Sometimes a value stored as one type needs to be treated as another. This is called **casting**. You saw an example in the previous chapter: dividing a `BIGINT` column by a `NUMERIC` column required a cast to prevent integer division from discarding the decimal portion of the result.
+
+PostgreSQL provides two syntaxes for casting, which are fully interchangeable.
+
+### The CAST() Function
+
+`CAST(value AS type)` is the ANSI SQL standard form, supported by virtually every relational database.
+
+```{sql}
+#| connection: con
+#| label: cast-function
+SELECT
+    country,
+    CAST(population AS numeric) / area AS pop_density
+FROM countries
+WHERE area IS NOT NULL
+ORDER BY pop_density DESC;
+```
+
+### The :: Operator
+
+The `::` operator is PostgreSQL's native shorthand for the same operation. The expression `value::type` is identical in behavior to `CAST(value AS type)`, but more compact.
+
+```{sql}
+#| connection: con
+#| label: cast-operator
+SELECT
+    country,
+    population::numeric / area AS pop_density
+FROM countries
+WHERE area IS NOT NULL
+ORDER BY pop_density DESC;
+```
+
+Both queries produce identical results. The `::` form is widely used in PostgreSQL code because it is concise and reads naturally inline with other expressions. The `CAST()` form is more portable if you ever need to run the same query on a different database system.
+
+### Common Casting Patterns
+
+A few casting patterns come up repeatedly in practice.
+
+**Numeric to text for string building.** The `||` concatenation operator requires both operands to be text. Casting a number to text before concatenating is the standard solution.
+
+```{sql}
+#| connection: con
+#| label: cast-to-text
+SELECT country || ', population: ' || population::text AS summary
+FROM countries
+ORDER BY population DESC;
+```
+
+**Text to numeric.** SQL queries often receive values from external sources as text strings. Casting converts them to the appropriate type for arithmetic or comparison.
+
+```{sql}
+#| connection: con
+#| label: cast-text-to-numeric
+SELECT
+    '2022'::integer       AS year_as_int,
+    '3.14159'::numeric    AS pi_as_numeric,
+    '2024-12-16'::date    AS date_from_string;
+```
+
+**Rounding versus truncating.** Casting a `NUMERIC` value to `INTEGER` **rounds** to the nearest integer, which produces the same result as `ROUND()`. If you want to discard the decimal component entirely and always round toward zero regardless of the fractional value, use `TRUNC()` to truncate the number.
+
+```{sql}
+#| connection: con
+#| label: cast-truncation
+SELECT
+    country,
+    area,
+    TRUNC(area)::integer   AS area_truncated,
+    area::integer          AS area_cast,
+    ROUND(area)::integer   AS area_rounded
+FROM countries
+WHERE area IS NOT NULL
+  AND area <> ROUND(area, 0)
+ORDER BY area;
+```
+
+Switzerland's area of 39509.63 illustrates the difference: `TRUNC()` gives 39509, while both the `::integer` cast and `ROUND()` give 39510. Use `TRUNC()` any time you need floor-toward-zero behavior; use `::integer` or `ROUND()` when you want standard rounding.
+
+### Implicit Casting
+
+PostgreSQL can often cast automatically without you having to write it explicitly. When you compare a `DATE` column to a text literal like `'2024-12-16'`, the database recognizes that the literal can be interpreted as a date and converts it silently. This is called an **implicit cast**.
+
+```sql
+-- PostgreSQL implicitly casts the string to a DATE for comparison
+SELECT country FROM countries WHERE lastupdated = '2024-12-16';
+```
+
+Implicit casting is convenient, but it can occasionally produce surprising results or performance problems in complex queries. Being explicit with casts is always safe; being implicit is fine when the conversion is obvious.
+
+### When Casts Fail
+
+A cast fails if the value cannot be converted to the target type. Attempting to cast a non-numeric string to an integer, for example, produces an error.
+
+```{sql}
+#| connection: con
+#| label: cast-error
+#| error: TRUE
+SELECT CAST('not a number' AS integer);
+```
+
+PostgreSQL does not provide a built-in "try cast" function that returns `NULL` on failure instead of raising an error. Handling potentially invalid input requires either cleaning the data before it enters the database or using more advanced techniques such as regular expression validation, which are covered in a later chapter.

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a [Quarto](https://quarto.org/) book project — "A Data Scientist's Guide to SQL" by Pete Benbow. It is a free, open-source educational textbook targeting beginning learners, data analysts, and data scientists who want to learn SQL and relational databases.
+This is a [Quarto](https://quarto.org/) book project titled _SQL for Data Science_ or _SQL4DS_ for short. It is a free, open-source educational textbook targeting beginning learners, data analysts, and data scientists who want to learn SQL and relational databases.
 
 ## Build Commands
 

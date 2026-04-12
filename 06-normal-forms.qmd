@@ -1,0 +1,262 @@
+---
+title: "Database Normalization"
+---
+
+## Why Normalization Matters
+
+Consider how most people first encounter data: in a spreadsheet. A spreadsheet is a single flat table, and the natural instinct is to put everything in one place. For small, simple datasets, that works fine. But as data grows in complexity, the flat-table approach creates problems that become increasingly costly to fix.
+
+Edgar Codd, who introduced the relational model in 1970, also developed the theory of *normalization*: a systematic approach to organizing data that reduces redundancy and prevents certain categories of errors. Normalization is not about following rules for their own sake. It is about making your database reliable and maintainable over time.
+
+The problems that normalization prevents fall into three categories:
+
+- **Update anomalies**: When the same fact is stored in multiple rows, updating that fact requires changing every copy. Miss one, and the database now contains contradictions.
+- **Insertion anomalies**: When a table conflates multiple concepts, you may be unable to record information about one thing without also recording information about something else.
+- **Deletion anomalies**: Removing one row may inadvertently destroy other facts stored in that same row.
+
+This chapter covers the three most commonly applied normal forms: First Normal Form (1NF), Second Normal Form (2NF), and Third Normal Form (3NF). Each builds on the previous, and a table in 3NF is free of the anomalies described above for the vast majority of practical cases.
+
+## A Running Example
+
+To ground each normal form in something concrete, this chapter uses a single scenario: a small business tracking customer orders. Suppose you inherit a spreadsheet that looks like this:
+
+| order_id | customer    | email          | products          | quantities | order_date |
+|----------|-------------|----------------|-------------------|------------|------------|
+| 1        | Alice Smith | alice@acme.com | Laptop, Mouse     | 1, 2       | 2024-01-15 |
+| 2        | Bob Jones   | bob@corp.net   | Keyboard          | 1          | 2024-01-16 |
+| 3        | Alice Smith | alice@acme.com | Monitor, Keyboard | 1, 1       | 2024-01-20 |
+
+This table has several structural problems, each addressed by a different normal form. You will work through each one in turn.
+
+## Functional Dependencies
+
+Before defining the normal forms, it helps to understand what a *functional dependency* is. Column B is functionally dependent on column A if knowing the value of A always determines the value of B.
+
+For example, in the orders table above:
+
+- `order_date` is functionally dependent on `order_id`: each order has exactly one date, so knowing the order ID tells you the date.
+- `customer` is functionally dependent on `email`: assuming each email address belongs to one person, knowing the email address tells you the customer name.
+
+Functional dependencies describe what a column is "about." They are the mechanism through which the normal forms identify and eliminate redundancy.
+
+## First Normal Form (1NF)
+
+### The Rule
+
+A table is in First Normal Form if every column contains only atomic, indivisible values. No column should hold a list, a set, or any multi-valued structure. Each cell should contain exactly one value, and each row should contain exactly one "record" of whatever the table represents.
+
+### The Violation
+
+The `products` and `quantities` columns each contain comma-separated lists:
+
+| order_id | products          | quantities |
+|----------|-------------------|------------|
+| 1        | Laptop, Mouse     | 1, 2       |
+| 3        | Monitor, Keyboard | 1, 1       |
+
+This design creates immediate practical problems. Suppose you want to find all orders that included a Keyboard. You cannot filter with `WHERE products = 'Keyboard'`; you would need to search inside the string, which is fragile and slow. Suppose you want to count total items ordered. You cannot aggregate the `quantities` column directly. The database cannot enforce referential integrity on individual products embedded in a list. And if a single order ever contains more products than you anticipated, the structure breaks down.
+
+::: {.callout-note}
+A related 1NF violation is the use of *repeating column groups*: rather than a list in one column, you create multiple columns for the same concept (`product_1`, `product_2`, `product_3`, ...). This shares the same problems: you impose an arbitrary limit on how many values are allowed, most rows will have empty columns, and queries become awkward. Atomic values solve both forms of the problem.
+:::
+
+### The Fix
+
+Apply 1NF by giving each product its own row:
+
+| order_id | customer    | email          | product  | quantity | order_date |
+|----------|-------------|----------------|----------|----------|------------|
+| 1        | Alice Smith | alice@acme.com | Laptop   | 1        | 2024-01-15 |
+| 1        | Alice Smith | alice@acme.com | Mouse    | 2        | 2024-01-15 |
+| 2        | Bob Jones   | bob@corp.net   | Keyboard | 1        | 2024-01-16 |
+| 3        | Alice Smith | alice@acme.com | Monitor  | 1        | 2024-01-20 |
+| 3        | Alice Smith | alice@acme.com | Keyboard | 1        | 2024-01-20 |
+
+Every cell now holds exactly one value. The primary key for this table is the combination of `(order_id, product)`, since each row uniquely identifies one product on one order.
+
+### The Remaining Problems
+
+The 1NF table is cleaner, but it still stores redundant information. Notice that `customer`, `email`, and `order_date` appear twice for orders 1 and 3. If Alice Smith changes her email address, you must update every row for every order she has ever placed. If you update some rows but miss others, the database now contains two different email addresses for the same customer. This is an update anomaly, and it signals a deeper structural problem.
+
+## Second Normal Form (2NF)
+
+### The Rule
+
+A table is in Second Normal Form if it is in 1NF and every non-key column is fully functionally dependent on the *entire* primary key. A violation occurs when a non-key column depends on only *part* of a composite primary key. This is called a *partial dependency*.
+
+Recall from the previous chapter that a composite primary key is a primary key made up of two or more columns. 2NF is only relevant for tables with composite primary keys. If a table's primary key is a single column, there is no "part of the key" to partially depend on, and 1NF already implies 2NF for those tables.
+
+### The Violation
+
+In the 1NF table, the primary key is `(order_id, product)`. Consider each non-key column:
+
+- `quantity` depends on both `order_id` and `product`: the quantity of a given product on a given order requires knowing both values. This is a full dependency.
+- `customer`, `email`, and `order_date` depend only on `order_id`: knowing the order ID alone is sufficient to determine the customer, email, and date, regardless of which product the row is about. These are partial dependencies.
+
+Because customer and order information is stored once per order line rather than once per order, the table violates 2NF.
+
+### The Fix
+
+Remove the partial dependencies by splitting the table. Columns that depend on the whole key stay together. Columns that depend on only part of the key move to a separate table, where that part of the key becomes the primary key.
+
+**orders**
+
+| order_id | customer    | email          | order_date |
+|----------|-------------|----------------|------------|
+| 1        | Alice Smith | alice@acme.com | 2024-01-15 |
+| 2        | Bob Jones   | bob@corp.net   | 2024-01-16 |
+| 3        | Alice Smith | alice@acme.com | 2024-01-20 |
+
+**order_items**
+
+| order_id | product  | quantity |
+|----------|----------|----------|
+| 1        | Laptop   | 1        |
+| 1        | Mouse    | 2        |
+| 2        | Keyboard | 1        |
+| 3        | Monitor  | 1        |
+| 3        | Keyboard | 1        |
+
+The `orders` table has `order_id` as its primary key. The `order_items` table has `(order_id, product)` as its composite primary key, and `order_id` serves as a foreign key back to `orders`. To assemble a complete picture of an order, you join these two tables. This is precisely the connection between normalization and the join operations covered in the previous chapter: a well-normalized database is inherently a database of related tables, and joins are the tool for querying across them.
+
+The redundancy *within* each order is now gone. In the 1NF version, Alice's email appeared once per order line: twice for order 1 (Laptop and Mouse) and twice for order 3 (Monitor and Keyboard). After applying 2NF, it appears once per order, regardless of how many items that order contains. If order 1 had ten products, the previous schema would have stored her email ten times across those ten rows; the 2NF schema stores it once, in the single `orders` row for order 1.
+
+### Remaining Problems
+
+The `orders` table itself still has a subtle redundancy. Alice appears in rows for orders 1 and 3, with the same email address both times. If her customer name changes, you must update multiple rows. You cannot record Alice's contact information without creating an order for her first. And if all of her orders are deleted, her contact information is lost. The anomalies have been reduced, but not eliminated.
+
+## Third Normal Form (3NF)
+
+### The Rule
+
+A table is in Third Normal Form if it is in 2NF and every non-key column depends directly on the primary key, not on another non-key column. A violation occurs when one non-key column determines another non-key column. This is called a *transitive dependency*.
+
+The informal summary often quoted is: every non-key column must depend on **the key, the whole key, and nothing but the key**.
+
+### The Violation
+
+In the `orders` table, consider the relationship between `email` and `customer`:
+
+- `order_id` determines `email`: each order is placed by one customer, who has one email address.
+- `email` determines `customer`: each email address belongs to exactly one person with one name.
+
+Therefore, `customer` is transitively dependent on `order_id` through `email`: `order_id → email → customer`. The customer name does not depend directly on the order ID; it depends on the email address, which depends on the order ID. This is the source of the remaining redundancy. Alice's name is stored once per order rather than once per customer.
+
+### The Fix
+
+Move the transitively dependent columns to their own table. The non-key column that drives the dependency becomes the natural key (or a surrogate key is introduced, as shown below):
+
+**customers**
+
+| customer_id | customer    | email          |
+|-------------|-------------|----------------|
+| 1           | Alice Smith | alice@acme.com |
+| 2           | Bob Jones   | bob@corp.net   |
+
+**orders**
+
+| order_id | customer_id | order_date |
+|----------|-------------|------------|
+| 1        | 1           | 2024-01-15 |
+| 2        | 2           | 2024-01-16 |
+| 3        | 1           | 2024-01-20 |
+
+**order_items**
+
+| order_id | product  | quantity |
+|----------|----------|----------|
+| 1        | Laptop   | 1        |
+| 1        | Mouse    | 2        |
+| 2        | Keyboard | 1        |
+| 3        | Monitor  | 1        |
+| 3        | Keyboard | 1        |
+
+The schema now consists of three tables, each representing exactly one concept. All three anomalies are resolved:
+
+- **Update anomaly eliminated**: Alice's name and email appear exactly once, in `customers`. One update is sufficient.
+- **Insertion anomaly eliminated**: A new customer can be added to `customers` without placing any order.
+- **Deletion anomaly eliminated**: Deleting all of Alice's orders removes rows from `orders` and `order_items`, but her record in `customers` is untouched.
+
+To retrieve a full picture of order 1, you join all three tables. The normalized structure requires more sophisticated queries, but those queries are precise and work against a schema that cannot drift into self-contradiction.
+
+## Normalization and Joins
+
+A normalized database is a database of relationships. When data is spread across multiple tables, joins are the mechanism that brings it back together for analysis. This is not a limitation of normalization; it is the intended design.
+
+Each table in a normalized schema stores facts about exactly one concept. The `customers` table knows about customers. The `orders` table knows about orders and which customer placed them. The `order_items` table knows about which products were on each order. Joins let you assemble whatever combination of facts a given query requires, without duplicating any of the underlying data.
+
+If you approach this chapter before reading the chapter on joins, that is a natural next step. Conversely, if the join examples felt abstract when you first encountered them, the normalization context here clarifies *why* data is structured across multiple tables in the first place: to eliminate redundancy, to enforce integrity, and to keep each individual table as focused and consistent as possible.
+
+## Beyond 3NF
+
+Higher normal forms exist. Boyce-Codd Normal Form (BCNF) is a slightly stricter variant of 3NF that handles certain edge cases involving overlapping candidate keys. Fourth Normal Form (4NF) and Fifth Normal Form (5NF) address progressively more subtle patterns involving multi-valued dependencies and join dependencies.
+
+In practice, 3NF is the appropriate target for most transactional databases. Violations of the higher forms appear infrequently in well-designed schemas and rarely cause significant problems.
+
+There are also situations where *denormalization* (deliberately reintroducing redundancy) is appropriate. Data warehouses and analytical systems sometimes store pre-computed aggregates or flattened "wide" tables to support fast reporting queries. When you denormalize, you are making a deliberate trade: faster reads at the cost of more complex write logic and more disciplined maintenance. That trade is reasonable in specific contexts. The key is to make it deliberately, with a clear understanding of what you are giving up and why.
+
+## Exercises
+
+### Reflection
+
+**1.** Describe the three types of data anomalies that normalization is designed to prevent. For each type, give a concrete example using any scenario you can imagine (a school, a library, a retail store, etc.).
+
+---
+
+**2.** What is a functional dependency? Using a university registrar context (students, courses, instructors, grades, rooms), give two examples of functional dependencies and two examples of columns that are *not* functionally dependent on each other.
+
+---
+
+**3.** Second Normal Form only applies to tables with composite primary keys. Explain in your own words why this is the case. What would it mean for a non-key column to partially depend on a single-column primary key?
+
+---
+
+**4.** The informal rule for 3NF states that every non-key column must depend on "the key, the whole key, and nothing but the key." Explain what each of the three clauses is protecting against:
+
+- "the key" (what problem exists if this is violated?)
+- "the whole key" (which normal form does this correspond to?)
+- "nothing but the key" (which normal form does this correspond to?)
+
+---
+
+### Structural Analysis
+
+**5.** Consider the following table, which tracks employee project assignments:
+
+| emp_id | emp_name   | dept_id | dept_name   | project_id | project_name |
+|--------|------------|---------|-------------|------------|--------------|
+| 101    | Jill Chen  | D1      | Engineering | P001       | Redesign     |
+| 101    | Jill Chen  | D1      | Engineering | P002       | API Upgrade  |
+| 102    | Marcos Rey | D2      | Marketing   | P003       | Campaign Q2  |
+| 103    | Sara Kim   | D1      | Engineering | P001       | Redesign     |
+
+a. What is the primary key of this table?
+b. This table is in 1NF but violates 2NF. Identify the partial dependencies.
+c. Decompose the table into a set of tables that satisfies 2NF. Show the resulting tables with sample data.
+
+---
+
+**6.** Using the result from question 5, examine the `employees` table you created (which should contain `emp_id`, `emp_name`, `dept_id`, and `dept_name`). Does this table satisfy 3NF? If not, identify the transitive dependency and decompose further.
+
+---
+
+**7.** A developer has designed the following table to track library loans:
+
+| loan_id | isbn       | title                   | author          | patron_id | patron_name | due_date   |
+|---------|------------|-------------------------|-----------------|-----------|-------------|------------|
+| 1001    | 978-0-00-1 | The Great Gatsby        | F.S. Fitzgerald | P42       | Maria Reyes | 2024-03-01 |
+| 1002    | 978-0-00-2 | To Kill a Mockingbird   | Harper Lee      | P17       | Sam Park    | 2024-03-08 |
+| 1003    | 978-0-00-1 | The Great Gatsby        | F.S. Fitzgerald | P17       | Sam Park    | 2024-03-15 |
+
+Identify all normal form violations in this table and propose a fully normalized schema (3NF). Specify the tables, their columns, and their primary and foreign keys.
+
+---
+
+**8.** You are designing a database for a music streaming service. The business rules are:
+
+- Each user can create many playlists.
+- Each playlist can contain many songs.
+- Each song belongs to exactly one album.
+- Each album was released by exactly one artist.
+
+Design a normalized schema (3NF) for this data. For each table, specify the columns, the primary key, and any foreign keys.
