@@ -1,4 +1,467 @@
 ---
 title: "Creating Tables"
-format: html
 ---
+
+```{r}
+#| include: false
+source("_common.R")
+```
+
+```{r}
+#| include: false
+# Clean up any tables left from a previous render
+DBI::dbExecute(con, "DROP TABLE IF EXISTS order_items")
+DBI::dbExecute(con, "DROP TABLE IF EXISTS orders")
+DBI::dbExecute(con, "DROP TABLE IF EXISTS customers")
+```
+
+## From Reading to Writing
+
+Every query in this book so far has been a `SELECT` statement: reading data from tables that already exist. Creating and modifying tables is the domain of **Data Definition Language (DDL)**, a subset of SQL distinct from the `SELECT`, `INSERT`, `UPDATE`, and `DELETE` statements that make up Data Manipulation Language (DML).
+
+This chapter introduces `CREATE TABLE`, the fundamental DDL statement. By the end, you will be able to translate the design decisions from the previous two chapters into a working PostgreSQL schema, complete with primary keys, foreign keys, and the constraints that enforce your business rules at the database level.
+
+## Basic Syntax
+
+The general form of a `CREATE TABLE` statement is:
+
+```sql
+CREATE TABLE table_name (
+    column_name  data_type  [column_constraints],
+    column_name  data_type  [column_constraints],
+    ...
+    [table_constraints]
+);
+```
+
+Each column is defined by its name, its data type (covered in the data types chapter), and any constraints that apply to it individually. Some constraints, such as composite primary keys and named foreign keys with cascade behavior, are written as **table constraints** at the end of the column list rather than inline with a single column.
+
+A simple example:
+
+```sql
+CREATE TABLE products (
+    product_id  SERIAL          PRIMARY KEY,
+    name        TEXT            NOT NULL,
+    price       NUMERIC(10, 2)
+);
+```
+
+`SERIAL` is a PostgreSQL shorthand that creates an auto-incrementing integer column backed by a sequence. Each new row receives the next integer in sequence automatically if no value is supplied for that column. This is the standard way to create a surrogate primary key in PostgreSQL.
+
+::: {.callout-note}
+`SERIAL` is a PostgreSQL-specific convenience type. The SQL standard equivalent, available in PostgreSQL 10 and later, is:
+
+```sql
+product_id  INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY
+```
+
+Both accomplish the same thing. `SERIAL` remains common in PostgreSQL documentation and in most codebases you will encounter.
+:::
+
+## Column Constraints
+
+Constraints restrict what values a column can hold. They enforce business rules at the database level, meaning they apply regardless of which application, tool, or user inserts or updates data.
+
+### NOT NULL
+
+`NOT NULL` prevents a column from ever containing a NULL value. It is the most common constraint after the primary key itself.
+
+```sql
+CREATE TABLE customers (
+    customer_id  SERIAL  PRIMARY KEY,
+    customer     TEXT    NOT NULL,
+    email        TEXT    NOT NULL
+);
+```
+
+Any `INSERT` or `UPDATE` that leaves `customer` or `email` as NULL will be rejected.
+
+### DEFAULT
+
+A `DEFAULT` value is substituted automatically when an `INSERT` statement omits the column entirely.
+
+```sql
+CREATE TABLE orders (
+    order_id     SERIAL   PRIMARY KEY,
+    customer_id  INTEGER  NOT NULL,
+    order_date   DATE     NOT NULL DEFAULT CURRENT_DATE,
+    status       TEXT     NOT NULL DEFAULT 'pending'
+);
+```
+
+If a new row is inserted without specifying `order_date`, the database uses the current date. If `status` is omitted, it defaults to `'pending'`. A default is not the same as `NOT NULL`: a column can have a default and still accept an explicitly supplied NULL, unless `NOT NULL` is also declared.
+
+### UNIQUE
+
+`UNIQUE` ensures no two rows share the same value in that column. A table can have any number of `UNIQUE` constraints, one for each alternate key.
+
+```sql
+CREATE TABLE customers (
+    customer_id  SERIAL  PRIMARY KEY,
+    customer     TEXT    NOT NULL,
+    email        TEXT    NOT NULL UNIQUE
+);
+```
+
+`PRIMARY KEY` already implies both uniqueness and non-nullability, so you do not need to add `UNIQUE` or `NOT NULL` to a primary key column.
+
+::: {.callout-note}
+PostgreSQL permits multiple NULL values in a `UNIQUE` column because `NULL` is not considered equal to `NULL`: no uniqueness violation occurs. If you need a column to be both unique and non-null, declare both `NOT NULL` and `UNIQUE` (or use `PRIMARY KEY`, which implies both).
+:::
+
+### CHECK
+
+A `CHECK` constraint specifies a boolean condition that every row must satisfy.
+
+```sql
+CREATE TABLE order_items (
+    order_id   INTEGER  NOT NULL,
+    product    TEXT     NOT NULL,
+    quantity   INTEGER  NOT NULL DEFAULT 1,
+    CHECK (quantity > 0)
+);
+```
+
+`CHECK` constraints can reference any column in the table and can combine columns: `CHECK (end_date IS NULL OR end_date >= start_date)` is a valid multi-column check. The constraint is evaluated on every `INSERT` and `UPDATE`.
+
+## Primary Keys
+
+### Single-Column Primary Key
+
+The simplest form declares `PRIMARY KEY` inline with the column:
+
+```sql
+CREATE TABLE regions (
+    region_code  TEXT  PRIMARY KEY,
+    region_name  TEXT  NOT NULL
+);
+```
+
+`PRIMARY KEY` implies both `NOT NULL` and `UNIQUE`, so neither needs to be written separately.
+
+### Composite Primary Key
+
+When the primary key spans multiple columns, it must be written as a table-level constraint:
+
+```sql
+CREATE TABLE order_items (
+    order_id   INTEGER  NOT NULL,
+    product    TEXT     NOT NULL,
+    quantity   INTEGER  NOT NULL DEFAULT 1,
+    CHECK (quantity > 0),
+    PRIMARY KEY (order_id, product)
+);
+```
+
+The `PRIMARY KEY (order_id, product)` declaration appears at the end, after all column definitions. Inline `PRIMARY KEY` syntax cannot express a composite key.
+
+## Foreign Keys
+
+### Inline Syntax
+
+For a single-column foreign key with default cascade behavior, the reference can be written inline using `REFERENCES`:
+
+```sql
+CREATE TABLE orders (
+    order_id     SERIAL   PRIMARY KEY,
+    customer_id  INTEGER  NOT NULL REFERENCES customers(customer_id),
+    order_date   DATE     NOT NULL DEFAULT CURRENT_DATE
+);
+```
+
+`REFERENCES customers(customer_id)` declares that every non-NULL value in `orders.customer_id` must exist in `customers.customer_id`. The referenced table must already exist when this statement runs.
+
+### Table-Level Syntax
+
+When cascade behavior needs to be specified, write the foreign key as a table constraint:
+
+```sql
+CREATE TABLE orders (
+    order_id     SERIAL   PRIMARY KEY,
+    customer_id  INTEGER  NOT NULL,
+    order_date   DATE     NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (customer_id)
+        REFERENCES customers(customer_id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+);
+```
+
+`ON DELETE` and `ON UPDATE` specify what happens to this table's rows when the referenced parent row is deleted or its primary key is updated. The options (`RESTRICT`, `CASCADE`, `SET NULL`, `SET DEFAULT`) are covered in the previous chapter. When neither is specified, PostgreSQL defaults to `NO ACTION`, which behaves like `RESTRICT`.
+
+### Creation Order
+
+Because a foreign key references another table, the referenced table must exist before the referencing table is created. Always create parent tables before child tables, and drop child tables before parent tables.
+
+## Building the Orders Schema
+
+The normalized orders schema from the normalization chapter serves as a complete working example. Here it is implemented as `CREATE TABLE` statements.
+
+First, the `customers` table. No foreign keys here, so it can be created first:
+
+```{sql}
+#| connection: con
+#| output: false
+CREATE TABLE customers (
+    customer_id  SERIAL  PRIMARY KEY,
+    customer     TEXT    NOT NULL,
+    email        TEXT    NOT NULL UNIQUE
+)
+```
+
+Next, `orders`. It references `customers`, so it must come after:
+
+```{sql}
+#| connection: con
+#| output: false
+CREATE TABLE orders (
+    order_id     SERIAL   PRIMARY KEY,
+    customer_id  INTEGER  NOT NULL,
+    order_date   DATE     NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (customer_id)
+        REFERENCES customers(customer_id)
+        ON DELETE RESTRICT
+)
+```
+
+Finally, `order_items`. It references `orders` and uses a composite primary key:
+
+```{sql}
+#| connection: con
+#| output: false
+CREATE TABLE order_items (
+    order_id   INTEGER  NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
+    product    TEXT     NOT NULL,
+    quantity   INTEGER  NOT NULL DEFAULT 1,
+    CHECK (quantity > 0),
+    PRIMARY KEY (order_id, product)
+)
+```
+
+With the schema in place, insert the sample data from the normalization chapter:
+
+```{r}
+#| include: false
+DBI::dbExecute(con, "
+  INSERT INTO customers (customer, email) VALUES
+    ('Alice Smith', 'alice@acme.com'),
+    ('Bob Jones',   'bob@corp.net')
+")
+DBI::dbExecute(con, "
+  INSERT INTO orders (customer_id, order_date) VALUES
+    (1, '2024-01-15'),
+    (2, '2024-01-16'),
+    (1, '2024-01-20')
+")
+DBI::dbExecute(con, "
+  INSERT INTO order_items (order_id, product, quantity) VALUES
+    (1, 'Laptop',   1),
+    (1, 'Mouse',    2),
+    (2, 'Keyboard', 1),
+    (3, 'Monitor',  1),
+    (3, 'Keyboard', 1)
+")
+```
+
+Verify the schema holds the expected data:
+
+```{sql}
+#| connection: con
+SELECT * FROM customers
+```
+
+```{sql}
+#| connection: con
+SELECT
+    o.order_id,
+    c.customer,
+    o.order_date,
+    oi.product,
+    oi.quantity
+FROM orders AS o
+JOIN customers AS c    ON o.customer_id  = c.customer_id
+JOIN order_items AS oi ON o.order_id     = oi.order_id
+ORDER BY o.order_id, oi.product
+```
+
+The join works exactly as described in the joins chapter: the normalized structure requires joining three tables to assemble a complete view of each order.
+
+## Observing Constraint Enforcement
+
+With the schema in place, it is instructive to see how the database responds to constraint violations. The following examples are shown as display blocks because they produce errors rather than results.
+
+**Inserting an order that references a non-existent customer:**
+
+```sql
+INSERT INTO orders (customer_id, order_date)
+VALUES (999, '2024-02-01');
+```
+
+```
+ERROR:  insert or update on table "orders" violates foreign key constraint
+DETAIL: Key (customer_id)=(999) is not present in table "customers".
+```
+
+**Inserting an order item with a negative quantity:**
+
+```sql
+INSERT INTO order_items (order_id, product, quantity)
+VALUES (1, 'Charger', -2);
+```
+
+```
+ERROR:  new row for relation "order_items" violates check constraint
+        "order_items_quantity_check"
+DETAIL: Failing row contains (1, Charger, -2).
+```
+
+**Inserting a customer with a duplicate email:**
+
+```sql
+INSERT INTO customers (customer, email)
+VALUES ('Alice Johnson', 'alice@acme.com');
+```
+
+```
+ERROR:  duplicate key value violates unique constraint "customers_email_key"
+DETAIL: Key (email)=(alice@acme.com) already exists.
+```
+
+**Deleting a customer who still has orders (RESTRICT):**
+
+```sql
+DELETE FROM customers WHERE customer_id = 1;
+```
+
+```
+ERROR:  update or delete on table "customers" violates foreign key constraint
+        "orders_customer_id_fkey" on table "orders"
+DETAIL: Key (customer_id)=(1) is still referenced from table "orders".
+```
+
+Each of these errors is the database doing its job. The constraints defined in the schema act as a permanent guard that no application bug or ad-hoc query can circumvent.
+
+## CREATE TABLE IF NOT EXISTS
+
+Running a `CREATE TABLE` statement against a table that already exists produces an error. The `IF NOT EXISTS` modifier suppresses that error, making the statement safe to run in a script that may be executed more than once:
+
+```sql
+CREATE TABLE IF NOT EXISTS customers (
+    customer_id  SERIAL  PRIMARY KEY,
+    customer     TEXT    NOT NULL,
+    email        TEXT    NOT NULL UNIQUE
+);
+```
+
+If `customers` already exists, this statement does nothing and reports no error. This is useful in setup scripts and migrations.
+
+## Removing Tables
+
+`DROP TABLE` removes a table and all of its data:
+
+```sql
+DROP TABLE order_items;
+DROP TABLE orders;
+DROP TABLE customers;
+```
+
+Tables must be dropped in reverse creation order: child tables (those with foreign keys pointing to other tables) before parent tables. PostgreSQL will not drop a table that is still referenced by a foreign key in another table.
+
+To drop a parent table and automatically remove the foreign key constraints that reference it from other tables, use `CASCADE`:
+
+```sql
+DROP TABLE customers CASCADE;
+```
+
+`CASCADE` on `DROP TABLE` removes the constraint definitions in other tables. It does not drop those other tables themselves. Use it carefully: in a complex schema, CASCADE can remove constraints you did not intend to touch.
+
+`DROP TABLE IF EXISTS` is the complement to `CREATE TABLE IF NOT EXISTS`: it does nothing if the table does not exist, rather than raising an error.
+
+## Modifying Existing Tables
+
+After a table is created, `ALTER TABLE` can change its structure.
+
+```sql
+-- Add a new column
+ALTER TABLE customers
+ADD COLUMN phone TEXT;
+
+-- Add a NOT NULL constraint to an existing column
+-- (succeeds only if the column currently has no NULL values)
+ALTER TABLE customers
+ALTER COLUMN phone SET NOT NULL;
+
+-- Add a named unique constraint
+ALTER TABLE customers
+ADD CONSTRAINT customers_phone_unique UNIQUE (phone);
+
+-- Remove a column
+ALTER TABLE customers
+DROP COLUMN phone;
+
+-- Add a foreign key after table creation
+ALTER TABLE orders
+ADD CONSTRAINT orders_customer_fk
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id);
+```
+
+`ALTER TABLE` modifies the live table definition immediately. Adding a `NOT NULL` constraint to a column that contains NULL values will fail: the database checks all existing rows before accepting the constraint. On large tables, some `ALTER TABLE` operations acquire locks that block reads and writes for the duration. In a learning context the tables are small enough that this is not a concern, but it is worth knowing before working on production systems.
+
+## Exercises
+
+### Reflection
+
+**1.** What is the difference between a column constraint and a table constraint? Give an example of a constraint that must be written at the table level and explain why.
+
+---
+
+**2.** A column is declared `TEXT NOT NULL DEFAULT 'unknown'`. An `INSERT` statement supplies an explicit `NULL` for that column. What does the database do? Explain the difference between omitting a column from an `INSERT` and explicitly supplying `NULL` for it.
+
+---
+
+**3.** Why does the order of `CREATE TABLE` statements matter when the tables have foreign key relationships? In what order would you drop those same tables?
+
+---
+
+**4.** What does `ON DELETE CASCADE` do, and why should it be used carefully? Describe a scenario where `CASCADE` would be the right choice and one where `RESTRICT` would be safer.
+
+---
+
+### Coding
+
+**5.** Write `CREATE TABLE` statements for a university database that tracks students, courses, and enrollments.
+
+- Each student has an auto-generated ID, a name, and an email (which must be unique).
+- Each course has a course code (like "CS101", used as the natural primary key), a title, and a number of credit hours that must be positive.
+- The enrollment table records which student is enrolled in which course and in which semester (for example, `'Fall 2024'`).
+
+Include all appropriate constraints and write the statements in the correct creation order.
+
+---
+
+**6.** Extend the schema from exercise 5 with a `grades` table. A grade belongs to one enrollment record (not to a student or course independently). The grade value should be constrained to valid letter grades: `A`, `B`, `C`, `D`, or `F`. Write the `CREATE TABLE` statement and explain your choice of primary key.
+
+---
+
+**7.** Using the library loans schema you designed in the normalization chapter exercises, write the full normalized schema as `CREATE TABLE` statements. Include appropriate constraints, default values, and cascade behaviors. You will need tables for books, patrons, and loans.
+
+---
+
+**8.** Examine the following table definition:
+
+```sql
+CREATE TABLE employee_projects (
+    emp_id      INTEGER  NOT NULL,
+    project_id  INTEGER  NOT NULL,
+    start_date  DATE     NOT NULL DEFAULT CURRENT_DATE,
+    end_date    DATE,
+    role        TEXT,
+    CHECK (end_date IS NULL OR end_date >= start_date),
+    PRIMARY KEY (emp_id, project_id)
+);
+```
+
+a. Can `end_date` be NULL? What does a NULL value mean in this context?
+b. What does the `CHECK` constraint enforce? Why is the `end_date IS NULL` part necessary?
+c. What is the primary key? Why is it composite?
+d. This table has no foreign key declarations. Write the missing `FOREIGN KEY` constraints, assuming `employees` and `projects` tables each use a surrogate integer primary key named `emp_id` and `project_id` respectively. Choose appropriate `ON DELETE` behavior for each and justify your choices.
