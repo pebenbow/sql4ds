@@ -41,6 +41,9 @@ book:
 
     - references.qmd
 
+filters:
+  - quarto-dbml
+
 bibliography: references.bib
 
 format:
