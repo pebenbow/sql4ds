@@ -131,7 +131,7 @@ The `orders` table itself still has a subtle redundancy. Alice appears in rows f
 
 A table is in Third Normal Form if it is in 2NF and every non-key column depends directly on the primary key, not on another non-key column. A violation occurs when one non-key column determines another non-key column. This is called a *transitive dependency*.
 
-The informal summary often quoted is: every non-key column must depend on **the key, the whole key, and nothing but the key**.
+The informal summary often quoted is: every non-key column must depend on **the key, the whole key, and nothing but the key** (so help me Codd).
 
 ### The Violation
 

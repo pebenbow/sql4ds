@@ -45,6 +45,8 @@ The table that holds the foreign key is called the **child** table. The table be
 
 Understanding cardinality before writing a join is important because it tells you how many result rows to expect. Joining a parent table to a child in a one-to-many relationship will produce more rows than the parent table alone, one result row for each matching child. Forgetting this is a common source of unintentionally duplicated rows.
 
+This chapter introduces primary keys, foreign keys, and cardinality as the practical foundation for writing joins. The database design section later in this book covers all three in greater depth, including how to declare and enforce them in SQL using `CREATE TABLE` statements and column constraints, and how normalization principles guide decisions about table structure.
+
 ## The worldbank Database
 
 The examples in this chapter use the `worldbank` database, which organizes World Bank development data across five related tables. This picks up thematically from the `countries` dataset used in earlier chapters while introducing the multi-table structure needed to explore joins.

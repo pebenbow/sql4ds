@@ -30,7 +30,13 @@ book:
     - part: working-with-multiple-tables.qmd
       chapters:
         - 05-joins.qmd
-        - 06-normal-forms.qmd
+        - 06-set-operations.qmd
+
+    - part: database-design.qmd
+      chapters:
+        - 07-keys-and-integrity.qmd
+        - 08-normal-forms.qmd
+        - 09-create-table.qmd
 
     - references.qmd
 
