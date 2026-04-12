@@ -1,264 +1,301 @@
 ---
 title: "Entity-Relationship Diagrams"
+dbml:
+  notation: crowsfoot
+  routing: smooth
 ---
 
 ## Design Before You Build
 
-Writing SQL to create a database without first sketching its structure is like framing walls without a blueprint. The tables might work, but you will likely discover expensive problems later: a relationship missing, columns in the wrong place, a structure that forces the kind of redundancy the normalization chapter describes. Changes to a schema after data is loaded are slow and disruptive.
+Writing SQL to create a database without first sketching its structure is like framing walls without a blueprint. The tables might hold together, but you will likely discover expensive problems later: a relationship missing, columns in the wrong place, a structure that forces the kind of redundancy the normalization chapter describes. Changes to a schema after data is loaded are slow and disruptive.
 
-An **entity-relationship diagram** (ER diagram, or ERD) is the standard tool for planning a database schema before writing a single line of SQL. It shows what entities exist, what attributes each entity has, and how entities relate to each other. Designers use ER diagrams to catch structural problems early, communicate designs to teammates and stakeholders, and document schemas once they are built.
+An **entity-relationship diagram** (ER diagram, or ERD) is the standard tool for planning a database schema before writing a single line of SQL. It shows what entities exist, what attributes each entity has, and how entities relate to each other.
 
-This chapter uses **crow's foot notation**, the most widely used ER diagramming style in practice. The diagrams here are drawn with Mermaid, a diagramming language built into Quarto, but the notation is tool-independent. Any ER diagramming tool (draw.io, Lucidchart, dbdiagram.io, your database GUI) supports crow's foot and produces diagrams you can read with the skills developed here.
+This chapter uses **DBML** (Database Markup Language) to define schemas and **crow's foot notation** to render the resulting diagrams. DBML is a concise, SQL-like language designed specifically for describing database structure. The diagrams in this chapter render directly in the book via the `quarto-dbml` extension; the same DBML code works identically in [dbdiagram.io](https://dbdiagram.io), a free web tool you will use for the exercises.
 
-## Entities and Attributes
+## Defining Entities: Table Blocks
 
-An **entity** is any thing about which the database stores information. In the schemas you have seen in this book, entities include customers, orders, countries, and indicators. Each entity typically becomes a table.
+In DBML, an **entity** is defined with a `Table` block. Each row inside the block defines one attribute (column), with the column name followed by its data type and any constraints enclosed in square brackets.
 
-An **attribute** is a property of an entity. A customer has a name and an email address. An order has a date. Attributes typically become columns.
-
-In crow's foot notation, an entity is drawn as a rectangle. The entity name appears at the top, and its attributes are listed inside:
-
-```{mermaid}
-erDiagram
-    CUSTOMERS {
-        int customer_id PK
-        text customer
-        text email
-    }
+```{.dbml}
+Table customers {
+  customer_id int         [pk, increment]
+  customer    varchar     [not null]
+  email       varchar     [not null, unique]
+}
 ```
 
-The `PK` and `FK` markers identify primary key and foreign key columns. Data types in the diagram are documentation only; the diagram does not enforce them.
+The constraint annotations inside `[...]` map directly to SQL:
 
-## Relationships
+| Annotation | Meaning |
+|------------|---------|
+| `pk` | Primary key |
+| `increment` | Auto-incrementing surrogate (`SERIAL` in PostgreSQL) |
+| `not null` | Column cannot be NULL |
+| `unique` | Values must be distinct across all rows |
+| `default: value` | Default value when none is supplied |
+| `note: 'text'` | Documentation only; not enforced by the database |
 
-A **relationship** is an association between two entities. Every relationship has three properties:
+A composite primary key cannot be declared inline. It goes in an `Indexes` block at the end of the table definition:
 
-- **A name**: a verb phrase describing the association. "A customer *places* an order." "An order *contains* order items."
-- **Cardinality**: the maximum number of instances that can participate on each side. Can one customer place many orders, or only one?
-- **Participation** (also called modality): whether participation is required or optional on each side. Must every customer have placed at least one order? Can an order exist without any line items?
+```{.dbml}
+Table order_items {
+  order_id  int     [not null]
+  product   varchar [not null]
+  quantity  int     [not null, default: 1]
 
-## Crow's Foot Notation
+  Indexes {
+    (order_id, product) [pk]
+  }
+}
+```
 
-In crow's foot notation, each end of a relationship line carries a pair of symbols expressing the cardinality and participation for that side of the relationship.
+## Defining Relationships: Ref Declarations
 
-### The Symbols
+Relationships between entities are declared with `Ref` statements. Each `Ref` names two columns and the cardinality between them using one of four operators:
 
-**Cardinality** (the maximum) is shown by the symbol farther from the entity box:
+| Operator | Cardinality | Example |
+|----------|-------------|---------|
+| `>` | Many-to-one (left is the FK/many side) | `orders.customer_id > customers.customer_id` |
+| `<` | One-to-many (right is the FK/many side) | `customers.customer_id < orders.customer_id` |
+| `-` | One-to-one | `users.profile_id - profiles.id` |
+| `<>` | Many-to-many | `students.id <> courses.id` |
+
+`>` and `<` are mirrors of each other. Most schemas use `>` consistently so the FK column appears on the left: `FK_table.FK_column > PK_table.PK_column`.
+
+### How NOT NULL Shapes the Diagram
+
+The `Ref` operator sets cardinality (one vs. many). Participation (mandatory vs. optional) is determined by whether the FK column carries `[not null]`:
+
+- A FK column declared `[not null]` means every child row must have a parent. The crow's foot rendering shows a mandatory symbol (a bar, `|`) at the parent end.
+- A nullable FK column means the relationship is optional. The rendering shows an optional symbol (a circle, `o`) at the parent end.
+
+The many end almost always shows zero-or-many (crow's foot with a circle), because relational constraints generally cannot enforce "at least one child row must exist." That rule lives in application logic, not in the schema itself.
+
+## Reading Crow's Foot Diagrams
+
+Each end of a relationship line in a crow's foot diagram carries two symbols: one for cardinality (the maximum) and one for participation (the minimum).
+
+**Cardinality symbols:**
 
 | Symbol | Meaning |
 |--------|---------|
 | Single bar `\|` | One (no more than one) |
 | Crow's foot `{` | Many (no upper limit) |
 
-The crow's foot is three lines fanning outward, like the toes of a bird. It means "many."
-
-**Participation** (the minimum) is shown by the symbol closer to the entity box:
+**Participation symbols:**
 
 | Symbol | Meaning |
 |--------|---------|
 | Single bar `\|` | Mandatory: at least one must exist |
 | Circle `o` | Optional: zero is permitted |
 
-### The Four Practical Combinations
+**The four practical combinations:**
 
-Together, the two symbols at one end of a line describe what is true from the perspective of the entity at the other end:
+| Symbols at one end | Reads as |
+|--------------------|----------|
+| `\|\|` | Exactly one |
+| `o\|` | Zero or one |
+| `\|{` | One or many |
+| `o{` | Zero or many |
 
-| Symbols | Reads as |
-|---------|----------|
-| `\|\|` | Exactly one (mandatory, singular) |
-| `o\|` | Zero or one (optional, singular) |
-| `\|{` | One or many (mandatory, plural) |
-| `o{` | Zero or many (optional, plural) |
-
-The last entry is the most common: it appears on the "many" side of most one-to-many relationships, where a parent may or may not have any children at a given point in time.
-
-### Reading a Relationship Line
-
-To read a relationship, start at one entity and read toward the other. The symbols at the far end tell you the answer to the question "how many of that entity can be associated with one of mine?"
-
-```{mermaid}
-erDiagram
-    CUSTOMERS ||--o{ ORDERS : "places"
-```
-
-**Reading from CUSTOMERS toward ORDERS** (symbols at the ORDERS end: `o{`): each customer places *zero or many* orders. A brand-new customer who has not yet ordered is a valid state.
-
-**Reading from ORDERS toward CUSTOMERS** (symbols at the CUSTOMERS end: `||`): each order belongs to *exactly one* customer. An order without a customer is not permitted.
-
-This is a standard one-to-many relationship with mandatory participation on the "many" side and optional participation on the "one" side.
-
-### Identifying vs. Non-Identifying Relationships
-
-The line between two entities can be drawn solid or dashed:
-
-- A **solid line** indicates an *identifying relationship*: the child entity's identity depends on the parent. The `order_items` table is an example. A line item has no independent identity; its primary key includes the parent `order_id`.
-- A **dashed line** indicates a *non-identifying relationship*: the child has its own independent identity. The `orders` table referencing `customers` is non-identifying: each order has its own `order_id` that has nothing to do with the customer.
-
-Mermaid uses `--` for solid (identifying) and `..` for dashed (non-identifying). In practice, many informal diagrams use solid lines throughout without loss of clarity.
+To read a relationship, start at one entity and read toward the other. The symbols at the far end answer the question "how many of that entity can relate to one of mine?"
 
 ## The Orders Schema
 
-Here is the complete orders schema from the normalization chapter, expressed as an ER diagram:
+Here is the complete orders schema from the normalization chapter expressed in DBML. Notice how closely it resembles the `CREATE TABLE` statements you will write in the next chapter.
 
-```{mermaid}
-erDiagram
-    CUSTOMERS {
-        int customer_id PK
-        text customer
-        text email
-    }
-    ORDERS {
-        int order_id PK
-        int customer_id FK
-        date order_date
-    }
-    ORDER_ITEMS {
-        int order_id FK
-        text product
-        int quantity
-    }
-    CUSTOMERS ||--o{ ORDERS : "places"
-    ORDERS ||--|{ ORDER_ITEMS : "contains"
+```{.dbml}
+Table customers {
+  customer_id int     [pk, increment]
+  customer    varchar [not null]
+  email       varchar [not null, unique]
+}
+
+Table orders {
+  order_id    int  [pk, increment]
+  customer_id int  [not null]
+  order_date  date [not null, default: `now()`]
+}
+
+Table order_items {
+  order_id int     [not null]
+  product  varchar [not null]
+  quantity int     [not null, default: 1]
+
+  Indexes {
+    (order_id, product) [pk]
+  }
+}
+
+Ref: orders.customer_id > customers.customer_id
+Ref: order_items.order_id > orders.order_id
 ```
 
-Two things to notice:
+Two things to observe in the rendered diagram:
 
-**CUSTOMERS to ORDERS** uses `o{` (zero or many). A customer can exist without any orders. This is intentional: the 3NF design stores customers independently of orders, so a new customer account is valid before any purchase is made.
+**CUSTOMERS to ORDERS:** `orders.customer_id` is `[not null]`, so every order must belong to a customer. The diagram shows a mandatory symbol at the `CUSTOMERS` end. The `ORDERS` end shows zero-or-many: a customer can exist without any orders.
 
-**ORDERS to ORDER_ITEMS** uses `|{` (one or many), not `o{`. An order with no line items is not a meaningful business object. The mandatory participation on the `ORDER_ITEMS` side expresses this constraint in the diagram.
+**ORDERS to ORDER_ITEMS:** `order_items.order_id` is `[not null]`, so every line item must belong to an order. The diagram shows a mandatory symbol at the `ORDERS` end. The `ORDER_ITEMS` end shows zero-or-many.
 
-The diagram makes the structure of the normalized schema immediately legible. The normalization chapter built this structure from a flat spreadsheet over several steps; the ER diagram shows the destination at a glance.
+::: {.callout-note}
+The normalization chapter described the `ORDER_ITEMS` side as "one or many" because an order with no items is not a meaningful business object. DBML and SQL constraints cannot enforce this at the schema level. The zero-or-many rendering is technically correct for what the schema can guarantee; the "at least one" rule lives in application logic.
+:::
 
 ## The worldbank Schema
 
-The `worldbank` database from the joins chapter has a richer structure. The central `OBSERVATIONS` table is a junction table resolving a many-to-many relationship between `COUNTRIES` and `INDICATORS`:
+The `worldbank` database from the joins chapter has a richer structure. `OBSERVATIONS` is a junction table that resolves a many-to-many relationship between `COUNTRIES` and `INDICATORS`:
 
-```{mermaid}
-erDiagram
-    REGIONS {
-        text region_code PK
-        text region_name
-    }
-    INCOME_GROUPS {
-        text income_code PK
-        text income_name
-    }
-    COUNTRIES {
-        text country_code PK
-        text country_name
-        text region_code FK
-        text income_code FK
-    }
-    INDICATORS {
-        text indicator_code PK
-        text indicator_name
-    }
-    OBSERVATIONS {
-        text country_code FK
-        text indicator_code FK
-        int year
-        float value
-    }
-    REGIONS ||--o{ COUNTRIES : "contains"
-    INCOME_GROUPS ||--o{ COUNTRIES : "classifies"
-    COUNTRIES ||--o{ OBSERVATIONS : "measured in"
-    INDICATORS ||--o{ OBSERVATIONS : "recorded as"
+```{.dbml}
+Table regions {
+  region_code varchar [pk]
+  region_name varchar [not null]
+}
+
+Table income_groups {
+  income_code varchar [pk]
+  income_name varchar [not null]
+}
+
+Table countries {
+  country_code varchar [pk]
+  country_name varchar [not null]
+  region_code  varchar [not null]
+  income_code  varchar
+}
+
+Table indicators {
+  indicator_code varchar [pk]
+  indicator_name varchar [not null]
+}
+
+Table observations {
+  country_code   varchar [not null]
+  indicator_code varchar [not null]
+  year           int     [not null]
+  value          float
+
+  Indexes {
+    (country_code, indicator_code, year) [pk]
+  }
+}
+
+Ref: countries.region_code  > regions.region_code
+Ref: countries.income_code  > income_groups.income_code
+Ref: observations.country_code   > countries.country_code
+Ref: observations.indicator_code > indicators.indicator_code
 ```
 
-`OBSERVATIONS` sits in the center, connected to both `COUNTRIES` and `INDICATORS`. Each observation belongs to exactly one country and exactly one indicator, while each country has many observations and each indicator is recorded for many countries. This is the junction table pattern for a many-to-many relationship, expressed visually.
+`OBSERVATIONS` sits at the center, connected to both `COUNTRIES` and `INDICATORS`. Each observation belongs to exactly one country and exactly one indicator, while each country and indicator can have many observations.
 
-`REGIONS` and `INCOME_GROUPS` are reference tables: pure lookup entities that classify countries but have no direct relationship with indicators or observations.
+Notice that `countries.income_code` has no `[not null]` annotation. Some countries in the dataset have no income classification. The diagram renders an optional symbol (circle) on the `INCOME_GROUPS` end of that relationship.
 
 ## Self-Referencing Relationships
 
-A relationship does not have to connect two different entities. When a table contains a foreign key that references its own primary key, the ER diagram shows the entity relating to itself:
+A table can reference itself. The employee hierarchy example from the previous chapter uses a `manager_id` column that points back to `employee_id` in the same table:
 
-```{mermaid}
-erDiagram
-    EMPLOYEES {
-        int employee_id PK
-        text name
-        int manager_id FK
-    }
-    EMPLOYEES |o--o{ EMPLOYEES : "manages"
+```{.dbml}
+Table employees {
+  employee_id int     [pk, increment]
+  name        varchar [not null]
+  manager_id  int
+}
+
+Ref: employees.manager_id > employees.employee_id
 ```
 
-**Reading from manager to subordinate** (`o{` side): each employee manages zero or many other employees.
+`manager_id` has no `[not null]`, which is intentional: the person at the top of the hierarchy has no manager, so their `manager_id` is NULL. The optional symbol at the parent end reflects this.
 
-**Reading from subordinate to manager** (`|o` side): each employee is managed by zero or one other employee. The zero is important: the person at the top of the hierarchy has no manager, so their `manager_id` is NULL. Making this end `||` (exactly one) would forbid a top-level employee.
+## DBML and dbdiagram.io
+
+The DBML you write in this book renders identically in [dbdiagram.io](https://dbdiagram.io), a free browser-based tool. To use it:
+
+1. Go to [dbdiagram.io](https://dbdiagram.io) and open the editor (no account required for basic use).
+2. Paste your DBML into the left panel.
+3. The diagram renders immediately on the right.
+4. You can drag tables to arrange the layout, export to PNG or PDF, and share a link.
+
+dbdiagram.io is the tool to use for the exercises below and for designing schemas in your own work. Write the DBML first, render it to check the structure, then iterate before writing any SQL.
 
 ## From Diagram to Schema
 
-An ER diagram and a relational schema are two representations of the same design. The translation rules are mechanical:
+An ER diagram and a `CREATE TABLE` script are two representations of the same design. DBML makes the translation almost mechanical:
 
-- Each entity becomes a table.
-- Each attribute becomes a column.
-- The primary key attribute becomes the table's `PRIMARY KEY`.
-- A `||` end on the "one" side of a one-to-many relationship becomes the primary key of that table. A `o{` or `|{` end on the "many" side becomes a foreign key column referencing that primary key.
-- A many-to-many relationship (not shown directly in the diagrams above, but visible via the junction table pattern) requires a third table whose primary key is a composite of the two foreign keys.
+- Each `Table` block becomes a `CREATE TABLE` statement.
+- Each column annotation (`[not null]`, `[unique]`, `[pk]`, `[default: ...]`) becomes the corresponding SQL constraint.
+- Each `Ref` becomes a `FOREIGN KEY` declaration.
+- The `Indexes { (col1, col2) [pk] }` block becomes a table-level `PRIMARY KEY (col1, col2)`.
 
-The next chapter shows how to express these translations in SQL using `CREATE TABLE` statements.
+The next chapter walks through this translation in full.
 
 ## Exercises
 
 ### Reflection
 
-**1.** In crow's foot notation, what is the difference between `o{` and `|{` at one end of a relationship line? Give a business example where each would be the appropriate choice.
+**1.** In DBML, what is the difference between a `>` and a `<` in a `Ref` declaration? Are they interchangeable, or do they mean different things?
 
 ---
 
-**2.** What is the difference between cardinality and participation in an ER diagram? Describe a relationship where the cardinality is one-to-many but the participation is optional on both sides.
+**2.** A `Ref` line alone tells you the cardinality of a relationship. What additional information tells you whether participation is mandatory or optional, and where does that information live in the DBML definition?
 
 ---
 
-**3.** The worldbank ER diagram above uses a junction table (`OBSERVATIONS`) to resolve a many-to-many relationship. Explain why a direct relationship between `COUNTRIES` and `INDICATORS` without a junction table could not be expressed in a relational schema.
+**3.** The worldbank schema leaves `countries.income_code` nullable (no `[not null]`). What does this mean for the rendered diagram, and what real-world fact does this model?
 
 ---
 
 ### Design
 
-**4.** A regional library system wants to track books and borrowers. Each book has a title, an ISBN (unique), and one or more authors. Each borrower has a name and a library card number (unique). A borrower can check out many books over time, and the same book can be checked out by many different borrowers. The loan record should capture the checkout date and the due date.
+**4.** A regional library system tracks books, borrowers, and loans. The business rules are:
 
-Draw the ER diagram for this system using crow's foot notation. Write the Mermaid code for your diagram. Identify the primary key of each entity and mark all foreign key columns.
+- Each book has a title, an ISBN (unique), and an author.
+- Each borrower has a name and a library card number (unique).
+- A loan records which borrower checked out which book, along with the checkout date and due date.
+- The same book can be loaned to different borrowers at different times; a borrower can have multiple active loans.
+
+Write the DBML for this schema. Include all appropriate constraint annotations. Paste it into dbdiagram.io to verify the diagram, then copy the final DBML here.
 
 ---
 
-**5.** Examine the following ER diagram:
+**5.** The following diagram is rendered from a DBML definition. Read it and answer the questions below.
 
-```{mermaid}
-erDiagram
-    DOCTORS {
-        int doctor_id PK
-        text name
-        text specialty
-    }
-    PATIENTS {
-        int patient_id PK
-        text name
-        date date_of_birth
-    }
-    APPOINTMENTS {
-        int appointment_id PK
-        int doctor_id FK
-        int patient_id FK
-        date appointment_date
-        text notes
-    }
-    DOCTORS ||--o{ APPOINTMENTS : "conducts"
-    PATIENTS ||--o{ APPOINTMENTS : "attends"
+```{.dbml}
+Table doctors {
+  doctor_id  int     [pk, increment]
+  name       varchar [not null]
+  specialty  varchar
+}
+
+Table patients {
+  patient_id    int     [pk, increment]
+  name          varchar [not null]
+  date_of_birth date    [not null]
+}
+
+Table appointments {
+  appointment_id int      [pk, increment]
+  doctor_id      int      [not null]
+  patient_id     int      [not null]
+  scheduled_at   datetime [not null]
+  notes          text
+}
+
+Ref: appointments.doctor_id  > doctors.doctor_id
+Ref: appointments.patient_id > patients.patient_id
 ```
 
 a. Describe each relationship in plain English, including cardinality and participation.
-b. Is the `APPOINTMENTS` table acting as a junction table? Explain.
-c. A business rule states that every appointment must have notes recorded before it can be saved. What change would you make to the diagram to represent this requirement?
+b. Is `APPOINTMENTS` acting as a junction table? Explain.
+c. A new rule states that every appointment must have notes recorded before it can be saved. What change would you make to the DBML to enforce this?
+d. Another rule states that a doctor can have at most one appointment per time slot. What change would you make to the DBML to enforce this uniqueness constraint?
 
 ---
 
-**6.** A podcast platform stores shows, episodes, and listener subscriptions. The business rules are:
+**6.** A podcast platform needs to store shows, episodes, listener subscriptions, and playlists. The rules are:
 
 - Each show has many episodes; each episode belongs to exactly one show.
-- Listeners can subscribe to many shows; a show can have many subscribers.
-- The subscription should record when the listener subscribed.
-- Each episode can be in many playlists; each playlist belongs to one listener and can contain many episodes.
+- Listeners can subscribe to many shows; a show can have many subscribers. The subscription records when the listener subscribed.
+- Each listener can have many playlists; each playlist belongs to exactly one listener.
+- Each playlist can contain many episodes; each episode can appear in many playlists.
 
-Design an ER diagram for this system. Write the Mermaid code and identify any junction tables your design requires.
+Write the full DBML for this schema. Identify any junction tables your design requires, and explain why they are needed. Paste into dbdiagram.io to verify the structure before submitting.
