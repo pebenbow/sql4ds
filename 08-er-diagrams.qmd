@@ -1,0 +1,264 @@
+---
+title: "Entity-Relationship Diagrams"
+---
+
+## Design Before You Build
+
+Writing SQL to create a database without first sketching its structure is like framing walls without a blueprint. The tables might work, but you will likely discover expensive problems later: a relationship missing, columns in the wrong place, a structure that forces the kind of redundancy the normalization chapter describes. Changes to a schema after data is loaded are slow and disruptive.
+
+An **entity-relationship diagram** (ER diagram, or ERD) is the standard tool for planning a database schema before writing a single line of SQL. It shows what entities exist, what attributes each entity has, and how entities relate to each other. Designers use ER diagrams to catch structural problems early, communicate designs to teammates and stakeholders, and document schemas once they are built.
+
+This chapter uses **crow's foot notation**, the most widely used ER diagramming style in practice. The diagrams here are drawn with Mermaid, a diagramming language built into Quarto, but the notation is tool-independent. Any ER diagramming tool (draw.io, Lucidchart, dbdiagram.io, your database GUI) supports crow's foot and produces diagrams you can read with the skills developed here.
+
+## Entities and Attributes
+
+An **entity** is any thing about which the database stores information. In the schemas you have seen in this book, entities include customers, orders, countries, and indicators. Each entity typically becomes a table.
+
+An **attribute** is a property of an entity. A customer has a name and an email address. An order has a date. Attributes typically become columns.
+
+In crow's foot notation, an entity is drawn as a rectangle. The entity name appears at the top, and its attributes are listed inside:
+
+```{mermaid}
+erDiagram
+    CUSTOMERS {
+        int customer_id PK
+        text customer
+        text email
+    }
+```
+
+The `PK` and `FK` markers identify primary key and foreign key columns. Data types in the diagram are documentation only; the diagram does not enforce them.
+
+## Relationships
+
+A **relationship** is an association between two entities. Every relationship has three properties:
+
+- **A name**: a verb phrase describing the association. "A customer *places* an order." "An order *contains* order items."
+- **Cardinality**: the maximum number of instances that can participate on each side. Can one customer place many orders, or only one?
+- **Participation** (also called modality): whether participation is required or optional on each side. Must every customer have placed at least one order? Can an order exist without any line items?
+
+## Crow's Foot Notation
+
+In crow's foot notation, each end of a relationship line carries a pair of symbols expressing the cardinality and participation for that side of the relationship.
+
+### The Symbols
+
+**Cardinality** (the maximum) is shown by the symbol farther from the entity box:
+
+| Symbol | Meaning |
+|--------|---------|
+| Single bar `\|` | One (no more than one) |
+| Crow's foot `{` | Many (no upper limit) |
+
+The crow's foot is three lines fanning outward, like the toes of a bird. It means "many."
+
+**Participation** (the minimum) is shown by the symbol closer to the entity box:
+
+| Symbol | Meaning |
+|--------|---------|
+| Single bar `\|` | Mandatory: at least one must exist |
+| Circle `o` | Optional: zero is permitted |
+
+### The Four Practical Combinations
+
+Together, the two symbols at one end of a line describe what is true from the perspective of the entity at the other end:
+
+| Symbols | Reads as |
+|---------|----------|
+| `\|\|` | Exactly one (mandatory, singular) |
+| `o\|` | Zero or one (optional, singular) |
+| `\|{` | One or many (mandatory, plural) |
+| `o{` | Zero or many (optional, plural) |
+
+The last entry is the most common: it appears on the "many" side of most one-to-many relationships, where a parent may or may not have any children at a given point in time.
+
+### Reading a Relationship Line
+
+To read a relationship, start at one entity and read toward the other. The symbols at the far end tell you the answer to the question "how many of that entity can be associated with one of mine?"
+
+```{mermaid}
+erDiagram
+    CUSTOMERS ||--o{ ORDERS : "places"
+```
+
+**Reading from CUSTOMERS toward ORDERS** (symbols at the ORDERS end: `o{`): each customer places *zero or many* orders. A brand-new customer who has not yet ordered is a valid state.
+
+**Reading from ORDERS toward CUSTOMERS** (symbols at the CUSTOMERS end: `||`): each order belongs to *exactly one* customer. An order without a customer is not permitted.
+
+This is a standard one-to-many relationship with mandatory participation on the "many" side and optional participation on the "one" side.
+
+### Identifying vs. Non-Identifying Relationships
+
+The line between two entities can be drawn solid or dashed:
+
+- A **solid line** indicates an *identifying relationship*: the child entity's identity depends on the parent. The `order_items` table is an example. A line item has no independent identity; its primary key includes the parent `order_id`.
+- A **dashed line** indicates a *non-identifying relationship*: the child has its own independent identity. The `orders` table referencing `customers` is non-identifying: each order has its own `order_id` that has nothing to do with the customer.
+
+Mermaid uses `--` for solid (identifying) and `..` for dashed (non-identifying). In practice, many informal diagrams use solid lines throughout without loss of clarity.
+
+## The Orders Schema
+
+Here is the complete orders schema from the normalization chapter, expressed as an ER diagram:
+
+```{mermaid}
+erDiagram
+    CUSTOMERS {
+        int customer_id PK
+        text customer
+        text email
+    }
+    ORDERS {
+        int order_id PK
+        int customer_id FK
+        date order_date
+    }
+    ORDER_ITEMS {
+        int order_id FK
+        text product
+        int quantity
+    }
+    CUSTOMERS ||--o{ ORDERS : "places"
+    ORDERS ||--|{ ORDER_ITEMS : "contains"
+```
+
+Two things to notice:
+
+**CUSTOMERS to ORDERS** uses `o{` (zero or many). A customer can exist without any orders. This is intentional: the 3NF design stores customers independently of orders, so a new customer account is valid before any purchase is made.
+
+**ORDERS to ORDER_ITEMS** uses `|{` (one or many), not `o{`. An order with no line items is not a meaningful business object. The mandatory participation on the `ORDER_ITEMS` side expresses this constraint in the diagram.
+
+The diagram makes the structure of the normalized schema immediately legible. The normalization chapter built this structure from a flat spreadsheet over several steps; the ER diagram shows the destination at a glance.
+
+## The worldbank Schema
+
+The `worldbank` database from the joins chapter has a richer structure. The central `OBSERVATIONS` table is a junction table resolving a many-to-many relationship between `COUNTRIES` and `INDICATORS`:
+
+```{mermaid}
+erDiagram
+    REGIONS {
+        text region_code PK
+        text region_name
+    }
+    INCOME_GROUPS {
+        text income_code PK
+        text income_name
+    }
+    COUNTRIES {
+        text country_code PK
+        text country_name
+        text region_code FK
+        text income_code FK
+    }
+    INDICATORS {
+        text indicator_code PK
+        text indicator_name
+    }
+    OBSERVATIONS {
+        text country_code FK
+        text indicator_code FK
+        int year
+        float value
+    }
+    REGIONS ||--o{ COUNTRIES : "contains"
+    INCOME_GROUPS ||--o{ COUNTRIES : "classifies"
+    COUNTRIES ||--o{ OBSERVATIONS : "measured in"
+    INDICATORS ||--o{ OBSERVATIONS : "recorded as"
+```
+
+`OBSERVATIONS` sits in the center, connected to both `COUNTRIES` and `INDICATORS`. Each observation belongs to exactly one country and exactly one indicator, while each country has many observations and each indicator is recorded for many countries. This is the junction table pattern for a many-to-many relationship, expressed visually.
+
+`REGIONS` and `INCOME_GROUPS` are reference tables: pure lookup entities that classify countries but have no direct relationship with indicators or observations.
+
+## Self-Referencing Relationships
+
+A relationship does not have to connect two different entities. When a table contains a foreign key that references its own primary key, the ER diagram shows the entity relating to itself:
+
+```{mermaid}
+erDiagram
+    EMPLOYEES {
+        int employee_id PK
+        text name
+        int manager_id FK
+    }
+    EMPLOYEES |o--o{ EMPLOYEES : "manages"
+```
+
+**Reading from manager to subordinate** (`o{` side): each employee manages zero or many other employees.
+
+**Reading from subordinate to manager** (`|o` side): each employee is managed by zero or one other employee. The zero is important: the person at the top of the hierarchy has no manager, so their `manager_id` is NULL. Making this end `||` (exactly one) would forbid a top-level employee.
+
+## From Diagram to Schema
+
+An ER diagram and a relational schema are two representations of the same design. The translation rules are mechanical:
+
+- Each entity becomes a table.
+- Each attribute becomes a column.
+- The primary key attribute becomes the table's `PRIMARY KEY`.
+- A `||` end on the "one" side of a one-to-many relationship becomes the primary key of that table. A `o{` or `|{` end on the "many" side becomes a foreign key column referencing that primary key.
+- A many-to-many relationship (not shown directly in the diagrams above, but visible via the junction table pattern) requires a third table whose primary key is a composite of the two foreign keys.
+
+The next chapter shows how to express these translations in SQL using `CREATE TABLE` statements.
+
+## Exercises
+
+### Reflection
+
+**1.** In crow's foot notation, what is the difference between `o{` and `|{` at one end of a relationship line? Give a business example where each would be the appropriate choice.
+
+---
+
+**2.** What is the difference between cardinality and participation in an ER diagram? Describe a relationship where the cardinality is one-to-many but the participation is optional on both sides.
+
+---
+
+**3.** The worldbank ER diagram above uses a junction table (`OBSERVATIONS`) to resolve a many-to-many relationship. Explain why a direct relationship between `COUNTRIES` and `INDICATORS` without a junction table could not be expressed in a relational schema.
+
+---
+
+### Design
+
+**4.** A regional library system wants to track books and borrowers. Each book has a title, an ISBN (unique), and one or more authors. Each borrower has a name and a library card number (unique). A borrower can check out many books over time, and the same book can be checked out by many different borrowers. The loan record should capture the checkout date and the due date.
+
+Draw the ER diagram for this system using crow's foot notation. Write the Mermaid code for your diagram. Identify the primary key of each entity and mark all foreign key columns.
+
+---
+
+**5.** Examine the following ER diagram:
+
+```{mermaid}
+erDiagram
+    DOCTORS {
+        int doctor_id PK
+        text name
+        text specialty
+    }
+    PATIENTS {
+        int patient_id PK
+        text name
+        date date_of_birth
+    }
+    APPOINTMENTS {
+        int appointment_id PK
+        int doctor_id FK
+        int patient_id FK
+        date appointment_date
+        text notes
+    }
+    DOCTORS ||--o{ APPOINTMENTS : "conducts"
+    PATIENTS ||--o{ APPOINTMENTS : "attends"
+```
+
+a. Describe each relationship in plain English, including cardinality and participation.
+b. Is the `APPOINTMENTS` table acting as a junction table? Explain.
+c. A business rule states that every appointment must have notes recorded before it can be saved. What change would you make to the diagram to represent this requirement?
+
+---
+
+**6.** A podcast platform stores shows, episodes, and listener subscriptions. The business rules are:
+
+- Each show has many episodes; each episode belongs to exactly one show.
+- Listeners can subscribe to many shows; a show can have many subscribers.
+- The subscription should record when the listener subscribed.
+- Each episode can be in many playlists; each playlist belongs to one listener and can contain many episodes.
+
+Design an ER diagram for this system. Write the Mermaid code and identify any junction tables your design requires.

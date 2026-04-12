@@ -35,8 +35,9 @@ book:
     - part: database-design.qmd
       chapters:
         - 07-keys-and-integrity.qmd
-        - 08-normal-forms.qmd
-        - 09-create-table.qmd
+        - 08-er-diagrams.qmd
+        - 09-normal-forms.qmd
+        - 10-create-table.qmd
 
     - references.qmd
 

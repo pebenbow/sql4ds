@@ -9,17 +9,82 @@ source("_common.R")
 
 ```{r}
 #| include: false
-# Clean up any tables left from a previous render
-DBI::dbExecute(con, "DROP TABLE IF EXISTS order_items")
-DBI::dbExecute(con, "DROP TABLE IF EXISTS orders")
-DBI::dbExecute(con, "DROP TABLE IF EXISTS customers")
+# Use a dedicated schema to keep chapter examples isolated.
+# Dropping and recreating it gives a clean slate on every render.
+DBI::dbExecute(con, "DROP SCHEMA IF EXISTS ch10 CASCADE")
+DBI::dbExecute(con, "CREATE SCHEMA ch10")
+DBI::dbExecute(con, "SET search_path TO ch10, public")
 ```
 
 ## From Reading to Writing
 
 Every query in this book so far has been a `SELECT` statement: reading data from tables that already exist. Creating and modifying tables is the domain of **Data Definition Language (DDL)**, a subset of SQL distinct from the `SELECT`, `INSERT`, `UPDATE`, and `DELETE` statements that make up Data Manipulation Language (DML).
 
-This chapter introduces `CREATE TABLE`, the fundamental DDL statement. By the end, you will be able to translate the design decisions from the previous two chapters into a working PostgreSQL schema, complete with primary keys, foreign keys, and the constraints that enforce your business rules at the database level.
+This chapter introduces `CREATE TABLE`, the fundamental DDL statement. By the end, you will be able to translate the design decisions from the previous chapters (keys and referential integrity, ER diagrams, and normalization) into a working PostgreSQL schema, complete with primary keys, foreign keys, and the constraints that enforce your business rules at the database level.
+
+## Creating a Database
+
+Before creating any tables, you need somewhere to put them. In PostgreSQL, a **database** is the top-level container: an isolated environment with its own tables, schemas, users, and settings. A running PostgreSQL server hosts multiple databases simultaneously. The `countries` and `worldbank` databases used in earlier chapters are separate databases on the same server.
+
+To create a new database, connect to your PostgreSQL server and run:
+
+```sql
+CREATE DATABASE design_practice;
+```
+
+Replace `design_practice` with whatever name suits your project. PostgreSQL database names are case-insensitive by convention but are typically written in lowercase with underscores.
+
+::: {.callout-note}
+`CREATE DATABASE` must be run while connected to a *different* database (typically the default `postgres` maintenance database). You cannot create a database while connected to it.
+:::
+
+Once the database is created, connect to it before creating tables:
+
+- **In psql**: `\c design_practice`
+- **In pgAdmin or DBeaver**: select the database from the connection tree or dropdown before opening a query window
+
+All `CREATE TABLE` statements from this point forward should be run against your new database.
+
+## Schemas
+
+Within a database, a **schema** is a named namespace that groups related objects (tables, views, functions) together. Think of a database as a filing cabinet and schemas as the labeled drawers inside it.
+
+Every PostgreSQL database starts with a schema called `public`. When you create a table without specifying a schema, it goes into `public` by default:
+
+```sql
+-- These two statements are equivalent
+CREATE TABLE customers (...);
+CREATE TABLE public.customers (...);
+```
+
+You can create additional schemas to organize objects or separate concerns:
+
+```sql
+CREATE SCHEMA sales;
+CREATE SCHEMA inventory;
+```
+
+Tables in a non-default schema are referenced with a **schema-qualified name**: `schema_name.table_name`.
+
+```sql
+CREATE TABLE sales.customers (...);
+CREATE TABLE inventory.products (...);
+
+-- Query a schema-qualified table
+SELECT * FROM sales.customers;
+```
+
+The **`search_path`** setting controls which schemas PostgreSQL searches when you use an unqualified name (just `customers` rather than `sales.customers`). The default `search_path` includes `public`, which is why unqualified names resolve to `public` tables without any extra configuration.
+
+```sql
+-- Add the sales schema to the search path
+SET search_path TO sales, public;
+
+-- Now this resolves to sales.customers
+SELECT * FROM customers;
+```
+
+For the exercises in this chapter, the `public` schema of your new database is sufficient. Schemas become more important in production environments where a single database hosts objects for multiple applications, teams, or environments.
 
 ## Basic Syntax
 
