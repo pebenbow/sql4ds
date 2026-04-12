@@ -7,3 +7,6 @@
 
 # Exercise solutions (not for distribution)
 solutions/
+
+# Dev symlink inside quarto-dbml extension (points back to source repo)
+_extensions/quarto-dbml/node_modules/quarto-dbml
