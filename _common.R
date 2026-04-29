@@ -13,6 +13,7 @@ library(RPostgres)
 
 # Adjust PGPORT if you mapped the container to an alternate host port (e.g., 5433).
 PGPORT <- Sys.getenv("PGPORT", unset = "5432")
+PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
 
 con <- dbConnect(
   Postgres(),
@@ -20,5 +21,5 @@ con <- dbConnect(
   port     = as.integer(PGPORT),
   dbname   = "postgres",
   user     = "postgres",
-  password = "postgres"
+  password = PGPASS
 )

@@ -1,8 +1,18 @@
 # Joining Tables
 
-::: {.callout-note}
-The code examples in this chapter use the `worldbank` database. The SQL shown in each block is illustrative and the exact column names will be confirmed once the database schema is finalized. All examples will be converted to executable code blocks at that time.
-:::
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+con <- dbConnect(
+  Postgres(),
+  host     = "localhost",
+  port     = as.integer(Sys.getenv("PGPORT", unset = "5432")),
+  dbname   = "worldbank",
+  user     = "postgres",
+  password = Sys.getenv("PGPASS", unset = "postgres")
+)
+```
 
 Every query you have written so far has drawn from a single table. That is useful, but it is not the whole story. Real databases almost always store related information across multiple tables, and one of SQL's most powerful capabilities is the ability to combine those tables into a single result. That operation is called a **join**.
 
@@ -23,15 +33,15 @@ Primary keys come in two common forms:
 
 Natural keys are intuitive but can cause problems if the "unique" real-world value turns out to change or repeat. Surrogate keys are more stable, which is why they appear so frequently in production databases.
 
-When no single column is sufficient to uniquely identify every row, two or more columns together can serve as the primary key. This is called a **composite primary key**. The `observations` table in this chapter is a good example: no individual column (country code, indicator code, or year) is unique on its own, but the combination of all three identifies exactly one measurement. Composite primary keys appear frequently in junction tables and in any table that records events or measurements tied to multiple entities at once.
+When no single column is sufficient to uniquely identify every row, two or more columns together can serve as the primary key. This is called a **composite primary key**. The `indicators` table in this chapter is a good example: neither `country_id` nor `year` is unique on its own, but the combination of the two identifies exactly one row, the measurements recorded for that country in that year.
 
 ### Foreign Keys
 
 A **foreign key** is a column in one table that holds values matching the primary key of another table. It is the bridge between two tables and the foundation of every join.
 
-For example, if a `countries` table has a column called `region_code`, and a `regions` table has `region_code` as its primary key, then `countries.region_code` is a foreign key pointing to `regions`. Every value in `countries.region_code` should correspond to a row that actually exists in `regions`. This guarantee is called **referential integrity**, and the database can enforce it automatically once the foreign key relationship is declared.
+For example, the `indicators` table has a column called `country_id`, and the `countries` table has `id` as its primary key. The column `indicators.country_id` is a foreign key pointing to `countries.id`. Every value in `indicators.country_id` should correspond to a row that actually exists in `countries`. This guarantee is called **referential integrity**, and the database can enforce it automatically once the foreign key relationship is declared.
 
-The table that holds the foreign key is called the **child** table. The table being referenced is the **parent** table. In the example above, `countries` is the child and `regions` is the parent.
+The table that holds the foreign key is called the **child** table. The table being referenced is the **parent** table. In this example, `indicators` is the child and `countries` is the parent.
 
 ### Cardinality
 
@@ -39,9 +49,9 @@ The table that holds the foreign key is called the **child** table. The table be
 
 **One-to-one.** Each row in Table A corresponds to at most one row in Table B, and vice versa. This pattern is relatively rare. It sometimes appears when a large table is split in two for organizational or access-control reasons.
 
-**One-to-many.** Each row in Table A can relate to many rows in Table B, but each row in Table B relates to exactly one row in Table A. This is the most common cardinality in relational databases. A region has many countries; each country belongs to one region. An indicator has many recorded observations; each observation belongs to one indicator.
+**One-to-many.** Each row in Table A can relate to many rows in Table B, but each row in Table B relates to exactly one row in Table A. This is the most common cardinality in relational databases. One country can have many rows in `indicators`, one for each year that data was recorded. Each indicator row, in turn, belongs to exactly one country.
 
-**Many-to-many.** Each row in Table A can relate to many rows in Table B, and each row in Table B can relate to many rows in Table A. A country can have many indicators measured over many years, and the same indicator can be measured for many countries. This relationship cannot be expressed with just two tables. It requires a third table, often called a **junction table** or **bridge table**, whose rows each pair one row from Table A with one row from Table B.
+**Many-to-many.** Each row in Table A can relate to many rows in Table B, and each row in Table B can relate to many rows in Table A. A student can be enrolled in many courses, and the same course can have many students. This relationship cannot be expressed with just two tables. It requires a third table, often called a **junction table** or **bridge table**, whose rows each pair one row from Table A with one row from Table B.
 
 Understanding cardinality before writing a join is important because it tells you how many result rows to expect. Joining a parent table to a child in a one-to-many relationship will produce more rows than the parent table alone, one result row for each matching child. Forgetting this is a common source of unintentionally duplicated rows.
 
@@ -49,26 +59,23 @@ This chapter introduces primary keys, foreign keys, and cardinality as the pract
 
 ## The worldbank Database
 
-The examples in this chapter use the `worldbank` database, which organizes World Bank development data across five related tables. This picks up thematically from the `countries` dataset used in earlier chapters while introducing the multi-table structure needed to explore joins.
-
-The five tables and their relationships are:
+The examples in this chapter use the `worldbank` database, which contains three tables drawn from World Bank development data.
 
 | Table | Primary Key | Description |
 |---|---|---|
-| `regions` | `region_code` | One row per world region |
-| `income_groups` | `income_code` | One row per World Bank income classification |
-| `countries` | `country_code` | One row per country or territory |
-| `indicators` | `indicator_code` | One row per World Bank development indicator |
-| `observations` | `(country_code, indicator_code, year)` | One row per country-indicator-year measurement |
+| `countries` | `id` | One row per country or territory (299 rows) |
+| `indicators` | `(country_id, year)` | One row per country-year with multiple measurement columns (16,704 rows) |
+| `series` | `id` | Metadata describing each measurement type (9 rows) |
 
-The foreign key relationships are:
+The only enforced foreign key relationship is:
 
-- `countries.region_code` references `regions.region_code` (many countries to one region)
-- `countries.income_code` references `income_groups.income_code` (many countries to one income group)
-- `observations.country_code` references `countries.country_code`
-- `observations.indicator_code` references `indicators.indicator_code`
+- `indicators.country_id` references `countries.id`
 
-The `observations` table is the junction table that resolves the many-to-many relationship between `countries` and `indicators`.
+The `countries` table includes both individual countries and regional aggregates such as "Africa" and "High income". These 38 aggregate entries appear in `countries` but have no corresponding rows in `indicators`, which records data only for individual countries. That natural gap is what makes the left join and anti-join examples in this chapter meaningful.
+
+The `indicators` table stores measurements as columns rather than rows. Each row captures one country in one year, and columns like `gdp_per_capita_usd`, `population`, `pct_forest_area`, and `land_area_km2` hold the values for that combination. Data spans from 1960 through 2023.
+
+The `series` table describes what each measurement type means, including indicator codes, names, and source descriptions. It is not linked to `indicators` by a foreign key, but it is a useful reference when you want to understand what a particular column represents.
 
 ## JOIN Syntax
 
@@ -76,17 +83,17 @@ Before looking at specific join types, it helps to see the general shape of a jo
 
 ```sql
 SELECT
-    a.column_one,
-    b.column_two
-FROM table_a AS a
-JOIN table_b AS b ON a.key_column = b.key_column;
+    c.short_name,
+    i.gdp_per_capita_usd
+FROM countries AS c
+JOIN indicators AS i ON c.id = i.country_id;
 ```
 
 A few things to note.
 
-**Table aliases.** The `AS a` and `AS b` after each table name assign short aliases. These are optional but almost universally used when joining tables, because they make it possible to refer to columns unambiguously without typing the full table name each time.
+**Table aliases.** The `AS c` and `AS i` after each table name assign short aliases. These are optional but almost universally used when joining tables, because they make it possible to refer to columns unambiguously without typing the full table name each time.
 
-**Column qualification.** When two tables share a column name, you must prefix the column name with the table alias to tell the database which one you mean. Writing `a.key_column` instead of just `key_column` prevents ambiguity. Even when column names do not overlap, qualifying them explicitly is good practice in join queries because it makes it immediately clear where each column originates.
+**Column qualification.** When two tables share a column name, you must prefix the column name with the table alias to tell the database which one you mean. Writing `c.id` instead of just `id` prevents ambiguity. Even when column names do not overlap, qualifying them explicitly is good practice in join queries because it makes it immediately clear where each column originates.
 
 **The ON clause.** This is where you specify the condition that links the two tables. Almost always this is an equality between a foreign key in one table and the primary key in another, though more complex conditions are possible.
 
@@ -94,18 +101,18 @@ A few things to note.
 PostgreSQL also supports a `USING` clause as a shorthand when both tables share an identically named join column:
 
 ```sql
-FROM countries
-JOIN regions USING (region_code)
+FROM table_a
+JOIN table_b USING (shared_column_name)
 ```
 
-`USING` is concise, but `ON` is more explicit and works in every situation, so this book uses `ON` throughout.
+`USING` is concise but requires the join columns to carry the same name in both tables. Because `countries` uses `id` while `indicators` uses `country_id`, this particular join must use `ON`. Throughout this book, all examples use `ON` for clarity and consistency.
 :::
 
 ## Reading the Diagrams
 
 The diagrams in this chapter use the **checkered flag** method to illustrate joins. Each diagram shows two tables arranged as rotated grids facing each other. Color-coded cells identify which rows from each table contribute to the result, and a result table on the right shows the output.
 
-This approach is deliberately different from the Venn diagrams you may have seen elsewhere. Venn diagrams are not entirely wrong — Codd's relational model defines a relation as an unordered set of tuples, so the set-based intuition has a legitimate foundation. The problem is more subtle. A Venn diagram implies that the "intersection" consists of rows that are identical members of both tables, the way the number 3 might belong to both Set A and Set B. A SQL join does not work that way. The two tables being joined typically contain different things entirely — countries in one, regions in another — and the join matches rows across them based on a condition you specify, usually a foreign key relationship. There is no literal overlap of identical elements. Venn diagrams also fail to convey cardinality: when one region joins to many countries, the result has one row per country, but the overlapping-circles picture gives no indication of that. The checkered flag diagrams make the row-matching process explicit, showing which rows from each table appear in the result and how NULLs fill in for unmatched rows in outer joins.
+This approach is deliberately different from the Venn diagrams you may have seen elsewhere. Venn diagrams are not entirely wrong — Codd's relational model defines a relation as an unordered set of tuples, so the set-based intuition has a legitimate foundation. The problem is more subtle. A Venn diagram implies that the "intersection" consists of rows that are identical members of both tables, the way the number 3 might belong to both Set A and Set B. A SQL join does not work that way. The two tables being joined typically contain different things entirely, and the join matches rows across them based on a condition you specify, usually a foreign key relationship. There is no literal overlap of identical elements. Venn diagrams also fail to convey cardinality: when one country joins to many yearly measurements, the result has one row per measurement, but the overlapping-circles picture gives no indication of that. The checkered flag diagrams make the row-matching process explicit, showing which rows from each table appear in the result and how NULLs fill in for unmatched rows in outer joins.
 
 ![INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL OUTER JOIN illustrated with the checkered flag method.](images/joins-checkered-pg1.png){fig-alt="Four checkered flag join diagrams showing the rows returned by INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL OUTER JOIN" width="80%"}
 
@@ -115,30 +122,22 @@ An `INNER JOIN` returns only the rows where the join condition is satisfied in *
 
 This is the default join type. Writing `JOIN` without a qualifier is equivalent to writing `INNER JOIN`.
 
-```sql
+```{sql}
+#| connection: con
+#| label: inner-join-gdp
 SELECT
-    c.country_name,
-    c.country_code,
-    r.region_name
+    c.short_name,
+    c.region,
+    i.gdp_per_capita_usd,
+    i.population
 FROM countries AS c
-INNER JOIN regions AS r ON c.region_code = r.region_code;
+INNER JOIN indicators AS i ON c.id = i.country_id
+WHERE i.year = 2022
+ORDER BY i.gdp_per_capita_usd DESC NULLS LAST
+LIMIT 10;
 ```
 
-This query pairs each country with its region name. Because the join is inner, any country whose `region_code` does not match a row in `regions` would be excluded. Conversely, any region with no countries would also not appear. Only the matched pairs make it into the result.
-
-A second example joins `countries` to `income_groups`:
-
-```sql
-SELECT
-    c.country_name,
-    ig.income_name,
-    r.region_name
-FROM countries AS c
-INNER JOIN income_groups AS ig ON c.income_code = ig.income_code
-INNER JOIN regions AS r ON c.region_code = r.region_code;
-```
-
-This chains two inner joins together. Each join adds another table to the result. The order in which you list them does not change the logical output, though it can affect readability.
+This query pairs each country with its 2022 measurements. Because the join is inner, any country without a matching row in `indicators` is excluded from the result entirely. Notice that no entries from the `Aggregates` region appear: the 38 regional aggregates in `countries` have no rows in `indicators`, so the inner join drops them without any warning. The next section shows how a left join makes those gaps visible.
 
 ::: {.callout-note}
 When a column name exists in only one of the joined tables, you can reference it without a qualifier and PostgreSQL will resolve it unambiguously. However, any column name that appears in more than one table must be qualified with the table alias, or the query will fail with an "ambiguous column" error. When in doubt, qualify every column.
@@ -150,92 +149,152 @@ A `LEFT JOIN` (also written `LEFT OUTER JOIN`) returns **all rows from the left 
 
 The "left" table is the one named in the `FROM` clause. The "right" table is the one named in the `JOIN` clause.
 
-```sql
+```{sql}
+#| connection: con
+#| label: left-join-basic
 SELECT
-    c.country_name,
-    o.year,
-    o.value
+    c.short_name,
+    c.region,
+    i.year,
+    i.population
 FROM countries AS c
-LEFT JOIN observations AS o ON c.country_code = o.country_code;
+LEFT JOIN indicators AS i ON c.id = i.country_id
+ORDER BY c.short_name, i.year
+LIMIT 15;
 ```
 
-This returns every country, whether or not it has any observations recorded. Countries with no observations will appear with NULL in the `year` and `value` columns. Countries with multiple observations will appear once per observation.
+The first rows in this result belong to regional aggregates such as "Africa" and "Africa Eastern and Southern". They appear with NULL in both `year` and `population` because they have no rows in `indicators`. Further down, individual countries appear once per year of recorded data. The left join preserves every row from `countries`, whether or not a match exists on the right side.
 
 Left joins are extremely common in analytical queries because they let you start with a complete reference list (all countries) and attach available data without discarding entries that happen to have gaps.
 
-### Filtering on the Right Table
+### ON vs. WHERE: When Filter Placement Matters
 
-There is an important subtlety when you combine a `LEFT JOIN` with a `WHERE` clause that filters on the right-side table. Consider this query:
+Every join query can have two places where you restrict rows: inside the `ON` clause and inside the `WHERE` clause. Understanding the difference is one of the most important skills in SQL, because the two clauses run at different stages of query execution and produce different results with outer joins.
 
-```sql
--- This accidentally turns a LEFT JOIN into an INNER JOIN
+The **`ON` clause** runs during the join itself. It controls which rows from the right table are even considered as candidates for matching against each left-table row. Rows that fail the `ON` condition are not matched, but in an outer join, the left-table row still appears in the result with NULLs on the right side.
+
+The **`WHERE` clause** runs after the join is complete. It filters the already-assembled result set. Any row that does not satisfy `WHERE` is discarded, NULLs and all.
+
+**With INNER JOIN, the placement makes no difference.** Because an inner join already discards rows with no match, there are no NULL-padded rows for a `WHERE` filter to remove. These two queries return identical results:
+
+```{sql}
+#| connection: con
+#| label: inner-join-where-filter
 SELECT
-    c.country_name,
-    o.year,
-    o.value
+    c.short_name,
+    i.year,
+    i.gdp_per_capita_usd
 FROM countries AS c
-LEFT JOIN observations AS o ON c.country_code = o.country_code
-WHERE o.year = 2020;
+INNER JOIN indicators AS i ON c.id = i.country_id
+WHERE i.year = 2022
+ORDER BY c.short_name
+LIMIT 5;
 ```
 
-The intent might be to get all countries, with observations from 2020 where available. But the `WHERE o.year = 2020` condition filters out every row where `o.year` is NULL, which are exactly the countries with no observations. The left join's promise of "all left rows" is silently undone.
-
-The correct approach is to move that condition into the `ON` clause, where it becomes part of the join itself rather than a post-join filter:
-
-```sql
+```{sql}
+#| connection: con
+#| label: inner-join-on-filter
 SELECT
-    c.country_name,
-    o.year,
-    o.value
+    c.short_name,
+    i.year,
+    i.gdp_per_capita_usd
 FROM countries AS c
-LEFT JOIN observations AS o
-    ON c.country_code = o.country_code
-    AND o.year = 2020;
+INNER JOIN indicators AS i
+    ON c.id = i.country_id AND i.year = 2022
+ORDER BY c.short_name
+LIMIT 5;
 ```
 
-Now every country appears in the result. Countries with a 2020 observation show the value; countries without one show NULL.
+**With LEFT JOIN (and other outer joins), the placement is critical.** Suppose you want every country alongside its 2022 GDP figure, with NULL for countries that have no 2022 data. This query does not accomplish that goal:
+
+```{sql}
+#| connection: con
+#| label: left-join-where-gotcha
+SELECT
+    c.short_name,
+    c.region,
+    i.year,
+    i.gdp_per_capita_usd
+FROM countries AS c
+LEFT JOIN indicators AS i ON c.id = i.country_id
+WHERE i.year = 2022
+ORDER BY c.short_name
+LIMIT 10;
+```
+
+The left join runs first and correctly produces 16,742 rows: 16,704 matched rows plus 38 NULL-padded rows for the regional aggregates. Then `WHERE i.year = 2022` runs on that result and discards every row where `i.year` is NULL, which are exactly the 38 unmatched rows. The left join's promise of "all left rows" is silently undone, and the result is identical to an inner join.
+
+Moving the condition into the `ON` clause fixes it:
+
+```{sql}
+#| connection: con
+#| label: left-join-on-fix
+SELECT
+    c.short_name,
+    c.region,
+    i.year,
+    i.gdp_per_capita_usd
+FROM countries AS c
+LEFT JOIN indicators AS i
+    ON c.id = i.country_id
+    AND i.year = 2022
+ORDER BY c.short_name
+LIMIT 15;
+```
+
+Now the database evaluates `i.year = 2022` during the join. For each country row, it looks for a matching indicator row where both `country_id` matches and `year` equals 2022. If no such row exists, the country still appears in the result, with NULLs on the right side. All 299 rows from `countries` come through.
+
+The practical rule: **conditions that restrict which right-table rows qualify as a match belong in `ON`; conditions that should discard rows from the final result regardless of match status belong in `WHERE`.** For inner joins the distinction is academic. For any outer join it is not.
 
 ### RIGHT JOIN
 
 A `RIGHT JOIN` is the mirror image of a `LEFT JOIN`. It returns all rows from the right table and the matching rows from the left, filling unmatched left-side columns with NULL.
 
-```sql
+```{sql}
+#| connection: con
+#| label: right-join
 SELECT
-    c.country_name,
-    r.region_name
+    c.short_name,
+    i.year,
+    i.population
 FROM countries AS c
-RIGHT JOIN regions AS r ON c.region_code = r.region_code;
+RIGHT JOIN indicators AS i ON c.id = i.country_id
+ORDER BY c.short_name, i.year
+LIMIT 10;
 ```
 
-This would return every region, even one that has no countries assigned to it, with NULL in the country columns for any unmatched region.
+This returns every row from `indicators`, with the country name attached from the left table. Because `indicators.country_id` is enforced as a foreign key, every indicator row already has a valid matching country, so no NULLs appear on the left side here.
 
 In practice, `RIGHT JOIN` is used infrequently. Any right join can be rewritten as a left join by swapping the order of the tables, which most developers find more readable. The queries below produce identical results:
 
 ```sql
--- RIGHT JOIN
 FROM countries AS c
-RIGHT JOIN regions AS r ON c.region_code = r.region_code
+RIGHT JOIN indicators AS i ON c.id = i.country_id
 
--- Equivalent LEFT JOIN (tables reversed)
-FROM regions AS r
-LEFT JOIN countries AS c ON c.region_code = r.region_code
+FROM indicators AS i
+LEFT JOIN countries AS c ON c.id = i.country_id
 ```
 
 ## FULL OUTER JOIN
 
 A `FULL OUTER JOIN` returns **all rows from both tables**. Rows that have a match are joined together. Rows from the left table with no right-side match appear with NULLs on the right. Rows from the right table with no left-side match appear with NULLs on the left.
 
-```sql
+```{sql}
+#| connection: con
+#| label: full-outer-join
 SELECT
-    c.country_name,
-    r.region_name
+    c.short_name,
+    c.region,
+    i.gdp_per_capita_usd
 FROM countries AS c
-FULL OUTER JOIN regions AS r ON c.region_code = r.region_code;
+FULL OUTER JOIN indicators AS i
+    ON c.id = i.country_id
+    AND i.year = 2022
+ORDER BY c.short_name
+LIMIT 20;
 ```
 
-The result includes every country (with their region where one exists) and every region (with NULLs for `country_name` where no country belongs to it).
-
-Full outer joins are less common than inner or left joins but are useful when you need a complete picture of two tables and want to identify rows on either side that have no corresponding partner. Comparing two versions of the same dataset to find insertions, deletions, and changes is a classic use case.
+Because `indicators.country_id` is enforced as a foreign key, every indicator row already has a matching country. The only unmatched rows come from the left side: the 38 aggregates in `countries` with no indicator data. The result is therefore the same as a left join with the year in the `ON` clause. Full outer joins show their full value when comparing two datasets that are not constrained to reference each other, such as two independent snapshots of the same data where either side could contain records the other does not.
 
 ## CROSS JOIN
 
@@ -243,19 +302,25 @@ A `CROSS JOIN` produces the **Cartesian product** of two tables: every row from 
 
 ![LEFT ANTI-JOIN, RIGHT ANTI-JOIN, and CROSS JOIN illustrated with the checkered flag method.](images/joins-checkered-pg2.png){fig-alt="Three checkered flag diagrams showing LEFT ANTI-JOIN, RIGHT ANTI-JOIN, and CROSS JOIN" width="80%"}
 
-```sql
+The `series` table, with its 9 rows describing each measurement type, pairs naturally with `countries` in a cross join. The result is a complete grid of every possible country-indicator combination.
+
+```{sql}
+#| connection: con
+#| label: cross-join
 SELECT
-    c.country_name,
-    i.indicator_name
+    c.short_name,
+    s.indicator_name
 FROM countries AS c
-CROSS JOIN indicators AS i;
+CROSS JOIN series AS s
+ORDER BY c.short_name, s.indicator_name
+LIMIT 15;
 ```
 
-If there are 200 countries and 300 indicators, this query returns 60,000 rows. Cross joins grow very quickly.
+With 299 countries and 9 indicator types, this produces 2,691 rows. Cross joins grow very quickly.
 
-Accidental cross joins are one of the most common sources of runaway queries in SQL. They happen when a join condition is missing or typo'd, causing the database to pair every row with every other row. Always double-check that a `JOIN` clause has an `ON` condition unless you genuinely intend a cross join.
+Accidental cross joins are one of the most common sources of runaway queries in SQL. They happen when a join condition is missing or typo'd, causing the database to pair every row with every other row. Always verify that a `JOIN` clause has an `ON` condition unless you genuinely intend a cross join.
 
-Intentional cross joins do have legitimate uses. Generating all possible combinations of two dimensions (such as all date-region pairings to create a complete reporting grid with no gaps) is a situation where a cross join is the right tool.
+Intentional cross joins do have legitimate uses. Generating all possible combinations of two dimensions, such as every country paired with every indicator type to build a complete reporting grid with no gaps, is a situation where a cross join is exactly the right tool.
 
 ## Anti-Joins
 
@@ -267,69 +332,122 @@ Anti-joins do not have a dedicated keyword in SQL. They are expressed using one 
 
 The most common pattern extends a left join with a `WHERE` clause that keeps only the rows where the right side produced a NULL, meaning no match was found.
 
-```sql
+```{sql}
+#| connection: con
+#| label: anti-join-left-null
 SELECT
-    c.country_name,
-    c.country_code
+    c.short_name,
+    c.region
 FROM countries AS c
-LEFT JOIN observations AS o ON c.country_code = o.country_code
-WHERE o.country_code IS NULL;
+LEFT JOIN indicators AS i ON c.id = i.country_id
+WHERE i.country_id IS NULL;
 ```
 
-This returns every country that has no observations in the `observations` table. The left join brings in all countries; the `WHERE` clause discards the ones that did match, leaving only those that did not.
+This returns every entry in `countries` that has no rows in `indicators`. The left join brings in all countries; the `WHERE` clause discards the ones that did match, leaving only those that did not. The result is the 38 regional aggregate entries.
 
 ::: {.callout-tip}
-Filter on a column that would be the join key from the right table, not a data column. The join key is guaranteed to be NULL only when no match was found. A data column could be NULL for other reasons, which would produce false positives.
+Filter on the join key column from the right table, not a data column. The join key is guaranteed to be NULL only when no match was found. A data column could be NULL for other reasons, which would produce false positives.
 :::
 
 ### Using NOT EXISTS
 
 The second pattern uses `NOT EXISTS` with a correlated subquery. This is the approach mentioned in the WHERE clause chapter as the preferred alternative to `NOT IN` when NULL values may be present.
 
-```sql
+```{sql}
+#| connection: con
+#| label: anti-join-not-exists
 SELECT
-    c.country_name,
-    c.country_code
+    c.short_name,
+    c.region
 FROM countries AS c
 WHERE NOT EXISTS (
     SELECT 1
-    FROM observations AS o
-    WHERE o.country_code = c.country_code
+    FROM indicators AS i
+    WHERE i.country_id = c.id
 );
 ```
 
-The subquery runs once for each row in `countries`, checking whether any matching row exists in `observations`. If none is found, `NOT EXISTS` returns TRUE and the country is included in the result.
+The subquery runs once for each row in `countries`, checking whether any matching row exists in `indicators`. If none is found, `NOT EXISTS` returns TRUE and the country is included in the result.
 
 Both patterns produce the same rows. The `LEFT JOIN / IS NULL` form is often more familiar to beginners. The `NOT EXISTS` form can be faster on large tables and handles NULL values in the join key more predictably, which is why many experienced SQL writers prefer it.
 
 ## Joining More Than Two Tables
 
-Nothing limits a query to two tables. You can chain as many joins as the data requires, adding one table at a time.
+Nothing limits a query to two tables. You can chain as many joins as the data requires, adding one table at a time. One particularly useful pattern is joining the same table twice under different aliases to compare values across two points in time. Here, the `indicators` table is joined twice to place 2000 and 2022 GDP figures side by side.
 
-```sql
+```{sql}
+#| connection: con
+#| label: multi-join-year-comparison
 SELECT
-    c.country_name,
-    r.region_name,
-    ig.income_name,
-    i.indicator_name,
-    o.year,
-    o.value
-FROM observations AS o
-INNER JOIN countries AS c  ON o.country_code    = c.country_code
-INNER JOIN regions AS r    ON c.region_code     = r.region_code
-INNER JOIN income_groups AS ig ON c.income_code = ig.income_code
-INNER JOIN indicators AS i ON o.indicator_code  = i.indicator_code;
+    c.short_name,
+    c.region,
+    i2000.gdp_per_capita_usd AS gdp_2000,
+    i2022.gdp_per_capita_usd AS gdp_2022
+FROM countries AS c
+INNER JOIN indicators AS i2000
+    ON c.id = i2000.country_id AND i2000.year = 2000
+INNER JOIN indicators AS i2022
+    ON c.id = i2022.country_id AND i2022.year = 2022
+WHERE c.region != 'Aggregates'
+ORDER BY c.short_name
+LIMIT 10;
 ```
 
-This single query assembles all five tables into a flat result: each observation row is enriched with the country name, region, income group, and indicator name. Starting from `observations` (the junction table) and joining outward to each parent is a common pattern when the junction table is the natural "fact" table of the query.
+Each instance of the `indicators` table gets its own alias (`i2000` and `i2022`) so the query can reference columns from each independently. The year condition is placed inside the `ON` clause for each join so it participates in the matching logic rather than filtering the result after the fact.
+
+Because both joins are inner, only countries with data for **both** 2000 and 2022 appear. Countries that were not yet sovereign in 2000, such as South Sudan (independence: 2011), are silently excluded. If you need to preserve countries that have data for only one of the two years, replace the inner joins with left joins.
 
 A few practical notes on multi-table joins:
 
-**Start from the table that drives the query.** If you want one row per observation, start from `observations`. If you want one row per country, start from `countries`. The starting table sets the row grain of the result.
+**Start from the table that drives the query.** If you want one row per country, start from `countries`. If you want one row per year-measurement, start from `indicators`. The starting table sets the row grain of the result.
 
-**Each join adds columns, not necessarily rows.** A join to a parent table in a many-to-one relationship (observations to countries) does not change the number of rows. A join to a child table in a one-to-many relationship (countries to observations) multiplies rows. Understanding this keeps the result size predictable.
+**Each join adds columns, not necessarily rows.** A join to a parent table in a many-to-one relationship (indicators to countries) does not change the number of rows. A join to a child table in a one-to-many relationship (countries to indicators) multiplies rows. Understanding this keeps the result size predictable.
 
 **Order joins for readability.** SQL does not require joins in any particular sequence, but organizing them so that each new table connects to something already in the query makes the logic easier to follow.
+
+## Implicit vs. Explicit Join Syntax
+
+SQL has two ways to join tables. The style used throughout this book is the **explicit** syntax, introduced in the ANSI SQL-92 standard, where the join type and condition are stated directly:
+
+```sql
+FROM countries AS c
+INNER JOIN indicators AS i ON c.id = i.country_id
+```
+
+Before SQL-92, the only option was the **implicit** syntax: tables are comma-separated in the `FROM` clause and the join condition appears in `WHERE` alongside any other filters. The `AS` keyword for aliases is also commonly omitted in this style.
+
+```{sql}
+#| connection: con
+#| label: implicit-join-example
+SELECT
+    c.short_name,
+    c.region,
+    i.gdp_per_capita_usd
+FROM countries c, indicators i
+WHERE c.id = i.country_id
+  AND i.year = 2022
+ORDER BY i.gdp_per_capita_usd DESC NULLS LAST
+LIMIT 10;
+```
+
+The result is identical to the explicit `INNER JOIN` from earlier in this chapter. Implicit joins still execute in every major SQL database and appear frequently in legacy code, older textbooks, and online examples, so you will encounter them.
+
+There are three reasons to use explicit syntax for any new work.
+
+**Join conditions and filter conditions are visually indistinguishable.** In the implicit style, `c.id = i.country_id` (a join condition) and `i.year = 2022` (a data filter) both sit in `WHERE` with no structural difference between them. With explicit syntax, join conditions live in `ON` and filters live in `WHERE`, so the purpose of each clause is immediately clear.
+
+**A missing join condition silently produces a cross join.** If the condition linking the two tables is accidentally left out in the implicit style, the database returns the Cartesian product without any warning or error:
+
+```{sql}
+#| connection: con
+#| label: implicit-cross-danger
+SELECT COUNT(*)
+FROM countries, indicators;
+```
+
+With explicit syntax, omitting the `ON` clause is a syntax error that fails immediately rather than quietly returning millions of rows.
+
+**Outer joins require explicit syntax.** There is no comma-table equivalent of `LEFT JOIN` or `FULL OUTER JOIN`. Some databases offered proprietary workarounds (Oracle's `(+)` operator, for example), but they were not portable and are now deprecated. Any query that needs to preserve unmatched rows must use explicit syntax.
 
 ## Exercises
 
@@ -337,24 +455,22 @@ A few practical notes on multi-table joins:
 
 1. Explain the difference between a primary key and a foreign key. Why does a database need both?
 
-2. A data analyst runs an inner join between a `countries` table (215 rows) and an `observations` table and gets back over 50,000 rows. They suspect something went wrong. Is this necessarily a problem? Explain what could cause the result to have many more rows than either input table.
+2. A data analyst runs an inner join between `countries` (299 rows) and `indicators` without filtering by year and gets back over 16,000 rows. They suspect something went wrong. Is this necessarily a problem? Explain what produces a result with many more rows than the starting table.
 
 3. What is the difference between putting a filter condition in the `ON` clause of a left join versus putting it in the `WHERE` clause? When does the placement matter?
 
 4. Describe two different SQL patterns that produce an anti-join. In what circumstances might you prefer one over the other?
 
+5. You find the following query in a legacy codebase: `SELECT c.short_name, i.population FROM countries c, indicators i WHERE c.id = i.country_id AND i.year = 2010`. Rewrite it using explicit join syntax. Does the rewrite change the result?
+
 ### Coding
 
-::: {.callout-note}
-The exercises below require the `worldbank` database. Code block solutions will be provided once the database is available.
-:::
+5. Write a query that returns the `short_name`, `region`, and 2022 `gdp_per_capita_usd` for every country that has 2022 data in the `indicators` table. Exclude regional aggregates (where `region = 'Aggregates'`). Sort by `gdp_per_capita_usd` descending, with NULLs last. Limit to 20 rows.
 
-5. Write a query that returns the name and region of every country in the `countries` table. Use an inner join to bring in the region name from the `regions` table. Sort alphabetically by country name.
+6. Write a query that returns every country along with its 2010 `gdp_per_capita_usd`. Countries that have no 2010 data should still appear in the result, with NULL in the GDP column. Sort by `short_name`.
 
-6. Write a query that returns every country along with its income group classification. Countries that have no income group recorded should still appear in the result, with NULL in the income group column. Sort by income group name, then by country name.
+7. Write a query that returns the `short_name` and `region` of every entry in `countries` that has **no rows at all** in the `indicators` table. Use the `LEFT JOIN / IS NULL` pattern.
 
-7. Write a query that returns the country name, indicator name, year, and value for all observations where the year is 2020. Include only rows where all four values are present.
+8. Rewrite the query from exercise 7 using `NOT EXISTS` instead of `LEFT JOIN / IS NULL`. Confirm that both queries return the same set of entries.
 
-8. Write a query that returns the names of all countries that have **no observations** recorded in the `observations` table. Use the `LEFT JOIN / IS NULL` pattern.
-
-9. Rewrite the query from exercise 8 using `NOT EXISTS` instead of `LEFT JOIN / IS NULL`. Confirm that both queries return the same set of countries.
+9. Write a query that returns each country's `short_name`, `region`, and GDP per capita for both 1990 and 2022 side by side. Name the GDP columns `gdp_1990` and `gdp_2022`. Include only countries that have data for both years, and exclude regional aggregates. Sort by `short_name`.

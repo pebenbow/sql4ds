@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>7&nbsp; Keys and Referential Integrity – SQL for Data Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./08-er-diagrams.html" rel="next">
+<link href="./database-design.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-706344d2ac0d376cb01d0c71f2a45066.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./database-design.html">Database Design</a></li><li class="breadcrumb-item"><a href="./07-keys-and-integrity.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">SQL for Data Science</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-why-learn-sql.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Learn SQL?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-installing-postgresql.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting Up Your Environment</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./querying-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Querying Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-select-statements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic SELECT Statements</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-data-types.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types and Type Conversion</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./working-with-multiple-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with Multiple Tables</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-set-operations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./database-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-keys-and-integrity.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-er-diagrams.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-normal-forms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-create-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./deploying-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploying Databases</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-supabase-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./etl-with-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ETL with Python</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-extracting-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#from-joins-to-design" id="toc-from-joins-to-design" class="nav-link active" data-scroll-target="#from-joins-to-design"><span class="header-section-number">7.1</span> From Joins to Design</a></li>
+  <li><a href="#what-makes-something-a-key" id="toc-what-makes-something-a-key" class="nav-link" data-scroll-target="#what-makes-something-a-key"><span class="header-section-number">7.2</span> What Makes Something a Key?</a>
+  <ul class="collapse">
+  <li><a href="#superkeys-and-candidate-keys" id="toc-superkeys-and-candidate-keys" class="nav-link" data-scroll-target="#superkeys-and-candidate-keys"><span class="header-section-number">7.2.1</span> Superkeys and Candidate Keys</a></li>
+  <li><a href="#primary-keys-and-alternate-keys" id="toc-primary-keys-and-alternate-keys" class="nav-link" data-scroll-target="#primary-keys-and-alternate-keys"><span class="header-section-number">7.2.2</span> Primary Keys and Alternate Keys</a></li>
+  </ul></li>
+  <li><a href="#surrogate-vs.-natural-keys" id="toc-surrogate-vs.-natural-keys" class="nav-link" data-scroll-target="#surrogate-vs.-natural-keys"><span class="header-section-number">7.3</span> Surrogate vs.&nbsp;Natural Keys</a></li>
+  <li><a href="#composite-keys" id="toc-composite-keys" class="nav-link" data-scroll-target="#composite-keys"><span class="header-section-number">7.4</span> Composite Keys</a></li>
+  <li><a href="#foreign-keys-in-depth" id="toc-foreign-keys-in-depth" class="nav-link" data-scroll-target="#foreign-keys-in-depth"><span class="header-section-number">7.5</span> Foreign Keys in Depth</a>
+  <ul class="collapse">
+  <li><a href="#the-referential-integrity-guarantee" id="toc-the-referential-integrity-guarantee" class="nav-link" data-scroll-target="#the-referential-integrity-guarantee"><span class="header-section-number">7.5.1</span> The Referential Integrity Guarantee</a></li>
+  <li><a href="#null-in-foreign-key-columns" id="toc-null-in-foreign-key-columns" class="nav-link" data-scroll-target="#null-in-foreign-key-columns"><span class="header-section-number">7.5.2</span> NULL in Foreign Key Columns</a></li>
+  </ul></li>
+  <li><a href="#cascade-behavior" id="toc-cascade-behavior" class="nav-link" data-scroll-target="#cascade-behavior"><span class="header-section-number">7.6</span> Cascade Behavior</a></li>
+  <li><a href="#self-referencing-relationships" id="toc-self-referencing-relationships" class="nav-link" data-scroll-target="#self-referencing-relationships"><span class="header-section-number">7.7</span> Self-Referencing Relationships</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.8</span> Exercises</a>
+  <ul class="collapse">
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">7.8.1</span> Reflection</a></li>
+  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis"><span class="header-section-number">7.8.2</span> Structural Analysis</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./database-design.html">Database Design</a></li><li class="breadcrumb-item"><a href="./07-keys-and-integrity.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="from-joins-to-design" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="from-joins-to-design"><span class="header-section-number">7.1</span> From Joins to Design</h2>
+<p>The joins chapter introduced primary keys, foreign keys, and cardinality as the tools you need to write queries that span multiple tables. This chapter approaches the same concepts from a different angle: not as the machinery behind a query, but as design decisions you make when defining a table.</p>
+<p>Choosing the right key, understanding what referential integrity actually guarantees, and deciding what should happen when a parent row is deleted are decisions that determine whether a database stays reliable over months and years of use. The chapter that follows this one translates all of these concepts into SQL using <code>CREATE TABLE</code> statements.</p>
+</section>
+<section id="what-makes-something-a-key" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="what-makes-something-a-key"><span class="header-section-number">7.2</span> What Makes Something a Key?</h2>
+<p>A key is a column or combination of columns that uniquely identifies every row in a table. Two properties are required:</p>
+<ul>
+<li><strong>Uniqueness</strong>: no two rows share the same value (or combination of values) for the key columns.</li>
+<li><strong>Non-nullability</strong>: key columns cannot be NULL, because NULL represents an unknown value and no two unknowns can be compared to confirm uniqueness.</li>
+</ul>
+<section id="superkeys-and-candidate-keys" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="superkeys-and-candidate-keys"><span class="header-section-number">7.2.1</span> Superkeys and Candidate Keys</h3>
+<p>Any set of columns that satisfies the uniqueness requirement is called a <strong>superkey</strong>. Most superkeys contain redundant columns. Consider a <code>students</code> table:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>student_id</th>
+<th>email</th>
+<th>first_name</th>
+<th>last_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1001</td>
+<td>alice@example.com</td>
+<td>Alice</td>
+<td>Smith</td>
+</tr>
+<tr class="even">
+<td>1002</td>
+<td>bob@example.com</td>
+<td>Bob</td>
+<td>Jones</td>
+</tr>
+<tr class="odd">
+<td>1003</td>
+<td>carol@example.com</td>
+<td>Carol</td>
+<td>Kim</td>
+</tr>
+</tbody>
+</table>
+<p>Several superkeys exist for this table:</p>
+<ul>
+<li><code>(student_id)</code>: unique on its own</li>
+<li><code>(email)</code>: unique on its own</li>
+<li><code>(student_id, email)</code>: also unique, but <code>email</code> is redundant</li>
+<li><code>(student_id, email, first_name, last_name)</code>: unique, but all extra columns are redundant</li>
+</ul>
+<p>A <strong>candidate key</strong> is a minimal superkey: a superkey from which no column can be removed without losing uniqueness. In this table, <code>student_id</code> and <code>email</code> are both candidate keys. <code>(student_id, email)</code> is not, because removing either column still yields a unique identifier.</p>
+<p>Every table has at least one candidate key. A table always has the set of all its columns as a superkey, and among all superkeys there is always at least one minimal one.</p>
+</section>
+<section id="primary-keys-and-alternate-keys" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="primary-keys-and-alternate-keys"><span class="header-section-number">7.2.2</span> Primary Keys and Alternate Keys</h3>
+<p>When a table has multiple candidate keys, the designer chooses one as the <strong>primary key</strong>: the official row identifier, and the column that foreign keys in other tables will reference. The remaining candidate keys become <strong>alternate keys</strong>.</p>
+<p>In the <code>students</code> example, <code>student_id</code> is the natural choice for primary key: it is stable, compact, and has no meaning outside the database (meaning no external force can make it change). The <code>email</code> column is a legitimate alternate key and can be declared <code>UNIQUE</code> to enforce that no two students share an address.</p>
+<p>The distinction is practical: other tables that reference a student will use <code>student_id</code> as the foreign key column, not <code>email</code>. If a student later changes their email, only the <code>students</code> table needs updating. No other table is affected.</p>
+</section>
+</section>
+<section id="surrogate-vs.-natural-keys" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="surrogate-vs.-natural-keys"><span class="header-section-number">7.3</span> Surrogate vs.&nbsp;Natural Keys</h2>
+<p>The joins chapter introduced this distinction briefly. It is worth examining at greater depth because it is one of the more consequential decisions you make when designing a schema.</p>
+<p>A <strong>natural key</strong> is a value that already exists in the data and is inherently unique: an ISBN, a country’s ISO code, a social security number, an email address. Natural keys have the advantage of being human-readable and sometimes self-explanatory.</p>
+<p>A <strong>surrogate key</strong> is an artificial value with no meaning outside the database, typically an auto-incrementing integer assigned by the database when a row is inserted. It is stable precisely because nothing outside the database cares about its value.</p>
+<p><strong>The case for natural keys:</strong> No extra column to manage. Queries that need to filter by a known natural identifier (a country code, a product SKU) do not require a join to look it up.</p>
+<p><strong>The case against natural keys:</strong> Real-world “unique” values are often not as stable or unique as they first appear.</p>
+<ul>
+<li>ISBNs have been reused.</li>
+<li>Social security numbers have been reassigned.</li>
+<li>Email addresses change when people switch employers, get married, or simply choose a new provider.</li>
+<li>What seems unique at a national scale (a driver’s license number) may collide with records from another country in a merged dataset.</li>
+</ul>
+<p>When a natural key changes, every table that holds it as a foreign key must be updated simultaneously. With a surrogate key, a name or email change is a single-row update in one table.</p>
+<p>In practice, most production schemas use surrogate keys as primary keys and enforce natural uniqueness separately with a <code>UNIQUE</code> constraint on the natural identifier column. You get the stability of surrogates and retain the ability to query by natural identifier. The <code>CREATE TABLE</code> chapter shows how to express this pattern in SQL.</p>
+</section>
+<section id="composite-keys" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="composite-keys"><span class="header-section-number">7.4</span> Composite Keys</h2>
+<p>When no single column uniquely identifies every row, two or more columns together serve as the primary key. The joins chapter introduced this concept when describing the <code>observations</code> table (keyed on <code>country_code</code>, <code>indicator_code</code>, and <code>year</code>). The normalization chapter showed another example: the <code>order_items</code> table, where <code>(order_id, product)</code> together identify each line item.</p>
+<p>Composite keys arise most often in two situations:</p>
+<ul>
+<li><strong>Junction tables</strong> that resolve many-to-many relationships, where each row pairs one entity from each side</li>
+<li><strong>Measurement tables</strong> where a row records a value for a specific combination of dimensions (country, indicator, and time period)</li>
+</ul>
+<p>A useful check: if you find yourself reaching for a surrogate key on a junction table, it may be a sign that the table is trying to represent something more than just the relationship. If the table records only the pairing, a composite key is the right choice.</p>
+</section>
+<section id="foreign-keys-in-depth" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="foreign-keys-in-depth"><span class="header-section-number">7.5</span> Foreign Keys in Depth</h2>
+<p>A foreign key column holds values that reference the primary key of another table. This section covers aspects that the joins chapter set aside.</p>
+<section id="the-referential-integrity-guarantee" class="level3" data-number="7.5.1">
+<h3 data-number="7.5.1" class="anchored" data-anchor-id="the-referential-integrity-guarantee"><span class="header-section-number">7.5.1</span> The Referential Integrity Guarantee</h3>
+<p>Referential integrity is the guarantee that every value in a foreign key column either exists as a primary key value in the referenced table, or is NULL. When the database enforces this constraint, it is impossible to create an orphaned row: a row whose foreign key points to something that does not exist.</p>
+<p>Without this enforcement, the gap between what the data says and what it means grows over time. Suppose an application deletes a customer without first handling their orders. The <code>orders</code> table now contains rows with a <code>customer_id</code> that does not exist in <code>customers</code>. Queries that join the two tables will silently lose those orders. Any report that depends on the customer-order relationship produces wrong answers that are difficult to detect.</p>
+<p>With referential integrity enforced, the database simply rejects the deletion until the relationship is resolved.</p>
+</section>
+<section id="null-in-foreign-key-columns" class="level3" data-number="7.5.2">
+<h3 data-number="7.5.2" class="anchored" data-anchor-id="null-in-foreign-key-columns"><span class="header-section-number">7.5.2</span> NULL in Foreign Key Columns</h3>
+<p>A foreign key column can allow NULL. A NULL in a foreign key column does not violate referential integrity; it means the row has no parent, or the relationship is unknown.</p>
+<p>Whether this is appropriate depends on business rules. In an <code>orders</code> table, a NULL in <code>customer_id</code> might represent a guest order placed by someone without an account. That may be intentional, or it may be a data quality problem. Declaring the foreign key column <code>NOT NULL</code> says “every order must belong to a known customer.” Allowing NULL says “orders without a customer are a permitted state.”</p>
+<p>This choice should be deliberate, not accidental. The default in most databases is to allow NULL in foreign key columns unless <code>NOT NULL</code> is explicitly declared.</p>
+</section>
+</section>
+<section id="cascade-behavior" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="cascade-behavior"><span class="header-section-number">7.6</span> Cascade Behavior</h2>
+<p>When a row in a parent table is deleted or its primary key is updated, the database must decide what to do with child rows that reference it. SQL provides four options, specified in the foreign key constraint declaration.</p>
+<p><strong>RESTRICT (the default in PostgreSQL):</strong> The operation is rejected if any child rows reference the parent row. It prevents orphaned rows by preventing the deletion in the first place. The calling application must resolve the dependent rows before the parent can be removed.</p>
+<p><strong>CASCADE:</strong> The operation propagates automatically. Deleting a parent row also deletes all child rows that reference it. Updating a primary key value updates the matching foreign key values in child rows. This is convenient but can silently delete large amounts of data if used carelessly.</p>
+<p><strong>SET NULL:</strong> The foreign key column in each child row is set to NULL. The child rows are not deleted; they simply lose their reference to the parent. This is only valid if the foreign key column allows NULL.</p>
+<p><strong>SET DEFAULT:</strong> The foreign key column in each child row is set to its default value. This is uncommon in practice.</p>
+<p>Using the orders schema as a concrete example, consider deleting customer 1 (Alice), who has orders 1 and 3:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 76%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Behavior</th>
+<th>What happens to orders 1 and 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RESTRICT</td>
+<td>The DELETE is rejected. Alice cannot be deleted while orders reference her.</td>
+</tr>
+<tr class="even">
+<td>CASCADE</td>
+<td>Orders 1 and 3 are deleted. Their order_items rows are also deleted if order_items cascades on order deletion.</td>
+</tr>
+<tr class="odd">
+<td>SET NULL</td>
+<td>Orders 1 and 3 remain, with <code>customer_id</code> set to NULL. Alice’s purchase history is preserved but disowned.</td>
+</tr>
+<tr class="even">
+<td>SET DEFAULT</td>
+<td>Orders 1 and 3 remain, with <code>customer_id</code> set to whatever default was declared for the column.</td>
+</tr>
+</tbody>
+</table>
+<p>The right choice is a business logic decision. CASCADE suits situations where child data has no meaning independent of the parent (a line item on a deleted order is meaningless). RESTRICT suits situations where the application should be forced to handle the relationship explicitly. SET NULL suits situations where the child records should survive the parent’s deletion but no longer need to point to it.</p>
+<p><code>ON UPDATE CASCADE</code> is less frequently needed than <code>ON DELETE CASCADE</code>, but it matters when a natural key is used as a primary key. If the natural key value changes (an ISO code is reassigned, a product SKU is reformatted), CASCADE propagates the new value to all foreign key columns that reference it automatically.</p>
+</section>
+<section id="self-referencing-relationships" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="self-referencing-relationships"><span class="header-section-number">7.7</span> Self-Referencing Relationships</h2>
+<p>A foreign key does not have to reference a different table. A table can contain a foreign key that references its own primary key. This is called a <strong>self-referencing relationship</strong>, and it represents a hierarchy within a single entity type.</p>
+<p>The classic example is an employee reporting structure:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>employee_id</th>
+<th>name</th>
+<th>manager_id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Sandra</td>
+<td>NULL</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Marcus</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Priya</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Tom</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p><code>manager_id</code> is a foreign key referencing <code>employee_id</code> in the same table. Sandra has no manager, so her <code>manager_id</code> is NULL. Marcus and Priya report to Sandra. Tom reports to Marcus. This single table represents an arbitrarily deep hierarchy. Querying it across levels requires a self-join: joining the <code>employees</code> table to itself under two different aliases.</p>
+<p>Self-referencing foreign keys use the same cascade options as any other foreign key. <code>ON DELETE SET NULL</code> is a common choice: if a manager leaves, their reports become unmanaged (NULL) rather than being deleted.</p>
+</section>
+<section id="exercises" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">7.8</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="7.8.1">
+<h3 data-number="7.8.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">7.8.1</span> Reflection</h3>
+<p><strong>1.</strong> What is the difference between a superkey and a candidate key? Give an example of a superkey that is not a candidate key, using a table of your own design.</p>
+<hr>
+<p><strong>2.</strong> A database designer is modeling a table for university courses with the columns: <code>course_id</code> (auto-generated integer), <code>course_code</code> (like “CS101”), <code>title</code>, <code>department_code</code>, and <code>credit_hours</code>. Identify all candidate keys. Which would you choose as the primary key, and why? What would you do with the remaining candidate keys?</p>
+<hr>
+<p><strong>3.</strong> Why might a designer choose a surrogate key over a natural key even when a stable natural key exists? Give an example of a natural key that seemed reliable but would cause problems in practice.</p>
+<hr>
+<p><strong>4.</strong> What is the difference between <code>NOT NULL</code> and <code>UNIQUE</code> as column constraints? Can a column be both <code>NOT NULL</code> and <code>UNIQUE</code>? What does that combination effectively make the column?</p>
+<hr>
+<p><strong>5.</strong> Explain the difference between <code>ON DELETE CASCADE</code> and <code>ON DELETE RESTRICT</code>. Describe a business scenario where each would be the appropriate choice.</p>
+<hr>
+</section>
+<section id="structural-analysis" class="level3" data-number="7.8.2">
+<h3 data-number="7.8.2" class="anchored" data-anchor-id="structural-analysis"><span class="header-section-number">7.8.2</span> Structural Analysis</h3>
+<p><strong>6.</strong> Consider a database for a hospital with the following tables:</p>
+<ul>
+<li><code>patients</code>: <code>patient_id</code>, <code>first_name</code>, <code>last_name</code>, <code>date_of_birth</code>, <code>national_health_id</code></li>
+<li><code>doctors</code>: <code>doctor_id</code>, <code>name</code>, <code>license_number</code>, <code>specialty</code></li>
+<li><code>appointments</code>: records which patient was seen by which doctor on which date and time</li>
+</ul>
+<p>For each table: (a) identify all candidate keys, (b) choose a primary key and justify the choice, and (c) identify any columns that should be declared as alternate keys.</p>
+<p>Then describe the foreign key relationships between the tables. For each foreign key, state whether the column should allow NULL and what the appropriate <code>ON DELETE</code> behavior is.</p>
+<hr>
+<p><strong>7.</strong> A development team is debating the primary key for a <code>customers</code> table. One developer argues for using the customer’s email address as the primary key, since emails are already required to be unique. Another argues for a surrogate integer key plus a separate <code>UNIQUE</code> constraint on <code>email</code>. Write a brief argument for each position, then give your own recommendation.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./database-design.html" class="pagination-link" aria-label="Database Design">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Database Design</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./08-er-diagrams.html" class="pagination-link" aria-label="Entity-Relationship Diagrams">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><em>SQL for Data Science</em> was written by Pete Benbow</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

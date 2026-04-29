@@ -1,0 +1,371 @@
+# Transforming Data with Polars
+
+Raw data is rarely ready to load. Column names may be inconsistent, values may be missing or malformed, types may need adjusting, and the shape of the data may not match the schema you are loading into. The transformation step handles all of this: filtering, reshaping, computing derived values, and joining sources together into a clean, coherent dataset.
+
+This chapter walks through the core Polars operations you will use most often in a data pipeline. By the end, you will have two clean DataFrames ready to load into PostgreSQL in the next chapter.
+
+## Loading the Data
+
+We will work with the same two files from the previous chapter:
+
+```{python}
+#| label: load-data
+import polars as pl
+
+indicators = pl.read_parquet("data/indicators.parquet")
+countries = pl.read_csv("data/countries.csv")
+
+print(f"indicators: {indicators.shape}")
+print(f"countries:  {countries.shape}")
+```
+
+## Exploring Your Data
+
+Before transforming anything, spend a moment understanding what you have. Polars provides two useful starting points: `.schema` for types and `.describe()` for numeric summary statistics.
+
+```{python}
+#| label: explore-schema
+print(indicators.schema)
+```
+
+```{python}
+#| label: explore-describe
+print(indicators.describe())
+```
+
+The `describe()` output reports count, mean, standard deviation, min, and max for each numeric column, plus null counts. A few things stand out: `gdp_usd` and `gdp_per_capita_usd` each have roughly 160 nulls, `pct_forest_area` has around 140, and `land_area_km2` has about 100. These are data quality issues we will need to handle.
+
+For a targeted view of null counts, compute them directly:
+
+```{python}
+#| label: explore-nulls
+null_counts = indicators.select([
+    pl.col(name).is_null().sum().alias(name)
+    for name in indicators.columns
+])
+print(null_counts)
+```
+
+## Filtering Rows
+
+The `filter()` method accepts a Polars expression and keeps only the rows where that expression evaluates to `True`. A single condition is straightforward:
+
+```{python}
+#| label: filter-single
+indicators_2022 = indicators.filter(pl.col("year") == 2022)
+print(indicators_2022.shape)
+```
+
+For compound conditions, combine expressions with `&` (and) and `|` (or). Each sub-expression must be wrapped in parentheses:
+
+```{python}
+#| label: filter-compound
+valid_2022 = indicators.filter(
+    (pl.col("year") == 2022) &
+    (pl.col("gdp_per_capita_usd").is_not_null()) &
+    (pl.col("region") != "Aggregates")
+)
+print(valid_2022.shape)
+print(valid_2022.select(["short_name", "region", "gdp_per_capita_usd"]).head(8))
+```
+
+The `"Aggregates"` region contains World Bank summary rows (totals for regions, income groups, and the world) rather than individual countries. Filtering them out isolates the 217 actual countries.
+
+## Selecting and Renaming Columns
+
+Use `select()` to keep only the columns you need, and `rename()` to standardize column names. Both return a new DataFrame; they do not modify the original:
+
+```{python}
+#| label: select-rename
+countries_slim = (
+    countries
+    .select(["country_code", "short_name", "region", "capital",
+             "longitude", "latitude", "income_group", "lending_type"])
+    .rename({"country_code": "code", "short_name": "name"})
+)
+print(countries_slim.head(5))
+```
+
+You can also rename inside an expression using `.alias()`. This is common when computing a new column and giving it a meaningful name in the same step.
+
+## Computing New Columns
+
+`with_columns()` adds or replaces columns without dropping any existing ones. Pass it a list of expressions, each ending with `.alias("new_name")`:
+
+```{python}
+#| label: new-columns
+indicators_enhanced = indicators.with_columns([
+    (pl.col("gdp_usd") / 1e9).alias("gdp_billions"),
+    (pl.col("population") / pl.col("land_area_km2")).alias("pop_density_per_km2")
+])
+print(
+    indicators_enhanced
+    .filter((pl.col("year") == 2022) & (pl.col("region") != "Aggregates"))
+    .select(["short_name", "gdp_billions", "pop_density_per_km2"])
+    .sort("pop_density_per_km2", descending=True, nulls_last=True)
+    .head(8)
+)
+```
+
+Expressions compose naturally: you can divide one column by another, apply math functions from `pl.Expr`, compare against literals, and chain multiple operations. Polars evaluates all expressions in a `with_columns()` call in a single pass over the data.
+
+## Handling Missing Values
+
+Nulls in your data require an explicit decision: drop the rows, fill with a constant, or impute from surrounding context. There is no single right answer; it depends on why the values are missing and how you intend to use the data.
+
+**Drop rows with nulls in specific columns:**
+
+```{python}
+#| label: nulls-drop
+indicators_complete_gdp = indicators.drop_nulls(subset=["gdp_per_capita_usd", "gdp_usd"])
+print(f"Before: {indicators.shape[0]} rows")
+print(f"After:  {indicators_complete_gdp.shape[0]} rows")
+```
+
+**Fill nulls with a constant or group statistic:**
+
+```{python}
+#| label: nulls-fill
+indicators_filled = indicators.with_columns(
+    pl.col("pct_forest_area")
+    .fill_null(
+        pl.col("pct_forest_area").mean().over("region")
+    )
+    .alias("pct_forest_area_filled")
+)
+
+null_before = indicators["pct_forest_area"].is_null().sum()
+null_after = indicators_filled["pct_forest_area_filled"].is_null().sum()
+print(f"Nulls before fill: {null_before}")
+print(f"Nulls after fill:  {null_after}")
+```
+
+The `.over("region")` call makes `mean()` a window function: it computes the mean within each region group and fills each null with the corresponding regional mean. Rows whose entire region has no forest area data remain null, which is why the count does not reach zero.
+
+For this dataset, we will keep nulls as-is and let PostgreSQL store them as `NULL`. The fill example above is a technique to know, not necessarily one to apply blindly.
+
+## Grouping and Aggregating
+
+`group_by()` followed by `.agg()` computes summary statistics for each unique combination of grouping columns. You can compute multiple aggregations in a single call:
+
+```{python}
+#| label: group-by
+gdp_by_group = (
+    indicators
+    .filter(
+        (pl.col("year") == 2022) &
+        (pl.col("region") != "Aggregates") &
+        (pl.col("gdp_per_capita_usd").is_not_null())
+    )
+    .group_by("income_group")
+    .agg([
+        pl.col("gdp_per_capita_usd").mean().alias("mean_gdp_per_capita"),
+        pl.col("gdp_per_capita_usd").median().alias("median_gdp_per_capita"),
+        pl.col("short_name").count().alias("country_count")
+    ])
+    .sort("mean_gdp_per_capita", descending=True, nulls_last=True)
+)
+print(gdp_by_group)
+```
+
+The mean and median diverge sharply in the high-income group because a handful of very high GDP-per-capita countries (Luxembourg, Singapore, Switzerland) pull the mean well above the median.
+
+You can also group by multiple columns:
+
+```{python}
+#| label: group-by-multi
+regional_summary = (
+    indicators
+    .filter(
+        (pl.col("year") == 2022) &
+        (pl.col("region") != "Aggregates") &
+        (pl.col("population").is_not_null())
+    )
+    .group_by(["region", "income_group"])
+    .agg([
+        pl.col("population").sum().alias("total_population"),
+        pl.col("short_name").count().alias("countries")
+    ])
+    .sort(["region", "income_group"])
+)
+print(regional_summary)
+```
+
+## Joining DataFrames
+
+The `join()` method combines two DataFrames on a shared key column. The `how` parameter controls the join type, mirroring the SQL join types you already know:
+
+| Polars `how` | SQL equivalent |
+|---|---|
+| `"inner"` | `INNER JOIN` |
+| `"left"` | `LEFT JOIN` |
+| `"right"` | `RIGHT JOIN` |
+| `"full"` | `FULL OUTER JOIN` |
+| `"cross"` | `CROSS JOIN` |
+| `"anti"` | `WHERE NOT IN (subquery)` |
+
+The `countries.csv` file has a `lending_type` column that does not exist in `indicators.parquet`. A left join adds it:
+
+```{python}
+#| label: join
+lending = countries.select(["country_code", "lending_type"])
+
+indicators_with_lending = indicators.join(
+    lending,
+    on="country_code",
+    how="left"
+)
+
+print(indicators_with_lending.select(["short_name", "year", "lending_type"]).head(5))
+print(f"\nNull lending_type rows: {indicators_with_lending['lending_type'].is_null().sum()}")
+```
+
+The null count tells you how many indicator rows could not be matched to a country in the countries table. For this dataset, it should be low: the indicators file was derived from the same underlying database.
+
+Anti-joins are useful for auditing mismatches between two sources. This finds countries in the indicators file that have no matching entry in countries.csv:
+
+```{python}
+#| label: anti-join
+unmatched = indicators.join(
+    countries.select(["country_code"]),
+    on="country_code",
+    how="anti"
+)
+print(unmatched.select("country_code").unique())
+```
+
+## Sorting
+
+`sort()` accepts one or more column names and an optional `descending` flag. For nullable numeric columns, pass `nulls_last=True` to push null rows to the bottom:
+
+```{python}
+#| label: sort
+top10_gdp = (
+    indicators
+    .filter(
+        (pl.col("year") == 2022) &
+        (pl.col("region") != "Aggregates")
+    )
+    .select(["short_name", "region", "income_group", "gdp_per_capita_usd"])
+    .sort("gdp_per_capita_usd", descending=True, nulls_last=True)
+    .head(10)
+)
+print(top10_gdp)
+```
+
+Multi-column sort uses a list:
+
+```{python}
+#| label: sort-multi
+print(
+    indicators
+    .filter(pl.col("year") == 2022)
+    .sort(["region", "gdp_per_capita_usd"], descending=[False, True], nulls_last=True)
+    .select(["short_name", "region", "gdp_per_capita_usd"])
+    .head(8)
+)
+```
+
+## Reshaping: Long to Wide
+
+Analytical data is often stored in long format (one row per country-year combination), but reporting sometimes requires wide format (one row per country, years as columns). Polars `pivot()` handles this:
+
+```{python}
+#| label: pivot
+gdp_wide = (
+    indicators
+    .filter(
+        pl.col("year").is_in([2000, 2010, 2020, 2022]) &
+        (pl.col("region") != "Aggregates") &
+        pl.col("gdp_per_capita_usd").is_not_null()
+    )
+    .pivot(
+        values="gdp_per_capita_usd",
+        index=["country_code", "short_name"],
+        on="year"
+    )
+    .rename({"2000": "gdp_2000", "2010": "gdp_2010",
+             "2020": "gdp_2020", "2022": "gdp_2022"})
+    .sort("gdp_2022", descending=True, nulls_last=True)
+    .head(10)
+)
+print(gdp_wide)
+```
+
+The reverse operation, wide to long, uses `unpivot()` (called `melt()` in some other libraries). We will not need it here, but it takes the same arguments in reverse: `on` lists the columns to collapse, `index` lists the columns to keep fixed, and `variable_name`/`value_name` name the resulting key and value columns.
+
+## Preparing the Clean DataFrames
+
+Now we apply everything above to produce two clean DataFrames suitable for loading into PostgreSQL.
+
+**Countries:** standard column selection, null rows retained for database `NULL` storage:
+
+```{python}
+#| label: clean-countries
+countries_clean = (
+    countries
+    .select([
+        "country_code", "iso2_code", "short_name", "region",
+        "capital", "longitude", "latitude", "income_group", "lending_type"
+    ])
+    .sort("country_code")
+)
+print(f"countries_clean: {countries_clean.shape}")
+print(countries_clean.head(5))
+```
+
+**Indicators:** filter out the Aggregate summary rows, keep everything else including rows with null economic values:
+
+```{python}
+#| label: clean-indicators
+indicators_clean = (
+    indicators
+    .filter(pl.col("region") != "Aggregates")
+    .select([
+        "country_code", "year", "population", "gdp_usd",
+        "gdp_per_capita_usd", "pct_forest_area", "land_area_km2"
+    ])
+    .sort(["country_code", "year"])
+)
+print(f"indicators_clean: {indicators_clean.shape}")
+print(indicators_clean.head(5))
+```
+
+We drop `short_name`, `region`, and `income_group` from the indicators DataFrame because those fields belong to the `countries` table. Storing them in both tables would violate the normalization principles from the database design section of this book. When we need those fields for a query, we will join the two tables.
+
+Save both to Parquet so Chapter 33 can load them without re-running the transformation:
+
+```{python}
+#| label: save-clean
+countries_clean.write_parquet("data/countries_clean.parquet")
+indicators_clean.write_parquet("data/indicators_clean.parquet")
+print("Saved.")
+```
+
+## Summary
+
+| Operation | Method | Notes |
+|---|---|---|
+| Filter rows | `filter(expr)` | Compound: `(cond1) & (cond2)` |
+| Select columns | `select([...])` | Also used for column reordering |
+| Rename columns | `rename({"old": "new"})` | Or use `.alias()` inside expressions |
+| Add/replace columns | `with_columns([...])` | Does not drop existing columns |
+| Handle nulls | `drop_nulls()`, `fill_null()`, `.is_null()` | Choose based on why data is missing |
+| Aggregate | `group_by([...]).agg([...])` | Multiple aggregations per call |
+| Join | `join(other, on=..., how=...)` | `how` mirrors SQL join types |
+| Sort | `sort([...], descending=[...], nulls_last=True)` | Multi-column sort uses lists |
+| Reshape long to wide | `pivot(values=..., index=..., on=...)` | Reverse: `unpivot()` |
+
+In the next chapter, you will load `countries_clean.parquet` and `indicators_clean.parquet` into PostgreSQL using SQLAlchemy, including proper upsert logic so the pipeline can be run repeatedly without creating duplicate rows.
+
+## Exercises
+
+1. Filter `indicators` to the year 2000. How many countries have a non-null `pct_forest_area` value? How does that number compare to 2022?
+
+2. Compute a new column called `forest_area_km2` by multiplying `pct_forest_area` by `land_area_km2` and dividing by 100. Which 10 countries had the largest total forest area in 2022?
+
+3. Using `group_by`, compute the total world population for each year in the dataset (excluding Aggregate rows). Which year had the highest total?
+
+4. Join `indicators` with `countries` to add the `lending_type` column. Then group by `lending_type` and compute the mean `gdp_per_capita_usd` for 2022. Exclude nulls from the mean calculation.
+
+5. Create a wide-format pivot table showing `pct_forest_area` in 2000 and 2022 for countries in Sub-Saharan Africa. Which countries show the largest decline in forest area percentage over that period?

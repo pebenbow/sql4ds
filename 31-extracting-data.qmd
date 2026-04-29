@@ -1,0 +1,304 @@
+# Extracting Data from Files and APIs
+
+The first stage of any ETL pipeline is extraction: pulling raw data from wherever it lives into your working environment. In the real world, data arrives in many forms. A colleague sends a CSV. A vendor exposes a REST API. A data warehouse exports Parquet files to cloud storage. Each format has its own structure, its own quirks, and its own best practices.
+
+In this chapter, you will learn how to read the three most common formats using [Polars](https://pola.rs/), a fast DataFrame library for Python. You will also learn how to fetch data from a REST API using the `requests` library. By the end, you will have the extraction toolkit needed to ingest data from nearly any source you encounter as a data professional.
+
+The example files used throughout this chapter live in the `data/` directory of the book's repository:
+
+- `data/countries.csv`: country metadata for 218 countries
+- `data/indicators_meta.json`: indicator definitions wrapped in a paginated API response envelope
+- `data/indicators.parquet`: economic and demographic indicators for 217 countries from 2000 to 2022
+
+## Prerequisites
+
+This chapter requires Polars and the `requests` library. Install them if you have not already:
+
+```bash
+pip install polars requests
+```
+
+## Reading CSV Files
+
+Comma-separated values (CSV) is the most common data exchange format. Despite its simplicity, CSV files can hide surprises: missing values represented as blank strings or sentinel values like `"N/A"`, columns whose types are ambiguous, and inconsistent quoting. Polars handles most of this gracefully.
+
+The `pl.read_csv()` function reads a CSV file into a Polars DataFrame with automatic type inference:
+
+```{python}
+#| label: csv-read
+import polars as pl
+
+countries = pl.read_csv("data/countries.csv")
+print(countries.head(5))
+```
+
+Polars inferred the column types by sampling the file. Let's inspect the schema it chose:
+
+```{python}
+#| label: csv-schema
+print(countries.schema)
+```
+
+String columns were correctly identified as `String`. The `longitude` and `latitude` columns were inferred as `Float64` because they contain decimal values.
+
+### Handling Null Values
+
+Seven countries in this dataset have no recorded longitude or latitude: territories and disputed regions such as Gibraltar, Taiwan, and the Channel Islands. Polars represents these missing values as `null` in the DataFrame:
+
+```{python}
+#| label: csv-nulls
+missing_coords = countries.filter(pl.col("longitude").is_null())
+print(missing_coords.select(["short_name", "region", "capital"]))
+```
+
+By default, `pl.read_csv()` treats blank fields as `null`. If your CSV uses a different sentinel to indicate missing data, pass it via the `null_values` parameter:
+
+```python
+pl.read_csv("data/countries.csv", null_values=["N/A", "-", ""])
+```
+
+You can also pass a dictionary to specify different null sentinels per column, which is useful when different columns use different conventions in the same file.
+
+### Selecting Columns at Read Time
+
+You rarely need every column in a large file. Polars lets you select specific columns during the read, which avoids loading unnecessary data into memory:
+
+```{python}
+#| label: csv-select-cols
+countries_slim = pl.read_csv(
+    "data/countries.csv",
+    columns=["country_code", "short_name", "region", "income_group"]
+)
+print(countries_slim.head(8))
+```
+
+For quick inspection, `.head(n)` returns the first `n` rows and `.tail(n)` returns the last `n`.
+
+### Overriding Inferred Types
+
+Automatic type inference is convenient but not infallible. Suppose you want to treat `region` and `income_group` as categorical variables rather than plain strings. Categoricals store repeated string values more efficiently, which matters for columns with low cardinality (few unique values relative to total rows). Use `schema_overrides` to specify types explicitly:
+
+```{python}
+#| label: csv-type-override
+countries_typed = pl.read_csv(
+    "data/countries.csv",
+    schema_overrides={
+        "region": pl.Categorical,
+        "income_group": pl.Categorical,
+        "lending_type": pl.Categorical
+    }
+)
+print(countries_typed.schema)
+```
+
+Notice that `region`, `income_group`, and `lending_type` now show as `Categorical` while all other columns remain as inferred.
+
+## Reading JSON Files
+
+JSON (JavaScript Object Notation) is the standard format for web API responses. It is flexible enough to represent nested structures that CSV cannot: an array of objects, where each object may itself contain nested objects or arrays.
+
+Polars can read a flat JSON array directly with `pl.read_json()`. But most real-world API responses wrap the data you actually care about inside a response *envelope* that includes pagination metadata, status codes, and other fields alongside the records. You cannot read those files with `pl.read_json()` alone.
+
+The `data/indicators_meta.json` file mimics this pattern. Let's look at its top-level structure first:
+
+```{python}
+#| label: json-inspect
+import json
+
+with open("data/indicators_meta.json", encoding="utf-8") as f:
+    response = json.load(f)
+
+print(list(response.keys()))
+print(f"Page {response['page']} of {response['pages']}")
+print(f"Showing {len(response['indicators'])} of {response['total']} indicators")
+```
+
+The actual records live under the `"indicators"` key. Extract that list, then construct a Polars DataFrame from it:
+
+```{python}
+#| label: json-dataframe
+indicators_meta = pl.DataFrame(response["indicators"])
+print(indicators_meta.select(["id", "name"]))
+```
+
+### Handling Nested Fields
+
+Notice the `source` column. Rather than a plain string, each row's `source` value is itself an object with `id` and `value` fields. Polars stores these as the `Struct` type. Use `.struct.field()` to extract the nested values into their own columns:
+
+```{python}
+#| label: json-unnest
+indicators_meta = (
+    pl.DataFrame(response["indicators"])
+    .with_columns([
+        pl.col("source").struct.field("id").alias("source_id"),
+        pl.col("source").struct.field("value").alias("source_name")
+    ])
+    .drop("source")
+)
+print(indicators_meta.select(["id", "name", "source_id", "source_name"]))
+```
+
+This pattern applies broadly: read the raw response with `json.load()`, extract the list of records by key, build a DataFrame, then use `.struct.field()` to flatten any nested fields you need.
+
+## Reading Parquet Files
+
+Parquet is a columnar storage format designed for analytical workloads. Unlike CSV, which stores data row by row as plain text, Parquet stores each column independently in a binary, compressed format. This makes it far faster to read when you only need a subset of columns, and far smaller on disk.
+
+Reading a Parquet file with Polars is simple:
+
+```{python}
+#| label: parquet-read
+indicators = pl.read_parquet("data/indicators.parquet")
+print(indicators.shape)
+print(indicators.schema)
+```
+
+Two things stand out compared to CSV:
+
+1. The schema is embedded in the file itself. There is no inference step, and there is no risk of type ambiguity. Whatever types were written by the creator are read back exactly.
+2. Null counts are visible but do not require any extra work. Columns like `gdp_usd` and `pct_forest_area` have missing values for some country-year combinations, and Polars handles them as `null` automatically.
+
+### Size Comparison
+
+To appreciate the compression benefit, compare the Parquet file's size to an equivalent CSV export:
+
+```{python}
+#| label: parquet-size
+import os
+
+parquet_size = os.path.getsize("data/indicators.parquet")
+
+csv_path = "data/indicators_temp.csv"
+indicators.write_csv(csv_path)
+csv_size = os.path.getsize(csv_path)
+os.remove(csv_path)
+
+print(f"Parquet: {parquet_size / 1024:>8.1f} KB")
+print(f"CSV:     {csv_size / 1024:>8.1f} KB")
+print(f"Ratio:   {csv_size / parquet_size:.1f}× smaller as Parquet")
+```
+
+The Parquet file is roughly 3 to 4 times smaller. At the scale of millions of rows, this difference translates into meaningfully lower storage costs and faster transfer times.
+
+### Reading a Subset of Columns
+
+Because Parquet stores columns independently, you can read only the columns you need without touching the rest of the file. This is called *column pruning*, and it is one of Parquet's most important performance characteristics:
+
+```{python}
+#| label: parquet-column-pruning
+gdp_subset = pl.read_parquet(
+    "data/indicators.parquet",
+    columns=["country_code", "short_name", "year", "gdp_per_capita_usd"]
+)
+print(gdp_subset.head(5))
+```
+
+With a CSV file, you must read the entire file before you can select columns. With Parquet, the columns you omit are never read from disk at all.
+
+## Fetching Data from a REST API
+
+Many data sources are not files at all: they are web APIs that respond to HTTP requests with JSON. The Python `requests` library makes it straightforward to query these endpoints.
+
+The World Bank publishes a free, open API for the development indicators we have been working with throughout this book. The following example fetches the most recent five years of population data for four countries:
+
+```{python}
+#| label: api-fetch
+import requests
+
+url = "https://api.worldbank.org/v2/country/US;GB;DE;JP/indicator/SP.POP.TOTL"
+params = {
+    "format": "json",
+    "per_page": 20,
+    "mrv": 5
+}
+
+resp = requests.get(url, params=params, timeout=10)
+resp.raise_for_status()
+
+envelope, records = resp.json()
+print(f"Total records: {envelope['total']}")
+```
+
+The World Bank API returns a two-element list: the envelope (containing pagination metadata) followed by the array of records. We unpack them in a single assignment.
+
+Two details worth noting:
+
+- `resp.raise_for_status()` raises an exception immediately if the server returned an HTTP error code (4xx or 5xx). Call it every time so you catch problems before silently processing an error response.
+- The API returns `"date"` as a string and `"value"` as either a number or `None`. We handle both below.
+
+Now build a DataFrame from the records:
+
+```{python}
+#| label: api-dataframe
+pop_df = pl.DataFrame([
+    {
+        "country": r["country"]["value"],
+        "year": int(r["date"]),
+        "population": r["value"]
+    }
+    for r in records
+    if r["value"] is not None
+])
+
+print(pop_df.sort(["country", "year"]))
+```
+
+### Pagination
+
+Most APIs cap the number of records returned per request and include a page count in the envelope. When you need all pages, check the envelope and loop:
+
+```{python}
+#| label: api-pagination
+all_records = []
+page = 1
+
+while True:
+    resp = requests.get(
+        "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL",
+        params={"format": "json", "per_page": 1000, "page": page, "mrv": 1},
+        timeout=10
+    )
+    resp.raise_for_status()
+    envelope, records = resp.json()
+    all_records.extend(records)
+    if page >= envelope["pages"]:
+        break
+    page += 1
+
+pop_all = pl.DataFrame([
+    {"country_code": r["countryiso3code"], "population": r["value"]}
+    for r in all_records
+    if r["value"] is not None
+])
+
+print(f"Fetched {len(all_records)} records across {envelope['pages']} page(s)")
+print(f"Non-null populations: {len(pop_all)}")
+```
+
+This pattern works for any API that reports a page count. Adapt the stopping condition to match whatever field your API uses: `pages`, `next_page`, `has_more`, a cursor token, and so on.
+
+## Summary
+
+The table below summarizes the extraction approach for each source type:
+
+| Source | Tool | Key consideration |
+|--------|------|-------------------|
+| CSV file | `pl.read_csv()` | Check null sentinels; override types with `schema_overrides` |
+| Flat JSON array | `pl.read_json()` | Works directly on arrays of objects |
+| JSON envelope | `json.load()` + `pl.DataFrame()` | Extract the records key before building the DataFrame |
+| Parquet file | `pl.read_parquet()` | Embedded schema; use `columns=` for column pruning |
+| REST API | `requests.get()` + `pl.DataFrame()` | Call `.raise_for_status()`; handle pagination |
+
+In the next chapter, you will take the extracted data and apply transformations with Polars: filtering, reshaping, computing new columns, and summarizing.
+
+## Exercises
+
+1. Read `data/countries.csv` and display the count of countries in each `region`. Sort the result from the region with the most countries to the fewest.
+
+2. The `longitude` and `latitude` columns have null values for 7 countries. Filter the DataFrame to show only those rows, displaying `short_name`, `region`, and `capital`.
+
+3. Read `data/indicators.parquet` using only the `country_code`, `short_name`, `year`, and `pct_forest_area` columns. How many row-year combinations have a non-null `pct_forest_area`?
+
+4. Load `data/indicators_meta.json` and flatten the nested `source` field. Print the `id`, `name`, and `source_name` for all 9 indicators.
+
+5. Modify the pagination loop to fetch all countries' forest area data (indicator code `AG.LND.FRST.ZS`) for the most recent year available. Build a Polars DataFrame from the results and report how many countries have a non-null forest area value.

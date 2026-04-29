@@ -1,8 +1,10 @@
 ---
 title: "Entity-Relationship Diagrams"
 dbml:
+  theme: light
   notation: crowsfoot
-  routing: smooth
+  routing: rounded
+  echo: true
 ---
 
 ## Design Before You Build
@@ -105,7 +107,7 @@ To read a relationship, start at one entity and read toward the other. The symbo
 
 Here is the complete orders schema from the normalization chapter expressed in DBML. Notice how closely it resembles the `CREATE TABLE` statements you will write in the next chapter.
 
-```{.dbml}
+```{.dbml theme="light" notation="crowsfoot" routing="rounded" echo=TRUE}
 Table customers {
   customer_id int     [pk, increment]
   customer    varchar [not null]

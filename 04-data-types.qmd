@@ -96,9 +96,19 @@ Integer types store whole numbers with no decimal component. PostgreSQL provides
 | `INTEGER`  | 4 bytes | -2,147,483,648 to 2,147,483,647               |
 | `BIGINT`   | 8 bytes | -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807 |
 
-The `yr` column in the `countries` table is an `INTEGER`, appropriate for a four-digit year. The `population` column is a `BIGINT` because country-level population figures for large nations exceed the range of a regular `INTEGER` (India's 2022 population, for example, is over 1.4 billion).
+The `yr` column in the `countries` table is an `INTEGER`, appropriate for a four-digit year. The `population` column is a `BIGINT`, which may seem excessive since the largest country in the world, India, only has a 2022 population of about 1.4 billion, but it is a prudent choice because 32-bit integer types like `INTEGER` would not be able to store values above roughly two billion. 
 
-Choose the smallest type that comfortably fits your data. `SMALLINT` saves space in large tables, but `INTEGER` is the most common choice for general-purpose whole-number columns. Use `BIGINT` when values could exceed roughly two billion.
+In practice, any column that could potentially hold a value above a certain threshold should be defined with a data type that can accommodate that value to avoid potential future overflow issues. An **overflow error** occurs when you try to store a value that is too large for the data type of the column. For example, PostgreSQL usually returns a message like this when it encounters an overflow error on an integer-type column:
+
+```
+SQLSTATE 22003: integer out of range
+```
+
+For example, if we had defined `population` as `SMALLINT` and then tried to insert India's population of 1.4 billion, you would get an overflow error similar to the one above because 1.4 billion exceeds the maximum value for the `SMALLINT` type.
+
+`BIGINT` is a 64-bit integer type, meaning it has more storage capacity in terms of bytes. Crucially, 64-bit integers are not significantly more expensive to store or compute with than 32-bit integers on modern hardware, so it poses very little harm to use `BIGINT` for any whole-number column that could potentially exceed the limits of `INTEGER`. In fact, many database designers choose to use `BIGINT` for all whole-number columns as a best practice to future-proof their schemas against overflow issues [@lambert2021].
+
+In olden times, it was best practice to choose the smallest type that comfortably fits your data. With modern hardware and PostgreSQL's efficient implementation of `BIGINT`, it is often more practical to use `BIGINT` for all whole-number columns unless you have a specific reason to use a smaller type. This approach simplifies schema design and eliminates the risk of overflow errors without incurring significant performance or storage costs.
 
 ::: {.callout-note}
 PostgreSQL also provides `SERIAL`, `SMALLSERIAL`, and `BIGSERIAL` as shorthand for auto-incrementing integer columns. They are commonly used for primary keys, a topic which we will cover in an upcoming chapter. Modern PostgreSQL (version 10 and later) prefers `GENERATED ALWAYS AS IDENTITY` for new tables, but you will see `SERIAL` frequently in existing schemas.

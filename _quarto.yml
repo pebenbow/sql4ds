@@ -16,7 +16,7 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    
+
     - part: getting-started.qmd
       chapters:
         - 01-why-learn-sql.qmd
@@ -39,13 +39,34 @@ book:
         - 09-normal-forms.qmd
         - 10-create-table.qmd
 
+    - part: deploying-databases.qmd
+      chapters:
+        - 21-supabase-setup.qmd
+        - 22-supabase-vscode.qmd
+        - 23-database-migrations.qmd
+
+    - part: etl-with-python.qmd
+      chapters:
+        - 31-extracting-data.qmd
+        - 32-transforming-with-polars.qmd
+        - 33-loading-with-sqlalchemy.qmd
+        - 34-etl-pipeline.qmd
+
     - references.qmd
 
 filters:
   - quarto-dbml
 
+dbml:
+  theme: light
+  notation: crowsfoot
+  routing: smooth
+
 bibliography: references.bib
 
 format:
   html:
+    link-external-newwindow: true
     theme: materia
+    syntax-definitions:
+      - _extensions/quarto-dbml/dbml.xml

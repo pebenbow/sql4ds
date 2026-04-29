@@ -1,0 +1,294 @@
+# Database Migrations
+
+When a database is first created, its schema is in a clean, known state. As the work that depends on that database evolves, new tables are added, columns are renamed, indexes are created, constraints are tightened or relaxed. Each of those changes alters the schema. If the changes are made informally, by hand, through a GUI, without recording what was done, the schema becomes something that exists only on that one machine at that one moment. Nobody else can reproduce it, and the history of how it arrived at its current state is gone.
+
+A **database migration** is a recorded, versioned change to a database schema. It is a SQL file that transforms the database from one known state to another. Migrations are stored in version control alongside the rest of the project, so the schema's complete history is preserved and any environment, a teammate's laptop, a staging server, a cloud deployment, can be brought to the current schema by replaying the migration sequence in order.
+
+## Why Migrations Matter
+
+**Reproducibility.** A fresh database can be brought to the current schema by running all migrations in sequence, from the first to the last. There is no need to export a dump or document changes manually. A new team member or a new server starts from nothing and arrives at exactly the correct state.
+
+**Team coordination.** When multiple people work on the same schema, migrations give each change a clear author and a defined order. Version control handles the merging. Two developers working on separate features each write their own migration files, and the files are integrated by ordering them chronologically when both branches are merged.
+
+**Auditability.** The migration history is a log of every schema decision ever made. It answers questions like "when was this column added?" or "why does this index exist?" in the same way that `git log` answers questions about code changes.
+
+**Controlled rollout.** Because migrations are SQL files, they can be reviewed before being applied, tested in a staging environment before reaching production, and, when written carefully, reversed if something goes wrong.
+
+## The Structure of a Migration File
+
+A migration file is a plain SQL file. Its job is to implement one logical schema change. The file should be self-contained: reading it in isolation should make clear what it does, and running it against the appropriate database state should succeed without side effects.
+
+A migration that creates a new table:
+
+```sql
+CREATE TABLE orders (
+    id          SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL REFERENCES customers(id),
+    placed_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+    total_usd   NUMERIC(12, 2) NOT NULL CHECK (total_usd >= 0)
+);
+
+CREATE INDEX ON orders (customer_id);
+CREATE INDEX ON orders (placed_at);
+```
+
+A migration that modifies an existing table:
+
+```sql
+ALTER TABLE customers
+    ADD COLUMN email TEXT;
+
+ALTER TABLE customers
+    ADD COLUMN email_verified_at TIMESTAMPTZ;
+```
+
+A migration that removes something:
+
+```sql
+DROP INDEX IF EXISTS orders_placed_at_idx;
+
+ALTER TABLE orders
+    DROP COLUMN IF EXISTS internal_notes;
+```
+
+Each file should do one logical thing. A migration that creates a table, renames a column in a different table, and drops an index in a third is harder to review, harder to test, and harder to reverse than three separate files. The extra files cost almost nothing; the clarity they provide is worth it.
+
+## Naming Conventions
+
+Migration files must be applied in a consistent order. The standard convention is a **timestamp prefix** followed by a short, lowercase description with words separated by underscores:
+
+```
+20250101120000_create_customers_table.sql
+20250115093000_create_orders_table.sql
+20250203140000_add_email_to_customers.sql
+20250210083000_drop_internal_notes_from_orders.sql
+```
+
+The timestamp is expressed to the second in UTC. This guarantees that files sort lexicographically in the order they should be applied, and that two developers creating migrations at the same time will almost certainly produce different timestamps without any coordination.
+
+The description that follows the timestamp should read as a brief, active-voice summary of what the migration does. Future readers will scan this list to understand the schema's history, so the names carry real informational value.
+
+The Supabase CLI generates the timestamp automatically when you create a migration, so you only need to supply the description.
+
+## Creating and Applying Migrations
+
+### Creating a Migration File
+
+```bash
+supabase migration new add_email_to_customers
+```
+
+The CLI creates a new, empty file in `supabase/migrations/` with a timestamp prefix:
+
+```
+supabase/migrations/20250203140000_add_email_to_customers.sql
+```
+
+Open the file in VS Code and write the SQL:
+
+```sql
+ALTER TABLE customers
+    ADD COLUMN email TEXT;
+```
+
+Save the file and commit it to version control before pushing. A migration file that exists in the repository but has not yet been applied to any database is called a **pending** migration.
+
+### Listing Migration Status
+
+```bash
+supabase migration list
+```
+
+This command shows every migration file in `supabase/migrations/`, indicating which have been applied to the remote database (linked with `supabase link`) and which are still pending. The output looks roughly like this:
+
+```
+        LOCAL      │     REMOTE     │     TIME (UTC)
+  ─────────────────┼────────────────┼─────────────────────
+  20250101120000   │ 20250101120000 │ 2025-01-01 12:00:00
+  20250115093000   │ 20250115093000 │ 2025-01-15 09:30:00
+  20250203140000   │                │
+```
+
+The third migration exists locally but has not been applied remotely. It is pending.
+
+### Applying Pending Migrations
+
+```bash
+supabase db push
+```
+
+The CLI identifies which migrations in `supabase/migrations/` have not yet been applied to the remote database, runs them in timestamp order, and reports the result. Only pending migrations are executed; already-applied migrations are skipped.
+
+Supabase tracks applied migrations in a table in the `supabase_migrations` schema on the remote database. You do not need to interact with this table directly, but knowing it exists explains how the CLI knows what has and has not been applied.
+
+## Rolling Back a Migration
+
+Supabase migrations are forward-only by default: the CLI applies migrations but does not include a built-in mechanism for reverting them. Rolling back is instead handled by writing a new migration that undoes the previous one.
+
+To reverse the "add email to customers" migration:
+
+```sql
+ALTER TABLE customers
+    DROP COLUMN IF EXISTS email;
+```
+
+This becomes a new migration file with its own timestamp, applied with `supabase db push` like any other migration. The schema moves forward through time even when the change is logically a reversal.
+
+This approach has a significant advantage: the rollback itself becomes part of the migration history, is reviewed, tested, and committed like any other change, and does not require special tooling to execute.
+
+Some teams annotate each migration file with the corresponding rollback SQL in a comment at the bottom, so that the undo logic is always visible alongside the change it reverses:
+
+```sql
+-- Up
+ALTER TABLE customers
+    ADD COLUMN email TEXT;
+
+-- Down (run manually as a new migration if this change needs to be reversed)
+-- ALTER TABLE customers DROP COLUMN IF EXISTS email;
+```
+
+The down block is commented out so it does not execute when the migration is applied. It serves as documentation for whoever needs to write the reversal.
+
+## A Complete Workflow
+
+The full cycle for a schema change under this system:
+
+1. **Create the migration file.**
+
+   ```bash
+   supabase migration new describe_the_change
+   ```
+
+2. **Write the SQL in VS Code.** Open the new file from `supabase/migrations/` and write the statements that implement the change. Test the SQL against a development database or in the Supabase SQL Editor if you want to verify it before committing.
+
+3. **Commit the file.** Add the migration file to version control. This step is important: the migration file is the record of the change. If it is not committed, collaborators will not have it, and the history will be incomplete.
+
+   ```bash
+   git add supabase/migrations/
+   git commit -m "Add email column to customers table"
+   ```
+
+4. **Push to the remote database.**
+
+   ```bash
+   supabase db push
+   ```
+
+5. **Verify.** Check the Supabase dashboard or run a query to confirm the change took effect. Review `supabase migration list` to confirm the migration now shows as applied.
+
+## Best Practices
+
+**Never edit a migration file after it has been applied.** Once a migration has been applied to any database, it is part of the permanent record. Editing the file afterward breaks the tracking system: the applied state and the file on disk no longer match. If you made a mistake, write a new migration that corrects it.
+
+**Keep each migration focused on one logical change.** Small, focused migrations are easier to review, easier to understand three months later, and easier to reverse if necessary.
+
+**Use `IF NOT EXISTS` and `IF EXISTS` defensively.** `CREATE TABLE IF NOT EXISTS` and `DROP TABLE IF EXISTS` make individual statements safe to retry if a migration fails partway through. Without these guards, a partial failure followed by a retry attempt will produce errors on the already-completed statements.
+
+**Test migrations on development before production.** Apply the migration to a development or staging project first. Confirm that the schema looks correct and that any existing data is not corrupted or truncated by the change. Only then push to production.
+
+**Write the rollback at the same time as the migration.** The person who best understands how to reverse a migration is the person who just wrote it. Adding a commented-out rollback block to the migration file takes two minutes and may save hours later.
+
+**Coordinate with teammates before pushing.** If multiple people are developing against the same remote database, establish a shared understanding of when migrations will be pushed. Applying a migration that a teammate has not yet pulled can cause their local environment to diverge.
+
+## Migrations Beyond Supabase
+
+The Supabase CLI is one tool for managing migrations, not the only one. When you deploy to a different platform — AWS RDS, Google Cloud SQL, Railway, Render, a bare Linux server running PostgreSQL — you need a different way to apply migration files. The concepts from this chapter transfer directly; only the tooling changes.
+
+### What Every Migration Tool Has in Common
+
+At the core, every migration system does the same three things:
+
+1. Maintains a directory of ordered SQL files.
+2. Keeps a tracking table in the database recording which files have been applied.
+3. Provides a command that compares the file list to the tracking table and runs only the pending ones.
+
+Supabase stores its tracking data in the `supabase_migrations` schema. Other tools use their own table names and schemas, but the logic is identical. If you understand those three moving parts, you can reason about any migration system.
+
+### Applying Migrations with psql
+
+The most portable approach requires no additional tooling at all. `psql`, the standard PostgreSQL command-line client, can execute a SQL file against any PostgreSQL database given a connection string:
+
+```bash
+psql "postgresql://user:password@host:5432/dbname" -f supabase/migrations/20250101000000_create_products.sql
+```
+
+The connection string has the same format as the one shown in the Supabase Project Settings page. Substitute the host, credentials, and database name for whichever provider you are deploying to, and `psql` will apply the migration.
+
+For tracking which files have been applied, you can maintain a simple table in your database:
+
+```sql
+CREATE TABLE IF NOT EXISTS schema_migrations (
+    version     TEXT PRIMARY KEY,
+    applied_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+Insert a row after each successful migration, using the filename's timestamp prefix as the version value. Before applying a file, check whether that version already exists in the table. This is precisely what the Supabase CLI does internally, with slightly different table and column names.
+
+A minimal shell script that applies all pending migrations in order:
+
+```bash
+for file in supabase/migrations/*.sql; do
+    version=$(basename "$file" .sql)
+    exists=$(psql "$DATABASE_URL" -tAc \
+        "SELECT 1 FROM schema_migrations WHERE version = '$version'")
+    if [ -z "$exists" ]; then
+        psql "$DATABASE_URL" -f "$file"
+        psql "$DATABASE_URL" -c \
+            "INSERT INTO schema_migrations (version) VALUES ('$version')"
+        echo "Applied: $version"
+    else
+        echo "Skipped (already applied): $version"
+    fi
+done
+```
+
+This is rougher than a dedicated tool, but it is understandable, it works on any system with `psql` installed, and it illustrates exactly what is happening under the hood of every migration framework.
+
+### Standalone Migration Tools
+
+Several dedicated tools handle this problem with more robustness than a shell script and without tying you to a specific application framework or language. All of them accept a database connection string and a directory of SQL files.
+
+**golang-migrate** (often invoked as `migrate`) is a widely used CLI tool that applies numbered or timestamped SQL files to any PostgreSQL database. It supports both "up" and "down" migration files, stored as pairs: `000001_create_products.up.sql` and `000001_create_products.down.sql`. Running `migrate up` applies all pending up migrations; running `migrate down` runs the corresponding down files to reverse them. The naming convention differs from Supabase's but the concept is the same.
+
+**Flyway** is a more full-featured tool popular in Java environments but usable from any language. Its community edition is free and supports SQL migration files named with a `V` prefix and a version number: `V1__Create_products_table.sql`. Flyway tracks applied migrations in a table it creates in your database called `flyway_schema_history`.
+
+**Liquibase** takes a similar approach to Flyway but additionally supports defining schema changes in XML and YAML formats, which it then converts to SQL. This can be useful when the same schema needs to be deployed across multiple database engines, though for PostgreSQL-only work the SQL format is simpler and more readable.
+
+**sqitch** is built around SQL from the start and has no abstraction layer. Each change consists of a deploy script, a revert script, and a verify script. It tracks changes in a set of tables it manages in the target database. sqitch is particularly popular in organizations where DBAs own the migration workflow directly.
+
+All four tools accept a `--url` or equivalent flag for the database connection string, making it straightforward to point them at a Supabase database, a local Docker container, or any other PostgreSQL instance.
+
+### Framework-Integrated Migrations
+
+If you are building an application with a web framework or ORM, that framework likely includes its own migration system. Django (Python) generates migration files automatically from changes to your model classes and applies them with `python manage.py migrate`. Ruby on Rails has `rails db:migrate`. Prisma (Node.js/TypeScript) has `prisma migrate deploy`. Laravel (PHP) has `php artisan migrate`.
+
+These tools generate the migration SQL for you based on schema declarations in application code, which reduces the amount of hand-written SQL. The tradeoff is that the migrations are tightly coupled to the framework: they are difficult to read or apply without the full application environment in place. For standalone database work, dedicated tools or plain `psql` are more flexible.
+
+### Your Migration Files Are Portable
+
+The most important thing to recognize is that the SQL files in `supabase/migrations/` are standard SQL. There is nothing Supabase-specific inside them. If you switch hosting providers tomorrow, you can point `psql`, Flyway, golang-migrate, or any other tool at the same directory of files. The migration history you have built up is not locked to Supabase.
+
+The Supabase CLI adds the convenience of `supabase migration new` and `supabase db push`, and it integrates with the rest of the Supabase platform. But it is a thin layer over the same idea: ordered SQL files, applied in sequence, with a tracking table keeping record of what has been done.
+
+## Exercises
+
+### Reflection
+
+1. Explain the difference between running a `CREATE TABLE` statement directly in the Supabase SQL Editor versus creating a migration file and running `supabase db push`. What does the migration approach give you that the direct approach does not?
+
+2. Why is it important to commit migration files to version control before applying them to the remote database?
+
+3. A developer edits a migration file after it has already been applied to the production database, then pushes the edited file to a staging database. Describe the problem this creates.
+
+4. Two developers, working on separate feature branches, both create migrations at roughly the same time. One creates `20250310120000_add_tags_table.sql` and the other creates `20250310130000_add_ratings_table.sql`. When both branches are merged, which migration will be applied first and why?
+
+### Coding
+
+5. Add a migration to your project from the previous chapter that adds an `instructor_id` column (integer, nullable) to the `courses` table. Push it to your Supabase project and verify with a query to `information_schema.columns`.
+
+6. Write a second migration that creates an `instructors` table with columns for a surrogate primary key, `last_name` (text, not null), `first_name` (text, not null), and `department` (text). After applying it, add a foreign key constraint on `courses.instructor_id` referencing `instructors.id` in a third migration.
+
+7. Write the rollback migration for exercise 6 (the one that removes the foreign key constraint and drops the `instructors` table). Do not apply it yet; leave it as a file for reference. Explain what order the steps inside it must follow and why.
+
+8. Run `supabase migration list` and examine the output. Describe what each column in the output represents. If you have applied three migrations, how many rows do you expect to see, and what does it mean if any row shows a value in the LOCAL column but not in the REMOTE column?

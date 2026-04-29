@@ -1,0 +1,2141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Entity-Relationship Diagrams – SQL for Data Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./09-normal-forms.html" rel="next">
+<link href="./07-keys-and-integrity.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-706344d2ac0d376cb01d0c71f2a45066.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style id="quarto-dbml-styles">
+.dbml-diagram {
+  /* ── Light-mode defaults ─────────────── */
+  --dbml-bg:          #f7f9ff;
+  --dbml-card-bg:     #ffffff;
+  --dbml-border:      #c0cce4;
+  --dbml-shadow:      rgba(184,200,224,0.35);
+  --dbml-hdr-bg:      #4361a0;
+  --dbml-hdr-fg:      #ffffff;
+  --dbml-row-odd:     #f0f3fb;
+  --dbml-row-even:    #ffffff;
+  --dbml-pk-fg:       #b22222;
+  --dbml-pk-bg:       rgba(178,34,34,0.15);
+  --dbml-fk-fg:       #1558b0;
+  --dbml-fk-bg:       rgba(21,88,176,0.12);
+  --dbml-un-fg:       #9a5700;
+  --dbml-un-bg:       rgba(154,87,0,0.12);
+  --dbml-nn-fg:       #2e7d32;
+  --dbml-nn-bg:       rgba(46,125,50,0.12);
+  --dbml-field-fg:    #1a1a2e;
+  --dbml-type-fg:     #7f8c9e;
+  --dbml-edge:        #8ca0c0;
+  --dbml-edge-active: #3a6bc8;
+
+  position: relative;
+  overflow: hidden;
+  max-width: 100%;
+  margin: 1em 0;
+  border-radius: 8px;
+  border: 1px solid var(--dbml-border, #c0cce4);
+}
+
+/* ── Auto dark: system preference ───────── */
+@media (prefers-color-scheme: dark) {
+  .dbml-diagram {
+    --dbml-bg:          #1a1f2e;
+    --dbml-card-bg:     #252b3b;
+    --dbml-border:      #3a4560;
+    --dbml-shadow:      rgba(13,16,23,0.5);
+    --dbml-hdr-bg:      #2d4a8a;
+    --dbml-hdr-fg:      #e8eef8;
+    --dbml-row-odd:     #1f2535;
+    --dbml-row-even:    #252b3b;
+    --dbml-pk-fg:       #e07070;
+    --dbml-pk-bg:       rgba(220,80,80,0.2);
+    --dbml-fk-fg:       #74b0f4;
+    --dbml-fk-bg:       rgba(116,176,244,0.2);
+    --dbml-un-fg:       #e9a020;
+    --dbml-un-bg:       rgba(233,160,32,0.2);
+    --dbml-nn-fg:       #66bb6a;
+    --dbml-nn-bg:       rgba(102,187,106,0.2);
+    --dbml-field-fg:    #c8d0e4;
+    --dbml-type-fg:     #6a7a94;
+    --dbml-edge:        #4a6080;
+    --dbml-edge-active: #7ba8f0;
+  }
+}
+
+/* ── Auto dark: Quarto Bootstrap toggle ─── */
+[data-bs-theme="dark"] .dbml-diagram {
+  --dbml-bg:          #1a1f2e;
+  --dbml-card-bg:     #252b3b;
+  --dbml-border:      #3a4560;
+  --dbml-shadow:      rgba(13,16,23,0.5);
+  --dbml-hdr-bg:      #2d4a8a;
+  --dbml-hdr-fg:      #e8eef8;
+  --dbml-row-odd:     #1f2535;
+  --dbml-row-even:    #252b3b;
+  --dbml-pk-fg:       #e07070;
+  --dbml-pk-bg:       rgba(220,80,80,0.2);
+  --dbml-field-fg:    #c8d0e4;
+  --dbml-type-fg:     #6a7a94;
+  --dbml-edge:        #4a6080;
+  --dbml-edge-active: #7ba8f0;
+}
+
+/* ── Explicit overrides (declared last → win the cascade) ── */
+
+.dbml-diagram.dbml-theme-light {
+  --dbml-bg:          #f7f9ff;
+  --dbml-card-bg:     #ffffff;
+  --dbml-border:      #c0cce4;
+  --dbml-shadow:      rgba(184,200,224,0.35);
+  --dbml-hdr-bg:      #4361a0;
+  --dbml-hdr-fg:      #ffffff;
+  --dbml-row-odd:     #f0f3fb;
+  --dbml-row-even:    #ffffff;
+  --dbml-pk-fg:       #b22222;
+  --dbml-pk-bg:       rgba(178,34,34,0.15);
+  --dbml-fk-fg:       #1558b0;
+  --dbml-fk-bg:       rgba(21,88,176,0.12);
+  --dbml-un-fg:       #9a5700;
+  --dbml-un-bg:       rgba(154,87,0,0.12);
+  --dbml-nn-fg:       #2e7d32;
+  --dbml-nn-bg:       rgba(46,125,50,0.12);
+  --dbml-field-fg:    #1a1a2e;
+  --dbml-type-fg:     #7f8c9e;
+  --dbml-edge:        #8ca0c0;
+  --dbml-edge-active: #3a6bc8;
+}
+
+.dbml-diagram.dbml-theme-dark {
+  --dbml-bg:          #1a1f2e;
+  --dbml-card-bg:     #252b3b;
+  --dbml-border:      #3a4560;
+  --dbml-shadow:      rgba(13,16,23,0.5);
+  --dbml-hdr-bg:      #2d4a8a;
+  --dbml-hdr-fg:      #e8eef8;
+  --dbml-row-odd:     #1f2535;
+  --dbml-row-even:    #252b3b;
+  --dbml-pk-fg:       #e07070;
+  --dbml-pk-bg:       rgba(220,80,80,0.2);
+  --dbml-fk-fg:       #74b0f4;
+  --dbml-fk-bg:       rgba(116,176,244,0.2);
+  --dbml-un-fg:       #e9a020;
+  --dbml-un-bg:       rgba(233,160,32,0.2);
+  --dbml-nn-fg:       #66bb6a;
+  --dbml-nn-bg:       rgba(102,187,106,0.2);
+  --dbml-field-fg:    #c8d0e4;
+  --dbml-type-fg:     #6a7a94;
+  --dbml-edge:        #4a6080;
+  --dbml-edge-active: #7ba8f0;
+}
+
+/* ── Field-row hover ────────────────────── */
+
+.dbml-diagram .dbml-field-row {
+  cursor: default;
+}
+.dbml-diagram .dbml-field-row:hover > rect,
+.dbml-diagram .dbml-field-row:hover > path {
+  filter: brightness(0.91);
+}
+
+/* ── Edge group: hover & click-to-select ── */
+
+.dbml-diagram .dbml-edge-group {
+  cursor: pointer;
+}
+
+/* stroke-width and opacity are presentation attributes in the SVG so CSS
+   selectors can override them here without needing !important. */
+.dbml-diagram .dbml-edge-group:hover .dbml-edge-path,
+.dbml-diagram .dbml-edge-group.dbml-edge-selected .dbml-edge-path {
+  stroke-width: 3;
+  opacity: 1;
+}
+
+/* ── Flow animation overlay ─────────────── */
+
+.dbml-diagram .dbml-edge-flow {
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+/* Reveal the dashed overlay on hover or when locked (selected) */
+.dbml-diagram .dbml-edge-group:hover .dbml-edge-flow,
+.dbml-diagram .dbml-edge-group.dbml-edge-selected .dbml-edge-flow {
+  opacity: 1;
+  animation: dbml-flow-fwd 0.7s linear infinite;
+}
+
+/* Reverse direction for edges where the "one" end is at the path tail */
+.dbml-diagram .dbml-edge-group[data-flow-dir="reverse"]:hover .dbml-edge-flow,
+.dbml-diagram .dbml-edge-group[data-flow-dir="reverse"].dbml-edge-selected .dbml-edge-flow {
+  animation: dbml-flow-rev 0.7s linear infinite;
+}
+
+/* ── Highlight-all mode (button toggle) ─── */
+
+.dbml-diagram.dbml-highlight-all .dbml-edge-path {
+  stroke-width: 3;
+  opacity: 1;
+}
+.dbml-diagram.dbml-highlight-all .dbml-edge-flow {
+  opacity: 1;
+  animation: dbml-flow-fwd 0.7s linear infinite;
+}
+.dbml-diagram.dbml-highlight-all .dbml-edge-group[data-flow-dir="reverse"] .dbml-edge-flow {
+  animation: dbml-flow-rev 0.7s linear infinite;
+}
+
+@keyframes dbml-flow-fwd {
+  from { stroke-dashoffset: 14; }
+  to   { stroke-dashoffset: 0;  }
+}
+@keyframes dbml-flow-rev {
+  from { stroke-dashoffset: 0;  }
+  to   { stroke-dashoffset: 14; }
+}
+
+/* ── Toggle button ──────────────────────── */
+
+.dbml-diagram .dbml-toggle-btn {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 20;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--dbml-border, #c0cce4);
+  border-radius: 6px;
+  background: var(--dbml-card-bg, #ffffff);
+  color: var(--dbml-edge, #8ca0c0);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.15s, background 0.15s, color 0.15s, border-color 0.15s;
+}
+.dbml-diagram .dbml-toggle-btn:hover {
+  opacity: 1;
+}
+.dbml-diagram .dbml-toggle-btn[aria-pressed="true"] {
+  background: var(--dbml-hdr-bg, #4361a0);
+  border-color: var(--dbml-hdr-bg, #4361a0);
+  color: var(--dbml-hdr-fg, #ffffff);
+  opacity: 1;
+}
+
+/* ── Detail level button ────────────────── */
+
+.dbml-diagram .dbml-detail-btn {
+  position: absolute;
+  top: 8px;
+  left: 44px;
+  z-index: 20;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--dbml-border, #c0cce4);
+  border-radius: 6px;
+  background: var(--dbml-card-bg, #ffffff);
+  color: var(--dbml-edge, #8ca0c0);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.7;
+  transition: opacity 0.15s, background 0.15s, color 0.15s, border-color 0.15s;
+}
+.dbml-diagram .dbml-detail-btn:hover {
+  opacity: 1;
+}
+.dbml-diagram .dbml-detail-btn.dbml-detail-active {
+  background: var(--dbml-hdr-bg, #4361a0);
+  border-color: var(--dbml-hdr-bg, #4361a0);
+  color: var(--dbml-hdr-fg, #ffffff);
+  opacity: 1;
+}
+
+/* ── Layout button ──────────────────────── */
+
+.dbml-diagram .dbml-layout-btn {
+  position: absolute;
+  top: 8px;
+  left: 80px;
+  z-index: 20;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--dbml-border, #c0cce4);
+  border-radius: 6px;
+  background: var(--dbml-card-bg, #ffffff);
+  color: var(--dbml-edge, #8ca0c0);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.7;
+  transition: opacity 0.15s, background 0.15s, color 0.15s, border-color 0.15s;
+}
+.dbml-diagram .dbml-layout-btn:hover {
+  opacity: 1;
+}
+.dbml-diagram .dbml-layout-btn.dbml-layout-active {
+  background: var(--dbml-hdr-bg, #4361a0);
+  border-color: var(--dbml-hdr-bg, #4361a0);
+  color: var(--dbml-hdr-fg, #ffffff);
+  opacity: 1;
+}
+
+/* ── Detail level: hide field rows ─────── */
+
+/* keys mode: hide regular (non-key) field rows */
+.dbml-diagram.dbml-level-keys .dbml-field-row[data-field-type="regular"] {
+  display: none;
+}
+/* names mode: hide all field rows */
+.dbml-diagram.dbml-level-names .dbml-field-row {
+  display: none;
+}
+</style>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./database-design.html">Database Design</a></li><li class="breadcrumb-item"><a href="./08-er-diagrams.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">SQL for Data Science</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-why-learn-sql.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Learn SQL?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-installing-postgresql.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting Up Your Environment</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./querying-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Querying Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-select-statements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic SELECT Statements</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-data-types.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types and Type Conversion</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./working-with-multiple-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with Multiple Tables</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-set-operations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./database-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-er-diagrams.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-normal-forms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-create-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./deploying-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploying Databases</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-supabase-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./etl-with-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ETL with Python</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-extracting-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#design-before-you-build" id="toc-design-before-you-build" class="nav-link active" data-scroll-target="#design-before-you-build"><span class="header-section-number">8.1</span> Design Before You Build</a></li>
+  <li><a href="#defining-entities-table-blocks" id="toc-defining-entities-table-blocks" class="nav-link" data-scroll-target="#defining-entities-table-blocks"><span class="header-section-number">8.2</span> Defining Entities: Table Blocks</a></li>
+  <li><a href="#defining-relationships-ref-declarations" id="toc-defining-relationships-ref-declarations" class="nav-link" data-scroll-target="#defining-relationships-ref-declarations"><span class="header-section-number">8.3</span> Defining Relationships: Ref Declarations</a>
+  <ul class="collapse">
+  <li><a href="#how-not-null-shapes-the-diagram" id="toc-how-not-null-shapes-the-diagram" class="nav-link" data-scroll-target="#how-not-null-shapes-the-diagram"><span class="header-section-number">8.3.1</span> How NOT NULL Shapes the Diagram</a></li>
+  </ul></li>
+  <li><a href="#reading-crows-foot-diagrams" id="toc-reading-crows-foot-diagrams" class="nav-link" data-scroll-target="#reading-crows-foot-diagrams"><span class="header-section-number">8.4</span> Reading Crow’s Foot Diagrams</a></li>
+  <li><a href="#the-orders-schema" id="toc-the-orders-schema" class="nav-link" data-scroll-target="#the-orders-schema"><span class="header-section-number">8.5</span> The Orders Schema</a></li>
+  <li><a href="#the-worldbank-schema" id="toc-the-worldbank-schema" class="nav-link" data-scroll-target="#the-worldbank-schema"><span class="header-section-number">8.6</span> The worldbank Schema</a></li>
+  <li><a href="#self-referencing-relationships" id="toc-self-referencing-relationships" class="nav-link" data-scroll-target="#self-referencing-relationships"><span class="header-section-number">8.7</span> Self-Referencing Relationships</a></li>
+  <li><a href="#dbml-and-dbdiagram.io" id="toc-dbml-and-dbdiagram.io" class="nav-link" data-scroll-target="#dbml-and-dbdiagram.io"><span class="header-section-number">8.8</span> DBML and dbdiagram.io</a></li>
+  <li><a href="#from-diagram-to-schema" id="toc-from-diagram-to-schema" class="nav-link" data-scroll-target="#from-diagram-to-schema"><span class="header-section-number">8.9</span> From Diagram to Schema</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">8.10</span> Exercises</a>
+  <ul class="collapse">
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">8.10.1</span> Reflection</a></li>
+  <li><a href="#design" id="toc-design" class="nav-link" data-scroll-target="#design"><span class="header-section-number">8.10.2</span> Design</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./database-design.html">Database Design</a></li><li class="breadcrumb-item"><a href="./08-er-diagrams.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="design-before-you-build" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="design-before-you-build"><span class="header-section-number">8.1</span> Design Before You Build</h2>
+<p>Writing SQL to create a database without first sketching its structure is like framing walls without a blueprint. The tables might hold together, but you will likely discover expensive problems later: a relationship missing, columns in the wrong place, a structure that forces the kind of redundancy the normalization chapter describes. Changes to a schema after data is loaded are slow and disruptive.</p>
+<p>An <strong>entity-relationship diagram</strong> (ER diagram, or ERD) is the standard tool for planning a database schema before writing a single line of SQL. It shows what entities exist, what attributes each entity has, and how entities relate to each other.</p>
+<p>This chapter uses <strong>DBML</strong> (Database Markup Language) to define schemas and <strong>crow’s foot notation</strong> to render the resulting diagrams. DBML is a concise, SQL-like language designed specifically for describing database structure. The diagrams in this chapter render directly in the book via the <code>quarto-dbml</code> extension; the same DBML code works identically in <a href="https://dbdiagram.io">dbdiagram.io</a>, a free web tool you will use for the exercises.</p>
+</section>
+<section id="defining-entities-table-blocks" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="defining-entities-table-blocks"><span class="header-section-number">8.2</span> Defining Entities: Table Blocks</h2>
+<p>In DBML, an <strong>entity</strong> is defined with a <code>Table</code> block. Each row inside the block defines one attribute (column), with the column name followed by its data type and any constraints enclosed in square brackets.</p>
+<div class="dbml-diagram dbml-level-full" data-layout="grid">
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="196" viewbox="0 0 320 196">
+  <rect class="dbml-bg" width="320" height="196" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
+  <defs>
+    <clippath id="dbml-cp-mtwgyq-0" clippathunits="userSpaceOnUse">
+      <rect x="40" y="78" width="240" height="78" rx="6" ry="6"></rect>
+    </clippath>
+  </defs>
+  <g class="dbml-edges">
+  </g>
+  <g class="dbml-tables">
+  <g class="dbml-table" data-table-name="customers" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-mtwgyq-0">
+    <rect class="dbml-card-shadow" x="43" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="40" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">customers</text>
+    <g clip-path="url(#dbml-cp-mtwgyq-0)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="59" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <text x="78" y="96" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">customer_id</text>
+        <text x="270" y="96" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="78" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="40" y="104" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="48" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="122" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">customer</text>
+        <text x="270" y="122" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="104" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="2">
+        <rect x="40" y="130" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="137" width="22" height="12" rx="3" style="fill:var(--dbml-un-bg,rgba(154,87,0,0.12));pointer-events:none;"></rect>
+        <text x="59" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-un-fg,#9a5700);pointer-events:none;">UN</text>
+        <rect x="74" y="137" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="85" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="104" y="148" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">email</text>
+        <text x="270" y="148" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="130" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  </g>
+</svg>
+</div>
+<p>The constraint annotations inside <code>[...]</code> map directly to SQL:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Annotation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>pk</code></td>
+<td>Primary key</td>
+</tr>
+<tr class="even">
+<td><code>increment</code></td>
+<td>Auto-incrementing surrogate (<code>SERIAL</code> in PostgreSQL)</td>
+</tr>
+<tr class="odd">
+<td><code>not null</code></td>
+<td>Column cannot be NULL</td>
+</tr>
+<tr class="even">
+<td><code>unique</code></td>
+<td>Values must be distinct across all rows</td>
+</tr>
+<tr class="odd">
+<td><code>default: value</code></td>
+<td>Default value when none is supplied</td>
+</tr>
+<tr class="even">
+<td><code>note: 'text'</code></td>
+<td>Documentation only; not enforced by the database</td>
+</tr>
+</tbody>
+</table>
+<p>A composite primary key cannot be declared inline. It goes in an <code>Indexes</code> block at the end of the table definition:</p>
+<div class="dbml-diagram dbml-level-full" data-layout="grid">
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="196" viewbox="0 0 320 196">
+  <rect class="dbml-bg" width="320" height="196" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
+  <defs>
+    <clippath id="dbml-cp-3koqgj-0" clippathunits="userSpaceOnUse">
+      <rect x="40" y="78" width="240" height="78" rx="6" ry="6"></rect>
+    </clippath>
+  </defs>
+  <g class="dbml-edges">
+  </g>
+  <g class="dbml-tables">
+  <g class="dbml-table" data-table-name="order_items" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="38" data-h-names="38" data-clip-id="dbml-cp-3koqgj-0">
+    <rect class="dbml-card-shadow" x="43" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="40" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">order_items</text>
+    <g clip-path="url(#dbml-cp-3koqgj-0)">
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="0">
+        <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="96" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">order_id</text>
+        <text x="270" y="96" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="78" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="40" y="104" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="48" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="122" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">product</text>
+        <text x="270" y="122" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="104" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="2">
+        <rect x="40" y="130" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="137" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="148" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">quantity</text>
+        <text x="270" y="148" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="130" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  </g>
+</svg>
+</div>
+</section>
+<section id="defining-relationships-ref-declarations" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="defining-relationships-ref-declarations"><span class="header-section-number">8.3</span> Defining Relationships: Ref Declarations</h2>
+<p>Relationships between entities are declared with <code>Ref</code> statements. Each <code>Ref</code> names two columns and the cardinality between them using one of four operators:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 40%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Cardinality</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>&gt;</code></td>
+<td>Many-to-one (left is the FK/many side)</td>
+<td><code>orders.customer_id &gt; customers.customer_id</code></td>
+</tr>
+<tr class="even">
+<td><code>&lt;</code></td>
+<td>One-to-many (right is the FK/many side)</td>
+<td><code>customers.customer_id &lt; orders.customer_id</code></td>
+</tr>
+<tr class="odd">
+<td><code>-</code></td>
+<td>One-to-one</td>
+<td><code>users.profile_id - profiles.id</code></td>
+</tr>
+<tr class="even">
+<td><code>&lt;&gt;</code></td>
+<td>Many-to-many</td>
+<td><code>students.id &lt;&gt; courses.id</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>&gt;</code> and <code>&lt;</code> are mirrors of each other. Most schemas use <code>&gt;</code> consistently so the FK column appears on the left: <code>FK_table.FK_column &gt; PK_table.PK_column</code>.</p>
+<section id="how-not-null-shapes-the-diagram" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="how-not-null-shapes-the-diagram"><span class="header-section-number">8.3.1</span> How NOT NULL Shapes the Diagram</h3>
+<p>The <code>Ref</code> operator sets cardinality (one vs.&nbsp;many). Participation (mandatory vs.&nbsp;optional) is determined by whether the FK column carries <code>[not null]</code>:</p>
+<ul>
+<li>A FK column declared <code>[not null]</code> means every child row must have a parent. The crow’s foot rendering shows a mandatory symbol (a bar, <code>|</code>) at the parent end.</li>
+<li>A nullable FK column means the relationship is optional. The rendering shows an optional symbol (a circle, <code>o</code>) at the parent end.</li>
+</ul>
+<p>The many end almost always shows zero-or-many (crow’s foot with a circle), because relational constraints generally cannot enforce “at least one child row must exist.” That rule lives in application logic, not in the schema itself.</p>
+</section>
+</section>
+<section id="reading-crows-foot-diagrams" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="reading-crows-foot-diagrams"><span class="header-section-number">8.4</span> Reading Crow’s Foot Diagrams</h2>
+<p>Each end of a relationship line in a crow’s foot diagram carries two symbols: one for cardinality (the maximum) and one for participation (the minimum).</p>
+<p><strong>Cardinality symbols:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Single bar <code>\|</code></td>
+<td>One (no more than one)</td>
+</tr>
+<tr class="even">
+<td>Crow’s foot <code>{</code></td>
+<td>Many (no upper limit)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Participation symbols:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Single bar <code>\|</code></td>
+<td>Mandatory: at least one must exist</td>
+</tr>
+<tr class="even">
+<td>Circle <code>o</code></td>
+<td>Optional: zero is permitted</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The four practical combinations:</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Symbols at one end</th>
+<th>Reads as</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>\|\|</code></td>
+<td>Exactly one</td>
+</tr>
+<tr class="even">
+<td><code>o\|</code></td>
+<td>Zero or one</td>
+</tr>
+<tr class="odd">
+<td><code>\|{</code></td>
+<td>One or many</td>
+</tr>
+<tr class="even">
+<td><code>o{</code></td>
+<td>Zero or many</td>
+</tr>
+</tbody>
+</table>
+<p>To read a relationship, start at one entity and read toward the other. The symbols at the far end answer the question “how many of that entity can relate to one of mine?”</p>
+</section>
+<section id="the-orders-schema" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="the-orders-schema"><span class="header-section-number">8.5</span> The Orders Schema</h2>
+<p>Here is the complete orders schema from the normalization chapter expressed in DBML. Notice how closely it resembles the <code>CREATE TABLE</code> statements you will write in the next chapter.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode dbml code-with-copy"><code class="sourceCode dbml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">Table</span> customers {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  customer_id <span class="dt">int</span>     [<span class="at">pk</span>, <span class="at">increment</span>]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  customer    <span class="dt">varchar</span> [<span class="at">not</span> <span class="at">null</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  email       <span class="dt">varchar</span> [<span class="at">not</span> <span class="at">null</span>, <span class="at">unique</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">Table</span> orders {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  order_id    <span class="dt">int</span>  [<span class="at">pk</span>, <span class="at">increment</span>]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  customer_id <span class="dt">int</span>  [<span class="at">not</span> <span class="at">null</span>]</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  order_date  <span class="dt">date</span> [<span class="at">not</span> <span class="at">null</span>, <span class="at">default</span><span class="op">:</span> <span class="st">`now()`</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">Table</span> order_items {</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  order_id <span class="dt">int</span>     [<span class="at">not</span> <span class="at">null</span>]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  product  <span class="dt">varchar</span> [<span class="at">not</span> <span class="at">null</span>]</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  quantity <span class="dt">int</span>     [<span class="at">not</span> <span class="at">null</span>, <span class="at">default</span><span class="op">:</span> 1]</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Indexes</span> {</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    (order_id, product) [<span class="at">pk</span>]</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="kw">Ref</span><span class="op">:</span> orders.customer_id <span class="op">&gt;</span> customers.customer_id</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="kw">Ref</span><span class="op">:</span> order_items.order_id <span class="op">&gt;</span> orders.order_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="dbml-diagram dbml-theme-light dbml-level-full" data-layout="grid">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="372" viewbox="0 0 640 372">
+  <rect class="dbml-bg" width="640" height="372" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
+  <defs>
+    <clippath id="dbml-cp-n17lfu-0" clippathunits="userSpaceOnUse">
+      <rect x="40" y="78" width="240" height="78" rx="6" ry="6"></rect>
+    </clippath>
+    <clippath id="dbml-cp-n17lfu-1" clippathunits="userSpaceOnUse">
+      <rect x="360" y="78" width="240" height="78" rx="6" ry="6"></rect>
+    </clippath>
+    <clippath id="dbml-cp-n17lfu-2" clippathunits="userSpaceOnUse">
+      <rect x="40" y="254" width="240" height="78" rx="6" ry="6"></rect>
+    </clippath>
+  </defs>
+  <g class="dbml-edges">
+  <g class="dbml-edge-group" data-flow-dir="reverse" data-ex1="360" data-ey1="117" data-ex2="280" data-ey2="91" data-t1="orders" data-t2="customers" data-fi1="1" data-fi2="0" data-routing="rounded" data-go-right="0" data-e1-rel="*" data-e2-rel="1" data-notation="crowsfoot" data-mandatory="1">
+    <path class="dbml-edge-path" d="M 360 117 H 330 Q 320 117 320 107 V 101 Q 320 91 310 91 H 280" stroke-width="1.5" fill="none" opacity="0.85" style="stroke:var(--dbml-edge,#8ca0c0);"></path>
+    <path class="dbml-edge-flow" d="M 360 117 H 330 Q 320 117 320 107 V 101 Q 320 91 310 91 H 280" stroke-width="2" fill="none" stroke-dasharray="8 6" opacity="0" pointer-events="none" style="stroke:var(--dbml-edge-active,#3a6bc8);"></path>
+    <path class="dbml-edge-hit" d="M 360 117 H 330 Q 320 117 320 107 V 101 Q 320 91 310 91 H 280" stroke-width="12" fill="none" stroke="transparent"></path>
+    <g class="dbml-marker-end-1">
+      <line x1="356" y1="110" x2="356" y2="124" style="stroke:var(--dbml-edge,#8ca0c0);stroke-width:1.5;stroke-linecap:round;fill:none;"></line><line x1="346" y1="117" x2="353" y2="110" style="stroke:var(--dbml-edge,#8ca0c0);stroke-width:1.5;stroke-linecap:round;fill:none;"></line><line x1="346" y1="117" x2="353" y2="124" style="stroke:var(--dbml-edge,#8ca0c0);stroke-width:1.5;stroke-linecap:round;fill:none;"></line>
+    </g>
+    <g class="dbml-marker-end-2">
+      <line x1="284" y1="84" x2="284" y2="98" style="stroke:var(--dbml-edge,#8ca0c0);stroke-width:1.5;stroke-linecap:round;fill:none;"></line><line x1="292" y1="84" x2="292" y2="98" style="stroke:var(--dbml-edge,#8ca0c0);stroke-width:1.5;stroke-linecap:round;fill:none;"></line>
+    </g>
+  </g>
+  <g class="dbml-edge-group" data-flow-dir="reverse" data-ex1="280" data-ey1="267" data-ex2="360" data-ey2="91" data-t1="order_items" data-t2="orders" data-fi1="0" data-fi2="0" data-routing="rounded" data-go-right="1" data-e1-rel="*" data-e2-rel="1" data-notation="crowsfoot" data-mandatory="1">
+    <path class="dbml-edge-path" d="M 280 267 H 310 Q 320 267 320 257 V 101 Q 320 91 330 91 H 360" stroke-width="1.5" fill="none" opacity="0.85" style="stroke:var(--dbml-edge,#8ca0c0);"></path>
+    <path class="dbml-edge-flow" d="M 280 267 H 310 Q 320 267 320 257 V 101 Q 320 91 330 91 H 360" stroke-width="2" fill="none" stroke-dasharray="8 6" opacity="0" pointer-events="none" style="stroke:var(--dbml-edge-active,#3a6bc8);"></path>
+    <path class="dbml-edge-hit" d="M 280 267 H 310 Q 320 267 320 257 V 101 Q 320 91 330 91 H 360" stroke-width="12" fill="none" stroke="transparent"></path>
+    <g class="dbml-marker-end-1">
+      <line x1="284" y1="260" x2="284" y2="274" style="stroke:var(--dbml-edge,#8ca0c0);stroke-width:1.5;stroke-linecap:round;fill:none;"></line><line x1="294" y1="267" x2="287" y2="260" style="stroke:var(--dbml-edge,#8ca0c0);stroke-width:1.5;stroke-linecap:round;fill:none;"></line><line x1="294" y1="267" x2="287" y2="274" style="stroke:var(--dbml-edge,#8ca0c0);stroke-width:1.5;stroke-linecap:round;fill:none;"></line>
+    </g>
+    <g class="dbml-marker-end-2">
+      <line x1="356" y1="84" x2="356" y2="98" style="stroke:var(--dbml-edge,#8ca0c0);stroke-width:1.5;stroke-linecap:round;fill:none;"></line><line x1="348" y1="84" x2="348" y2="98" style="stroke:var(--dbml-edge,#8ca0c0);stroke-width:1.5;stroke-linecap:round;fill:none;"></line>
+    </g>
+  </g>
+  </g>
+  <g class="dbml-tables">
+  <g class="dbml-table" data-table-name="customers" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-n17lfu-0">
+    <rect class="dbml-card-shadow" x="43" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="40" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">customers</text>
+    <g clip-path="url(#dbml-cp-n17lfu-0)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="59" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <rect x="74" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="85" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="104" y="96" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">customer_id</text>
+        <text x="270" y="96" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="78" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="40" y="104" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="48" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="122" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">customer</text>
+        <text x="270" y="122" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="104" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="2">
+        <rect x="40" y="130" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="137" width="22" height="12" rx="3" style="fill:var(--dbml-un-bg,rgba(154,87,0,0.12));pointer-events:none;"></rect>
+        <text x="59" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-un-fg,#9a5700);pointer-events:none;">UN</text>
+        <rect x="74" y="137" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="85" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="104" y="148" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">email</text>
+        <text x="270" y="148" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="130" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  <g class="dbml-table" data-table-name="orders" data-x="360" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="90" data-h-names="38" data-clip-id="dbml-cp-n17lfu-1">
+    <rect class="dbml-card-shadow" x="363" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="360" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="360" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="360" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="480" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">orders</text>
+    <g clip-path="url(#dbml-cp-n17lfu-1)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="360" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="368" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="379" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <rect x="394" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="405" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="424" y="96" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">order_id</text>
+        <text x="590" y="96" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="360" y="78" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="fk" data-orig-index="1">
+        <rect x="360" y="104" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="368" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="379" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <rect x="394" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="405" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="424" y="122" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">customer_id</text>
+        <text x="590" y="122" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="360" y="104" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="2">
+        <rect x="360" y="130" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="368" y="137" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="379" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="398" y="148" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">order_date</text>
+        <text x="590" y="148" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">date</text>
+        <rect x="360" y="130" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  <g class="dbml-table" data-table-name="order_items" data-x="40" data-y="216" data-base-y="254" data-header-y="235" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-n17lfu-2">
+    <rect class="dbml-card-shadow" x="43" y="219" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="40" y="216" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="40" y="216" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="40" y="248" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="160" y="241" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">order_items</text>
+    <g clip-path="url(#dbml-cp-n17lfu-2)">
+      <g class="dbml-field-row" data-field-type="fk" data-orig-index="0">
+        <rect x="40" y="254" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="261" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="59" y="272" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <rect x="74" y="261" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="85" y="272" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="104" y="272" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">order_id</text>
+        <text x="270" y="272" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="254" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="40" y="280" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="48" y="287" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="298" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="298" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">product</text>
+        <text x="270" y="298" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="280" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="2">
+        <rect x="40" y="306" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="313" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="324" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="324" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">quantity</text>
+        <text x="270" y="324" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="306" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  </g>
+</svg>
+</div>
+<p>Two things to observe in the rendered diagram:</p>
+<p><strong>CUSTOMERS to ORDERS:</strong> <code>orders.customer_id</code> is <code>[not null]</code>, so every order must belong to a customer. The diagram shows a mandatory symbol at the <code>CUSTOMERS</code> end. The <code>ORDERS</code> end shows zero-or-many: a customer can exist without any orders.</p>
+<p><strong>ORDERS to ORDER_ITEMS:</strong> <code>order_items.order_id</code> is <code>[not null]</code>, so every line item must belong to an order. The diagram shows a mandatory symbol at the <code>ORDERS</code> end. The <code>ORDER_ITEMS</code> end shows zero-or-many.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The normalization chapter described the <code>ORDER_ITEMS</code> side as “one or many” because an order with no items is not a meaningful business object. DBML and SQL constraints cannot enforce this at the schema level. The zero-or-many rendering is technically correct for what the schema can guarantee; the “at least one” rule lives in application logic.</p>
+</div>
+</div>
+</section>
+<section id="the-worldbank-schema" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="the-worldbank-schema"><span class="header-section-number">8.6</span> The worldbank Schema</h2>
+<p>The <code>worldbank</code> database from the joins chapter has a richer structure. <code>OBSERVATIONS</code> is a junction table that resolves a many-to-many relationship between <code>COUNTRIES</code> and <code>INDICATORS</code>:</p>
+<div class="dbml-diagram dbml-level-full" data-layout="grid">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="424" viewbox="0 0 960 424">
+  <rect class="dbml-bg" width="960" height="424" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
+  <defs>
+    <clippath id="dbml-cp-upqpfg-0" clippathunits="userSpaceOnUse">
+      <rect x="40" y="78" width="240" height="52" rx="6" ry="6"></rect>
+    </clippath>
+    <clippath id="dbml-cp-upqpfg-1" clippathunits="userSpaceOnUse">
+      <rect x="360" y="78" width="240" height="52" rx="6" ry="6"></rect>
+    </clippath>
+    <clippath id="dbml-cp-upqpfg-2" clippathunits="userSpaceOnUse">
+      <rect x="680" y="78" width="240" height="104" rx="6" ry="6"></rect>
+    </clippath>
+    <clippath id="dbml-cp-upqpfg-3" clippathunits="userSpaceOnUse">
+      <rect x="40" y="280" width="240" height="52" rx="6" ry="6"></rect>
+    </clippath>
+    <clippath id="dbml-cp-upqpfg-4" clippathunits="userSpaceOnUse">
+      <rect x="360" y="280" width="240" height="104" rx="6" ry="6"></rect>
+    </clippath>
+  </defs>
+  <g class="dbml-edges">
+  <g class="dbml-edge-group" data-flow-dir="reverse" data-ex1="680" data-ey1="143" data-ex2="280" data-ey2="91" data-t1="countries" data-t2="regions" data-fi1="2" data-fi2="0" data-routing="smooth" data-go-right="0" data-e1-rel="*" data-e2-rel="1" data-notation="labels" data-mandatory="1">
+    <path class="dbml-edge-path" d="M 680 143 C 520 143 440 91 280 91" stroke-width="1.5" fill="none" opacity="0.85" style="stroke:var(--dbml-edge,#8ca0c0);"></path>
+    <path class="dbml-edge-flow" d="M 680 143 C 520 143 440 91 280 91" stroke-width="2" fill="none" stroke-dasharray="8 6" opacity="0" pointer-events="none" style="stroke:var(--dbml-edge-active,#3a6bc8);"></path>
+    <path class="dbml-edge-hit" d="M 680 143 C 520 143 440 91 280 91" stroke-width="12" fill="none" stroke="transparent"></path>
+    <g class="dbml-marker-end-1">
+      <text x="672" y="138" text-anchor="end" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">N</text>
+    </g>
+    <g class="dbml-marker-end-2">
+      <text x="288" y="86" text-anchor="start" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">1</text>
+    </g>
+  </g>
+  <g class="dbml-edge-group" data-flow-dir="reverse" data-ex1="680" data-ey1="169" data-ex2="600" data-ey2="91" data-t1="countries" data-t2="income_groups" data-fi1="3" data-fi2="0" data-routing="smooth" data-go-right="0" data-e1-rel="*" data-e2-rel="1" data-notation="labels" data-mandatory="0">
+    <path class="dbml-edge-path" d="M 680 169 C 640 169 640 91 600 91" stroke-width="1.5" fill="none" opacity="0.85" style="stroke:var(--dbml-edge,#8ca0c0);"></path>
+    <path class="dbml-edge-flow" d="M 680 169 C 640 169 640 91 600 91" stroke-width="2" fill="none" stroke-dasharray="8 6" opacity="0" pointer-events="none" style="stroke:var(--dbml-edge-active,#3a6bc8);"></path>
+    <path class="dbml-edge-hit" d="M 680 169 C 640 169 640 91 600 91" stroke-width="12" fill="none" stroke="transparent"></path>
+    <g class="dbml-marker-end-1">
+      <text x="672" y="164" text-anchor="end" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">N</text>
+    </g>
+    <g class="dbml-marker-end-2">
+      <text x="608" y="86" text-anchor="start" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">1</text>
+    </g>
+  </g>
+  <g class="dbml-edge-group" data-flow-dir="reverse" data-ex1="600" data-ey1="293" data-ex2="680" data-ey2="91" data-t1="observations" data-t2="countries" data-fi1="0" data-fi2="0" data-routing="smooth" data-go-right="1" data-e1-rel="*" data-e2-rel="1" data-notation="labels" data-mandatory="1">
+    <path class="dbml-edge-path" d="M 600 293 C 640 293 640 91 680 91" stroke-width="1.5" fill="none" opacity="0.85" style="stroke:var(--dbml-edge,#8ca0c0);"></path>
+    <path class="dbml-edge-flow" d="M 600 293 C 640 293 640 91 680 91" stroke-width="2" fill="none" stroke-dasharray="8 6" opacity="0" pointer-events="none" style="stroke:var(--dbml-edge-active,#3a6bc8);"></path>
+    <path class="dbml-edge-hit" d="M 600 293 C 640 293 640 91 680 91" stroke-width="12" fill="none" stroke="transparent"></path>
+    <g class="dbml-marker-end-1">
+      <text x="608" y="288" text-anchor="start" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">N</text>
+    </g>
+    <g class="dbml-marker-end-2">
+      <text x="668" y="86" text-anchor="end" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">1</text>
+    </g>
+  </g>
+  <g class="dbml-edge-group" data-flow-dir="reverse" data-ex1="360" data-ey1="319" data-ex2="280" data-ey2="293" data-t1="observations" data-t2="indicators" data-fi1="1" data-fi2="0" data-routing="smooth" data-go-right="0" data-e1-rel="*" data-e2-rel="1" data-notation="labels" data-mandatory="1">
+    <path class="dbml-edge-path" d="M 360 319 C 320 319 320 293 280 293" stroke-width="1.5" fill="none" opacity="0.85" style="stroke:var(--dbml-edge,#8ca0c0);"></path>
+    <path class="dbml-edge-flow" d="M 360 319 C 320 319 320 293 280 293" stroke-width="2" fill="none" stroke-dasharray="8 6" opacity="0" pointer-events="none" style="stroke:var(--dbml-edge-active,#3a6bc8);"></path>
+    <path class="dbml-edge-hit" d="M 360 319 C 320 319 320 293 280 293" stroke-width="12" fill="none" stroke="transparent"></path>
+    <g class="dbml-marker-end-1">
+      <text x="352" y="314" text-anchor="end" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">N</text>
+    </g>
+    <g class="dbml-marker-end-2">
+      <text x="288" y="288" text-anchor="start" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">1</text>
+    </g>
+  </g>
+  </g>
+  <g class="dbml-tables">
+  <g class="dbml-table" data-table-name="regions" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="90" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-upqpfg-0">
+    <rect class="dbml-card-shadow" x="43" y="43" width="240" height="90" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="40" y="40" width="240" height="90" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">regions</text>
+    <g clip-path="url(#dbml-cp-upqpfg-0)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="59" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <rect x="74" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="85" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="104" y="96" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">region_code</text>
+        <text x="270" y="96" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="78" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="40" y="104" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="48" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="122" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">region_name</text>
+        <text x="270" y="122" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="104" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  <g class="dbml-table" data-table-name="income_groups" data-x="360" data-y="40" data-base-y="78" data-header-y="59" data-h-full="90" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-upqpfg-1">
+    <rect class="dbml-card-shadow" x="363" y="43" width="240" height="90" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="360" y="40" width="240" height="90" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="360" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="360" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="480" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">income_groups</text>
+    <g clip-path="url(#dbml-cp-upqpfg-1)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="360" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="368" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="379" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <rect x="394" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="405" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="424" y="96" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">income_code</text>
+        <text x="590" y="96" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="360" y="78" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="360" y="104" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="368" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="379" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="398" y="122" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">income_name</text>
+        <text x="590" y="122" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="360" y="104" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  <g class="dbml-table" data-table-name="countries" data-x="680" data-y="40" data-base-y="78" data-header-y="59" data-h-full="142" data-h-keys="116" data-h-names="38" data-clip-id="dbml-cp-upqpfg-2">
+    <rect class="dbml-card-shadow" x="683" y="43" width="240" height="142" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="680" y="40" width="240" height="142" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="680" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="680" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="800" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">countries</text>
+    <g clip-path="url(#dbml-cp-upqpfg-2)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="680" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="688" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="699" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <rect x="714" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="725" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="744" y="96" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">country_code</text>
+        <text x="910" y="96" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="680" y="78" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="680" y="104" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="688" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="699" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="718" y="122" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">country_name</text>
+        <text x="910" y="122" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="680" y="104" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="fk" data-orig-index="2">
+        <rect x="680" y="130" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="688" y="137" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="699" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <rect x="714" y="137" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="725" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="744" y="148" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">region_code</text>
+        <text x="910" y="148" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="680" y="130" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="fk" data-orig-index="3">
+        <rect x="680" y="156" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="688" y="163" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="699" y="174" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="718" y="174" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">income_code</text>
+        <text x="910" y="174" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="680" y="156" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  <g class="dbml-table" data-table-name="indicators" data-x="40" data-y="242" data-base-y="280" data-header-y="261" data-h-full="90" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-upqpfg-3">
+    <rect class="dbml-card-shadow" x="43" y="245" width="240" height="90" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="40" y="242" width="240" height="90" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="40" y="242" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="40" y="274" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="160" y="267" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">indicators</text>
+    <g clip-path="url(#dbml-cp-upqpfg-3)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="40" y="280" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="287" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="59" y="298" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <rect x="74" y="287" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="85" y="298" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="104" y="298" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">indicator_code</text>
+        <text x="270" y="298" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="280" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="40" y="306" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="48" y="313" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="324" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="324" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">indicator_name</text>
+        <text x="270" y="324" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="306" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  <g class="dbml-table" data-table-name="observations" data-x="360" data-y="242" data-base-y="280" data-header-y="261" data-h-full="142" data-h-keys="90" data-h-names="38" data-clip-id="dbml-cp-upqpfg-4">
+    <rect class="dbml-card-shadow" x="363" y="245" width="240" height="142" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="360" y="242" width="240" height="142" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="360" y="242" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="360" y="274" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="480" y="267" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">observations</text>
+    <g clip-path="url(#dbml-cp-upqpfg-4)">
+      <g class="dbml-field-row" data-field-type="fk" data-orig-index="0">
+        <rect x="360" y="280" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="368" y="287" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="379" y="298" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <rect x="394" y="287" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="405" y="298" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="424" y="298" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">country_code</text>
+        <text x="590" y="298" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="360" y="280" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="fk" data-orig-index="1">
+        <rect x="360" y="306" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="368" y="313" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="379" y="324" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <rect x="394" y="313" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="405" y="324" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="424" y="324" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">indicator_code</text>
+        <text x="590" y="324" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="360" y="306" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="2">
+        <rect x="360" y="332" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="368" y="339" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="379" y="350" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="398" y="350" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">year</text>
+        <text x="590" y="350" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="360" y="332" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="3">
+        <rect x="360" y="358" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <text x="372" y="376" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">value</text>
+        <text x="590" y="376" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">float</text>
+        <rect x="360" y="358" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  </g>
+</svg>
+</div>
+<p><code>OBSERVATIONS</code> sits at the center, connected to both <code>COUNTRIES</code> and <code>INDICATORS</code>. Each observation belongs to exactly one country and exactly one indicator, while each country and indicator can have many observations.</p>
+<p>Notice that <code>countries.income_code</code> has no <code>[not null]</code> annotation. Some countries in the dataset have no income classification. The diagram renders an optional symbol (circle) on the <code>INCOME_GROUPS</code> end of that relationship.</p>
+</section>
+<section id="self-referencing-relationships" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="self-referencing-relationships"><span class="header-section-number">8.7</span> Self-Referencing Relationships</h2>
+<p>A table can reference itself. The employee hierarchy example from the previous chapter uses a <code>manager_id</code> column that points back to <code>employee_id</code> in the same table:</p>
+<div class="dbml-diagram dbml-level-full" data-layout="grid">
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="196" viewbox="0 0 320 196">
+  <rect class="dbml-bg" width="320" height="196" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
+  <defs>
+    <clippath id="dbml-cp-auoe9r-0" clippathunits="userSpaceOnUse">
+      <rect x="40" y="78" width="240" height="78" rx="6" ry="6"></rect>
+    </clippath>
+  </defs>
+  <g class="dbml-edges">
+  <g class="dbml-edge-group" data-flow-dir="reverse" data-ex1="280" data-ey1="143" data-ex2="40" data-ey2="91" data-t1="employees" data-t2="employees" data-fi1="2" data-fi2="0" data-routing="smooth" data-go-right="1" data-e1-rel="*" data-e2-rel="1" data-notation="labels" data-mandatory="0">
+    <path class="dbml-edge-path" d="M 280 143 C 376 143 -56 91 40 91" stroke-width="1.5" fill="none" opacity="0.85" style="stroke:var(--dbml-edge,#8ca0c0);"></path>
+    <path class="dbml-edge-flow" d="M 280 143 C 376 143 -56 91 40 91" stroke-width="2" fill="none" stroke-dasharray="8 6" opacity="0" pointer-events="none" style="stroke:var(--dbml-edge-active,#3a6bc8);"></path>
+    <path class="dbml-edge-hit" d="M 280 143 C 376 143 -56 91 40 91" stroke-width="12" fill="none" stroke="transparent"></path>
+    <g class="dbml-marker-end-1">
+      <text x="288" y="138" text-anchor="start" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">N</text>
+    </g>
+    <g class="dbml-marker-end-2">
+      <text x="28" y="86" text-anchor="end" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">1</text>
+    </g>
+  </g>
+  </g>
+  <g class="dbml-tables">
+  <g class="dbml-table" data-table-name="employees" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="90" data-h-names="38" data-clip-id="dbml-cp-auoe9r-0">
+    <rect class="dbml-card-shadow" x="43" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="40" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">employees</text>
+    <g clip-path="url(#dbml-cp-auoe9r-0)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="59" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <rect x="74" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="85" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="104" y="96" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">employee_id</text>
+        <text x="270" y="96" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="78" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="40" y="104" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="48" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="122" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">name</text>
+        <text x="270" y="122" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="104" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="fk" data-orig-index="2">
+        <rect x="40" y="130" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="137" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="59" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="78" y="148" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">manager_id</text>
+        <text x="270" y="148" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="130" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  </g>
+</svg>
+</div>
+<p><code>manager_id</code> has no <code>[not null]</code>, which is intentional: the person at the top of the hierarchy has no manager, so their <code>manager_id</code> is NULL. The optional symbol at the parent end reflects this.</p>
+</section>
+<section id="dbml-and-dbdiagram.io" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="dbml-and-dbdiagram.io"><span class="header-section-number">8.8</span> DBML and dbdiagram.io</h2>
+<p>The DBML you write in this book renders identically in <a href="https://dbdiagram.io">dbdiagram.io</a>, a free browser-based tool. To use it:</p>
+<ol type="1">
+<li>Go to <a href="https://dbdiagram.io">dbdiagram.io</a> and open the editor (no account required for basic use).</li>
+<li>Paste your DBML into the left panel.</li>
+<li>The diagram renders immediately on the right.</li>
+<li>You can drag tables to arrange the layout, export to PNG or PDF, and share a link.</li>
+</ol>
+<p>dbdiagram.io is the tool to use for the exercises below and for designing schemas in your own work. Write the DBML first, render it to check the structure, then iterate before writing any SQL.</p>
+</section>
+<section id="from-diagram-to-schema" class="level2" data-number="8.9">
+<h2 data-number="8.9" class="anchored" data-anchor-id="from-diagram-to-schema"><span class="header-section-number">8.9</span> From Diagram to Schema</h2>
+<p>An ER diagram and a <code>CREATE TABLE</code> script are two representations of the same design. DBML makes the translation almost mechanical:</p>
+<ul>
+<li>Each <code>Table</code> block becomes a <code>CREATE TABLE</code> statement.</li>
+<li>Each column annotation (<code>[not null]</code>, <code>[unique]</code>, <code>[pk]</code>, <code>[default: ...]</code>) becomes the corresponding SQL constraint.</li>
+<li>Each <code>Ref</code> becomes a <code>FOREIGN KEY</code> declaration.</li>
+<li>The <code>Indexes { (col1, col2) [pk] }</code> block becomes a table-level <code>PRIMARY KEY (col1, col2)</code>.</li>
+</ul>
+<p>The next chapter walks through this translation in full.</p>
+</section>
+<section id="exercises" class="level2" data-number="8.10">
+<h2 data-number="8.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">8.10</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="8.10.1">
+<h3 data-number="8.10.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">8.10.1</span> Reflection</h3>
+<p><strong>1.</strong> In DBML, what is the difference between a <code>&gt;</code> and a <code>&lt;</code> in a <code>Ref</code> declaration? Are they interchangeable, or do they mean different things?</p>
+<hr>
+<p><strong>2.</strong> A <code>Ref</code> line alone tells you the cardinality of a relationship. What additional information tells you whether participation is mandatory or optional, and where does that information live in the DBML definition?</p>
+<hr>
+<p><strong>3.</strong> The worldbank schema leaves <code>countries.income_code</code> nullable (no <code>[not null]</code>). What does this mean for the rendered diagram, and what real-world fact does this model?</p>
+<hr>
+</section>
+<section id="design" class="level3" data-number="8.10.2">
+<h3 data-number="8.10.2" class="anchored" data-anchor-id="design"><span class="header-section-number">8.10.2</span> Design</h3>
+<p><strong>4.</strong> A regional library system tracks books, borrowers, and loans. The business rules are:</p>
+<ul>
+<li>Each book has a title, an ISBN (unique), and an author.</li>
+<li>Each borrower has a name and a library card number (unique).</li>
+<li>A loan records which borrower checked out which book, along with the checkout date and due date.</li>
+<li>The same book can be loaned to different borrowers at different times; a borrower can have multiple active loans.</li>
+</ul>
+<p>Write the DBML for this schema. Include all appropriate constraint annotations. Paste it into dbdiagram.io to verify the diagram, then copy the final DBML here.</p>
+<hr>
+<p><strong>5.</strong> The following diagram is rendered from a DBML definition. Read it and answer the questions below.</p>
+<div class="dbml-diagram dbml-level-full" data-layout="grid">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="424" viewbox="0 0 640 424">
+  <rect class="dbml-bg" width="640" height="424" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
+  <defs>
+    <clippath id="dbml-cp-6cmit3-0" clippathunits="userSpaceOnUse">
+      <rect x="40" y="78" width="240" height="78" rx="6" ry="6"></rect>
+    </clippath>
+    <clippath id="dbml-cp-6cmit3-1" clippathunits="userSpaceOnUse">
+      <rect x="360" y="78" width="240" height="78" rx="6" ry="6"></rect>
+    </clippath>
+    <clippath id="dbml-cp-6cmit3-2" clippathunits="userSpaceOnUse">
+      <rect x="40" y="254" width="240" height="130" rx="6" ry="6"></rect>
+    </clippath>
+  </defs>
+  <g class="dbml-edges">
+  <g class="dbml-edge-group" data-flow-dir="reverse" data-ex1="280" data-ey1="293" data-ex2="40" data-ey2="91" data-t1="appointments" data-t2="doctors" data-fi1="1" data-fi2="0" data-routing="smooth" data-go-right="1" data-e1-rel="*" data-e2-rel="1" data-notation="labels" data-mandatory="1">
+    <path class="dbml-edge-path" d="M 280 293 C 376 293 -56 91 40 91" stroke-width="1.5" fill="none" opacity="0.85" style="stroke:var(--dbml-edge,#8ca0c0);"></path>
+    <path class="dbml-edge-flow" d="M 280 293 C 376 293 -56 91 40 91" stroke-width="2" fill="none" stroke-dasharray="8 6" opacity="0" pointer-events="none" style="stroke:var(--dbml-edge-active,#3a6bc8);"></path>
+    <path class="dbml-edge-hit" d="M 280 293 C 376 293 -56 91 40 91" stroke-width="12" fill="none" stroke="transparent"></path>
+    <g class="dbml-marker-end-1">
+      <text x="288" y="288" text-anchor="start" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">N</text>
+    </g>
+    <g class="dbml-marker-end-2">
+      <text x="28" y="86" text-anchor="end" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">1</text>
+    </g>
+  </g>
+  <g class="dbml-edge-group" data-flow-dir="reverse" data-ex1="280" data-ey1="319" data-ex2="360" data-ey2="91" data-t1="appointments" data-t2="patients" data-fi1="2" data-fi2="0" data-routing="smooth" data-go-right="1" data-e1-rel="*" data-e2-rel="1" data-notation="labels" data-mandatory="1">
+    <path class="dbml-edge-path" d="M 280 319 C 320 319 320 91 360 91" stroke-width="1.5" fill="none" opacity="0.85" style="stroke:var(--dbml-edge,#8ca0c0);"></path>
+    <path class="dbml-edge-flow" d="M 280 319 C 320 319 320 91 360 91" stroke-width="2" fill="none" stroke-dasharray="8 6" opacity="0" pointer-events="none" style="stroke:var(--dbml-edge-active,#3a6bc8);"></path>
+    <path class="dbml-edge-hit" d="M 280 319 C 320 319 320 91 360 91" stroke-width="12" fill="none" stroke="transparent"></path>
+    <g class="dbml-marker-end-1">
+      <text x="288" y="314" text-anchor="start" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">N</text>
+    </g>
+    <g class="dbml-marker-end-2">
+      <text x="348" y="86" text-anchor="end" style="font-family:sans-serif;font-size:10px;font-weight:600;fill:var(--dbml-edge,#8ca0c0);">1</text>
+    </g>
+  </g>
+  </g>
+  <g class="dbml-tables">
+  <g class="dbml-table" data-table-name="doctors" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-6cmit3-0">
+    <rect class="dbml-card-shadow" x="43" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="40" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">doctors</text>
+    <g clip-path="url(#dbml-cp-6cmit3-0)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="59" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <rect x="74" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="85" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="104" y="96" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">doctor_id</text>
+        <text x="270" y="96" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="78" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="40" y="104" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="48" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="122" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">name</text>
+        <text x="270" y="122" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="104" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="2">
+        <rect x="40" y="130" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <text x="52" y="148" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">specialty</text>
+        <text x="270" y="148" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="40" y="130" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  <g class="dbml-table" data-table-name="patients" data-x="360" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-6cmit3-1">
+    <rect class="dbml-card-shadow" x="363" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="360" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="360" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="360" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="480" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">patients</text>
+    <g clip-path="url(#dbml-cp-6cmit3-1)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="360" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="368" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="379" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <rect x="394" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="405" y="96" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <text x="424" y="96" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">patient_id</text>
+        <text x="590" y="96" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="360" y="78" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="1">
+        <rect x="360" y="104" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="368" y="111" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="379" y="122" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="398" y="122" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">name</text>
+        <text x="590" y="122" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">varchar</text>
+        <rect x="360" y="104" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="2">
+        <rect x="360" y="130" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="368" y="137" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="379" y="148" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="398" y="148" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">date_of_birth</text>
+        <text x="590" y="148" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">date</text>
+        <rect x="360" y="130" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  <g class="dbml-table" data-table-name="appointments" data-x="40" data-y="216" data-base-y="254" data-header-y="235" data-h-full="168" data-h-keys="116" data-h-names="38" data-clip-id="dbml-cp-6cmit3-2">
+    <rect class="dbml-card-shadow" x="43" y="219" width="240" height="168" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
+    <rect class="dbml-card-body" x="40" y="216" width="240" height="168" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
+    <rect x="40" y="216" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <rect x="40" y="248" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
+    <text x="160" y="241" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">appointments</text>
+    <g clip-path="url(#dbml-cp-6cmit3-2)">
+      <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
+        <rect x="40" y="254" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="261" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
+        <text x="59" y="272" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">PK</text>
+        <text x="78" y="272" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:600;fill:var(--dbml-pk-fg,#b22222);pointer-events:none;">appointment_id</text>
+        <text x="270" y="272" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="254" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="fk" data-orig-index="1">
+        <rect x="40" y="280" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="48" y="287" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="59" y="298" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <rect x="74" y="287" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="85" y="298" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="104" y="298" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">doctor_id</text>
+        <text x="270" y="298" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="280" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="fk" data-orig-index="2">
+        <rect x="40" y="306" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <rect x="48" y="313" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
+        <text x="59" y="324" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-fk-fg,#1558b0);pointer-events:none;">FK</text>
+        <rect x="74" y="313" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="85" y="324" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="104" y="324" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">patient_id</text>
+        <text x="270" y="324" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">int</text>
+        <rect x="40" y="306" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="3">
+        <rect x="40" y="332" width="240" height="26" style="fill:var(--dbml-row-even,#ffffff);"></rect>
+        <rect x="48" y="339" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
+        <text x="59" y="350" text-anchor="middle" style="font-family:sans-serif;font-size:8px;font-weight:700;fill:var(--dbml-nn-fg,#2e7d32);pointer-events:none;">NN</text>
+        <text x="78" y="350" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">scheduled_at</text>
+        <text x="270" y="350" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">datetime</text>
+        <rect x="40" y="332" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+      <g class="dbml-field-row" data-field-type="regular" data-orig-index="4">
+        <rect x="40" y="358" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
+        <text x="52" y="376" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;font-weight:400;fill:var(--dbml-field-fg,#1a1a2e);pointer-events:none;">notes</text>
+        <text x="270" y="376" text-anchor="end" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:11px;fill:var(--dbml-type-fg,#7f8c9e);pointer-events:none;">text</text>
+        <rect x="40" y="358" width="240" height="26" style="fill:transparent;"></rect>
+      </g>
+    </g>
+  </g>
+  </g>
+</svg>
+</div>
+<ol type="a">
+<li>Describe each relationship in plain English, including cardinality and participation.</li>
+<li>Is <code>APPOINTMENTS</code> acting as a junction table? Explain.</li>
+<li>A new rule states that every appointment must have notes recorded before it can be saved. What change would you make to the DBML to enforce this?</li>
+<li>Another rule states that a doctor can have at most one appointment per time slot. What change would you make to the DBML to enforce this uniqueness constraint?</li>
+</ol>
+<hr>
+<p><strong>6.</strong> A podcast platform needs to store shows, episodes, listener subscriptions, and playlists. The rules are:</p>
+<ul>
+<li>Each show has many episodes; each episode belongs to exactly one show.</li>
+<li>Listeners can subscribe to many shows; a show can have many subscribers. The subscription records when the listener subscribed.</li>
+<li>Each listener can have many playlists; each playlist belongs to exactly one listener.</li>
+<li>Each playlist can contain many episodes; each episode can appear in many playlists.</li>
+</ul>
+<p>Write the full DBML for this schema. Identify any junction tables your design requires, and explain why they are needed. Paste into dbdiagram.io to verify the structure before submitting.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./07-keys-and-integrity.html" class="pagination-link" aria-label="Keys and Referential Integrity">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./09-normal-forms.html" class="pagination-link" aria-label="Database Normalization">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><em>SQL for Data Science</em> was written by Pete Benbow</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+<script>(()=>{var Nt=Object.create;var Q=Object.defineProperty;var Lt=Object.getOwnPropertyDescriptor;var Bt=Object.getOwnPropertyNames;var It=Object.getPrototypeOf,Tt=Object.prototype.hasOwnProperty;var Z=(t,e)=>()=>(e||t((e={exports:{}}).exports,e),e.exports);var $t=(t,e,o,n)=>{if(e&&typeof e=="object"||typeof e=="function")for(let i of Bt(e))!Tt.call(t,i)&&i!==o&&Q(t,i,{get:()=>e[i],enumerable:!(n=Lt(e,i))||n.enumerable});return t};var kt=(t,e,o)=>(o=t!=null?Nt(It(t)):{},$t(e||!t||!t.__esModule?Q(o,"default",{value:t,enumerable:!0}):o,t));var tt=Z((oe,J)=>{J.exports=function(){var t="",e,o,n,i=[],s={passive:!0},r={passive:!1};window.addEventListener?(e="addEventListener",o="removeEventListener"):(e="attachEvent",o="detachEvent",t="on"),n="onwheel"in document.createElement("div")?"wheel":document.onmousewheel!==void 0?"mousewheel":"DOMMouseScroll";function a(h,p){var g=function(b){!b&&(b=window.event);var y={originalEvent:b,target:b.target||b.srcElement,type:"wheel",deltaMode:b.type=="MozMousePixelScroll"?0:1,deltaX:0,delatZ:0,preventDefault:function(){b.preventDefault?b.preventDefault():b.returnValue=!1}};return n=="mousewheel"?(y.deltaY=-.025*b.wheelDelta,b.wheelDeltaX&&(y.deltaX=-.025*b.wheelDeltaX)):y.deltaY=b.detail,p(y)};return i.push({element:h,fn:g}),g}function l(h){for(var p=0;p<i.length;p++)if(i[p].element===h)return i[p].fn;return function(){}}function u(h){for(var p=0;p<i.length;p++)if(i[p].element===h)return i.splice(p,1)}function f(h,p,g,b){var y;n==="wheel"?y=g:y=a(h,g),h[e](t+p,y,b?s:r)}function m(h,p,g,b){var y;n==="wheel"?y=g:y=l(h),h[o](t+p,y,b?s:r),u(h)}function d(h,p,g){f(h,n,p,g),n=="DOMMouseScroll"&&f(h,"MozMousePixelScroll",p,g)}function c(h,p,g){m(h,n,p,g),n=="DOMMouseScroll"&&m(h,"MozMousePixelScroll",p,g)}return{on:d,off:c}}()});var I=Z((ne,ot)=>{ot.exports={extend:function(t,e){t=t||{};for(var o in e)this.isObject(e[o])?t[o]=this.extend(t[o],e[o]):t[o]=e[o];return t},isElement:function(t){return t instanceof HTMLElement||t instanceof SVGElement||t instanceof SVGSVGElement||t&&typeof t=="object"&&t!==null&&t.nodeType===1&&typeof t.nodeName=="string"},isObject:function(t){return Object.prototype.toString.call(t)==="[object Object]"},isNumber:function(t){return!isNaN(parseFloat(t))&&isFinite(t)},getSvg:function(t){var e,o;if(this.isElement(t))e=t;else if(typeof t=="string"||t instanceof String){if(e=document.querySelector(t),!e)throw new Error("Provided selector did not find any elements. Selector: "+t)}else throw new Error("Provided selector is not an HTML object nor String");if(e.tagName.toLowerCase()==="svg")o=e;else if(e.tagName.toLowerCase()==="object")o=e.contentDocument.documentElement;else if(e.tagName.toLowerCase()==="embed")o=e.getSVGDocument().documentElement;else throw e.tagName.toLowerCase()==="img"?new Error('Cannot script an SVG in an "img" element. Please use an "object" element or an in-line SVG.'):new Error("Cannot get SVG.");return o},proxy:function(t,e){return function(){return t.apply(e,arguments)}},getType:function(t){return Object.prototype.toString.apply(t).replace(/^\[object\s/,"").replace(/\]$/,"")},mouseAndTouchNormalize:function(t,e){if(t.clientX===void 0||t.clientX===null)if(t.clientX=0,t.clientY=0,t.touches!==void 0&&t.touches.length){if(t.touches[0].clientX!==void 0)t.clientX=t.touches[0].clientX,t.clientY=t.touches[0].clientY;else if(t.touches[0].pageX!==void 0){var o=e.getBoundingClientRect();t.clientX=t.touches[0].pageX-o.left,t.clientY=t.touches[0].pageY-o.top}}else t.originalEvent!==void 0&&t.originalEvent.clientX!==void 0&&(t.clientX=t.originalEvent.clientX,t.clientY=t.originalEvent.clientY)},isDblClick:function(t,e){if(t.detail===2)return!0;if(e!=null){var o=t.timeStamp-e.timeStamp,n=Math.sqrt(Math.pow(t.clientX-e.clientX,2)+Math.pow(t.clientY-e.clientY,2));return o<250&&n<10}return!1},now:Date.now||function(){return new Date().getTime()},throttle:function(t,e,o){var n=this,i,s,r,a=null,l=0;o||(o={});var u=function(){l=o.leading===!1?0:n.now(),a=null,r=t.apply(i,s),a||(i=s=null)};return function(){var f=n.now();!l&&o.leading===!1&&(l=f);var m=e-(f-l);return i=this,s=arguments,m<=0||m>e?(clearTimeout(a),a=null,l=f,r=t.apply(i,s),a||(i=s=null)):!a&&o.trailing!==!1&&(a=setTimeout(u,m)),r}},createRequestAnimationFrame:function(t){var e=null;return t!=="auto"&&t<60&&t>1&&(e=Math.floor(1e3/t)),e===null?window.requestAnimationFrame||et(33):et(e)}};function et(t){return function(e){window.setTimeout(e,t)}}});var T=Z((H,it)=>{var V=I(),nt="unknown";document.documentMode&&(nt="ie");it.exports={svgNS:"http://www.w3.org/2000/svg",xmlNS:"http://www.w3.org/XML/1998/namespace",xmlnsNS:"http://www.w3.org/2000/xmlns/",xlinkNS:"http://www.w3.org/1999/xlink",evNS:"http://www.w3.org/2001/xml-events",getBoundingClientRectNormalized:function(t){if(t.clientWidth&&t.clientHeight)return{width:t.clientWidth,height:t.clientHeight};if(t.getBoundingClientRect())return t.getBoundingClientRect();throw new Error("Cannot get BoundingClientRect for SVG.")},getOrCreateViewport:function(t,e){var o=null;if(V.isElement(e)?o=e:o=t.querySelector(e),!o){var n=Array.prototype.slice.call(t.childNodes||t.children).filter(function(l){return l.nodeName!=="defs"&&l.nodeName!=="#text"});n.length===1&&n[0].nodeName==="g"&&n[0].getAttribute("transform")===null&&(o=n[0])}if(!o){var i="viewport-"+new Date().toISOString().replace(/\D/g,"");o=document.createElementNS(this.svgNS,"g"),o.setAttribute("id",i);var s=t.childNodes||t.children;if(s&&s.length>0)for(var r=s.length;r>0;r--)s[s.length-r].nodeName!=="defs"&&o.appendChild(s[s.length-r]);t.appendChild(o)}var a=[];return o.getAttribute("class")&&(a=o.getAttribute("class").split(" ")),~a.indexOf("svg-pan-zoom_viewport")||(a.push("svg-pan-zoom_viewport"),o.setAttribute("class",a.join(" "))),o},setupSvgAttributes:function(t){if(t.setAttribute("xmlns",this.svgNS),t.setAttributeNS(this.xmlnsNS,"xmlns:xlink",this.xlinkNS),t.setAttributeNS(this.xmlnsNS,"xmlns:ev",this.evNS),t.parentNode!==null){var e=t.getAttribute("style")||"";e.toLowerCase().indexOf("overflow")===-1&&t.setAttribute("style","overflow: hidden; "+e)}},internetExplorerRedisplayInterval:300,refreshDefsGlobal:V.throttle(function(){for(var t=document.querySelectorAll("defs"),e=t.length,o=0;o<e;o++){var n=t[o];n.parentNode.insertBefore(n,n)}},H?H.internetExplorerRedisplayInterval:null),setCTM:function(t,e,o){var n=this,i="matrix("+e.a+","+e.b+","+e.c+","+e.d+","+e.e+","+e.f+")";t.setAttributeNS(null,"transform",i),"transform"in t.style?t.style.transform=i:"-ms-transform"in t.style?t.style["-ms-transform"]=i:"-webkit-transform"in t.style&&(t.style["-webkit-transform"]=i),nt==="ie"&&o&&(o.parentNode.insertBefore(o,o),window.setTimeout(function(){n.refreshDefsGlobal()},n.internetExplorerRedisplayInterval))},getEventPoint:function(t,e){var o=e.createSVGPoint();return V.mouseAndTouchNormalize(t,e),o.x=t.clientX,o.y=t.clientY,o},getSvgCenterPoint:function(t,e,o){return this.createSVGPoint(t,e/2,o/2)},createSVGPoint:function(t,e,o){var n=t.createSVGPoint();return n.x=e,n.y=o,n}}});var rt=Z((ie,st)=>{var x=T();st.exports={enable:function(t){var e=t.svg.querySelector("defs");e||(e=document.createElementNS(x.svgNS,"defs"),t.svg.appendChild(e));var o=e.querySelector("style#svg-pan-zoom-controls-styles");if(!o){var n=document.createElementNS(x.svgNS,"style");n.setAttribute("id","svg-pan-zoom-controls-styles"),n.setAttribute("type","text/css"),n.textContent=".svg-pan-zoom-control { cursor: pointer; fill: black; fill-opacity: 0.333; } .svg-pan-zoom-control:hover { fill-opacity: 0.8; } .svg-pan-zoom-control-background { fill: white; fill-opacity: 0.5; } .svg-pan-zoom-control-background { fill-opacity: 0.8; }",e.appendChild(n)}var i=document.createElementNS(x.svgNS,"g");i.setAttribute("id","svg-pan-zoom-controls"),i.setAttribute("transform","translate("+(t.width-70)+" "+(t.height-76)+") scale(0.75)"),i.setAttribute("class","svg-pan-zoom-control"),i.appendChild(this._createZoomIn(t)),i.appendChild(this._createZoomReset(t)),i.appendChild(this._createZoomOut(t)),t.svg.appendChild(i),t.controlIcons=i},_createZoomIn:function(t){var e=document.createElementNS(x.svgNS,"g");e.setAttribute("id","svg-pan-zoom-zoom-in"),e.setAttribute("transform","translate(30.5 5) scale(0.015)"),e.setAttribute("class","svg-pan-zoom-control"),e.addEventListener("click",function(){t.getPublicInstance().zoomIn()},!1),e.addEventListener("touchstart",function(){t.getPublicInstance().zoomIn()},!1);var o=document.createElementNS(x.svgNS,"rect");o.setAttribute("x","0"),o.setAttribute("y","0"),o.setAttribute("width","1500"),o.setAttribute("height","1400"),o.setAttribute("class","svg-pan-zoom-control-background"),e.appendChild(o);var n=document.createElementNS(x.svgNS,"path");return n.setAttribute("d","M1280 576v128q0 26 -19 45t-45 19h-320v320q0 26 -19 45t-45 19h-128q-26 0 -45 -19t-19 -45v-320h-320q-26 0 -45 -19t-19 -45v-128q0 -26 19 -45t45 -19h320v-320q0 -26 19 -45t45 -19h128q26 0 45 19t19 45v320h320q26 0 45 19t19 45zM1536 1120v-960 q0 -119 -84.5 -203.5t-203.5 -84.5h-960q-119 0 -203.5 84.5t-84.5 203.5v960q0 119 84.5 203.5t203.5 84.5h960q119 0 203.5 -84.5t84.5 -203.5z"),n.setAttribute("class","svg-pan-zoom-control-element"),e.appendChild(n),e},_createZoomReset:function(t){var e=document.createElementNS(x.svgNS,"g");e.setAttribute("id","svg-pan-zoom-reset-pan-zoom"),e.setAttribute("transform","translate(5 35) scale(0.4)"),e.setAttribute("class","svg-pan-zoom-control"),e.addEventListener("click",function(){t.getPublicInstance().reset()},!1),e.addEventListener("touchstart",function(){t.getPublicInstance().reset()},!1);var o=document.createElementNS(x.svgNS,"rect");o.setAttribute("x","2"),o.setAttribute("y","2"),o.setAttribute("width","182"),o.setAttribute("height","58"),o.setAttribute("class","svg-pan-zoom-control-background"),e.appendChild(o);var n=document.createElementNS(x.svgNS,"path");n.setAttribute("d","M33.051,20.632c-0.742-0.406-1.854-0.609-3.338-0.609h-7.969v9.281h7.769c1.543,0,2.701-0.188,3.473-0.562c1.365-0.656,2.048-1.953,2.048-3.891C35.032,22.757,34.372,21.351,33.051,20.632z"),n.setAttribute("class","svg-pan-zoom-control-element"),e.appendChild(n);var i=document.createElementNS(x.svgNS,"path");return i.setAttribute("d","M170.231,0.5H15.847C7.102,0.5,0.5,5.708,0.5,11.84v38.861C0.5,56.833,7.102,61.5,15.847,61.5h154.384c8.745,0,15.269-4.667,15.269-10.798V11.84C185.5,5.708,178.976,0.5,170.231,0.5z M42.837,48.569h-7.969c-0.219-0.766-0.375-1.383-0.469-1.852c-0.188-0.969-0.289-1.961-0.305-2.977l-0.047-3.211c-0.03-2.203-0.41-3.672-1.142-4.406c-0.732-0.734-2.103-1.102-4.113-1.102h-7.05v13.547h-7.055V14.022h16.524c2.361,0.047,4.178,0.344,5.45,0.891c1.272,0.547,2.351,1.352,3.234,2.414c0.731,0.875,1.31,1.844,1.737,2.906s0.64,2.273,0.64,3.633c0,1.641-0.414,3.254-1.242,4.84s-2.195,2.707-4.102,3.363c1.594,0.641,2.723,1.551,3.387,2.73s0.996,2.98,0.996,5.402v2.32c0,1.578,0.063,2.648,0.19,3.211c0.19,0.891,0.635,1.547,1.333,1.969V48.569z M75.579,48.569h-26.18V14.022h25.336v6.117H56.454v7.336h16.781v6H56.454v8.883h19.125V48.569z M104.497,46.331c-2.44,2.086-5.887,3.129-10.34,3.129c-4.548,0-8.125-1.027-10.731-3.082s-3.909-4.879-3.909-8.473h6.891c0.224,1.578,0.662,2.758,1.316,3.539c1.196,1.422,3.246,2.133,6.15,2.133c1.739,0,3.151-0.188,4.236-0.562c2.058-0.719,3.087-2.055,3.087-4.008c0-1.141-0.504-2.023-1.512-2.648c-1.008-0.609-2.607-1.148-4.796-1.617l-3.74-0.82c-3.676-0.812-6.201-1.695-7.576-2.648c-2.328-1.594-3.492-4.086-3.492-7.477c0-3.094,1.139-5.664,3.417-7.711s5.623-3.07,10.036-3.07c3.685,0,6.829,0.965,9.431,2.895c2.602,1.93,3.966,4.73,4.093,8.402h-6.938c-0.128-2.078-1.057-3.555-2.787-4.43c-1.154-0.578-2.587-0.867-4.301-0.867c-1.907,0-3.428,0.375-4.565,1.125c-1.138,0.75-1.706,1.797-1.706,3.141c0,1.234,0.561,2.156,1.682,2.766c0.721,0.406,2.25,0.883,4.589,1.43l6.063,1.43c2.657,0.625,4.648,1.461,5.975,2.508c2.059,1.625,3.089,3.977,3.089,7.055C108.157,41.624,106.937,44.245,104.497,46.331z M139.61,48.569h-26.18V14.022h25.336v6.117h-18.281v7.336h16.781v6h-16.781v8.883h19.125V48.569z M170.337,20.14h-10.336v28.43h-7.266V20.14h-10.383v-6.117h27.984V20.14z"),i.setAttribute("class","svg-pan-zoom-control-element"),e.appendChild(i),e},_createZoomOut:function(t){var e=document.createElementNS(x.svgNS,"g");e.setAttribute("id","svg-pan-zoom-zoom-out"),e.setAttribute("transform","translate(30.5 70) scale(0.015)"),e.setAttribute("class","svg-pan-zoom-control"),e.addEventListener("click",function(){t.getPublicInstance().zoomOut()},!1),e.addEventListener("touchstart",function(){t.getPublicInstance().zoomOut()},!1);var o=document.createElementNS(x.svgNS,"rect");o.setAttribute("x","0"),o.setAttribute("y","0"),o.setAttribute("width","1500"),o.setAttribute("height","1400"),o.setAttribute("class","svg-pan-zoom-control-background"),e.appendChild(o);var n=document.createElementNS(x.svgNS,"path");return n.setAttribute("d","M1280 576v128q0 26 -19 45t-45 19h-896q-26 0 -45 -19t-19 -45v-128q0 -26 19 -45t45 -19h896q26 0 45 19t19 45zM1536 1120v-960q0 -119 -84.5 -203.5t-203.5 -84.5h-960q-119 0 -203.5 84.5t-84.5 203.5v960q0 119 84.5 203.5t203.5 84.5h960q119 0 203.5 -84.5 t84.5 -203.5z"),n.setAttribute("class","svg-pan-zoom-control-element"),e.appendChild(n),e},disable:function(t){t.controlIcons&&(t.controlIcons.parentNode.removeChild(t.controlIcons),t.controlIcons=null)}}});var lt=Z((se,at)=>{var qt=T(),z=I(),w=function(t,e){this.init(t,e)};w.prototype.init=function(t,e){this.viewport=t,this.options=e,this.originalState={zoom:1,x:0,y:0},this.activeState={zoom:1,x:0,y:0},this.updateCTMCached=z.proxy(this.updateCTM,this),this.requestAnimationFrame=z.createRequestAnimationFrame(this.options.refreshRate),this.viewBox={x:0,y:0,width:0,height:0},this.cacheViewBox();var o=this.processCTM();this.setCTM(o),this.updateCTM()};w.prototype.cacheViewBox=function(){var t=this.options.svg.getAttribute("viewBox");if(t){var e=t.split(/[\s\,]/).filter(function(n){return n}).map(parseFloat);this.viewBox.x=e[0],this.viewBox.y=e[1],this.viewBox.width=e[2],this.viewBox.height=e[3];var o=Math.min(this.options.width/this.viewBox.width,this.options.height/this.viewBox.height);this.activeState.zoom=o,this.activeState.x=(this.options.width-this.viewBox.width*o)/2,this.activeState.y=(this.options.height-this.viewBox.height*o)/2,this.updateCTMOnNextFrame(),this.options.svg.removeAttribute("viewBox")}else this.simpleViewBoxCache()};w.prototype.simpleViewBoxCache=function(){var t=this.viewport.getBBox();this.viewBox.x=t.x,this.viewBox.y=t.y,this.viewBox.width=t.width,this.viewBox.height=t.height};w.prototype.getViewBox=function(){return z.extend({},this.viewBox)};w.prototype.processCTM=function(){var t=this.getCTM();if(this.options.fit||this.options.contain){var e;this.options.fit?e=Math.min(this.options.width/this.viewBox.width,this.options.height/this.viewBox.height):e=Math.max(this.options.width/this.viewBox.width,this.options.height/this.viewBox.height),t.a=e,t.d=e,t.e=-this.viewBox.x*e,t.f=-this.viewBox.y*e}if(this.options.center){var o=(this.options.width-(this.viewBox.width+this.viewBox.x*2)*t.a)*.5,n=(this.options.height-(this.viewBox.height+this.viewBox.y*2)*t.a)*.5;t.e=o,t.f=n}return this.originalState.zoom=t.a,this.originalState.x=t.e,this.originalState.y=t.f,t};w.prototype.getOriginalState=function(){return z.extend({},this.originalState)};w.prototype.getState=function(){return z.extend({},this.activeState)};w.prototype.getZoom=function(){return this.activeState.zoom};w.prototype.getRelativeZoom=function(){return this.activeState.zoom/this.originalState.zoom};w.prototype.computeRelativeZoom=function(t){return t/this.originalState.zoom};w.prototype.getPan=function(){return{x:this.activeState.x,y:this.activeState.y}};w.prototype.getCTM=function(){var t=this.options.svg.createSVGMatrix();return t.a=this.activeState.zoom,t.b=0,t.c=0,t.d=this.activeState.zoom,t.e=this.activeState.x,t.f=this.activeState.y,t};w.prototype.setCTM=function(t){var e=this.isZoomDifferent(t),o=this.isPanDifferent(t);if(e||o){if(e&&(this.options.beforeZoom(this.getRelativeZoom(),this.computeRelativeZoom(t.a))===!1?(t.a=t.d=this.activeState.zoom,e=!1):(this.updateCache(t),this.options.onZoom(this.getRelativeZoom()))),o){var n=this.options.beforePan(this.getPan(),{x:t.e,y:t.f}),i=!1,s=!1;n===!1?(t.e=this.getPan().x,t.f=this.getPan().y,i=s=!0):z.isObject(n)&&(n.x===!1?(t.e=this.getPan().x,i=!0):z.isNumber(n.x)&&(t.e=n.x),n.y===!1?(t.f=this.getPan().y,s=!0):z.isNumber(n.y)&&(t.f=n.y)),i&&s||!this.isPanDifferent(t)?o=!1:(this.updateCache(t),this.options.onPan(this.getPan()))}(e||o)&&this.updateCTMOnNextFrame()}};w.prototype.isZoomDifferent=function(t){return this.activeState.zoom!==t.a};w.prototype.isPanDifferent=function(t){return this.activeState.x!==t.e||this.activeState.y!==t.f};w.prototype.updateCache=function(t){this.activeState.zoom=t.a,this.activeState.x=t.e,this.activeState.y=t.f};w.prototype.pendingUpdate=!1;w.prototype.updateCTMOnNextFrame=function(){this.pendingUpdate||(this.pendingUpdate=!0,this.requestAnimationFrame.call(window,this.updateCTMCached))};w.prototype.updateCTM=function(){var t=this.getCTM();qt.setCTM(this.viewport,t,this.defs),this.pendingUpdate=!1,this.options.onUpdatedCTM&&this.options.onUpdatedCTM(t)};at.exports=function(t,e){return new w(t,e)}});var ft=Z((re,ht)=>{var ct=tt(),F=rt(),S=I(),E=T(),Dt=lt(),v=function(t,e){this.init(t,e)},Ot={viewportSelector:".svg-pan-zoom_viewport",panEnabled:!0,controlIconsEnabled:!1,zoomEnabled:!0,dblClickZoomEnabled:!0,mouseWheelZoomEnabled:!0,preventMouseEventsDefault:!0,zoomScaleSensitivity:.1,minZoom:.5,maxZoom:10,fit:!0,contain:!1,center:!0,refreshRate:"auto",beforeZoom:null,onZoom:null,beforePan:null,onPan:null,customEventsHandler:null,eventsListenerElement:null,onUpdatedCTM:null},ut={passive:!0};v.prototype.init=function(t,e){var o=this;this.svg=t,this.defs=t.querySelector("defs"),E.setupSvgAttributes(this.svg),this.options=S.extend(S.extend({},Ot),e),this.state="none";var n=E.getBoundingClientRectNormalized(t);this.width=n.width,this.height=n.height,this.viewport=Dt(E.getOrCreateViewport(this.svg,this.options.viewportSelector),{svg:this.svg,width:this.width,height:this.height,fit:this.options.fit,contain:this.options.contain,center:this.options.center,refreshRate:this.options.refreshRate,beforeZoom:function(s,r){if(o.viewport&&o.options.beforeZoom)return o.options.beforeZoom(s,r)},onZoom:function(s){if(o.viewport&&o.options.onZoom)return o.options.onZoom(s)},beforePan:function(s,r){if(o.viewport&&o.options.beforePan)return o.options.beforePan(s,r)},onPan:function(s){if(o.viewport&&o.options.onPan)return o.options.onPan(s)},onUpdatedCTM:function(s){if(o.viewport&&o.options.onUpdatedCTM)return o.options.onUpdatedCTM(s)}});var i=this.getPublicInstance();i.setBeforeZoom(this.options.beforeZoom),i.setOnZoom(this.options.onZoom),i.setBeforePan(this.options.beforePan),i.setOnPan(this.options.onPan),i.setOnUpdatedCTM(this.options.onUpdatedCTM),this.options.controlIconsEnabled&&F.enable(this),this.lastMouseWheelEventTime=Date.now(),this.setupHandlers()};v.prototype.setupHandlers=function(){var t=this,e=null;if(this.eventListeners={mousedown:function(s){var r=t.handleMouseDown(s,e);return e=s,r},touchstart:function(s){var r=t.handleMouseDown(s,e);return e=s,r},mouseup:function(s){return t.handleMouseUp(s)},touchend:function(s){return t.handleMouseUp(s)},mousemove:function(s){return t.handleMouseMove(s)},touchmove:function(s){return t.handleMouseMove(s)},mouseleave:function(s){return t.handleMouseUp(s)},touchleave:function(s){return t.handleMouseUp(s)},touchcancel:function(s){return t.handleMouseUp(s)}},this.options.customEventsHandler!=null){this.options.customEventsHandler.init({svgElement:this.svg,eventsListenerElement:this.options.eventsListenerElement,instance:this.getPublicInstance()});var o=this.options.customEventsHandler.haltEventListeners;if(o&&o.length)for(var n=o.length-1;n>=0;n--)this.eventListeners.hasOwnProperty(o[n])&&delete this.eventListeners[o[n]]}for(var i in this.eventListeners)(this.options.eventsListenerElement||this.svg).addEventListener(i,this.eventListeners[i],this.options.preventMouseEventsDefault?!1:ut);this.options.mouseWheelZoomEnabled&&(this.options.mouseWheelZoomEnabled=!1,this.enableMouseWheelZoom())};v.prototype.enableMouseWheelZoom=function(){if(!this.options.mouseWheelZoomEnabled){var t=this;this.wheelListener=function(o){return t.handleMouseWheel(o)};var e=!this.options.preventMouseEventsDefault;ct.on(this.options.eventsListenerElement||this.svg,this.wheelListener,e),this.options.mouseWheelZoomEnabled=!0}};v.prototype.disableMouseWheelZoom=function(){if(this.options.mouseWheelZoomEnabled){var t=!this.options.preventMouseEventsDefault;ct.off(this.options.eventsListenerElement||this.svg,this.wheelListener,t),this.options.mouseWheelZoomEnabled=!1}};v.prototype.handleMouseWheel=function(t){if(!(!this.options.zoomEnabled||this.state!=="none")){this.options.preventMouseEventsDefault&&(t.preventDefault?t.preventDefault():t.returnValue=!1);var e=t.deltaY||1,o=Date.now()-this.lastMouseWheelEventTime,n=3+Math.max(0,30-o);this.lastMouseWheelEventTime=Date.now(),"deltaMode"in t&&t.deltaMode===0&&t.wheelDelta&&(e=t.deltaY===0?0:Math.abs(t.wheelDelta)/t.deltaY),e=-.3<e&&e<.3?e:(e>0?1:-1)*Math.log(Math.abs(e)+10)/n;var i=this.svg.getScreenCTM().inverse(),s=E.getEventPoint(t,this.svg).matrixTransform(i),r=Math.pow(1+this.options.zoomScaleSensitivity,-1*e);this.zoomAtPoint(r,s)}};v.prototype.zoomAtPoint=function(t,e,o){var n=this.viewport.getOriginalState();o?(t=Math.max(this.options.minZoom*n.zoom,Math.min(this.options.maxZoom*n.zoom,t)),t=t/this.getZoom()):this.getZoom()*t<this.options.minZoom*n.zoom?t=this.options.minZoom*n.zoom/this.getZoom():this.getZoom()*t>this.options.maxZoom*n.zoom&&(t=this.options.maxZoom*n.zoom/this.getZoom());var i=this.viewport.getCTM(),s=e.matrixTransform(i.inverse()),r=this.svg.createSVGMatrix().translate(s.x,s.y).scale(t).translate(-s.x,-s.y),a=i.multiply(r);a.a!==i.a&&this.viewport.setCTM(a)};v.prototype.zoom=function(t,e){this.zoomAtPoint(t,E.getSvgCenterPoint(this.svg,this.width,this.height),e)};v.prototype.publicZoom=function(t,e){e&&(t=this.computeFromRelativeZoom(t)),this.zoom(t,e)};v.prototype.publicZoomAtPoint=function(t,e,o){if(o&&(t=this.computeFromRelativeZoom(t)),S.getType(e)!=="SVGPoint")if("x"in e&&"y"in e)e=E.createSVGPoint(this.svg,e.x,e.y);else throw new Error("Given point is invalid");this.zoomAtPoint(t,e,o)};v.prototype.getZoom=function(){return this.viewport.getZoom()};v.prototype.getRelativeZoom=function(){return this.viewport.getRelativeZoom()};v.prototype.computeFromRelativeZoom=function(t){return t*this.viewport.getOriginalState().zoom};v.prototype.resetZoom=function(){var t=this.viewport.getOriginalState();this.zoom(t.zoom,!0)};v.prototype.resetPan=function(){this.pan(this.viewport.getOriginalState())};v.prototype.reset=function(){this.resetZoom(),this.resetPan()};v.prototype.handleDblClick=function(t){if(this.options.preventMouseEventsDefault&&(t.preventDefault?t.preventDefault():t.returnValue=!1),this.options.controlIconsEnabled){var e=t.target.getAttribute("class")||"";if(e.indexOf("svg-pan-zoom-control")>-1)return!1}var o;t.shiftKey?o=1/((1+this.options.zoomScaleSensitivity)*2):o=(1+this.options.zoomScaleSensitivity)*2;var n=E.getEventPoint(t,this.svg).matrixTransform(this.svg.getScreenCTM().inverse());this.zoomAtPoint(o,n)};v.prototype.handleMouseDown=function(t,e){this.options.preventMouseEventsDefault&&(t.preventDefault?t.preventDefault():t.returnValue=!1),S.mouseAndTouchNormalize(t,this.svg),this.options.dblClickZoomEnabled&&S.isDblClick(t,e)?this.handleDblClick(t):(this.state="pan",this.firstEventCTM=this.viewport.getCTM(),this.stateOrigin=E.getEventPoint(t,this.svg).matrixTransform(this.firstEventCTM.inverse()))};v.prototype.handleMouseMove=function(t){if(this.options.preventMouseEventsDefault&&(t.preventDefault?t.preventDefault():t.returnValue=!1),this.state==="pan"&&this.options.panEnabled){var e=E.getEventPoint(t,this.svg).matrixTransform(this.firstEventCTM.inverse()),o=this.firstEventCTM.translate(e.x-this.stateOrigin.x,e.y-this.stateOrigin.y);this.viewport.setCTM(o)}};v.prototype.handleMouseUp=function(t){this.options.preventMouseEventsDefault&&(t.preventDefault?t.preventDefault():t.returnValue=!1),this.state==="pan"&&(this.state="none")};v.prototype.fit=function(){var t=this.viewport.getViewBox(),e=Math.min(this.width/t.width,this.height/t.height);this.zoom(e,!0)};v.prototype.contain=function(){var t=this.viewport.getViewBox(),e=Math.max(this.width/t.width,this.height/t.height);this.zoom(e,!0)};v.prototype.center=function(){var t=this.viewport.getViewBox(),e=(this.width-(t.width+t.x*2)*this.getZoom())*.5,o=(this.height-(t.height+t.y*2)*this.getZoom())*.5;this.getPublicInstance().pan({x:e,y:o})};v.prototype.updateBBox=function(){this.viewport.simpleViewBoxCache()};v.prototype.pan=function(t){var e=this.viewport.getCTM();e.e=t.x,e.f=t.y,this.viewport.setCTM(e)};v.prototype.panBy=function(t){var e=this.viewport.getCTM();e.e+=t.x,e.f+=t.y,this.viewport.setCTM(e)};v.prototype.getPan=function(){var t=this.viewport.getState();return{x:t.x,y:t.y}};v.prototype.resize=function(){var t=E.getBoundingClientRectNormalized(this.svg);this.width=t.width,this.height=t.height;var e=this.viewport;e.options.width=this.width,e.options.height=this.height,e.processCTM(),this.options.controlIconsEnabled&&(this.getPublicInstance().disableControlIcons(),this.getPublicInstance().enableControlIcons())};v.prototype.destroy=function(){var t=this;this.beforeZoom=null,this.onZoom=null,this.beforePan=null,this.onPan=null,this.onUpdatedCTM=null,this.options.customEventsHandler!=null&&this.options.customEventsHandler.destroy({svgElement:this.svg,eventsListenerElement:this.options.eventsListenerElement,instance:this.getPublicInstance()});for(var e in this.eventListeners)(this.options.eventsListenerElement||this.svg).removeEventListener(e,this.eventListeners[e],this.options.preventMouseEventsDefault?!1:ut);this.disableMouseWheelZoom(),this.getPublicInstance().disableControlIcons(),this.reset(),A=A.filter(function(o){return o.svg!==t.svg}),delete this.options,delete this.viewport,delete this.publicInstance,delete this.pi,this.getPublicInstance=function(){return null}};v.prototype.getPublicInstance=function(){var t=this;return this.publicInstance||(this.publicInstance=this.pi={enablePan:function(){return t.options.panEnabled=!0,t.pi},disablePan:function(){return t.options.panEnabled=!1,t.pi},isPanEnabled:function(){return!!t.options.panEnabled},pan:function(e){return t.pan(e),t.pi},panBy:function(e){return t.panBy(e),t.pi},getPan:function(){return t.getPan()},setBeforePan:function(e){return t.options.beforePan=e===null?null:S.proxy(e,t.publicInstance),t.pi},setOnPan:function(e){return t.options.onPan=e===null?null:S.proxy(e,t.publicInstance),t.pi},enableZoom:function(){return t.options.zoomEnabled=!0,t.pi},disableZoom:function(){return t.options.zoomEnabled=!1,t.pi},isZoomEnabled:function(){return!!t.options.zoomEnabled},enableControlIcons:function(){return t.options.controlIconsEnabled||(t.options.controlIconsEnabled=!0,F.enable(t)),t.pi},disableControlIcons:function(){return t.options.controlIconsEnabled&&(t.options.controlIconsEnabled=!1,F.disable(t)),t.pi},isControlIconsEnabled:function(){return!!t.options.controlIconsEnabled},enableDblClickZoom:function(){return t.options.dblClickZoomEnabled=!0,t.pi},disableDblClickZoom:function(){return t.options.dblClickZoomEnabled=!1,t.pi},isDblClickZoomEnabled:function(){return!!t.options.dblClickZoomEnabled},enableMouseWheelZoom:function(){return t.enableMouseWheelZoom(),t.pi},disableMouseWheelZoom:function(){return t.disableMouseWheelZoom(),t.pi},isMouseWheelZoomEnabled:function(){return!!t.options.mouseWheelZoomEnabled},setZoomScaleSensitivity:function(e){return t.options.zoomScaleSensitivity=e,t.pi},setMinZoom:function(e){return t.options.minZoom=e,t.pi},setMaxZoom:function(e){return t.options.maxZoom=e,t.pi},setBeforeZoom:function(e){return t.options.beforeZoom=e===null?null:S.proxy(e,t.publicInstance),t.pi},setOnZoom:function(e){return t.options.onZoom=e===null?null:S.proxy(e,t.publicInstance),t.pi},zoom:function(e){return t.publicZoom(e,!0),t.pi},zoomBy:function(e){return t.publicZoom(e,!1),t.pi},zoomAtPoint:function(e,o){return t.publicZoomAtPoint(e,o,!0),t.pi},zoomAtPointBy:function(e,o){return t.publicZoomAtPoint(e,o,!1),t.pi},zoomIn:function(){return this.zoomBy(1+t.options.zoomScaleSensitivity),t.pi},zoomOut:function(){return this.zoomBy(1/(1+t.options.zoomScaleSensitivity)),t.pi},getZoom:function(){return t.getRelativeZoom()},setOnUpdatedCTM:function(e){return t.options.onUpdatedCTM=e===null?null:S.proxy(e,t.publicInstance),t.pi},resetZoom:function(){return t.resetZoom(),t.pi},resetPan:function(){return t.resetPan(),t.pi},reset:function(){return t.reset(),t.pi},fit:function(){return t.fit(),t.pi},contain:function(){return t.contain(),t.pi},center:function(){return t.center(),t.pi},updateBBox:function(){return t.updateBBox(),t.pi},resize:function(){return t.resize(),t.pi},getSizes:function(){return{width:t.width,height:t.height,realZoom:t.getZoom(),viewBox:t.viewport.getViewBox()}},destroy:function(){return t.destroy(),t.pi}}),this.publicInstance};var A=[],Vt=function(t,e){var o=S.getSvg(t);if(o===null)return null;for(var n=A.length-1;n>=0;n--)if(A[n].svg===o)return A[n].instance.getPublicInstance();return A.push({svg:o,instance:new v(o,e)}),A[A.length-1].instance.getPublicInstance()};ht.exports=Vt});var mt=Z((ae,dt)=>{var Ht=ft();dt.exports=Ht});var Mt=kt(mt()),M=240,N=38,L=26,k=80,Ct=60,C=40,Ft=`<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <circle cx="3" cy="7" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+  <circle cx="11" cy="7" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+  <line x1="5.5" y1="7" x2="8.5" y2="7" stroke="currentColor" stroke-width="1.5"/>
+</svg>`,B=["full","keys","names"],pt={full:"All",keys:"Key",names:"Hdr"},vt={full:"Show all columns",keys:"Show key columns only (PK + FK)",names:"Show table names only"},$=["grid","lr","tb","radial"],gt={grid:"Grd",lr:"LR",tb:"TB",radial:"Ctr"},bt={grid:"Grid layout",lr:"Left-right hierarchical layout",tb:"Top-bottom hierarchical layout",radial:"Radial layout (most-connected table at center)"};function Rt(t,e,o,n,i,s){let r=`stroke:${s};stroke-width:1.5;stroke-linecap:round;fill:none;`,a=7,l=t+n*4,u=i?`<line x1="${l}" y1="${e-a}" x2="${l}" y2="${e+a}" style="${r}"/>`:`<circle cx="${l}" cy="${e}" r="3.5" style="${r}"/>`;if(o==="*"){let m=t+n*14,d=t+n*7;return u+`<line x1="${m}" y1="${e}" x2="${d}" y2="${e-a}" style="${r}"/><line x1="${m}" y1="${e}" x2="${d}" y2="${e+a}" style="${r}"/>`}let f=t+n*12;return u+`<line x1="${f}" y1="${e-a}" x2="${f}" y2="${e+a}" style="${r}"/>`}function Wt(t,e,o,n,i){if(o==="*"){let a=t+n*12;return`<polygon points="${t},${e} ${a},${e-7} ${a},${e+7}" style="fill:${i};stroke:none;"/>`}let r=t+n*7;return`<line x1="${r}" y1="${e-7}" x2="${r}" y2="${e+7}" style="stroke:${i};stroke-width:1.5;stroke-linecap:round;"/>`}function yt(t,e,o,n,i,s,r,a,l){if(r==="crowsfoot")return Rt(t,e,o,n,a,l);if(r==="arrows")return Wt(t,e,o,n,l);let u=o==="*"?r==="uml"?"*":"N":"1",f=r==="uml"?"11px":"10px",m=s?t+(i?8:-8):t+(i?-12:8),d=s?i?"start":"end":i?"end":"start";return`<text x="${m}" y="${e-5}" text-anchor="${d}" style="font-family:sans-serif;font-size:${f};font-weight:600;fill:${l};">${u}</text>`}function wt(t,e,o,n,i){let s=(t+o)/2,r=n-e;if(Math.abs(r)<1)return`M ${t} ${e} H ${o}`;let a=i>0?Math.max(0,Math.min(i,Math.abs(s-t)-2,Math.abs(r)/2-2)):0;if(a<=0)return`M ${t} ${e} H ${s} V ${n} H ${o}`;let l=o>t?1:-1,u=r>0?1:-1;return[`M ${t} ${e}`,`H ${s-l*a}`,`Q ${s} ${e} ${s} ${e+u*a}`,`V ${n-u*a}`,`Q ${s} ${n} ${s+l*a} ${n}`,`H ${o}`].join(" ")}function Ut(t,e,o,n,i,s){if(s==="orthogonal")return wt(t,e,o,n,0);if(s==="rounded")return wt(t,e,o,n,10);let r=Math.max(40,Math.abs(o-t)*.4);return`M ${t} ${e} C ${t+(i?r:-r)} ${e} ${o+(i?-r:r)} ${n} ${o} ${n}`}function Xt(t){let e=[],o={};t.querySelectorAll(".dbml-table").forEach(r=>{let a=r.dataset.tableName;a&&(e.push(a),o[a]={origX:+r.dataset.x,origY:+r.dataset.y,hFull:+r.dataset.hFull,hKeys:+r.dataset.hKeys,hNames:+r.dataset.hNames})});let n={},i={},s={};return e.forEach(r=>{n[r]=new Set,i[r]=new Set,s[r]=new Set}),t.querySelectorAll(".dbml-edge-group").forEach(r=>{if(!r.dataset.t1)return;let{t1:a,t2:l}=r.dataset,u=r.dataset.e1Rel,[f,m]=u==="*"?[a,l]:[l,a];n[f]&&i[m]&&(n[f].add(m),i[m].add(f)),s[a]&&s[l]&&(s[a].add(l),s[l].add(a))}),{tables:e,tableData:o,deps:n,rdeps:i,neighbors:s}}function zt(t,e,o){let n={},i={};t.forEach(l=>{i[l]=e[l].size});let s=[];t.forEach(l=>{i[l]===0&&(n[l]=0,s.push(l))});let r=new Set;for(;s.length>0;){let l=s.shift();r.has(l)||(r.add(l),o[l].forEach(u=>{var f,m;n[u]=Math.max((f=n[u])!=null?f:0,((m=n[l])!=null?m:0)+1),--i[u]<=0&&s.push(u)}))}let a=Math.max(0,...Object.values(n),-1/0);return t.forEach(l=>{l in n||(n[l]=a+1)}),n}function _t(t,e){let o={};return t.forEach(n=>{o[n]={x:e[n].origX,y:e[n].origY}}),o}function Yt(t,e,o,n){let i=zt(t,o,n),s={};t.forEach(a=>{let l=i[a];s[l]||(s[l]=[]),s[l].push(a)});let r={};return Object.keys(s).map(Number).sort((a,l)=>a-l).forEach(a=>{let l=C+a*(M+k),u=C;s[a].forEach(f=>{r[f]={x:l,y:u},u+=e[f].hFull+Ct})}),r}function jt(t,e,o,n){let i=zt(t,o,n),s={};t.forEach(l=>{let u=i[l];s[u]||(s[u]=[]),s[u].push(l)});let r={},a=C;return Object.keys(s).map(Number).sort((l,u)=>l-u).forEach(l=>{let u=s[l],f=C;u.forEach(d=>{r[d]={x:f,y:a},f+=M+k});let m=Math.max(0,...u.map(d=>e[d].hFull));a+=m+Ct}),r}function Gt(t,e,o){if(t.length===0)return{};if(t.length===1)return{[t[0]]:{x:C,y:C}};let n=t.reduce((c,h)=>o[h].size>o[c].size||o[h].size===o[c].size&&h<c?h:c,t[0]),i={[n]:0},s=[n];for(;s.length>0;){let c=s.shift();o[c].forEach(h=>{h in i||(i[h]=i[c]+1,s.push(h))})}let r=Math.max(0,...Object.values(i));t.forEach(c=>{c in i||(i[c]=r+1)});let a={};t.forEach(c=>{a[i[c]]||(a[i[c]]=[]),a[i[c]].push(c)});let l=Math.max(...Object.values(a).map(c=>c.length)),u=Math.max(M+k*2,l*(M+k)/(2*Math.PI)),f=u*1.5+M/2,m=u*1.5+e[n].hFull/2,d={};return d[n]={x:f-M/2,y:m-e[n].hFull/2},Object.keys(a).map(Number).filter(c=>c>0).sort((c,h)=>c-h).forEach(c=>{let h=a[c],p=c*u;h.forEach((g,b)=>{let y=2*Math.PI*b/h.length-Math.PI/2;d[g]={x:f+p*Math.cos(y)-M/2,y:m+p*Math.sin(y)-e[g].hFull/2}})}),d}function Kt(t){let e=Object.values(t).map(l=>l.x),o=Object.values(t).map(l=>l.y),n=Math.min(...e),i=Math.min(...o),s=C-n,r=C-i,a={};return Object.entries(t).forEach(([l,u])=>{a[l]={x:u.x+s,y:u.y+r}}),a}function Qt(t,e,o,n,i,s){let r;return t==="lr"?r=Yt(e,o,n,i):t==="tb"?r=jt(e,o,n,i):t==="radial"?r=Gt(e,o,s):r=_t(e,o),Kt(r)}function Jt(t,e,o){let{tables:n,tableData:i,deps:s,rdeps:r,neighbors:a}=Xt(t),l={};n.forEach(f=>{l[f]={x:i[f].origX,y:i[f].origY}});let u={};return n.forEach(f=>{u[f]={};let m=t.querySelector(".dbml-table[data-table-name]");for(let d of t.querySelectorAll(".dbml-table"))if(d.dataset.tableName===f){d.querySelectorAll(".dbml-field-row").forEach(c=>{let h=+c.dataset.origIndex;u[f][h]=h});break}}),{level:e,layout:o,tablePositions:{...l},tableOrigPositions:l,tableFieldSlot:u,tableData:i,tables:n,deps:s,rdeps:r,neighbors:a}}function At(t,e){t.querySelectorAll(".dbml-edge-group").forEach(o=>{var X,_,Y,j,G,K;if(!o.dataset.ex1)return;let n=o.dataset.t1,i=o.dataset.t2,s=+o.dataset.fi1,r=+o.dataset.fi2,a=o.dataset.routing,l=o.dataset.notation||"labels",u=o.dataset.e1Rel,f=o.dataset.e2Rel,m=o.dataset.mandatory==="1",d=e.tablePositions[n],c=e.tablePositions[i];if(!d||!c)return;let h=d.x<=c.x,p=h?d.x+M:d.x,g=h?c.x:c.x+M,b=h?1:-1,y=h?-1:1,q=(_=(X=e.tableFieldSlot[n])==null?void 0:X[s])!=null?_:-1,P=(j=(Y=e.tableFieldSlot[i])==null?void 0:Y[r])!=null?j:-1,R=q>=0?d.y+N+q*L+L/2:d.y+N/2,W=P>=0?c.y+N+P*L+L/2:c.y+N/2,Zt=Ut(p,R,g,W,h,a);o.querySelectorAll("path").forEach(Pt=>Pt.setAttribute("d",Zt));let U=((K=(G=o.querySelector(".dbml-edge-path"))==null?void 0:G.style)==null?void 0:K.stroke)||"var(--dbml-edge,#8ca0c0)",D=o.querySelector(".dbml-marker-end-1"),O=o.querySelector(".dbml-marker-end-2");D&&(D.removeAttribute("transform"),D.innerHTML=yt(p,R,u,b,h,!0,l,m,U)),O&&(O.removeAttribute("transform"),O.innerHTML=yt(g,W,f,y,h,!1,l,m,U))})}function xt(t,e,o,n){t.level=n,B.forEach(i=>e.classList.remove("dbml-level-"+i)),e.classList.add("dbml-level-"+n),o.querySelectorAll(".dbml-table").forEach(i=>{var c,h,p;let s=i.dataset.tableName;if(!s)return;let r=+i.dataset.hFull,a=+i.dataset.hKeys,l=+i.dataset.hNames,u=n==="keys"?a:n==="names"?l:r;(c=i.querySelector(".dbml-card-shadow"))==null||c.setAttribute("height",u),(h=i.querySelector(".dbml-card-body"))==null||h.setAttribute("height",u);let f=(p=document.getElementById(i.dataset.clipId))==null?void 0:p.querySelector("rect");f&&f.setAttribute("height",u-N);let m=Array.from(i.querySelectorAll(".dbml-field-row"));t.tableFieldSlot[s]||(t.tableFieldSlot[s]={});let d=0;m.forEach(g=>{let b=g.dataset.fieldType,y=+g.dataset.origIndex;if(!(n==="full"||n==="keys"&&(b==="pk"||b==="fk")))g.style.display="none",g.setAttribute("transform",""),t.tableFieldSlot[s][y]=-1;else{g.style.display="";let P=(d-y)*L;g.setAttribute("transform",P!==0?`translate(0,${P})`:""),t.tableFieldSlot[s][y]=d,d++}})}),At(o,t)}function St(t,e,o,n,i){t.layout=i;let s=Qt(i,t.tables,t.tableData,t.deps,t.rdeps,t.neighbors);t.tablePositions=s,o.querySelectorAll(".dbml-table").forEach(m=>{let d=m.dataset.tableName;if(!d||!s[d])return;let{origX:c,origY:h}=t.tableData[d],p=s[d].x-c,g=s[d].y-h;m.setAttribute("transform",p||g?`translate(${p},${g})`:"")}),At(o,t);let r=0,a=0;Object.entries(s).forEach(([m,d])=>{var c,h;r=Math.max(r,d.x+M),a=Math.max(a,d.y+((h=(c=t.tableData[m])==null?void 0:c.hFull)!=null?h:100))});let l=r+C,u=a+C;o.setAttribute("viewBox",`0 0 ${l} ${u}`);let f=o.querySelector(".dbml-bg");f&&(f.setAttribute("width",l),f.setAttribute("height",u)),n&&requestAnimationFrame(()=>{n.resize(),n.fit(),n.center()})}function te(t){var d;let e=t.querySelector("svg");if(!e||e.dataset.dbmlInit)return;e.dataset.dbmlInit="1",e.id||(e.id="dbml-svg-"+Math.random().toString(36).slice(2,9));let o=parseInt(e.getAttribute("height")||"400",10);t.style.height=Math.min(o+16,520)+"px",e.setAttribute("width","100%"),e.setAttribute("height","100%");let n=(0,Mt.default)(e,{zoomEnabled:!0,controlIconsEnabled:!0,fit:!0,center:!0,minZoom:.1,maxZoom:12,zoomScaleSensitivity:.25,customEventsHandler:{haltEventListeners:[],init(){},destroy(){}}}),i="full";t.classList.forEach(c=>{if(c.startsWith("dbml-level-")){let h=c.slice(11);B.includes(h)&&(i=h)}});let s=(d=t.dataset.layout)!=null?d:"grid",r=$.includes(s)?s:"grid",a=Jt(e,i,r);i!=="full"&&xt(a,t,e,i),r!=="grid"&&St(a,t,e,n,r);let l=document.createElement("button");l.className="dbml-toggle-btn",l.title="Highlight all relationships",l.setAttribute("aria-pressed","false"),l.innerHTML=Ft,t.appendChild(l),l.addEventListener("click",()=>{let c=t.classList.toggle("dbml-highlight-all");l.setAttribute("aria-pressed",String(c))});let u=document.createElement("button");u.className="dbml-detail-btn"+(i!=="full"?" dbml-detail-active":""),u.title=vt[i],u.textContent=pt[i],t.appendChild(u),u.addEventListener("click",()=>{let c=B[(B.indexOf(a.level)+1)%B.length];xt(a,t,e,c),u.textContent=pt[c],u.title=vt[c],u.classList.toggle("dbml-detail-active",c!=="full")});let f=document.createElement("button");f.className="dbml-layout-btn"+(r!=="grid"?" dbml-layout-active":""),f.title=bt[r],f.textContent=gt[r],t.appendChild(f),f.addEventListener("click",()=>{let c=$[($.indexOf(a.layout)+1)%$.length];St(a,t,e,n,c),f.textContent=gt[c],f.title=bt[c],f.classList.toggle("dbml-layout-active",c!=="grid")});let m=Array.from(e.querySelectorAll(".dbml-edge-group"));m.forEach(c=>{c.addEventListener("click",h=>{h.stopPropagation(),c.classList.toggle("dbml-edge-selected")})}),e.addEventListener("click",()=>{m.forEach(c=>c.classList.remove("dbml-edge-selected"))})}function Et(){document.querySelectorAll(".dbml-diagram").forEach(te)}document.readyState==="loading"?document.addEventListener("DOMContentLoaded",Et):Et();})();
+</script>
+
+
+
+
+</body></html>

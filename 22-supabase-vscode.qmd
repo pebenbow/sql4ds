@@ -1,0 +1,185 @@
+# Deploying from VS Code
+
+The Supabase SQL Editor is a capable tool for one-off queries and quick schema experiments. For sustained development work, though, it has the same drawbacks as any browser-based editor: no version control, no local file history, and no way to coordinate changes across a team. Writing your schema in VS Code and deploying it to Supabase via the command line addresses all three.
+
+This chapter introduces the Supabase CLI and walks through connecting it to the project you created in the previous chapter. By the end, you will be able to write SQL in VS Code, push schema changes to your remote Supabase database from the integrated terminal, and query the remote database from inside VS Code without switching to the browser.
+
+## The Supabase CLI
+
+The Supabase CLI is a command-line tool that manages the connection between your local development environment and a remote Supabase project. It handles authentication, project initialization, and database deployment. It is the foundation for the migration workflow introduced in the next chapter.
+
+### Installing the CLI
+
+Installation instructions vary by operating system. Choose the method appropriate for your machine.
+
+**macOS (Homebrew):**
+
+```bash
+brew install supabase/tap/supabase
+```
+
+**Windows (Scoop):**
+
+```bash
+scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+scoop install supabase
+```
+
+**Linux (Homebrew):**
+
+```bash
+brew install supabase/tap/supabase
+```
+
+If you do not have a package manager available, binary releases for all platforms are available from the Supabase CLI GitHub releases page. Download the appropriate binary and add it to your system PATH.
+
+After installation, confirm that the CLI is available:
+
+```bash
+supabase --version
+```
+
+### Logging In
+
+Connect the CLI to your Supabase account:
+
+```bash
+supabase login
+```
+
+This opens a browser window asking you to authorize the CLI. After approving access, the CLI stores your credentials locally. You will not need to log in again unless you switch machines or revoke the session.
+
+## Initializing a Local Project
+
+In VS Code, open the folder where you want to keep your database project files. If this folder is already a git repository, that is ideal: the files the CLI generates are meant to be committed alongside your code.
+
+Open the integrated terminal with `Ctrl+`` ` (backtick) or via the Terminal menu, then run:
+
+```bash
+supabase init
+```
+
+This creates a `supabase/` directory in your project folder:
+
+```
+supabase/
+  config.toml
+  migrations/
+```
+
+`config.toml` holds project-level configuration. The `migrations/` directory is where versioned schema change files will live. The next chapter covers migrations in depth; for now, just note that this directory is where your schema history accumulates.
+
+Commit this directory to version control:
+
+```bash
+git add supabase/
+git commit -m "Initialize Supabase project structure"
+```
+
+## Linking to Your Remote Project
+
+The CLI needs to know which Supabase project to deploy to. The link is made using your project's reference ID.
+
+To find your reference ID:
+
+1. Open your project in the Supabase dashboard.
+2. Click **Project Settings**, then **General**.
+3. Copy the value labeled **Reference ID**.
+
+Then link from the terminal:
+
+```bash
+supabase link --project-ref YOUR-REFERENCE-ID
+```
+
+The CLI will prompt for your database password (the one you set when creating the project). After a successful link, the CLI knows which remote database to target for all subsequent commands.
+
+::: {.callout-note}
+The link is stored locally in `supabase/.temp/`. If you clone the project onto a new machine, you will need to run `supabase link` again. The link is environment-specific, not committed to version control.
+:::
+
+## Writing Your First Migration
+
+With the project initialized and linked, you are ready to write schema changes locally and push them to Supabase. The mechanism for doing this is the migration file.
+
+Create your first migration:
+
+```bash
+supabase migration new create_products_table
+```
+
+The CLI creates a timestamped SQL file in `supabase/migrations/`:
+
+```
+supabase/migrations/20250101000000_create_products_table.sql
+```
+
+Open this file in VS Code. It starts empty. Write the SQL that defines your schema:
+
+```sql
+CREATE TABLE products (
+    id          SERIAL PRIMARY KEY,
+    name        TEXT NOT NULL,
+    price_usd   NUMERIC(10, 2) NOT NULL CHECK (price_usd >= 0),
+    in_stock    BOOLEAN NOT NULL DEFAULT true,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+```
+
+Save the file. The migration is ready to apply.
+
+## Pushing to Supabase
+
+Deploy all pending migration files to the remote database:
+
+```bash
+supabase db push
+```
+
+The CLI connects to your linked project, checks which migrations have already been applied, and runs only the new ones. For a fresh project with one migration file, it will run the `create_products_table` migration and report success.
+
+Open the Supabase dashboard and go to the Table Editor. The `products` table should now appear. You can also confirm from the SQL Editor:
+
+```sql
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_name = 'products'
+  AND table_schema = 'public'
+ORDER BY ordinal_position;
+```
+
+This is the core deployment loop: write SQL locally in VS Code, push it to Supabase with one command, verify in the dashboard. The next chapter builds on this loop by explaining the migration system in more depth, including how Supabase tracks which files have been applied and how to design migrations that are safe to run and, if necessary, to roll back.
+
+## Querying Supabase from VS Code
+
+Pushing schema changes from VS Code is one half of the workflow. The other half is querying the remote database from inside VS Code without switching to the browser. Two VS Code extensions handle this well together: **SQLTools** (by Matheus Teixeira) and the **SQLTools PostgreSQL/CockroachDB Driver**.
+
+Install both from the VS Code Extensions panel (search for `SQLTools` and `SQLTools PostgreSQL`). Then:
+
+1. Open the SQLTools panel by clicking the database icon in the VS Code activity bar, or pressing `Ctrl+Shift+P` and searching for **SQLTools: New Connection**.
+2. Select **PostgreSQL** as the driver.
+3. Fill in the connection details from your Supabase Project Settings page:
+   - **Server / Host:** `db.[YOUR-PROJECT-REF].supabase.co`
+   - **Port:** `5432`
+   - **Database:** `postgres`
+   - **Username:** `postgres`
+   - **Password:** your database password
+4. Click **Test Connection** to confirm the credentials work, then **Save**.
+
+Once connected, you can browse tables, run queries, and view results in a side panel without leaving VS Code. A query file (`.sql`) open in the editor can be run against the connection with `Ctrl+Enter`, and the output appears in the SQLTools Results panel.
+
+::: {.callout-tip}
+If the connection test fails, check that your Supabase project is not paused (free-tier projects pause after a week of inactivity). Visit the dashboard and wait for it to resume, then try again.
+:::
+
+## Exercises
+
+1. Install the Supabase CLI on your machine and confirm the version with `supabase --version`.
+
+2. Create a new folder, initialize a Supabase project inside it with `supabase init`, and link it to your Supabase project from the previous chapter. Commit the generated `supabase/` directory to a git repository.
+
+3. Create a migration named `create_courses_table` and write SQL to define a `courses` table with at least four columns of your choosing. Push the migration to your remote project and verify the table appears in the Supabase dashboard.
+
+4. Install the SQLTools and SQLTools PostgreSQL Driver extensions in VS Code. Connect to your Supabase database and run a query against the `courses` table you just created. Take note of what the Results panel shows when the table is empty versus when it has rows.
+
+5. Insert two rows into `courses` using a SQL file run through SQLTools, then insert two more using the Supabase SQL Editor. Confirm in both tools that all four rows are present. Explain why both tools are operating on the same underlying data.

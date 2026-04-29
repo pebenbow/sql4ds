@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>9&nbsp; Database Normalization – SQL for Data Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./10-create-table.html" rel="next">
+<link href="./08-er-diagrams.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-706344d2ac0d376cb01d0c71f2a45066.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./database-design.html">Database Design</a></li><li class="breadcrumb-item"><a href="./09-normal-forms.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">SQL for Data Science</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-why-learn-sql.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Learn SQL?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-installing-postgresql.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting Up Your Environment</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./querying-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Querying Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-select-statements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic SELECT Statements</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-data-types.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types and Type Conversion</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./working-with-multiple-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with Multiple Tables</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-set-operations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./database-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-er-diagrams.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-normal-forms.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-create-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./deploying-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploying Databases</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-supabase-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./etl-with-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ETL with Python</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-extracting-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#why-normalization-matters" id="toc-why-normalization-matters" class="nav-link active" data-scroll-target="#why-normalization-matters"><span class="header-section-number">9.1</span> Why Normalization Matters</a></li>
+  <li><a href="#a-running-example" id="toc-a-running-example" class="nav-link" data-scroll-target="#a-running-example"><span class="header-section-number">9.2</span> A Running Example</a></li>
+  <li><a href="#functional-dependencies" id="toc-functional-dependencies" class="nav-link" data-scroll-target="#functional-dependencies"><span class="header-section-number">9.3</span> Functional Dependencies</a></li>
+  <li><a href="#first-normal-form-1nf" id="toc-first-normal-form-1nf" class="nav-link" data-scroll-target="#first-normal-form-1nf"><span class="header-section-number">9.4</span> First Normal Form (1NF)</a>
+  <ul class="collapse">
+  <li><a href="#the-rule" id="toc-the-rule" class="nav-link" data-scroll-target="#the-rule"><span class="header-section-number">9.4.1</span> The Rule</a></li>
+  <li><a href="#the-violation" id="toc-the-violation" class="nav-link" data-scroll-target="#the-violation"><span class="header-section-number">9.4.2</span> The Violation</a></li>
+  <li><a href="#the-fix" id="toc-the-fix" class="nav-link" data-scroll-target="#the-fix"><span class="header-section-number">9.4.3</span> The Fix</a></li>
+  <li><a href="#the-remaining-problems" id="toc-the-remaining-problems" class="nav-link" data-scroll-target="#the-remaining-problems"><span class="header-section-number">9.4.4</span> The Remaining Problems</a></li>
+  </ul></li>
+  <li><a href="#second-normal-form-2nf" id="toc-second-normal-form-2nf" class="nav-link" data-scroll-target="#second-normal-form-2nf"><span class="header-section-number">9.5</span> Second Normal Form (2NF)</a>
+  <ul class="collapse">
+  <li><a href="#the-rule-1" id="toc-the-rule-1" class="nav-link" data-scroll-target="#the-rule-1"><span class="header-section-number">9.5.1</span> The Rule</a></li>
+  <li><a href="#the-violation-1" id="toc-the-violation-1" class="nav-link" data-scroll-target="#the-violation-1"><span class="header-section-number">9.5.2</span> The Violation</a></li>
+  <li><a href="#the-fix-1" id="toc-the-fix-1" class="nav-link" data-scroll-target="#the-fix-1"><span class="header-section-number">9.5.3</span> The Fix</a></li>
+  <li><a href="#remaining-problems" id="toc-remaining-problems" class="nav-link" data-scroll-target="#remaining-problems"><span class="header-section-number">9.5.4</span> Remaining Problems</a></li>
+  </ul></li>
+  <li><a href="#third-normal-form-3nf" id="toc-third-normal-form-3nf" class="nav-link" data-scroll-target="#third-normal-form-3nf"><span class="header-section-number">9.6</span> Third Normal Form (3NF)</a>
+  <ul class="collapse">
+  <li><a href="#the-rule-2" id="toc-the-rule-2" class="nav-link" data-scroll-target="#the-rule-2"><span class="header-section-number">9.6.1</span> The Rule</a></li>
+  <li><a href="#the-violation-2" id="toc-the-violation-2" class="nav-link" data-scroll-target="#the-violation-2"><span class="header-section-number">9.6.2</span> The Violation</a></li>
+  <li><a href="#the-fix-2" id="toc-the-fix-2" class="nav-link" data-scroll-target="#the-fix-2"><span class="header-section-number">9.6.3</span> The Fix</a></li>
+  </ul></li>
+  <li><a href="#normalization-and-joins" id="toc-normalization-and-joins" class="nav-link" data-scroll-target="#normalization-and-joins"><span class="header-section-number">9.7</span> Normalization and Joins</a></li>
+  <li><a href="#beyond-3nf" id="toc-beyond-3nf" class="nav-link" data-scroll-target="#beyond-3nf"><span class="header-section-number">9.8</span> Beyond 3NF</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">9.9</span> Exercises</a>
+  <ul class="collapse">
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">9.9.1</span> Reflection</a></li>
+  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis"><span class="header-section-number">9.9.2</span> Structural Analysis</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./database-design.html">Database Design</a></li><li class="breadcrumb-item"><a href="./09-normal-forms.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="why-normalization-matters" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="why-normalization-matters"><span class="header-section-number">9.1</span> Why Normalization Matters</h2>
+<p>Consider how most people first encounter data: in a spreadsheet. A spreadsheet is a single flat table, and the natural instinct is to put everything in one place. For small, simple datasets, that works fine. But as data grows in complexity, the flat-table approach creates problems that become increasingly costly to fix.</p>
+<p>Edgar Codd, who introduced the relational model in 1970, also developed the theory of <em>normalization</em>: a systematic approach to organizing data that reduces redundancy and prevents certain categories of errors. Normalization is not about following rules for their own sake. It is about making your database reliable and maintainable over time.</p>
+<p>The problems that normalization prevents fall into three categories:</p>
+<ul>
+<li><strong>Update anomalies</strong>: When the same fact is stored in multiple rows, updating that fact requires changing every copy. Miss one, and the database now contains contradictions.</li>
+<li><strong>Insertion anomalies</strong>: When a table conflates multiple concepts, you may be unable to record information about one thing without also recording information about something else.</li>
+<li><strong>Deletion anomalies</strong>: Removing one row may inadvertently destroy other facts stored in that same row.</li>
+</ul>
+<p>This chapter covers the three most commonly applied normal forms: First Normal Form (1NF), Second Normal Form (2NF), and Third Normal Form (3NF). Each builds on the previous, and a table in 3NF is free of the anomalies described above for the vast majority of practical cases.</p>
+</section>
+<section id="a-running-example" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="a-running-example"><span class="header-section-number">9.2</span> A Running Example</h2>
+<p>To ground each normal form in something concrete, this chapter uses a single scenario: a small business tracking customer orders. Suppose you inherit a spreadsheet that looks like this:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 15%">
+<col style="width: 19%">
+<col style="width: 23%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>order_id</th>
+<th>customer</th>
+<th>email</th>
+<th>products</th>
+<th>quantities</th>
+<th>order_date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Alice Smith</td>
+<td>alice@acme.com</td>
+<td>Laptop, Mouse</td>
+<td>1, 2</td>
+<td>2024-01-15</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Bob Jones</td>
+<td>bob@corp.net</td>
+<td>Keyboard</td>
+<td>1</td>
+<td>2024-01-16</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Alice Smith</td>
+<td>alice@acme.com</td>
+<td>Monitor, Keyboard</td>
+<td>1, 1</td>
+<td>2024-01-20</td>
+</tr>
+</tbody>
+</table>
+<p>This table has several structural problems, each addressed by a different normal form. You will work through each one in turn.</p>
+</section>
+<section id="functional-dependencies" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="functional-dependencies"><span class="header-section-number">9.3</span> Functional Dependencies</h2>
+<p>Before defining the normal forms, it helps to understand what a <em>functional dependency</em> is. Column B is functionally dependent on column A if knowing the value of A always determines the value of B.</p>
+<p>For example, in the orders table above:</p>
+<ul>
+<li><code>order_date</code> is functionally dependent on <code>order_id</code>: each order has exactly one date, so knowing the order ID tells you the date.</li>
+<li><code>customer</code> is functionally dependent on <code>email</code>: assuming each email address belongs to one person, knowing the email address tells you the customer name.</li>
+</ul>
+<p>Functional dependencies describe what a column is “about.” They are the mechanism through which the normal forms identify and eliminate redundancy.</p>
+</section>
+<section id="first-normal-form-1nf" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="first-normal-form-1nf"><span class="header-section-number">9.4</span> First Normal Form (1NF)</h2>
+<section id="the-rule" class="level3" data-number="9.4.1">
+<h3 data-number="9.4.1" class="anchored" data-anchor-id="the-rule"><span class="header-section-number">9.4.1</span> The Rule</h3>
+<p>A table is in First Normal Form if every column contains only atomic, indivisible values. No column should hold a list, a set, or any multi-valued structure. Each cell should contain exactly one value, and each row should contain exactly one “record” of whatever the table represents.</p>
+</section>
+<section id="the-violation" class="level3" data-number="9.4.2">
+<h3 data-number="9.4.2" class="anchored" data-anchor-id="the-violation"><span class="header-section-number">9.4.2</span> The Violation</h3>
+<p>The <code>products</code> and <code>quantities</code> columns each contain comma-separated lists:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>order_id</th>
+<th>products</th>
+<th>quantities</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Laptop, Mouse</td>
+<td>1, 2</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Monitor, Keyboard</td>
+<td>1, 1</td>
+</tr>
+</tbody>
+</table>
+<p>This design creates immediate practical problems. Suppose you want to find all orders that included a Keyboard. You cannot filter with <code>WHERE products = 'Keyboard'</code>; you would need to search inside the string, which is fragile and slow. Suppose you want to count total items ordered. You cannot aggregate the <code>quantities</code> column directly. The database cannot enforce referential integrity on individual products embedded in a list. And if a single order ever contains more products than you anticipated, the structure breaks down.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A related 1NF violation is the use of <em>repeating column groups</em>: rather than a list in one column, you create multiple columns for the same concept (<code>product_1</code>, <code>product_2</code>, <code>product_3</code>, …). This shares the same problems: you impose an arbitrary limit on how many values are allowed, most rows will have empty columns, and queries become awkward. Atomic values solve both forms of the problem.</p>
+</div>
+</div>
+</section>
+<section id="the-fix" class="level3" data-number="9.4.3">
+<h3 data-number="9.4.3" class="anchored" data-anchor-id="the-fix"><span class="header-section-number">9.4.3</span> The Fix</h3>
+<p>Apply 1NF by giving each product its own row:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 18%">
+<col style="width: 22%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>order_id</th>
+<th>customer</th>
+<th>email</th>
+<th>product</th>
+<th>quantity</th>
+<th>order_date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Alice Smith</td>
+<td>alice@acme.com</td>
+<td>Laptop</td>
+<td>1</td>
+<td>2024-01-15</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Alice Smith</td>
+<td>alice@acme.com</td>
+<td>Mouse</td>
+<td>2</td>
+<td>2024-01-15</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Bob Jones</td>
+<td>bob@corp.net</td>
+<td>Keyboard</td>
+<td>1</td>
+<td>2024-01-16</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Alice Smith</td>
+<td>alice@acme.com</td>
+<td>Monitor</td>
+<td>1</td>
+<td>2024-01-20</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Alice Smith</td>
+<td>alice@acme.com</td>
+<td>Keyboard</td>
+<td>1</td>
+<td>2024-01-20</td>
+</tr>
+</tbody>
+</table>
+<p>Every cell now holds exactly one value. The primary key for this table is the combination of <code>(order_id, product)</code>, since each row uniquely identifies one product on one order.</p>
+</section>
+<section id="the-remaining-problems" class="level3" data-number="9.4.4">
+<h3 data-number="9.4.4" class="anchored" data-anchor-id="the-remaining-problems"><span class="header-section-number">9.4.4</span> The Remaining Problems</h3>
+<p>The 1NF table is cleaner, but it still stores redundant information. Notice that <code>customer</code>, <code>email</code>, and <code>order_date</code> appear twice for orders 1 and 3. If Alice Smith changes her email address, you must update every row for every order she has ever placed. If you update some rows but miss others, the database now contains two different email addresses for the same customer. This is an update anomaly, and it signals a deeper structural problem.</p>
+</section>
+</section>
+<section id="second-normal-form-2nf" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="second-normal-form-2nf"><span class="header-section-number">9.5</span> Second Normal Form (2NF)</h2>
+<section id="the-rule-1" class="level3" data-number="9.5.1">
+<h3 data-number="9.5.1" class="anchored" data-anchor-id="the-rule-1"><span class="header-section-number">9.5.1</span> The Rule</h3>
+<p>A table is in Second Normal Form if it is in 1NF and every non-key column is fully functionally dependent on the <em>entire</em> primary key. A violation occurs when a non-key column depends on only <em>part</em> of a composite primary key. This is called a <em>partial dependency</em>.</p>
+<p>Recall from the previous chapter that a composite primary key is a primary key made up of two or more columns. 2NF is only relevant for tables with composite primary keys. If a table’s primary key is a single column, there is no “part of the key” to partially depend on, and 1NF already implies 2NF for those tables.</p>
+</section>
+<section id="the-violation-1" class="level3" data-number="9.5.2">
+<h3 data-number="9.5.2" class="anchored" data-anchor-id="the-violation-1"><span class="header-section-number">9.5.2</span> The Violation</h3>
+<p>In the 1NF table, the primary key is <code>(order_id, product)</code>. Consider each non-key column:</p>
+<ul>
+<li><code>quantity</code> depends on both <code>order_id</code> and <code>product</code>: the quantity of a given product on a given order requires knowing both values. This is a full dependency.</li>
+<li><code>customer</code>, <code>email</code>, and <code>order_date</code> depend only on <code>order_id</code>: knowing the order ID alone is sufficient to determine the customer, email, and date, regardless of which product the row is about. These are partial dependencies.</li>
+</ul>
+<p>Because customer and order information is stored once per order line rather than once per order, the table violates 2NF.</p>
+</section>
+<section id="the-fix-1" class="level3" data-number="9.5.3">
+<h3 data-number="9.5.3" class="anchored" data-anchor-id="the-fix-1"><span class="header-section-number">9.5.3</span> The Fix</h3>
+<p>Remove the partial dependencies by splitting the table. Columns that depend on the whole key stay together. Columns that depend on only part of the key move to a separate table, where that part of the key becomes the primary key.</p>
+<p><strong>orders</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>order_id</th>
+<th>customer</th>
+<th>email</th>
+<th>order_date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Alice Smith</td>
+<td>alice@acme.com</td>
+<td>2024-01-15</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Bob Jones</td>
+<td>bob@corp.net</td>
+<td>2024-01-16</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Alice Smith</td>
+<td>alice@acme.com</td>
+<td>2024-01-20</td>
+</tr>
+</tbody>
+</table>
+<p><strong>order_items</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>order_id</th>
+<th>product</th>
+<th>quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Laptop</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Mouse</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Keyboard</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Monitor</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Keyboard</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>orders</code> table has <code>order_id</code> as its primary key. The <code>order_items</code> table has <code>(order_id, product)</code> as its composite primary key, and <code>order_id</code> serves as a foreign key back to <code>orders</code>. To assemble a complete picture of an order, you join these two tables. This is precisely the connection between normalization and the join operations covered in the previous chapter: a well-normalized database is inherently a database of related tables, and joins are the tool for querying across them.</p>
+<p>The redundancy <em>within</em> each order is now gone. In the 1NF version, Alice’s email appeared once per order line: twice for order 1 (Laptop and Mouse) and twice for order 3 (Monitor and Keyboard). After applying 2NF, it appears once per order, regardless of how many items that order contains. If order 1 had ten products, the previous schema would have stored her email ten times across those ten rows; the 2NF schema stores it once, in the single <code>orders</code> row for order 1.</p>
+</section>
+<section id="remaining-problems" class="level3" data-number="9.5.4">
+<h3 data-number="9.5.4" class="anchored" data-anchor-id="remaining-problems"><span class="header-section-number">9.5.4</span> Remaining Problems</h3>
+<p>The <code>orders</code> table itself still has a subtle redundancy. Alice appears in rows for orders 1 and 3, with the same email address both times. If her customer name changes, you must update multiple rows. You cannot record Alice’s contact information without creating an order for her first. And if all of her orders are deleted, her contact information is lost. The anomalies have been reduced, but not eliminated.</p>
+</section>
+</section>
+<section id="third-normal-form-3nf" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="third-normal-form-3nf"><span class="header-section-number">9.6</span> Third Normal Form (3NF)</h2>
+<section id="the-rule-2" class="level3" data-number="9.6.1">
+<h3 data-number="9.6.1" class="anchored" data-anchor-id="the-rule-2"><span class="header-section-number">9.6.1</span> The Rule</h3>
+<p>A table is in Third Normal Form if it is in 2NF and every non-key column depends directly on the primary key, not on another non-key column. A violation occurs when one non-key column determines another non-key column. This is called a <em>transitive dependency</em>.</p>
+<p>The informal summary often quoted is: every non-key column must depend on <strong>the key, the whole key, and nothing but the key</strong> (so help me Codd).</p>
+</section>
+<section id="the-violation-2" class="level3" data-number="9.6.2">
+<h3 data-number="9.6.2" class="anchored" data-anchor-id="the-violation-2"><span class="header-section-number">9.6.2</span> The Violation</h3>
+<p>In the <code>orders</code> table, consider the relationship between <code>email</code> and <code>customer</code>:</p>
+<ul>
+<li><code>order_id</code> determines <code>email</code>: each order is placed by one customer, who has one email address.</li>
+<li><code>email</code> determines <code>customer</code>: each email address belongs to exactly one person with one name.</li>
+</ul>
+<p>Therefore, <code>customer</code> is transitively dependent on <code>order_id</code> through <code>email</code>: <code>order_id → email → customer</code>. The customer name does not depend directly on the order ID; it depends on the email address, which depends on the order ID. This is the source of the remaining redundancy. Alice’s name is stored once per order rather than once per customer.</p>
+</section>
+<section id="the-fix-2" class="level3" data-number="9.6.3">
+<h3 data-number="9.6.3" class="anchored" data-anchor-id="the-fix-2"><span class="header-section-number">9.6.3</span> The Fix</h3>
+<p>Move the transitively dependent columns to their own table. The non-key column that drives the dependency becomes the natural key (or a surrogate key is introduced, as shown below):</p>
+<p><strong>customers</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>customer_id</th>
+<th>customer</th>
+<th>email</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Alice Smith</td>
+<td>alice@acme.com</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Bob Jones</td>
+<td>bob@corp.net</td>
+</tr>
+</tbody>
+</table>
+<p><strong>orders</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>order_id</th>
+<th>customer_id</th>
+<th>order_date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>2024-01-15</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2</td>
+<td>2024-01-16</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1</td>
+<td>2024-01-20</td>
+</tr>
+</tbody>
+</table>
+<p><strong>order_items</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>order_id</th>
+<th>product</th>
+<th>quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Laptop</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Mouse</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Keyboard</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Monitor</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Keyboard</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The schema now consists of three tables, each representing exactly one concept. All three anomalies are resolved:</p>
+<ul>
+<li><strong>Update anomaly eliminated</strong>: Alice’s name and email appear exactly once, in <code>customers</code>. One update is sufficient.</li>
+<li><strong>Insertion anomaly eliminated</strong>: A new customer can be added to <code>customers</code> without placing any order.</li>
+<li><strong>Deletion anomaly eliminated</strong>: Deleting all of Alice’s orders removes rows from <code>orders</code> and <code>order_items</code>, but her record in <code>customers</code> is untouched.</li>
+</ul>
+<p>To retrieve a full picture of order 1, you join all three tables. The normalized structure requires more sophisticated queries, but those queries are precise and work against a schema that cannot drift into self-contradiction.</p>
+</section>
+</section>
+<section id="normalization-and-joins" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="normalization-and-joins"><span class="header-section-number">9.7</span> Normalization and Joins</h2>
+<p>A normalized database is a database of relationships. When data is spread across multiple tables, joins are the mechanism that brings it back together for analysis. This is not a limitation of normalization; it is the intended design.</p>
+<p>Each table in a normalized schema stores facts about exactly one concept. The <code>customers</code> table knows about customers. The <code>orders</code> table knows about orders and which customer placed them. The <code>order_items</code> table knows about which products were on each order. Joins let you assemble whatever combination of facts a given query requires, without duplicating any of the underlying data.</p>
+<p>If you approach this chapter before reading the chapter on joins, that is a natural next step. Conversely, if the join examples felt abstract when you first encountered them, the normalization context here clarifies <em>why</em> data is structured across multiple tables in the first place: to eliminate redundancy, to enforce integrity, and to keep each individual table as focused and consistent as possible.</p>
+</section>
+<section id="beyond-3nf" class="level2" data-number="9.8">
+<h2 data-number="9.8" class="anchored" data-anchor-id="beyond-3nf"><span class="header-section-number">9.8</span> Beyond 3NF</h2>
+<p>Higher normal forms exist. Boyce-Codd Normal Form (BCNF) is a slightly stricter variant of 3NF that handles certain edge cases involving overlapping candidate keys. Fourth Normal Form (4NF) and Fifth Normal Form (5NF) address progressively more subtle patterns involving multi-valued dependencies and join dependencies.</p>
+<p>In practice, 3NF is the appropriate target for most transactional databases. Violations of the higher forms appear infrequently in well-designed schemas and rarely cause significant problems.</p>
+<p>There are also situations where <em>denormalization</em> (deliberately reintroducing redundancy) is appropriate. Data warehouses and analytical systems sometimes store pre-computed aggregates or flattened “wide” tables to support fast reporting queries. When you denormalize, you are making a deliberate trade: faster reads at the cost of more complex write logic and more disciplined maintenance. That trade is reasonable in specific contexts. The key is to make it deliberately, with a clear understanding of what you are giving up and why.</p>
+</section>
+<section id="exercises" class="level2" data-number="9.9">
+<h2 data-number="9.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">9.9</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="9.9.1">
+<h3 data-number="9.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">9.9.1</span> Reflection</h3>
+<p><strong>1.</strong> Describe the three types of data anomalies that normalization is designed to prevent. For each type, give a concrete example using any scenario you can imagine (a school, a library, a retail store, etc.).</p>
+<hr>
+<p><strong>2.</strong> What is a functional dependency? Using a university registrar context (students, courses, instructors, grades, rooms), give two examples of functional dependencies and two examples of columns that are <em>not</em> functionally dependent on each other.</p>
+<hr>
+<p><strong>3.</strong> Second Normal Form only applies to tables with composite primary keys. Explain in your own words why this is the case. What would it mean for a non-key column to partially depend on a single-column primary key?</p>
+<hr>
+<p><strong>4.</strong> The informal rule for 3NF states that every non-key column must depend on “the key, the whole key, and nothing but the key.” Explain what each of the three clauses is protecting against:</p>
+<ul>
+<li>“the key” (what problem exists if this is violated?)</li>
+<li>“the whole key” (which normal form does this correspond to?)</li>
+<li>“nothing but the key” (which normal form does this correspond to?)</li>
+</ul>
+<hr>
+</section>
+<section id="structural-analysis" class="level3" data-number="9.9.2">
+<h3 data-number="9.9.2" class="anchored" data-anchor-id="structural-analysis"><span class="header-section-number">9.9.2</span> Structural Analysis</h3>
+<p><strong>5.</strong> Consider the following table, which tracks employee project assignments:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 17%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 17%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>emp_id</th>
+<th>emp_name</th>
+<th>dept_id</th>
+<th>dept_name</th>
+<th>project_id</th>
+<th>project_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>101</td>
+<td>Jill Chen</td>
+<td>D1</td>
+<td>Engineering</td>
+<td>P001</td>
+<td>Redesign</td>
+</tr>
+<tr class="even">
+<td>101</td>
+<td>Jill Chen</td>
+<td>D1</td>
+<td>Engineering</td>
+<td>P002</td>
+<td>API Upgrade</td>
+</tr>
+<tr class="odd">
+<td>102</td>
+<td>Marcos Rey</td>
+<td>D2</td>
+<td>Marketing</td>
+<td>P003</td>
+<td>Campaign Q2</td>
+</tr>
+<tr class="even">
+<td>103</td>
+<td>Sara Kim</td>
+<td>D1</td>
+<td>Engineering</td>
+<td>P001</td>
+<td>Redesign</td>
+</tr>
+</tbody>
+</table>
+<ol type="a">
+<li>What is the primary key of this table?</li>
+<li>This table is in 1NF but violates 2NF. Identify the partial dependencies.</li>
+<li>Decompose the table into a set of tables that satisfies 2NF. Show the resulting tables with sample data.</li>
+</ol>
+<hr>
+<p><strong>6.</strong> Using the result from question 5, examine the <code>employees</code> table you created (which should contain <code>emp_id</code>, <code>emp_name</code>, <code>dept_id</code>, and <code>dept_name</code>). Does this table satisfy 3NF? If not, identify the transitive dependency and decompose further.</p>
+<hr>
+<p><strong>7.</strong> A developer has designed the following table to track library loans:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 12%">
+<col style="width: 25%">
+<col style="width: 17%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>loan_id</th>
+<th>isbn</th>
+<th>title</th>
+<th>author</th>
+<th>patron_id</th>
+<th>patron_name</th>
+<th>due_date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1001</td>
+<td>978-0-00-1</td>
+<td>The Great Gatsby</td>
+<td>F.S. Fitzgerald</td>
+<td>P42</td>
+<td>Maria Reyes</td>
+<td>2024-03-01</td>
+</tr>
+<tr class="even">
+<td>1002</td>
+<td>978-0-00-2</td>
+<td>To Kill a Mockingbird</td>
+<td>Harper Lee</td>
+<td>P17</td>
+<td>Sam Park</td>
+<td>2024-03-08</td>
+</tr>
+<tr class="odd">
+<td>1003</td>
+<td>978-0-00-1</td>
+<td>The Great Gatsby</td>
+<td>F.S. Fitzgerald</td>
+<td>P17</td>
+<td>Sam Park</td>
+<td>2024-03-15</td>
+</tr>
+</tbody>
+</table>
+<p>Identify all normal form violations in this table and propose a fully normalized schema (3NF). Specify the tables, their columns, and their primary and foreign keys.</p>
+<hr>
+<p><strong>8.</strong> You are designing a database for a music streaming service. The business rules are:</p>
+<ul>
+<li>Each user can create many playlists.</li>
+<li>Each playlist can contain many songs.</li>
+<li>Each song belongs to exactly one album.</li>
+<li>Each album was released by exactly one artist.</li>
+</ul>
+<p>Design a normalized schema (3NF) for this data. For each table, specify the columns, the primary key, and any foreign keys.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./08-er-diagrams.html" class="pagination-link" aria-label="Entity-Relationship Diagrams">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./10-create-table.html" class="pagination-link" aria-label="Creating Tables">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><em>SQL for Data Science</em> was written by Pete Benbow</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

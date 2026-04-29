@@ -1,0 +1,2832 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Basic SELECT Statements – SQL for Data Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./04-data-types.html" rel="next">
+<link href="./querying-data.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-706344d2ac0d376cb01d0c71f2a45066.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./querying-data.html">Querying Data</a></li><li class="breadcrumb-item"><a href="./03-select-statements.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic SELECT Statements</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">SQL for Data Science</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-why-learn-sql.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Learn SQL?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-installing-postgresql.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting Up Your Environment</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./querying-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Querying Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-select-statements.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic SELECT Statements</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-data-types.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types and Type Conversion</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./working-with-multiple-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with Multiple Tables</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-set-operations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./database-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-er-diagrams.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-normal-forms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-create-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./deploying-databases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploying Databases</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-supabase-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./etl-with-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ETL with Python</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-extracting-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-select-and-from-clauses" id="toc-the-select-and-from-clauses" class="nav-link active" data-scroll-target="#the-select-and-from-clauses"><span class="header-section-number">3.1</span> The SELECT and FROM Clauses</a>
+  <ul class="collapse">
+  <li><a href="#selecting-all-columns" id="toc-selecting-all-columns" class="nav-link" data-scroll-target="#selecting-all-columns"><span class="header-section-number">3.1.1</span> Selecting All Columns</a></li>
+  <li><a href="#selecting-specific-columns" id="toc-selecting-specific-columns" class="nav-link" data-scroll-target="#selecting-specific-columns"><span class="header-section-number">3.1.2</span> Selecting Specific Columns</a></li>
+  </ul></li>
+  <li><a href="#shaping-your-output" id="toc-shaping-your-output" class="nav-link" data-scroll-target="#shaping-your-output"><span class="header-section-number">3.2</span> Shaping Your Output</a>
+  <ul class="collapse">
+  <li><a href="#column-aliases" id="toc-column-aliases" class="nav-link" data-scroll-target="#column-aliases"><span class="header-section-number">3.2.1</span> Column Aliases</a></li>
+  <li><a href="#combining-text-columns" id="toc-combining-text-columns" class="nav-link" data-scroll-target="#combining-text-columns"><span class="header-section-number">3.2.2</span> Combining Text Columns</a></li>
+  <li><a href="#arithmetic-operations" id="toc-arithmetic-operations" class="nav-link" data-scroll-target="#arithmetic-operations"><span class="header-section-number">3.2.3</span> Arithmetic Operations</a></li>
+  </ul></li>
+  <li><a href="#exploring-data-with-distinct-and-count" id="toc-exploring-data-with-distinct-and-count" class="nav-link" data-scroll-target="#exploring-data-with-distinct-and-count"><span class="header-section-number">3.3</span> Exploring Data with DISTINCT and COUNT</a>
+  <ul class="collapse">
+  <li><a href="#distinct" id="toc-distinct" class="nav-link" data-scroll-target="#distinct"><span class="header-section-number">3.3.1</span> DISTINCT</a></li>
+  <li><a href="#count" id="toc-count" class="nav-link" data-scroll-target="#count"><span class="header-section-number">3.3.2</span> COUNT</a></li>
+  </ul></li>
+  <li><a href="#filtering-rows-with-where" id="toc-filtering-rows-with-where" class="nav-link" data-scroll-target="#filtering-rows-with-where"><span class="header-section-number">3.4</span> Filtering Rows with WHERE</a>
+  <ul class="collapse">
+  <li><a href="#comparing-text-values" id="toc-comparing-text-values" class="nav-link" data-scroll-target="#comparing-text-values"><span class="header-section-number">3.4.1</span> Comparing Text Values</a></li>
+  <li><a href="#comparing-numeric-values" id="toc-comparing-numeric-values" class="nav-link" data-scroll-target="#comparing-numeric-values"><span class="header-section-number">3.4.2</span> Comparing Numeric Values</a></li>
+  <li><a href="#null-values-and-is-null" id="toc-null-values-and-is-null" class="nav-link" data-scroll-target="#null-values-and-is-null"><span class="header-section-number">3.4.3</span> NULL Values and IS NULL</a></li>
+  <li><a href="#combining-conditions-with-and-and-or" id="toc-combining-conditions-with-and-and-or" class="nav-link" data-scroll-target="#combining-conditions-with-and-and-or"><span class="header-section-number">3.4.4</span> Combining Conditions with AND and OR</a></li>
+  <li><a href="#matching-patterns-with-like" id="toc-matching-patterns-with-like" class="nav-link" data-scroll-target="#matching-patterns-with-like"><span class="header-section-number">3.4.5</span> Matching Patterns with LIKE</a></li>
+  <li><a href="#matching-a-list-of-values-with-in" id="toc-matching-a-list-of-values-with-in" class="nav-link" data-scroll-target="#matching-a-list-of-values-with-in"><span class="header-section-number">3.4.6</span> Matching a List of Values with IN</a></li>
+  <li><a href="#negating-conditions-with-not" id="toc-negating-conditions-with-not" class="nav-link" data-scroll-target="#negating-conditions-with-not"><span class="header-section-number">3.4.7</span> Negating Conditions with NOT</a></li>
+  </ul></li>
+  <li><a href="#sorting-results-with-order-by" id="toc-sorting-results-with-order-by" class="nav-link" data-scroll-target="#sorting-results-with-order-by"><span class="header-section-number">3.5</span> Sorting Results with ORDER BY</a>
+  <ul class="collapse">
+  <li><a href="#sorting-by-multiple-columns" id="toc-sorting-by-multiple-columns" class="nav-link" data-scroll-target="#sorting-by-multiple-columns"><span class="header-section-number">3.5.1</span> Sorting by Multiple Columns</a></li>
+  </ul></li>
+  <li><a href="#limiting-results-with-limit" id="toc-limiting-results-with-limit" class="nav-link" data-scroll-target="#limiting-results-with-limit"><span class="header-section-number">3.6</span> Limiting Results with LIMIT</a></li>
+  <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together"><span class="header-section-number">3.7</span> Putting It All Together</a></li>
+  <li><a href="#sql-as-a-declarative-language" id="toc-sql-as-a-declarative-language" class="nav-link" data-scroll-target="#sql-as-a-declarative-language"><span class="header-section-number">3.8</span> SQL as a Declarative Language</a>
+  <ul class="collapse">
+  <li><a href="#set-based-thinking" id="toc-set-based-thinking" class="nav-link" data-scroll-target="#set-based-thinking"><span class="header-section-number">3.8.1</span> Set-Based Thinking</a></li>
+  <li><a href="#the-logical-order-of-execution" id="toc-the-logical-order-of-execution" class="nav-link" data-scroll-target="#the-logical-order-of-execution"><span class="header-section-number">3.8.2</span> The Logical Order of Execution</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">3.9</span> Exercises</a>
+  <ul class="collapse">
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">3.9.1</span> Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">3.9.2</span> Coding</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./querying-data.html">Querying Data</a></li><li class="breadcrumb-item"><a href="./03-select-statements.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic SELECT Statements</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic SELECT Statements</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Now that your database environment is up and running, it is time to write some SQL. The most fundamental operation in SQL is the <strong>query</strong>: a question you ask the database, written in a structured way that the database engine can understand and answer. In this chapter, you will write your first queries against the <code>countries</code> database that ships with the course Docker image.</p>
+<p>The <code>countries</code> table contains one row per country or territory, covering 215 entries from a 2022 snapshot of World Bank data. Each row records the country’s name, ISO codes, population, land area, world region, capital city, and geographic coordinates. It is a rich dataset for learning SQL because it mixes text columns, whole numbers, decimal numbers, and dates in a single table.</p>
+<p>By the end of this chapter, you will know how to retrieve data from a table, choose which columns to display, compute new values from existing ones, filter rows by any condition you can describe, sort the results, and cap how many rows are returned.</p>
+<section id="the-select-and-from-clauses" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="the-select-and-from-clauses"><span class="header-section-number">3.1</span> The SELECT and FROM Clauses</h2>
+<p>Every query that retrieves data starts with a <code>SELECT</code> statement. The two required pieces are:</p>
+<ul>
+<li><strong>SELECT</strong> specifies which columns you want in the result.</li>
+<li><strong>FROM</strong> tells the database which table to look in.</li>
+</ul>
+<section id="selecting-all-columns" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="selecting-all-columns"><span class="header-section-number">3.1.1</span> Selecting All Columns</h3>
+<p>The quickest way to see everything a table contains is to use an asterisk (<code>*</code>) in place of column names. The asterisk is shorthand for “every column, in the order they are defined.”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<colgroup>
+<col style="width: 11%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 8%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 21%">
+<col style="width: 13%">
+<col style="width: 8%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">iso2c</th>
+<th style="text-align: left;">iso3c</th>
+<th style="text-align: right;">yr</th>
+<th style="text-align: right;">population</th>
+<th style="text-align: right;">area</th>
+<th style="text-align: left;">lastupdated</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: left;">capital</th>
+<th style="text-align: right;">longitude</th>
+<th style="text-align: right;">latitude</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">AF</td>
+<td style="text-align: left;">AFG</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">40578842</td>
+<td style="text-align: right;">652230</td>
+<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: left;">Kabul</td>
+<td style="text-align: right;">69.17610</td>
+<td style="text-align: right;">34.5228</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Albania</td>
+<td style="text-align: left;">AL</td>
+<td style="text-align: left;">ALB</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">2777689</td>
+<td style="text-align: right;">27400</td>
+<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: left;">Tirane</td>
+<td style="text-align: right;">19.81720</td>
+<td style="text-align: right;">41.3317</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: left;">DZ</td>
+<td style="text-align: left;">DZA</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">45477389</td>
+<td style="text-align: right;">2381741</td>
+<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Middle East &amp; North Africa</td>
+<td style="text-align: left;">Algiers</td>
+<td style="text-align: right;">3.05097</td>
+<td style="text-align: right;">36.7397</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">American Samoa</td>
+<td style="text-align: left;">AS</td>
+<td style="text-align: left;">ASM</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">48342</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: left;">Pago Pago</td>
+<td style="text-align: right;">-170.69100</td>
+<td style="text-align: right;">-14.2846</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Andorra</td>
+<td style="text-align: left;">AD</td>
+<td style="text-align: left;">AND</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">79705</td>
+<td style="text-align: right;">470</td>
+<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: left;">Andorra la Vella</td>
+<td style="text-align: right;">1.52180</td>
+<td style="text-align: right;">42.5075</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The <code>LIMIT 5</code> at the end restricts the output to five rows. Without it, the query would return all 215 rows in the table. This is similar to the <code>head()</code> function in R or Python. You will learn more about <code>LIMIT</code> later in this chapter, but getting into the habit of adding it while exploring an unfamiliar table is a good practice.</p>
+</section>
+<section id="selecting-specific-columns" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="selecting-specific-columns"><span class="header-section-number">3.1.2</span> Selecting Specific Columns</h3>
+<p>In most real situations, you will not want every column. Listing only the columns you need makes results easier to read and faster to retrieve from large tables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, capital, region, population</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<colgroup>
+<col style="width: 26%">
+<col style="width: 22%">
+<col style="width: 36%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">capital</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">population</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">Kabul</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">40578842</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Albania</td>
+<td style="text-align: left;">Tirane</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">2777689</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: left;">Algiers</td>
+<td style="text-align: left;">Middle East &amp; North Africa</td>
+<td style="text-align: right;">45477389</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">American Samoa</td>
+<td style="text-align: left;">Pago Pago</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">48342</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Andorra</td>
+<td style="text-align: left;">Andorra la Vella</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">79705</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Angola</td>
+<td style="text-align: left;">Luanda</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+<td style="text-align: right;">35635029</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Antigua and Barbuda</td>
+<td style="text-align: left;">Saint John’s</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">92840</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Argentina</td>
+<td style="text-align: left;">Buenos Aires</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">45407904</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Armenia</td>
+<td style="text-align: left;">Yerevan</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">2969200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aruba</td>
+<td style="text-align: left;">Oranjestad</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">107310</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Column names are listed after <code>SELECT</code>, separated by commas. The database returns them in exactly the order you specify, regardless of how they are arranged inside the table.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Relying on <code>SELECT *</code> in production code is considered poor practice because it breaks silently when someone adds, removes, or reorders columns in the table. Naming your columns explicitly makes queries more predictable and easier to maintain.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="shaping-your-output" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="shaping-your-output"><span class="header-section-number">3.2</span> Shaping Your Output</h2>
+<p>Beyond choosing which columns to include, SQL lets you rename columns, combine text from multiple columns, and compute new values on the fly. None of these operations modify the data in the table; they only affect what is shown in the result.</p>
+<section id="column-aliases" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="column-aliases"><span class="header-section-number">3.2.1</span> Column Aliases</h3>
+<p>By default, a column in your result inherits the name it has in the table. You can override this with the <code>AS</code> keyword, which assigns an <strong>alias</strong> to a column. Aliases are useful for giving computed values a meaningful name, shortening long column names, or improving readability.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    country    <span class="kw">AS</span> name,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    iso3c      <span class="kw">AS</span> code,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    region     <span class="kw">AS</span> world_region,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    population <span class="kw">AS</span> population_2022</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<colgroup>
+<col style="width: 29%">
+<col style="width: 7%">
+<col style="width: 39%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">code</th>
+<th style="text-align: left;">world_region</th>
+<th style="text-align: right;">population_2022</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">AFG</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">40578842</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Albania</td>
+<td style="text-align: left;">ALB</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">2777689</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: left;">DZA</td>
+<td style="text-align: left;">Middle East &amp; North Africa</td>
+<td style="text-align: right;">45477389</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">American Samoa</td>
+<td style="text-align: left;">ASM</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">48342</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Andorra</td>
+<td style="text-align: left;">AND</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">79705</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Angola</td>
+<td style="text-align: left;">AGO</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+<td style="text-align: right;">35635029</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Antigua and Barbuda</td>
+<td style="text-align: left;">ATG</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">92840</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Argentina</td>
+<td style="text-align: left;">ARG</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">45407904</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Armenia</td>
+<td style="text-align: left;">ARM</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">2969200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aruba</td>
+<td style="text-align: left;">ABW</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">107310</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The <code>AS</code> keyword is optional in PostgreSQL; you can write the alias directly after the column name without it. Using <code>AS</code> explicitly is recommended, however, because it makes the intent of the query immediately clear to anyone reading it.</p>
+</section>
+<section id="combining-text-columns" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="combining-text-columns"><span class="header-section-number">3.2.2</span> Combining Text Columns</h3>
+<p>PostgreSQL uses the <code>||</code> operator to concatenate (join) strings together. This lets you build a single display value out of multiple columns, or add literal text between column values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    country <span class="op">||</span> <span class="st">' ('</span> <span class="op">||</span> iso3c <span class="op">||</span> <span class="st">')'</span> <span class="kw">AS</span> display_name,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    capital,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    region</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<colgroup>
+<col style="width: 37%">
+<col style="width: 24%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">display_name</th>
+<th style="text-align: left;">capital</th>
+<th style="text-align: left;">region</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan (AFG)</td>
+<td style="text-align: left;">Kabul</td>
+<td style="text-align: left;">South Asia</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Albania (ALB)</td>
+<td style="text-align: left;">Tirane</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Algeria (DZA)</td>
+<td style="text-align: left;">Algiers</td>
+<td style="text-align: left;">Middle East &amp; North Africa</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">American Samoa (ASM)</td>
+<td style="text-align: left;">Pago Pago</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Andorra (AND)</td>
+<td style="text-align: left;">Andorra la Vella</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Angola (AGO)</td>
+<td style="text-align: left;">Luanda</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Antigua and Barbuda (ATG)</td>
+<td style="text-align: left;">Saint John’s</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Argentina (ARG)</td>
+<td style="text-align: left;">Buenos Aires</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Armenia (ARM)</td>
+<td style="text-align: left;">Yerevan</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aruba (ABW)</td>
+<td style="text-align: left;">Oranjestad</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Here, three values are joined into one: the country name, a space and opening parenthesis, the three-letter ISO code, and a closing parenthesis. The result is a compact label like <code>Afghanistan (AFG)</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If any value being concatenated is <code>NULL</code>, the entire result of <code>||</code> becomes <code>NULL</code>. The <code>countries</code> table has a handful of rows where <code>capital</code> is missing; if you were to concatenate <code>capital</code> into a string without accounting for that, those rows would produce a <code>NULL</code> result. The <code>COALESCE</code> function, covered in a later chapter, handles this situation cleanly.</p>
+</div>
+</div>
+</section>
+<section id="arithmetic-operations" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="arithmetic-operations"><span class="header-section-number">3.2.3</span> Arithmetic Operations</h3>
+<p>SQL treats numeric columns like variables in an algebraic expression. You can add, subtract, multiply, and divide columns and constants using standard arithmetic operators (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>).</p>
+<p>As an example, population density (people per square kilometer) is not stored in the table, but you can calculate it from <code>population</code> and <code>area</code>. Seven countries in the dataset have no recorded area, so the query filters them out first.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    country,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    population,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    area,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(population:<span class="ch">:numeric</span> <span class="op">/</span> area, <span class="dv">1</span>) <span class="kw">AS</span> pop_per_sq_km</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> area <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> pop_per_sq_km <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: right;">population</th>
+<th style="text-align: right;">area</th>
+<th style="text-align: right;">pop_per_sq_km</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Monaco</td>
+<td style="text-align: right;">38931</td>
+<td style="text-align: right;">2.084</td>
+<td style="text-align: right;">18680.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Singapore</td>
+<td style="text-align: right;">5637022</td>
+<td style="text-align: right;">718.000</td>
+<td style="text-align: right;">7851.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bahrain</td>
+<td style="text-align: right;">1524693</td>
+<td style="text-align: right;">790.000</td>
+<td style="text-align: right;">1930.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Maldives</td>
+<td style="text-align: right;">524106</td>
+<td style="text-align: right;">300.000</td>
+<td style="text-align: right;">1747.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Malta</td>
+<td style="text-align: right;">531511</td>
+<td style="text-align: right;">320.000</td>
+<td style="text-align: right;">1661.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bangladesh</td>
+<td style="text-align: right;">169384897</td>
+<td style="text-align: right;">130170.000</td>
+<td style="text-align: right;">1301.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sint Maarten (Dutch part)</td>
+<td style="text-align: right;">42139</td>
+<td style="text-align: right;">34.000</td>
+<td style="text-align: right;">1239.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bermuda</td>
+<td style="text-align: right;">64749</td>
+<td style="text-align: right;">54.000</td>
+<td style="text-align: right;">1199.1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Barbados</td>
+<td style="text-align: right;">282318</td>
+<td style="text-align: right;">430.000</td>
+<td style="text-align: right;">656.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mauritius</td>
+<td style="text-align: right;">1262523</td>
+<td style="text-align: right;">1997.000</td>
+<td style="text-align: right;">632.2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>ROUND(value, 1)</code> rounds the result to one decimal place. The <code>::numeric</code> cast converts the <code>population</code> column (stored as a whole-number <code>bigint</code>) to a decimal type before dividing, which is necessary to get a decimal result rather than integer division.</p>
+<p>Monaco leads the list by a wide margin, followed by Singapore and Bahrain. The high density values for these small, densely settled territories illustrate why raw population numbers alone can be misleading without geographic context.</p>
+</section>
+</section>
+<section id="exploring-data-with-distinct-and-count" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="exploring-data-with-distinct-and-count"><span class="header-section-number">3.3</span> Exploring Data with DISTINCT and COUNT</h2>
+<p>Two features of the <code>SELECT</code> clause are especially useful when you first sit down with an unfamiliar database: <code>DISTINCT</code>, which removes duplicate values from your results, and <code>COUNT</code>, which tallies rows. Together they let you quickly understand what a table contains and how its data is distributed before you start filtering or transforming it.</p>
+<section id="distinct" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="distinct"><span class="header-section-number">3.3.1</span> DISTINCT</h3>
+<p>Adding the <code>DISTINCT</code> keyword immediately after <code>SELECT</code> tells the database to return only unique combinations of the specified columns, removing any duplicate rows from the result.</p>
+<p>A common use is to see every unique value that appears in a categorical column. The <code>countries</code> table has 215 rows but only seven distinct world regions. Without <code>DISTINCT</code>, selecting the <code>region</code> column would return 215 rows with many repeated values. With it, you get the seven unique values once each:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> region</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> region;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>7 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">region</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Middle East &amp; North Africa</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">North America</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">South Asia</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sub-Saharan Africa</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>DISTINCT</code> applies to the full combination of columns listed, not just the first one. If you write <code>SELECT DISTINCT region, capital</code>, the result contains each unique pairing of those two values rather than unique regions alone.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>SELECT DISTINCT</code> is useful for a quick look at what values exist in a column, but it is not a substitute for proper data profiling. For large tables, counting how many rows correspond to each distinct value tells you much more than the list of values alone. <code>GROUP BY</code>, covered in a later chapter, is the right tool for that.</p>
+</div>
+</div>
+</section>
+<section id="count" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="count"><span class="header-section-number">3.3.2</span> COUNT</h3>
+<p><code>COUNT</code> is an <strong>aggregate function</strong>: rather than returning one row per input row, it collapses results into a single summary value. The most common form, <code>COUNT(*)</code>, returns the total number of rows in the result.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total_countries</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">total_countries</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">215</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Paired with a <code>WHERE</code> clause, <code>COUNT(*)</code> counts only the rows that satisfy the filter:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> south_asia_count</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> region <span class="op">=</span> <span class="st">'South Asia'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">south_asia_count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">8</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>COUNT(column_name)</code>, with a specific column instead of <code>*</code>, counts only rows where that column is not NULL. This makes it a convenient way to measure how complete your data is:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)       <span class="kw">AS</span> total_rows,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(area)    <span class="kw">AS</span> rows_with_area,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(capital) <span class="kw">AS</span> rows_with_capital</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">total_rows</th>
+<th style="text-align: right;">rows_with_area</th>
+<th style="text-align: right;">rows_with_capital</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">215</td>
+<td style="text-align: right;">208</td>
+<td style="text-align: right;">209</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The result shows that 208 of the 215 rows have a recorded area and 209 have a recorded capital, immediately revealing which columns have missing data and how many gaps exist.</p>
+<p><code>COUNT(DISTINCT column)</code> combines both ideas, counting how many unique values appear in a column:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> region) <span class="kw">AS</span> num_regions</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">num_regions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>COUNT</code> belongs to a family of aggregate functions that summarize groups of rows into a single value. Others include <code>SUM()</code>, <code>AVG()</code>, <code>MIN()</code>, and <code>MAX()</code>. These become significantly more powerful when paired with <code>GROUP BY</code>, which computes a separate summary for each category in a column, such as the number of countries per region or the average population per continent. <code>GROUP BY</code> is covered in its own chapter.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="filtering-rows-with-where" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="filtering-rows-with-where"><span class="header-section-number">3.4</span> Filtering Rows with WHERE</h2>
+<p><code>SELECT</code> and <code>FROM</code> control which columns and tables you work with. The <code>WHERE</code> clause controls which <strong>rows</strong> appear in the result. Any row that does not satisfy the condition after <code>WHERE</code> is excluded from the output.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> condition;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="comparing-text-values" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="comparing-text-values"><span class="header-section-number">3.4.1</span> Comparing Text Values</h3>
+<p>Use a single equals sign (<code>=</code>) to match a text value exactly. Text comparisons in PostgreSQL are case-sensitive by default, so <code>'South Asia'</code> and <code>'south asia'</code> are not the same.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, capital, population</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> region <span class="op">=</span> <span class="st">'South Asia'</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> population <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>8 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">capital</th>
+<th style="text-align: right;">population</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">India</td>
+<td style="text-align: left;">New Delhi</td>
+<td style="text-align: right;">1425423212</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pakistan</td>
+<td style="text-align: left;">Islamabad</td>
+<td style="text-align: right;">243700667</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bangladesh</td>
+<td style="text-align: left;">Dhaka</td>
+<td style="text-align: right;">169384897</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">Kabul</td>
+<td style="text-align: right;">40578842</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nepal</td>
+<td style="text-align: left;">Kathmandu</td>
+<td style="text-align: right;">29715436</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sri Lanka</td>
+<td style="text-align: left;">Colombo</td>
+<td style="text-align: right;">22181000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bhutan</td>
+<td style="text-align: left;">Thimphu</td>
+<td style="text-align: right;">780914</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Maldives</td>
+<td style="text-align: left;">Male</td>
+<td style="text-align: right;">524106</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The South Asia region contains eight countries. Sorting by population descending puts India and Pakistan at the top of the list, where you would expect them.</p>
+<p>To exclude a value instead of matching it, use <code>&lt;&gt;</code> (or the equivalent <code>!=</code>):</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, region</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> region <span class="op">&lt;&gt;</span> <span class="st">'North America'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="comparing-numeric-values" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="comparing-numeric-values"><span class="header-section-number">3.4.2</span> Comparing Numeric Values</h3>
+<p>The standard comparison operators work on numeric columns: <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>=</code>, and <code>&lt;&gt;</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, region, population</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> population <span class="op">&gt;</span> <span class="dv">100000000</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> population <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">population</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">India</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">1425423212</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">China</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">1412175000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United States</td>
+<td style="text-align: left;">North America</td>
+<td style="text-align: right;">333271411</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">278830529</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pakistan</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">243700667</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nigeria</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+<td style="text-align: right;">223150896</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">210306415</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bangladesh</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">169384897</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Russian Federation</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">144236933</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">128613117</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Eleven countries have populations exceeding 100 million. Notice that the result includes countries from several different regions, which you can verify by scanning the <code>region</code> column.</p>
+</section>
+<section id="null-values-and-is-null" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="null-values-and-is-null"><span class="header-section-number">3.4.3</span> NULL Values and IS NULL</h3>
+<p><strong>NULL</strong> is a special marker in SQL that represents the absence of a value. It is not the same as zero, an empty string, or a blank space. NULL means that no value was recorded for that column in that row at all.</p>
+<p>Seven countries in the <code>countries</code> table have no recorded land area. You can find them using <code>IS NULL</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, iso3c, region, area</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> area <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>7 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">iso3c</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">area</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Channel Islands</td>
+<td style="text-align: left;">CHI</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gibraltar</td>
+<td style="text-align: left;">GIB</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hong Kong SAR, China</td>
+<td style="text-align: left;">HKG</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Israel</td>
+<td style="text-align: left;">ISR</td>
+<td style="text-align: left;">Middle East &amp; North Africa</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kosovo</td>
+<td style="text-align: left;">XKX</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Macao SAR, China</td>
+<td style="text-align: left;">MAC</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">West Bank and Gaza</td>
+<td style="text-align: left;">PSE</td>
+<td style="text-align: left;">Middle East &amp; North Africa</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>To find rows where a value <em>is</em> present, use <code>IS NOT NULL</code>. You saw this earlier in the arithmetic section, where <code>WHERE area IS NOT NULL</code> excluded those seven rows before computing population density. As a standalone example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, iso3c, region, area</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> area <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> area <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">iso3c</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">area</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Russian Federation</td>
+<td style="text-align: left;">RUS</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">16376870</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">China</td>
+<td style="text-align: left;">CHN</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">9388210</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United States</td>
+<td style="text-align: left;">USA</td>
+<td style="text-align: left;">North America</td>
+<td style="text-align: right;">9147420</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: left;">CAN</td>
+<td style="text-align: left;">North America</td>
+<td style="text-align: right;">8788700</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: left;">BRA</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">8358140</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Australia</td>
+<td style="text-align: left;">AUS</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">7692020</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">India</td>
+<td style="text-align: left;">IND</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">2973190</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Argentina</td>
+<td style="text-align: left;">ARG</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">2736690</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kazakhstan</td>
+<td style="text-align: left;">KAZ</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">2699700</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: left;">DZA</td>
+<td style="text-align: left;">Middle East &amp; North Africa</td>
+<td style="text-align: right;">2381741</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You cannot test for NULL using <code>=</code>. Writing <code>WHERE area = NULL</code> always returns zero rows, because NULL is not considered equal to anything, not even another NULL. Always use <code>IS NULL</code> or <code>IS NOT NULL</code> when checking for missing values.</p>
+</div>
+</div>
+</section>
+<section id="combining-conditions-with-and-and-or" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="combining-conditions-with-and-and-or"><span class="header-section-number">3.4.4</span> Combining Conditions with AND and OR</h3>
+<p>A <code>WHERE</code> clause can include multiple conditions joined by <code>AND</code> or <code>OR</code>.</p>
+<ul>
+<li><code>AND</code> requires <strong>both</strong> conditions to be true for a row to be included.</li>
+<li><code>OR</code> requires <strong>at least one</strong> condition to be true.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, population, area</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> region <span class="op">=</span> <span class="st">'Latin America &amp; Caribbean'</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> population <span class="op">&gt;</span> <span class="dv">10000000</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> population <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: right;">population</th>
+<th style="text-align: right;">area</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: right;">210306415</td>
+<td style="text-align: right;">8358140</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: right;">128613117</td>
+<td style="text-align: right;">1943950</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: right;">51737944</td>
+<td style="text-align: right;">1109500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Argentina</td>
+<td style="text-align: right;">45407904</td>
+<td style="text-align: right;">2736690</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Peru</td>
+<td style="text-align: right;">33475438</td>
+<td style="text-align: right;">1280000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Venezuela, RB</td>
+<td style="text-align: right;">28213017</td>
+<td style="text-align: right;">882050</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chile</td>
+<td style="text-align: right;">19553036</td>
+<td style="text-align: right;">743532</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Guatemala</td>
+<td style="text-align: right;">17847877</td>
+<td style="text-align: right;">107160</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ecuador</td>
+<td style="text-align: right;">17823897</td>
+<td style="text-align: right;">248360</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bolivia</td>
+<td style="text-align: right;">12077154</td>
+<td style="text-align: right;">1083300</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This query returns the 14 countries in Latin America and the Caribbean with populations above 10 million. Brazil leads comfortably, with roughly 1.6 times Mexico’s population.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When combining <code>AND</code> and <code>OR</code> in the same <code>WHERE</code> clause, use parentheses to make your intentions explicit. SQL evaluates <code>AND</code> before <code>OR</code>, which can produce surprising results if conditions are not grouped clearly.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Returns rows where region matches AND either population condition is true</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> region <span class="op">=</span> <span class="st">'South Asia'</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> (population <span class="op">&gt;</span> <span class="dv">50000000</span> <span class="kw">OR</span> population <span class="op">&lt;</span> <span class="dv">1000000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="matching-patterns-with-like" class="level3" data-number="3.4.5">
+<h3 data-number="3.4.5" class="anchored" data-anchor-id="matching-patterns-with-like"><span class="header-section-number">3.4.5</span> Matching Patterns with LIKE</h3>
+<p>The <code>LIKE</code> operator filters text columns using simple patterns. Two wildcard characters are available:</p>
+<ul>
+<li><code>%</code> matches any sequence of zero or more characters.</li>
+<li><code>_</code> matches exactly one character.</li>
+</ul>
+<p>The following example finds all countries whose names begin with C:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, iso3c, capital, region</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> country <span class="kw">LIKE</span> <span class="st">'C%'</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> country;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<colgroup>
+<col style="width: 36%">
+<col style="width: 8%">
+<col style="width: 17%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">iso3c</th>
+<th style="text-align: left;">capital</th>
+<th style="text-align: left;">region</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Cabo Verde</td>
+<td style="text-align: left;">CPV</td>
+<td style="text-align: left;">Praia</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cambodia</td>
+<td style="text-align: left;">KHM</td>
+<td style="text-align: left;">Phnom Penh</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cameroon</td>
+<td style="text-align: left;">CMR</td>
+<td style="text-align: left;">Yaounde</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: left;">CAN</td>
+<td style="text-align: left;">Ottawa</td>
+<td style="text-align: left;">North America</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cayman Islands</td>
+<td style="text-align: left;">CYM</td>
+<td style="text-align: left;">George Town</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Central African Republic</td>
+<td style="text-align: left;">CAF</td>
+<td style="text-align: left;">Bangui</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chad</td>
+<td style="text-align: left;">TCD</td>
+<td style="text-align: left;">N’Djamena</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Channel Islands</td>
+<td style="text-align: left;">CHI</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chile</td>
+<td style="text-align: left;">CHL</td>
+<td style="text-align: left;">Santiago</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">China</td>
+<td style="text-align: left;">CHN</td>
+<td style="text-align: left;">Beijing</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Lowercase <code>'c%'</code> would return no results here because text matching with <code>LIKE</code> is case-sensitive, and no country names begin with a lower-case C. If you need to perform case-insensitive pattern matching, use <code>ILIKE</code> instead of <code>LIKE</code>.</p>
+<p>With multiple wildcards, you can search for text that occurs anywhere in a given column. In this example, by adding the <code>%</code> wildcard both before and after our search term, we can find any and all countries whose names contain the string “Virgin,” regardless of whether it comes at the start of the name, the end, or somewhere in the middle.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, iso3c, capital, region</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> country <span class="kw">LIKE</span> <span class="st">'%Virgin%'</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> country;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>2 records</caption>
+<colgroup>
+<col style="width: 31%">
+<col style="width: 8%">
+<col style="width: 23%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">iso3c</th>
+<th style="text-align: left;">capital</th>
+<th style="text-align: left;">region</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">British Virgin Islands</td>
+<td style="text-align: left;">VGB</td>
+<td style="text-align: left;">Road Town</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Virgin Islands (U.S.)</td>
+<td style="text-align: left;">VIR</td>
+<td style="text-align: left;">Charlotte Amalie</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="matching-a-list-of-values-with-in" class="level3" data-number="3.4.6">
+<h3 data-number="3.4.6" class="anchored" data-anchor-id="matching-a-list-of-values-with-in"><span class="header-section-number">3.4.6</span> Matching a List of Values with IN</h3>
+<p>When you want to match any one of several specific values, <code>IN</code> is more readable than a chain of <code>OR</code> conditions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, region, population</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> region <span class="kw">IN</span> (<span class="st">'South Asia'</span>, <span class="st">'East Asia &amp; Pacific'</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> region, population <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">population</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">China</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">1412175000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">278830529</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Japan</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">125124989</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Philippines</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">113964338</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Thailand</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">71735329</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Myanmar</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">53756787</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Korea, Rep.</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">51672569</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Malaysia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">34695493</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Korea, Dem. People’s Rep.</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">26328845</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Australia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">26014399</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="negating-conditions-with-not" class="level3" data-number="3.4.7">
+<h3 data-number="3.4.7" class="anchored" data-anchor-id="negating-conditions-with-not"><span class="header-section-number">3.4.7</span> Negating Conditions with NOT</h3>
+<p>The <code>NOT</code> keyword reverses the result of a condition. It can be placed in front of <code>LIKE</code>, <code>IN</code>, <code>BETWEEN</code>, and similar operators to express “everything except what this pattern matches.”</p>
+<p><code>NOT LIKE</code> excludes rows that match a pattern. The query below returns countries whose names do not contain the word “Republic”:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, region</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> country <span class="kw">NOT</span> <span class="kw">LIKE</span> <span class="st">'%Republic%'</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> country;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">region</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">South Asia</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Albania</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Algeria</td>
+<td style="text-align: left;">Middle East &amp; North Africa</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">American Samoa</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Andorra</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Angola</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Antigua and Barbuda</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Argentina</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Armenia</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aruba</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>NOT IN</code> excludes rows whose column value matches any entry in the list:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, region, population</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> region <span class="kw">NOT</span> <span class="kw">IN</span> (<span class="st">'North America'</span>, <span class="st">'Europe &amp; Central Asia'</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> population <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">population</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">India</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">1425423212</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">China</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">1412175000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">278830529</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pakistan</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">243700667</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nigeria</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+<td style="text-align: right;">223150896</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">210306415</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bangladesh</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">169384897</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">128613117</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ethiopia</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+<td style="text-align: right;">125384287</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Japan</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">125124989</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>IS NOT NULL</code>, introduced in the previous section, follows the same pattern and is technically a <code>NOT</code> form as well.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>NOT</code> can also be written as a prefix before a parenthesized condition:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> (region <span class="op">=</span> <span class="st">'North America'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This is equivalent to <code>WHERE region &lt;&gt; 'North America'</code>. The prefix form is more useful when negating a compound condition that would be awkward to rewrite with <code>&lt;&gt;</code> or other operators.</p>
+</div>
+</div>
+<section id="not-in-and-null-values" class="level4" data-number="3.4.7.1">
+<h4 data-number="3.4.7.1" class="anchored" data-anchor-id="not-in-and-null-values"><span class="header-section-number">3.4.7.1</span> NOT IN and NULL Values</h4>
+<p><code>NOT IN</code> behaves unexpectedly when NULL values are involved, and understanding this is important for using it safely.</p>
+<p>When a NULL appears anywhere in the list passed to <code>NOT IN</code>, the condition returns no rows at all. To see this, try adding a NULL to an otherwise straightforward filter:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, region, iso3c, area</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> region <span class="kw">NOT</span> <span class="kw">IN</span> (<span class="st">'North America'</span>, <span class="st">'Europe &amp; Central Asia'</span>, <span class="kw">NULL</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top">
+<caption>0 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: left;">iso3c</th>
+<th style="text-align: right;">area</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</div>
+<p>This returns zero rows despite the fact most of the 215 countries belong to neither of the two named regions here. The reason comes down to how SQL evaluates NULL comparisons. The expression <code>region NOT IN ('North America', 'Europe &amp; Central Asia', NULL)</code> expands internally to:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>region <span class="op">&lt;&gt;</span> <span class="st">'North America'</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">AND</span> region <span class="op">&lt;&gt;</span> <span class="st">'Europe &amp; Central Asia'</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">AND</span> region <span class="op">&lt;&gt;</span> <span class="kw">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The third condition, <code>region &lt;&gt; NULL</code>, never evaluates to TRUE or FALSE. As covered earlier, any comparison with NULL produces NULL, meaning the result is unknown. When one part of an <code>AND</code> chain is unknown, the entire expression is unknown, and the row is excluded from the output. Because this applies to every row in the table, the query returns nothing.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A single NULL anywhere in the list passed to <code>NOT IN</code> silently causes the entire condition to return no rows. Because no error is raised, this problem can go unnoticed for a long time. When building a list for <code>NOT IN</code>, verify that it contains no NULL values. A later chapter covers how this same issue arises when the list comes from a subquery rather than a literal set of values, and introduces <code>NOT EXISTS</code> as the preferred alternative in those situations. Unlike <code>NOT IN</code>, <code>NOT EXISTS</code> handles NULL values correctly and does not produce this silent failure.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="sorting-results-with-order-by" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="sorting-results-with-order-by"><span class="header-section-number">3.5</span> Sorting Results with ORDER BY</h2>
+<p>By default, a database returns rows in no particular order. The physical order of data in storage has nothing to do with alphabetical order, population size, or any other meaningful sequence. The <code>ORDER BY</code> clause lets you specify the order you want.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> column1 <span class="kw">ASC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>ASC</code> (ascending) is the default and can be omitted. Use <code>DESC</code> (descending) to reverse the order.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, region, population</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> population <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">population</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">India</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">1425423212</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">China</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">1412175000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United States</td>
+<td style="text-align: left;">North America</td>
+<td style="text-align: right;">333271411</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">278830529</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pakistan</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">243700667</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nigeria</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+<td style="text-align: right;">223150896</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">210306415</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bangladesh</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">169384897</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Russian Federation</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">144236933</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">128613117</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="sorting-by-multiple-columns" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="sorting-by-multiple-columns"><span class="header-section-number">3.5.1</span> Sorting by Multiple Columns</h3>
+<p>You can sort by more than one column by listing them after <code>ORDER BY</code>, separated by commas. The database sorts by the first column, then uses the second column to break ties, then the third, and so on.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, region, population</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> region <span class="kw">ASC</span>, population <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 20</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">population</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">China</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">1412175000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">278830529</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Japan</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">125124989</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Philippines</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">113964338</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Thailand</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">71735329</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Myanmar</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">53756787</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Korea, Rep.</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">51672569</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Malaysia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">34695493</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Korea, Dem. People’s Rep.</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">26328845</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Australia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">26014399</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cambodia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">17201724</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Papua New Guinea</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">10203169</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lao PDR</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">7559007</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hong Kong SAR, China</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">7346100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Singapore</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">5637022</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">New Zealand</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">5117200</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mongolia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">3433748</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Timor-Leste</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">1369295</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fiji</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">919422</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Solomon Islands</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">781066</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>This query first groups rows by region alphabetically, then within each region sorts countries from most populous to least. The result lets you compare countries within each region at a glance.</p>
+</section>
+</section>
+<section id="limiting-results-with-limit" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="limiting-results-with-limit"><span class="header-section-number">3.6</span> Limiting Results with LIMIT</h2>
+<p>The <code>LIMIT</code> clause caps the number of rows returned by a query. It is most useful when combined with <code>ORDER BY</code>, because the two together let you answer “top N” questions: the ten most populous countries, the five smallest territories by area, and so on.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, region, population</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> population <span class="kw">DESC</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">country</th>
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">population</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">India</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">1425423212</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">China</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">1412175000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United States</td>
+<td style="text-align: left;">North America</td>
+<td style="text-align: right;">333271411</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: left;">East Asia &amp; Pacific</td>
+<td style="text-align: right;">278830529</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pakistan</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">243700667</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nigeria</td>
+<td style="text-align: left;">Sub-Saharan Africa</td>
+<td style="text-align: right;">223150896</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">210306415</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bangladesh</td>
+<td style="text-align: left;">South Asia</td>
+<td style="text-align: right;">169384897</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Russian Federation</td>
+<td style="text-align: left;">Europe &amp; Central Asia</td>
+<td style="text-align: right;">144236933</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: left;">Latin America &amp; Caribbean</td>
+<td style="text-align: right;">128613117</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Using <code>LIMIT</code> without <code>ORDER BY</code> returns an arbitrary subset of rows. Which rows you get depends on how the database happens to store and retrieve data at that moment, which can vary between runs. If you need a specific subset (such as the largest, smallest, newest, or oldest), always pair <code>LIMIT</code> with an <code>ORDER BY</code> that defines what “first” means.</p>
+</div>
+</div>
+</section>
+<section id="putting-it-all-together" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="putting-it-all-together"><span class="header-section-number">3.7</span> Putting It All Together</h2>
+<p>The clauses covered in this chapter can be combined in a single query. PostgreSQL evaluates them in a fixed logical order, regardless of how you arrange them in the text:</p>
+<ol type="1">
+<li><code>FROM</code> (identify the table)</li>
+<li><code>WHERE</code> (filter rows)</li>
+<li><code>SELECT</code> (compute and choose columns)</li>
+<li><code>ORDER BY</code> (sort the result)</li>
+<li><code>LIMIT</code> (cut the result to the requested number of rows)</li>
+</ol>
+<p>The query below uses all of these clauses together to find the ten most populous countries in Europe and Central Asia, showing a computed population density alongside each country’s name and capital.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    country <span class="op">||</span> <span class="st">' ('</span> <span class="op">||</span> iso3c <span class="op">||</span> <span class="st">')'</span> <span class="kw">AS</span> display_name,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    capital,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    population,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(population:<span class="ch">:numeric</span> <span class="op">/</span> area, <span class="dv">1</span>) <span class="kw">AS</span> pop_per_sq_km</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> region <span class="op">=</span> <span class="st">'Europe &amp; Central Asia'</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> area <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> population <span class="kw">DESC</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">display_name</th>
+<th style="text-align: left;">capital</th>
+<th style="text-align: right;">population</th>
+<th style="text-align: right;">pop_per_sq_km</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Russian Federation (RUS)</td>
+<td style="text-align: left;">Moscow</td>
+<td style="text-align: right;">144236933</td>
+<td style="text-align: right;">8.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Turkiye (TUR)</td>
+<td style="text-align: left;">Ankara</td>
+<td style="text-align: right;">84979913</td>
+<td style="text-align: right;">110.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Germany (DEU)</td>
+<td style="text-align: left;">Berlin</td>
+<td style="text-align: right;">83797985</td>
+<td style="text-align: right;">239.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">France (FRA)</td>
+<td style="text-align: left;">Paris</td>
+<td style="text-align: right;">68065015</td>
+<td style="text-align: right;">124.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United Kingdom (GBR)</td>
+<td style="text-align: left;">London</td>
+<td style="text-align: right;">67791000</td>
+<td style="text-align: right;">280.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Italy (ITA)</td>
+<td style="text-align: left;">Rome</td>
+<td style="text-align: right;">59013667</td>
+<td style="text-align: right;">199.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spain (ESP)</td>
+<td style="text-align: left;">Madrid</td>
+<td style="text-align: right;">47759127</td>
+<td style="text-align: right;">95.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ukraine (UKR)</td>
+<td style="text-align: left;">Kiev</td>
+<td style="text-align: right;">41048766</td>
+<td style="text-align: right;">70.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poland (POL)</td>
+<td style="text-align: left;">Warsaw</td>
+<td style="text-align: right;">36821749</td>
+<td style="text-align: right;">120.3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Uzbekistan (UZB)</td>
+<td style="text-align: left;">Tashkent</td>
+<td style="text-align: right;">34938955</td>
+<td style="text-align: right;">79.3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Reading a query like this from top to bottom is natural once you understand what each clause contributes. As you move through subsequent chapters and your queries grow more complex, this structured way of thinking about each clause separately will continue to serve as a reliable foundation.</p>
+</section>
+<section id="sql-as-a-declarative-language" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="sql-as-a-declarative-language"><span class="header-section-number">3.8</span> SQL as a Declarative Language</h2>
+<p>Now that you hopefully understand how a basic <code>SELECT</code> statement is written, it’s important to understand something fundamental about how SQL thinks, because it is different from how R and Python think.</p>
+<p>If you have experience with either of those languages, you are accustomed to writing programs that specify a sequence of steps. You tell the computer exactly what to do and in what order: load this data, filter these rows, select these columns, sort the result. This style is called <strong>imperative</strong> programming, because you are issuing commands.</p>
+<p>SQL is <strong>declarative</strong>. Rather than specifying steps, you describe the result you want and let the database engine figure out how to produce it.</p>
+<p>To make the contrast concrete, consider retrieving the South Asian countries sorted by population. In Python with pandas, you might write:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>south_asia <span class="op">=</span> df[df[<span class="st">"region"</span>] <span class="op">==</span> <span class="st">"South Asia"</span>]</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> (</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    south_asia[[<span class="st">"country"</span>, <span class="st">"population"</span>]]</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    .sort_values(<span class="st">"population"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In R with dplyr:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> countries <span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"South Asia"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, population) <span class="sc">|&gt;</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(population))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Both of these describe a sequence of operations. The order of the instructions matches the intended order of execution.</p>
+<p>The equivalent SQL looks like this:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, population</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> region <span class="op">=</span> <span class="st">'South Asia'</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> population <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The SQL query does not describe steps. It describes a result: “I want the <code>country</code> and <code>population</code> columns, from the <code>countries</code> table, restricted to rows where <code>region</code> is <code>'South Asia'</code>, sorted by <code>population</code> descending.” The database engine reads that description and decides for itself how to retrieve the data efficiently. It may use an index, reorder internal operations, or parallelize work across processors. You do not control those decisions, and most of the time you do not need to.</p>
+<section id="set-based-thinking" class="level3" data-number="3.8.1">
+<h3 data-number="3.8.1" class="anchored" data-anchor-id="set-based-thinking"><span class="header-section-number">3.8.1</span> Set-Based Thinking</h3>
+<p>One practical consequence of SQL’s declarative nature is that it operates on <strong>sets of rows</strong> rather than individual records. When you write a <code>WHERE</code> clause, you are not writing a loop that examines each row in turn. You are describing a condition that applies to the entire table at once, and the database evaluates it however it finds most efficient.</p>
+<p>This can feel unfamiliar at first. In Python or R, reaching for a loop or an <code>apply</code>-style function is instinctive. In SQL, you resist that instinct and instead describe what the complete result set should look like. Queries that try to mimic row-by-row processing are almost always slower and harder to read than queries that embrace the set-based model.</p>
+</section>
+<section id="the-logical-order-of-execution" class="level3" data-number="3.8.2">
+<h3 data-number="3.8.2" class="anchored" data-anchor-id="the-logical-order-of-execution"><span class="header-section-number">3.8.2</span> The Logical Order of Execution</h3>
+<p>There is one aspect of SQL’s declarative model that surprises many people coming from R or Python: the order in which you <em>write</em> a query’s clauses is not the order in which the database <em>evaluates</em> them.</p>
+<p>A query is written as:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">..</span>.</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> <span class="op">..</span>.</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="op">..</span>.</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="op">..</span>.</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="op">..</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But the database processes the clauses in this logical order:</p>
+<ol type="1">
+<li><code>FROM</code> (identify the source table)</li>
+<li><code>WHERE</code> (filter rows)</li>
+<li><code>SELECT</code> (compute and choose columns)</li>
+<li><code>ORDER BY</code> (sort the result)</li>
+<li><code>LIMIT</code> (trim to the requested number of rows)</li>
+</ol>
+<p>The most common practical consequence of this is that column aliases defined in <code>SELECT</code> cannot be referenced in a <code>WHERE</code> clause, because <code>WHERE</code> runs before <code>SELECT</code>. The following query fails for exactly that reason:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- This fails: 'density' is not defined when WHERE runs</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> population <span class="op">/</span> area <span class="kw">AS</span> density</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> density <span class="op">&gt;</span> <span class="dv">100</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You have to repeat the expression in <code>WHERE</code> instead:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> population <span class="op">/</span> area <span class="kw">AS</span> density</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> population <span class="op">/</span> area <span class="op">&gt;</span> <span class="dv">100</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>ORDER BY</code> is an exception: most databases, including PostgreSQL, allow <code>ORDER BY</code> to reference aliases defined in <code>SELECT</code>, because <code>ORDER BY</code> is evaluated after <code>SELECT</code>. That is why <code>ORDER BY density</code> would work in the query above even though <code>WHERE density</code> does not.</p>
+<p>Keeping this logical order in mind will make otherwise cryptic error messages much easier to diagnose as your queries grow more complex.</p>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.9</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="3.9.1">
+<h3 data-number="3.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">3.9.1</span> Reflection</h3>
+<ol type="1">
+<li><p>SQL is described in this chapter as a “declarative” programming language, while R and Python are “imperative.” In your own words, explain what that distinction means. How does it change the way you approach writing a query compared to writing a data pipeline in R or Python?</p></li>
+<li><p>A colleague writes the following query hoping to find all countries with a population density above 500 people per square kilometer, but PostgreSQL returns an error. Identify the problem and explain how to fix it.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, <span class="fu">ROUND</span>(population:<span class="ch">:numeric</span> <span class="op">/</span> area, <span class="dv">1</span>) <span class="kw">AS</span> density</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> density <span class="op">&gt;</span> <span class="dv">500</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Explain the difference between <code>COUNT(*)</code> and <code>COUNT(area)</code> as they apply to the <code>countries</code> table. Under what circumstances would the two expressions return different values?</p></li>
+<li><p>A classmate wants to retrieve all countries where no capital city has been recorded. They write the query below, but it always returns zero rows. Why? What should they write instead?</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> capital <span class="op">=</span> <span class="kw">NULL</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+</section>
+<section id="coding" class="level3" data-number="3.9.2">
+<h3 data-number="3.9.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">3.9.2</span> Coding</h3>
+<p>For each exercise below, write a SQL query against the <code>countries</code> database. Try to write the query yourself before checking the solutions.</p>
+<ol start="5" type="1">
+<li><p>Write a query that retrieves the country name, capital city, and region for every country in the table. Sort the results alphabetically by country name.</p></li>
+<li><p>Write a query that returns the country name and population for all countries in the <code>Sub-Saharan Africa</code> region, sorted from most populous to least populous.</p></li>
+<li><p>Write a query that builds a formatted label for each country by combining its name and three-letter ISO code in the format <code>Country Name (ISO3C)</code>. Call the resulting column <code>display_name</code>. Return only countries whose names begin with the letter S, sorted alphabetically.</p></li>
+<li><p>Write a query that returns the country name, population, area, and population density rounded to one decimal place for all countries in the <code>Europe &amp; Central Asia</code> region that have a recorded area. Name the density column <code>pop_per_sq_km</code> and sort from highest density to lowest.</p></li>
+<li><p>Write a query that returns the country name, capital, and population for all countries that satisfy every one of the following conditions: the country name contains the word “Republic”, the population is greater than five million, and a capital city has been recorded. Sort the results by population in descending order.</p></li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./querying-data.html" class="pagination-link" aria-label="Querying Data">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Querying Data</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./04-data-types.html" class="pagination-link" aria-label="Data Types and Type Conversion">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types and Type Conversion</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><em>SQL for Data Science</em> was written by Pete Benbow</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
