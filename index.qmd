@@ -1,17 +1,21 @@
-# Preface {.unnumbered}
+# Welcome {.unnumbered}
 
-Welcome to _SQL for Data Science_, the free online textbook that aims
-to help students, researchers, and professional data scientists understand the 
-world of SQL and relational databases!
+Welcome to _SQL for Data Science_, the free online textbook that aims to help students, researchers, and professional data scientists understand the world of SQL and relational databases!
 
-In this book, you will learn how to explore and interact with databases, extract 
-insights from them, and build your own databases for storing and sharing 
-knowledge.
+In this book, you will learn how to explore and interact with databases, extract insights from them, and build your own databases for storing and sharing knowledge.
 
-This text is aimed at beginning learners who want to master the basics of SQL 
-and database programming. You may be a student whose class is using this book as 
-a textbook, a data analyst who needs to use SQL for your job, or an experienced 
-professional who wants to master new skills and broaden your horizons. In any 
-case, you should find this book to be an accessible (and free!) way to meet your 
-learning objectives.
+This text is aimed at beginning learners who want to master the basics of SQL and database programming. You may be a student whose class is using this book as a textbook, a data analyst who needs to use SQL for your job, or an experienced professional who wants to master new skills and broaden your horizons. In any case, you should find this book to be an accessible (and free!) way to meet your learning objectives.
 
+## About the Author
+
+I (Pete Benbow) am the James B. Duke Assistant Professor of the Practice in Data Science at [Davidson College](https://www.davidson.edu/). My teaching focuses primarily on data engineering, a discipline which complements and facilitates data science by providing the infrastructure upon which data scientists do their work. I worked heavily in this area for over a decade across a number of industries before I began teaching in 2024. A regular "working stiff," I do not hold a Ph.D. in any field. My only degree is a bachelor's in political science, which I earned from Davidson. 
+
+## Acknowledgments
+
+Significant portions of this textbook were written with agentic AI assistance, specifically Anthrophic's Claude Code platform. This obviously helps tremendously not only with the generation of content, but a bigger reason I chose this path is how it streamlines some of the more tedious parts of writing a technical textbook. For example, the entire book centers on a Docker image I created which has all of the databases we use pre-installed on it, and agentic AI was able to automatically run the Docker image and execute SQL queries against these databases to validate all the code in the book. This helps ensure consistency and accuracy in a matter of minutes, and at a level that would take many hours for a human reviewer to match.
+
+That being said, this book has undergone thorough and painstaking human review by myself and my team. On that note, I want to give a profound THANK YOU to my technical reviewers, **Taehee Kim** and **Patrick Grimes**, two of my Data Science advisees here at Davidson. I have been incredibly fortunate to have their help on this undertaking which, without their acumen and insight, would have been monumentally more difficult. 
+
+I also need to thank the [Duke Endowment](https://www.dukeendowment.org/our-work/higher-education), whose generosity funds my work and creates opportunities for my students to gain meaningful experience in data science and data engineering.
+
+Lastly, I must thank my wife and partner, Megan. I was already an established data engineering professional when I answered Davidson's call to teach, and becoming a professor was a major change in the nature of my work and the stress levels it generates. The first few semesters were especially brutal, and she was very skeptical of my idea to write a textbook because of the amount of work it would require of me. I've been able to pull this off in large part thanks to her steadfast love and patience. Indeed, she is my better half.

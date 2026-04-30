@@ -1,4 +1,0 @@
----
-title: "Working with Multiple Tables"
-format: html
----

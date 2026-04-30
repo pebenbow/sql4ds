@@ -1,4 +1,4 @@
-# Data Types and Type Conversion
+# Data Types
 
 ```{r}
 #| include: false

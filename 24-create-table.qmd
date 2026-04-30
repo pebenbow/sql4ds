@@ -171,7 +171,7 @@ CREATE TABLE customers (
 `PRIMARY KEY` already implies both uniqueness and non-nullability, so you do not need to add `UNIQUE` or `NOT NULL` to a primary key column.
 
 ::: {.callout-note}
-PostgreSQL permits multiple NULL values in a `UNIQUE` column because `NULL` is not considered equal to `NULL`: no uniqueness violation occurs. If you need a column to be both unique and non-null, declare both `NOT NULL` and `UNIQUE` (or use `PRIMARY KEY`, which implies both).
+PostgreSQL permits multiple NULL values in a `UNIQUE` column because `NULL` is not considered equal to `NULL`: no uniqueness violation occurs. If you need a non-key column to be both unique and non-null, declare both `UNIQUE` and `NOT NULL`.
 :::
 
 ### CHECK

@@ -1,4 +1,4 @@
-# Basic SELECT Statements
+# SELECT Statements
 
 ```{r}
 #| include: false
@@ -617,4 +617,3 @@ For each exercise below, write a SQL query against the `countries` database. Try
 8. Write a query that returns the country name, population, area, and population density rounded to one decimal place for all countries in the `Europe & Central Asia` region that have a recorded area. Name the density column `pop_per_sq_km` and sort from highest density to lowest.
 
 9. Write a query that returns the country name, capital, and population for all countries that satisfy every one of the following conditions: the country name contains the word "Republic", the population is greater than five million, and a capital city has been recorded. Sort the results by population in descending order.
-

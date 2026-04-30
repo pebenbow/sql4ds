@@ -1,4 +1,0 @@
----
-title: "Querying Data"
-format: html
----

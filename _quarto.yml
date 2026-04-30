@@ -4,9 +4,15 @@ project:
 
 book:
   title: "SQL for Data Science"
-  subtitle: "Exploring SQL and the World of Databases"
+  subtitle: "Querying, Designing, and Deploying Databases"
   reader-mode: true
   author: "Pete Benbow"
+  cover-image: cover.png
+  favicon: cover.png
+  site-url: https://sql4ds.com/
+  repo-url: https://github.com/pebenbow/open-sql
+  repo-branch: main
+  repo-actions: [edit, issue]
 
   page-footer:
     left: |
@@ -15,42 +21,42 @@ book:
       This book was written with <a href="https://quarto.org/">Quarto</a>.
   chapters:
     - index.qmd
-    - intro.qmd
 
-    - part: getting-started.qmd
+    - part: intro.qmd
       chapters:
         - 01-why-learn-sql.qmd
-        - 02-installing-postgresql.qmd
+        - 02-setup.qmd
 
-    - part: querying-data.qmd
+    - part: query.qmd
       chapters:
-        - 03-select-statements.qmd
-        - 04-data-types.qmd
+        - 11-select-statements.qmd
+        - 12-data-types.qmd
+        - 13-joins.qmd
+        - 14-set-operations.qmd
 
-    - part: working-with-multiple-tables.qmd
+    - part: design.qmd
       chapters:
-        - 05-joins.qmd
-        - 06-set-operations.qmd
+        - 21-keys-and-integrity.qmd
+        - 22-er-diagrams.qmd
+        - 23-normal-forms.qmd
+        - 24-create-table.qmd
 
-    - part: database-design.qmd
+    - part: secure.qmd
       chapters:
-        - 07-keys-and-integrity.qmd
-        - 08-er-diagrams.qmd
-        - 09-normal-forms.qmd
-        - 10-create-table.qmd
+        - 31-roles.qmd
 
-    - part: deploying-databases.qmd
+    - part: deploy.qmd
       chapters:
-        - 21-supabase-setup.qmd
-        - 22-supabase-vscode.qmd
-        - 23-database-migrations.qmd
+        - 41-supabase-setup.qmd
+        - 42-supabase-vscode.qmd
+        - 43-database-migrations.qmd
 
-    - part: etl-with-python.qmd
+    - part: load.qmd
       chapters:
-        - 31-extracting-data.qmd
-        - 32-transforming-with-polars.qmd
-        - 33-loading-with-sqlalchemy.qmd
-        - 34-etl-pipeline.qmd
+        - 51-extracting-data.qmd
+        - 52-transforming-with-polars.qmd
+        - 53-loading-with-sqlalchemy.qmd
+        - 54-etl-pipeline.qmd
 
     - references.qmd
 
@@ -66,7 +72,10 @@ bibliography: references.bib
 
 format:
   html:
+    lightbox: true
+    author-meta: "Pete Benbow"
+    callout-appearance: simple
     link-external-newwindow: true
-    theme: materia
+    theme: cosmo
     syntax-definitions:
       - _extensions/quarto-dbml/dbml.xml

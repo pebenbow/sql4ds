@@ -1,4 +1,4 @@
-# Setting Up Your Environment
+# Setup
 
 Before you can run your first SQL query, you need a database to query. Throughout this book, we will use **PostgreSQL**, one of the most widely used open-source relational database systems in the world, as our database engine.
 
