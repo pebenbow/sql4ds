@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./secure.html" rel="next">
+<link href="./26-building-schema.html" rel="next">
 <link href="./23-normal-forms.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./design.html">Design</a></li><li class="breadcrumb-item"><a href="./24-create-table.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-design.html">Design</a></li><li class="breadcrumb-item"><a href="./24-create-table.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -158,7 +158,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./intro.html" class="sidebar-item-text sidebar-link">
+            <a href="./00-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Introduction</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -181,7 +181,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./query.html" class="sidebar-item-text sidebar-link">
+            <a href="./10-query.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Query</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -216,7 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./design.html" class="sidebar-item-text sidebar-link">
+            <a href="./20-design.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Design</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -247,11 +247,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./secure.html" class="sidebar-item-text sidebar-link">
+            <a href="./30-secure.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Secure</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -261,26 +267,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./deploy.html" class="sidebar-item-text sidebar-link">
+            <a href="./40-deploy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Deploy</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -290,26 +296,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./load.html" class="sidebar-item-text sidebar-link">
+            <a href="./50-load.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Load</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -319,32 +325,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="./99-references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -372,31 +378,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#primary-keys" id="toc-primary-keys" class="nav-link" data-scroll-target="#primary-keys"><span class="header-section-number">10.6</span> Primary Keys</a>
   <ul class="collapse">
   <li><a href="#single-column-primary-key" id="toc-single-column-primary-key" class="nav-link" data-scroll-target="#single-column-primary-key"><span class="header-section-number">10.6.1</span> Single-Column Primary Key</a></li>
-  <li><a href="#composite-primary-key" id="toc-composite-primary-key" class="nav-link" data-scroll-target="#composite-primary-key"><span class="header-section-number">10.6.2</span> Composite Primary Key</a></li>
+  <li><a href="#composite-primary-keys" id="toc-composite-primary-keys" class="nav-link" data-scroll-target="#composite-primary-keys"><span class="header-section-number">10.6.2</span> Composite Primary Keys</a></li>
   </ul></li>
-  <li><a href="#foreign-keys" id="toc-foreign-keys" class="nav-link" data-scroll-target="#foreign-keys"><span class="header-section-number">10.7</span> Foreign Keys</a>
-  <ul class="collapse">
-  <li><a href="#inline-syntax" id="toc-inline-syntax" class="nav-link" data-scroll-target="#inline-syntax"><span class="header-section-number">10.7.1</span> Inline Syntax</a></li>
-  <li><a href="#table-level-syntax" id="toc-table-level-syntax" class="nav-link" data-scroll-target="#table-level-syntax"><span class="header-section-number">10.7.2</span> Table-Level Syntax</a></li>
-  <li><a href="#creation-order" id="toc-creation-order" class="nav-link" data-scroll-target="#creation-order"><span class="header-section-number">10.7.3</span> Creation Order</a></li>
-  </ul></li>
-  <li><a href="#building-the-orders-schema" id="toc-building-the-orders-schema" class="nav-link" data-scroll-target="#building-the-orders-schema"><span class="header-section-number">10.8</span> Building the Orders Schema</a></li>
-  <li><a href="#observing-constraint-enforcement" id="toc-observing-constraint-enforcement" class="nav-link" data-scroll-target="#observing-constraint-enforcement"><span class="header-section-number">10.9</span> Observing Constraint Enforcement</a></li>
-  <li><a href="#create-table-if-not-exists" id="toc-create-table-if-not-exists" class="nav-link" data-scroll-target="#create-table-if-not-exists"><span class="header-section-number">10.10</span> CREATE TABLE IF NOT EXISTS</a></li>
-  <li><a href="#removing-tables" id="toc-removing-tables" class="nav-link" data-scroll-target="#removing-tables"><span class="header-section-number">10.11</span> Removing Tables</a></li>
-  <li><a href="#modifying-existing-tables" id="toc-modifying-existing-tables" class="nav-link" data-scroll-target="#modifying-existing-tables"><span class="header-section-number">10.12</span> Modifying Existing Tables</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">10.13</span> Exercises</a>
-  <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">10.13.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">10.13.2</span> Coding</a></li>
-  </ul></li>
+  <li><a href="#putting-it-together-the-students-table" id="toc-putting-it-together-the-students-table" class="nav-link" data-scroll-target="#putting-it-together-the-students-table"><span class="header-section-number">10.7</span> Putting It Together: The Students Table</a></li>
+  <li><a href="#create-table-if-not-exists" id="toc-create-table-if-not-exists" class="nav-link" data-scroll-target="#create-table-if-not-exists"><span class="header-section-number">10.8</span> CREATE TABLE IF NOT EXISTS</a></li>
+  <li><a href="#removing-tables" id="toc-removing-tables" class="nav-link" data-scroll-target="#removing-tables"><span class="header-section-number">10.9</span> Removing Tables</a></li>
+  <li><a href="#modifying-existing-tables" id="toc-modifying-existing-tables" class="nav-link" data-scroll-target="#modifying-existing-tables"><span class="header-section-number">10.10</span> Modifying Existing Tables</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">10.11</span> Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/24-create-table.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./design.html">Design</a></li><li class="breadcrumb-item"><a href="./24-create-table.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-design.html">Design</a></li><li class="breadcrumb-item"><a href="./24-create-table.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></h1>
 </div>
@@ -418,441 +413,315 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="from-reading-to-writing" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="from-reading-to-writing"><span class="header-section-number">10.1</span> From Reading to Writing</h2>
 <p>Every query in this book so far has been a <code>SELECT</code> statement: reading data from tables that already exist. Creating and modifying tables is the domain of <strong>Data Definition Language (DDL)</strong>, a subset of SQL distinct from the <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code> statements that make up Data Manipulation Language (DML).</p>
-<p>This chapter introduces <code>CREATE TABLE</code>, the fundamental DDL statement. By the end, you will be able to translate the design decisions from the previous chapters (keys and referential integrity, ER diagrams, and normalization) into a working PostgreSQL schema, complete with primary keys, foreign keys, and the constraints that enforce your business rules at the database level.</p>
+<p>This chapter introduces <code>CREATE TABLE</code>, the fundamental DDL statement, in the context of building a university database from scratch. By the end, you will know how to create a database, define a table with appropriate constraints, prevent duplicate or invalid data at the schema level, and modify a table’s structure after the fact. The next chapter extends this foundation to multi-table schemas with foreign keys.</p>
 </section>
 <section id="creating-a-database" class="level2" data-number="10.2">
 <h2 data-number="10.2" class="anchored" data-anchor-id="creating-a-database"><span class="header-section-number">10.2</span> Creating a Database</h2>
-<p>Before creating any tables, you need somewhere to put them. In PostgreSQL, a <strong>database</strong> is the top-level container: an isolated environment with its own tables, schemas, users, and settings. A running PostgreSQL server can host multiple databases simultaneously. The <code>worldbank</code> database you have been querying throughout this book is one such database on your local Docker container. In this chapter, you will create a second one.</p>
-<p>To create a new database, connect to your PostgreSQL server and run:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">DATABASE</span> orders;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>PostgreSQL database names are case-insensitive by convention but are typically written in lowercase with underscores.</p>
+<p>In PostgreSQL, a <strong>database</strong> is the top-level container: an isolated environment with its own tables, schemas, users, and settings. A running server can host multiple databases simultaneously. The <code>worldbank</code> database you have been querying throughout this book is one such database on your local Docker container. Here, you will create a second one.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">DATABASE</span> university;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p><code>CREATE DATABASE</code> must be run while connected to a <em>different</em> database. You cannot create a database while you are connected to it. The standard approach is to connect to the built-in <code>postgres</code> maintenance database first, run <code>CREATE DATABASE</code>, then switch to the new database:</p>
+<p><code>CREATE DATABASE</code> must be run while connected to a <em>different</em> database — you cannot create a database while you are connected to it. The standard approach is to connect to the built-in <code>postgres</code> maintenance database first:</p>
 <pre><code>psql -U postgres -p 5433 -d postgres
-postgres=# CREATE DATABASE orders;
-postgres=# \c orders
-orders=#</code></pre>
+postgres=# CREATE DATABASE university;
+postgres=# \c university
+university=#</code></pre>
 </div>
 </div>
 </div>
-<p>Once connected to <code>orders</code>, all <code>CREATE TABLE</code> statements from this point forward will create tables inside it, completely separate from the <code>worldbank</code> database.</p>
+<p>Once connected to <code>university</code>, every <code>CREATE TABLE</code> statement you run will place its tables there, completely separate from <code>worldbank</code>.</p>
 </section>
 <section id="schemas" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="schemas"><span class="header-section-number">10.3</span> Schemas</h2>
-<p>Within a database, a <strong>schema</strong> is a named namespace that groups related objects (tables, views, functions) together. Think of a database as a filing cabinet and schemas as the labeled drawers inside it.</p>
-<p>Every PostgreSQL database starts with a schema called <code>public</code>. When you create a table without specifying a schema, it goes into <code>public</code> by default:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- These two statements are equivalent</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> customers (<span class="op">..</span>.);</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="kw">public</span>.customers (<span class="op">..</span>.);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can create additional schemas to organize objects or separate concerns:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SCHEMA</span> sales;</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SCHEMA</span> inventory;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Tables in a non-default schema are referenced with a <strong>schema-qualified name</strong>: <code>schema_name.table_name</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> sales.customers (<span class="op">..</span>.);</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> inventory.products (<span class="op">..</span>.);</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Query a schema-qualified table</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> sales.customers;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The <strong><code>search_path</code></strong> setting controls which schemas PostgreSQL searches when you use an unqualified name (just <code>customers</code> rather than <code>sales.customers</code>). The default <code>search_path</code> includes <code>public</code>, which is why unqualified names resolve to <code>public</code> tables without any extra configuration.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Add the sales schema to the search path</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SET</span> search_path <span class="kw">TO</span> sales, <span class="kw">public</span>;</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Now this resolves to sales.customers</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> customers;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>For the exercises in this chapter, the <code>public</code> schema of your new database is sufficient. Schemas become more important in production environments where a single database hosts objects for multiple applications, teams, or environments.</p>
+<p>Within a database, a <strong>schema</strong> is a named namespace that groups related objects — tables, views, functions — together. Think of a database as a building and schemas as the floors inside it.</p>
+<p>Every PostgreSQL database starts with a schema called <code>public</code>. When you create a table without specifying a schema, it lands in <code>public</code> by default:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- These two are equivalent</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> students (<span class="op">..</span>.);</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="kw">public</span>.students (<span class="op">..</span>.);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can create additional schemas to separate concerns — for example, a <code>registrar</code> schema for enrollment data and an <code>finance</code> schema for billing tables. Tables outside the default schema are referenced with a <strong>schema-qualified name</strong>: <code>schema_name.table_name</code>. The <code>search_path</code> setting controls which schemas PostgreSQL searches when you use an unqualified name.</p>
+<p>For the exercises in this chapter, the <code>public</code> schema of the <code>university</code> database is sufficient. Schemas become more important when a single database serves multiple applications or teams — a pattern covered in the chapter on privileges.</p>
 </section>
 <section id="basic-syntax" class="level2" data-number="10.4">
 <h2 data-number="10.4" class="anchored" data-anchor-id="basic-syntax"><span class="header-section-number">10.4</span> Basic Syntax</h2>
-<p>The general form of a <code>CREATE TABLE</code> statement is:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> table_name (</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    column_name  data_type  [column_constraints],</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    column_name  data_type  [column_constraints],</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    [table_constraints]</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Each column is defined by its name, its data type (covered in the data types chapter), and any constraints that apply to it individually. Some constraints, such as composite primary keys and named foreign keys with cascade behavior, are written as <strong>table constraints</strong> at the end of the column list rather than inline with a single column.</p>
-<p>A simple example:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> products (</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    product_id  SERIAL          <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    name        TEXT            <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    price       <span class="dt">NUMERIC</span>(<span class="dv">10</span>, <span class="dv">2</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>SERIAL</code> is a PostgreSQL shorthand that creates an auto-incrementing integer column backed by a sequence. Each new row receives the next integer in sequence automatically if no value is supplied for that column. This is the standard way to create a surrogate primary key in PostgreSQL.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><code>SERIAL</code> is a PostgreSQL-specific convenience type. The SQL standard equivalent, available in PostgreSQL 10 and later, is:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>product_id  <span class="dt">INTEGER</span>  <span class="kw">GENERATED</span> ALWAYS <span class="kw">AS</span> IDENTITY  <span class="kw">PRIMARY</span> <span class="kw">KEY</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Both accomplish the same thing. <code>SERIAL</code> remains common in PostgreSQL documentation and in most codebases you will encounter.</p>
-</div>
-</div>
-</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> table_name (</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    column_name  data_type  [column_constraints],</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    column_name  data_type  [column_constraints],</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    [table_constraints]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Each column is defined by its name, its data type (covered in the data types chapter), and any constraints that apply to it. Constraints tell the database what values are and are not acceptable, enforcing business rules at the storage level regardless of which application or user touches the data.</p>
 </section>
 <section id="column-constraints" class="level2" data-number="10.5">
 <h2 data-number="10.5" class="anchored" data-anchor-id="column-constraints"><span class="header-section-number">10.5</span> Column Constraints</h2>
-<p>Constraints restrict what values a column can hold. They enforce business rules at the database level, meaning they apply regardless of which application, tool, or user inserts or updates data.</p>
 <section id="not-null" class="level3" data-number="10.5.1">
 <h3 data-number="10.5.1" class="anchored" data-anchor-id="not-null"><span class="header-section-number">10.5.1</span> NOT NULL</h3>
-<p><code>NOT NULL</code> prevents a column from ever containing a NULL value. It is the most common constraint after the primary key itself.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> customers (</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    customer_id  SERIAL  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    customer     TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    email        TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Any <code>INSERT</code> or <code>UPDATE</code> that leaves <code>customer</code> or <code>email</code> as NULL will be rejected.</p>
+<p><code>NOT NULL</code> prevents a column from ever holding a NULL value. It is the most common constraint after the primary key.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> students (</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    student_id   SERIAL  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    first_name   TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    last_name    TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Any <code>INSERT</code> or <code>UPDATE</code> that leaves <code>first_name</code> or <code>last_name</code> as NULL will be rejected immediately by the database.</p>
 </section>
 <section id="default" class="level3" data-number="10.5.2">
 <h3 data-number="10.5.2" class="anchored" data-anchor-id="default"><span class="header-section-number">10.5.2</span> DEFAULT</h3>
 <p>A <code>DEFAULT</code> value is substituted automatically when an <code>INSERT</code> statement omits the column entirely.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> orders (</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    order_id     SERIAL   <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    customer_id  <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    order_date   <span class="dt">DATE</span>     <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    status       TEXT     <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="st">'pending'</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If a new row is inserted without specifying <code>order_date</code>, the database uses the current date. If <code>status</code> is omitted, it defaults to <code>'pending'</code>. A default is not the same as <code>NOT NULL</code>: a column can have a default and still accept an explicitly supplied NULL, unless <code>NOT NULL</code> is also declared.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> students (</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    student_id      SERIAL   <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    first_name      TEXT     <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    last_name       TEXT     <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    enrolled_on     <span class="dt">DATE</span>     <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    is_active       <span class="dt">BOOLEAN</span>  <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">TRUE</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If a new row is inserted without specifying <code>enrolled_on</code>, the database records the current date. A default is not the same as <code>NOT NULL</code>: a column can have a default and still accept an explicitly supplied NULL, unless <code>NOT NULL</code> is also present.</p>
 </section>
 <section id="unique" class="level3" data-number="10.5.3">
 <h3 data-number="10.5.3" class="anchored" data-anchor-id="unique"><span class="header-section-number">10.5.3</span> UNIQUE</h3>
-<p><code>UNIQUE</code> ensures no two rows share the same value in that column. A table can have any number of <code>UNIQUE</code> constraints, one for each alternate key.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> customers (</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    customer_id  SERIAL  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    customer     TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    email        TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>PRIMARY KEY</code> already implies both uniqueness and non-nullability, so you do not need to add <code>UNIQUE</code> or <code>NOT NULL</code> to a primary key column.</p>
+<p><code>UNIQUE</code> ensures no two rows share the same value in that column. A student’s email address is a natural candidate — each address should appear at most once.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> students (</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    student_id   SERIAL  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    first_name   TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    last_name    TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    email        TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    enrolled_on  <span class="dt">DATE</span>    <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    is_active    <span class="dt">BOOLEAN</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">TRUE</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>PRIMARY KEY</code> already implies both uniqueness and non-nullability, so you do not add <code>UNIQUE</code> or <code>NOT NULL</code> to a primary key column separately.</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>PostgreSQL permits multiple NULL values in a <code>UNIQUE</code> column because <code>NULL</code> is not considered equal to <code>NULL</code>: no uniqueness violation occurs. If you need a non-key column to be both unique and non-null, declare both <code>UNIQUE</code> and <code>NOT NULL</code>.</p>
+<p>PostgreSQL permits multiple NULL values in a <code>UNIQUE</code> column because NULL is not considered equal to NULL — no uniqueness violation occurs. If a non-key column must be both unique and present in every row, declare both <code>UNIQUE</code> and <code>NOT NULL</code>.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="check" class="level3" data-number="10.5.4">
 <h3 data-number="10.5.4" class="anchored" data-anchor-id="check"><span class="header-section-number">10.5.4</span> CHECK</h3>
-<p>A <code>CHECK</code> constraint specifies a boolean condition that every row must satisfy.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> order_items (</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    order_id   <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    product    TEXT     <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    quantity   <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="dv">1</span>,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">CHECK</span> (quantity <span class="op">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>CHECK</code> constraints can reference any column in the table and can combine columns: <code>CHECK (end_date IS NULL OR end_date &gt;= start_date)</code> is a valid multi-column check. The constraint is evaluated on every <code>INSERT</code> and <code>UPDATE</code>.</p>
+<p>A <code>CHECK</code> constraint specifies a boolean condition that every row must satisfy. GPA values, for example, should fall within a defined range:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> students (</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    student_id   SERIAL        <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    first_name   TEXT          <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    last_name    TEXT          <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    email        TEXT          <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    enrolled_on  <span class="dt">DATE</span>          <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    is_active    <span class="dt">BOOLEAN</span>       <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">TRUE</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    gpa          <span class="dt">NUMERIC</span>(<span class="dv">3</span>, <span class="dv">2</span>) <span class="kw">CHECK</span> (gpa <span class="kw">IS</span> <span class="kw">NULL</span> <span class="kw">OR</span> (gpa <span class="op">&gt;=</span> <span class="fl">0.0</span> <span class="kw">AND</span> gpa <span class="op">&lt;=</span> <span class="fl">4.0</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>CHECK</code> constraints are evaluated on every <code>INSERT</code> and <code>UPDATE</code>. The <code>gpa IS NULL</code> clause is necessary because a CHECK constraint only fails when it evaluates to FALSE — a NULL result is treated as passing. Allowing NULL here is intentional: a newly enrolled student may not yet have a GPA on record.</p>
 </section>
 </section>
 <section id="primary-keys" class="level2" data-number="10.6">
 <h2 data-number="10.6" class="anchored" data-anchor-id="primary-keys"><span class="header-section-number">10.6</span> Primary Keys</h2>
+<p>The keys and integrity chapter introduced primary keys as a design concept. In SQL, the <code>PRIMARY KEY</code> constraint is how you enforce that concept.</p>
 <section id="single-column-primary-key" class="level3" data-number="10.6.1">
 <h3 data-number="10.6.1" class="anchored" data-anchor-id="single-column-primary-key"><span class="header-section-number">10.6.1</span> Single-Column Primary Key</h3>
-<p>The simplest form declares <code>PRIMARY KEY</code> inline with the column:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> regions (</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    region_code  TEXT  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    region_name  TEXT  <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>PRIMARY KEY</code> implies both <code>NOT NULL</code> and <code>UNIQUE</code>, so neither needs to be written separately.</p>
-</section>
-<section id="composite-primary-key" class="level3" data-number="10.6.2">
-<h3 data-number="10.6.2" class="anchored" data-anchor-id="composite-primary-key"><span class="header-section-number">10.6.2</span> Composite Primary Key</h3>
-<p>When the primary key spans multiple columns, it must be written as a table-level constraint:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> order_items (</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    order_id   <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    product    TEXT     <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    quantity   <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="dv">1</span>,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">CHECK</span> (quantity <span class="op">&gt;</span> <span class="dv">0</span>),</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (order_id, product)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The <code>PRIMARY KEY (order_id, product)</code> declaration appears at the end, after all column definitions. Inline <code>PRIMARY KEY</code> syntax cannot express a composite key.</p>
-</section>
-</section>
-<section id="foreign-keys" class="level2" data-number="10.7">
-<h2 data-number="10.7" class="anchored" data-anchor-id="foreign-keys"><span class="header-section-number">10.7</span> Foreign Keys</h2>
-<section id="inline-syntax" class="level3" data-number="10.7.1">
-<h3 data-number="10.7.1" class="anchored" data-anchor-id="inline-syntax"><span class="header-section-number">10.7.1</span> Inline Syntax</h3>
-<p>For a single-column foreign key with default cascade behavior, the reference can be written inline using <code>REFERENCES</code>:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> orders (</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    order_id     SERIAL   <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    customer_id  <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> customers(customer_id),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    order_date   <span class="dt">DATE</span>     <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>REFERENCES customers(customer_id)</code> declares that every non-NULL value in <code>orders.customer_id</code> must exist in <code>customers.customer_id</code>. The referenced table must already exist when this statement runs.</p>
-</section>
-<section id="table-level-syntax" class="level3" data-number="10.7.2">
-<h3 data-number="10.7.2" class="anchored" data-anchor-id="table-level-syntax"><span class="header-section-number">10.7.2</span> Table-Level Syntax</h3>
-<p>When cascade behavior needs to be specified, write the foreign key as a table constraint:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> orders (</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    order_id     SERIAL   <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    customer_id  <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    order_date   <span class="dt">DATE</span>     <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span>,</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (customer_id)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">REFERENCES</span> customers(customer_id)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">RESTRICT</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> <span class="kw">UPDATE</span> <span class="kw">CASCADE</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>ON DELETE</code> and <code>ON UPDATE</code> specify what happens to this table’s rows when the referenced parent row is deleted or its primary key is updated. The options (<code>RESTRICT</code>, <code>CASCADE</code>, <code>SET NULL</code>, <code>SET DEFAULT</code>) are covered in the previous chapter. When neither is specified, PostgreSQL defaults to <code>NO ACTION</code>, which behaves like <code>RESTRICT</code>.</p>
-</section>
-<section id="creation-order" class="level3" data-number="10.7.3">
-<h3 data-number="10.7.3" class="anchored" data-anchor-id="creation-order"><span class="header-section-number">10.7.3</span> Creation Order</h3>
-<p>Because a foreign key references another table, the referenced table must exist before the referencing table is created. Always create parent tables before child tables, and drop child tables before parent tables.</p>
-</section>
-</section>
-<section id="building-the-orders-schema" class="level2" data-number="10.8">
-<h2 data-number="10.8" class="anchored" data-anchor-id="building-the-orders-schema"><span class="header-section-number">10.8</span> Building the Orders Schema</h2>
-<p>The normalized orders schema from the normalization chapter serves as a complete working example. Here it is implemented as <code>CREATE TABLE</code> statements.</p>
-<p>First, the <code>customers</code> table. No foreign keys here, so it can be created first:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> customers (</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    customer_id  SERIAL  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    customer     TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    email        TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The simplest form declares <code>PRIMARY KEY</code> inline with the column definition:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> students (</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    student_id  SERIAL  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>PRIMARY KEY</code> implies both <code>NOT NULL</code> and <code>UNIQUE</code>, so neither needs to be written separately. <code>SERIAL</code> is a PostgreSQL convenience type that creates an auto-incrementing integer column backed by a sequence — each new row automatically receives the next integer if no value is supplied. This is the standard way to create a surrogate primary key.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>Next, <code>orders</code>. It references <code>customers</code>, so it must come after:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> orders (</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    order_id     SERIAL   <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    customer_id  <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    order_date   <span class="dt">DATE</span>     <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span>,</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (customer_id)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">REFERENCES</span> customers(customer_id)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">RESTRICT</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-body-container">
+<p><code>SERIAL</code> is PostgreSQL-specific. The SQL standard equivalent, supported in PostgreSQL 10 and later, is:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>student_id  <span class="dt">INTEGER</span>  <span class="kw">GENERATED</span> ALWAYS <span class="kw">AS</span> IDENTITY  <span class="kw">PRIMARY</span> <span class="kw">KEY</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Both accomplish the same thing. <code>SERIAL</code> is still common in documentation and existing codebases.</p>
 </div>
-<p>Finally, <code>order_items</code>. It references <code>orders</code> and uses a composite primary key:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> order_items (</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    order_id   <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> orders(order_id) <span class="kw">ON</span> <span class="kw">DELETE</span> <span class="kw">CASCADE</span>,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    product    TEXT     <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    quantity   <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="dv">1</span>,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">CHECK</span> (quantity <span class="op">&gt;</span> <span class="dv">0</span>),</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (order_id, product)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>With the schema in place, insert the sample data from the normalization chapter:</p>
-<p>Verify the schema holds the expected data:</p>
+</div>
+</section>
+<section id="composite-primary-keys" class="level3" data-number="10.6.2">
+<h3 data-number="10.6.2" class="anchored" data-anchor-id="composite-primary-keys"><span class="header-section-number">10.6.2</span> Composite Primary Keys</h3>
+<p>When no single column uniquely identifies a row, two or more columns can serve as the primary key together. A composite key is written as a <strong>table-level constraint</strong> after the column definitions:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> enrollments (</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    student_id  <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    course_id   <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    semester    TEXT     <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (student_id, course_id, semester)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Inline <code>PRIMARY KEY</code> syntax cannot express a composite key. The full multi-table schema, including this <code>enrollments</code> table and the foreign keys that connect it to <code>students</code> and <code>courses</code>, is built out in the next chapter.</p>
+</section>
+</section>
+<section id="putting-it-together-the-students-table" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="putting-it-together-the-students-table"><span class="header-section-number">10.7</span> Putting It Together: The Students Table</h2>
+<p>Here is the complete <code>students</code> table definition, bringing all the constraints above into a single statement:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> customers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> students (</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    student_id   SERIAL        <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    first_name   TEXT          <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    last_name    TEXT          <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    email        TEXT          <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    enrolled_on  <span class="dt">DATE</span>          <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    is_active    <span class="dt">BOOLEAN</span>       <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">TRUE</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    gpa          <span class="dt">NUMERIC</span>(<span class="dv">3</span>, <span class="dv">2</span>) <span class="kw">CHECK</span> (gpa <span class="kw">IS</span> <span class="kw">NULL</span> <span class="kw">OR</span> (gpa <span class="op">&gt;=</span> <span class="fl">0.0</span> <span class="kw">AND</span> gpa <span class="op">&lt;=</span> <span class="fl">4.0</span>))</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Insert a few rows to verify the table works:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> students (first_name, last_name, email, enrolled_on, gpa)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Maria'</span>,  <span class="st">'Santos'</span>,  <span class="st">'msantos@university.edu'</span>,  <span class="st">'2023-08-28'</span>, <span class="fl">3.85</span>),</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'James'</span>,  <span class="st">'Okafor'</span>,  <span class="st">'jokafor@university.edu'</span>,  <span class="st">'2023-08-28'</span>, <span class="fl">3.41</span>),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Priya'</span>,  <span class="st">'Nair'</span>,    <span class="st">'pnair@university.edu'</span>,    <span class="st">'2024-01-15'</span>, <span class="kw">NULL</span>),</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Connor'</span>, <span class="st">'Walsh'</span>,   <span class="st">'cwalsh@university.edu'</span>,   <span class="st">'2024-01-15'</span>, <span class="fl">2.97</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>2 records</caption>
+<caption>4 records</caption>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 12%">
+<col style="width: 28%">
+<col style="width: 14%">
+<col style="width: 12%">
+<col style="width: 6%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">customer_id</th>
-<th style="text-align: left;">customer</th>
+<th style="text-align: left;">student_id</th>
+<th style="text-align: left;">first_name</th>
+<th style="text-align: left;">last_name</th>
 <th style="text-align: left;">email</th>
+<th style="text-align: left;">enrolled_on</th>
+<th style="text-align: left;">is_active</th>
+<th style="text-align: right;">gpa</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">1</td>
-<td style="text-align: left;">Alice Smith</td>
-<td style="text-align: left;">alice@acme.com</td>
+<td style="text-align: left;">Maria</td>
+<td style="text-align: left;">Santos</td>
+<td style="text-align: left;">msantos@university.edu</td>
+<td style="text-align: left;">2023-08-28</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">3.85</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2</td>
-<td style="text-align: left;">Bob Jones</td>
-<td style="text-align: left;">bob@corp.net</td>
+<td style="text-align: left;">James</td>
+<td style="text-align: left;">Okafor</td>
+<td style="text-align: left;">jokafor@university.edu</td>
+<td style="text-align: left;">2023-08-28</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">3.41</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">Priya</td>
+<td style="text-align: left;">Nair</td>
+<td style="text-align: left;">pnair@university.edu</td>
+<td style="text-align: left;">2024-01-15</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Connor</td>
+<td style="text-align: left;">Walsh</td>
+<td style="text-align: left;">cwalsh@university.edu</td>
+<td style="text-align: left;">2024-01-15</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">2.97</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    o.order_id,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    c.customer,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    o.order_date,</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    oi.product,</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    oi.quantity</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> orders <span class="kw">AS</span> o</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> customers <span class="kw">AS</span> c    <span class="kw">ON</span> o.customer_id  <span class="op">=</span> c.customer_id</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> order_items <span class="kw">AS</span> oi <span class="kw">ON</span> o.order_id     <span class="op">=</span> oi.order_id</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> o.order_id, oi.product</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>5 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">order_id</th>
-<th style="text-align: left;">customer</th>
-<th style="text-align: left;">order_date</th>
-<th style="text-align: left;">product</th>
-<th style="text-align: right;">quantity</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">Alice Smith</td>
-<td style="text-align: left;">2024-01-15</td>
-<td style="text-align: left;">Laptop</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">Alice Smith</td>
-<td style="text-align: left;">2024-01-15</td>
-<td style="text-align: left;">Mouse</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">Bob Jones</td>
-<td style="text-align: left;">2024-01-16</td>
-<td style="text-align: left;">Keyboard</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">Alice Smith</td>
-<td style="text-align: left;">2024-01-20</td>
-<td style="text-align: left;">Keyboard</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">Alice Smith</td>
-<td style="text-align: left;">2024-01-20</td>
-<td style="text-align: left;">Monitor</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
+<p>Priya’s GPA is NULL — she enrolled mid-year and has not yet completed any graded coursework. The CHECK constraint permits this because it was written to allow NULLs explicitly.</p>
+</section>
+<section id="create-table-if-not-exists" class="level2" data-number="10.8">
+<h2 data-number="10.8" class="anchored" data-anchor-id="create-table-if-not-exists"><span class="header-section-number">10.8</span> CREATE TABLE IF NOT EXISTS</h2>
+<p>Running <code>CREATE TABLE</code> against a table that already exists produces an error. The <code>IF NOT EXISTS</code> modifier suppresses that error, making the statement safe to run in a script that may execute more than once:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> students (</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    student_id   SERIAL        <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    first_name   TEXT          <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    last_name    TEXT          <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    email        TEXT          <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    enrolled_on  <span class="dt">DATE</span>          <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    is_active    <span class="dt">BOOLEAN</span>       <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="kw">TRUE</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    gpa          <span class="dt">NUMERIC</span>(<span class="dv">3</span>, <span class="dv">2</span>) <span class="kw">CHECK</span> (gpa <span class="kw">IS</span> <span class="kw">NULL</span> <span class="kw">OR</span> (gpa <span class="op">&gt;=</span> <span class="fl">0.0</span> <span class="kw">AND</span> gpa <span class="op">&lt;=</span> <span class="fl">4.0</span>))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If <code>students</code> already exists, this statement does nothing and raises no error. This is the pattern used in setup scripts and database migrations.</p>
+</section>
+<section id="removing-tables" class="level2" data-number="10.9">
+<h2 data-number="10.9" class="anchored" data-anchor-id="removing-tables"><span class="header-section-number">10.9</span> Removing Tables</h2>
+<p><code>DROP TABLE</code> removes a table and all of its data permanently:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> students;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>DROP TABLE IF EXISTS</code> is the complement to <code>CREATE TABLE IF NOT EXISTS</code> — it does nothing if the table does not exist rather than raising an error:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">EXISTS</span> students;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When a table has foreign keys pointing to it from other tables, dropping it requires either dropping the dependent tables first or using <code>CASCADE</code> to remove the referencing foreign key constraints automatically:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> students <span class="kw">CASCADE</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>CASCADE</code> removes the constraint definitions in the dependent tables; it does not drop those tables themselves. Use it carefully — in a complex schema it can remove constraints you did not intend to touch.</p>
+</section>
+<section id="modifying-existing-tables" class="level2" data-number="10.10">
+<h2 data-number="10.10" class="anchored" data-anchor-id="modifying-existing-tables"><span class="header-section-number">10.10</span> Modifying Existing Tables</h2>
+<p>After a table is created, <code>ALTER TABLE</code> can change its structure without dropping and recreating it.</p>
+<p><strong>Add a column:</strong></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> students</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">COLUMN</span> major TEXT;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>New columns are added with NULL in every existing row unless a <code>DEFAULT</code> is specified. If the new column is <code>NOT NULL</code>, you must supply a <code>DEFAULT</code> so the database has a value to back-fill:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> students</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">COLUMN</span> major TEXT <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="st">'Undeclared'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Change a column’s data type:</strong></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> students</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">COLUMN</span> major <span class="kw">TYPE</span> <span class="dt">VARCHAR</span>(<span class="dv">100</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The cast must be valid for all existing values. Changing <code>TEXT</code> to <code>VARCHAR(100)</code> succeeds; changing <code>TEXT</code> to <code>INTEGER</code> would fail unless every value can be parsed as a number.</p>
+<p><strong>Add a constraint to an existing column:</strong></p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> students</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">CONSTRAINT</span> students_email_lower</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">CHECK</span> (email <span class="op">=</span> <span class="fu">lower</span>(email));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Adding a <code>CHECK</code> constraint to a populated table causes PostgreSQL to validate every existing row. If any row fails the check, the statement is rejected.</p>
+<p><strong>Remove a column:</strong></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> students</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">COLUMN</span> major;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><code>ALTER TABLE</code> modifies the live table immediately. On large tables, some operations — particularly adding a <code>NOT NULL</code> constraint without a default, or building a new index — can lock the table and block reads and writes for seconds or longer. In a learning environment the tables are small enough that this does not matter, but it is worth knowing before working on production systems.</p>
 </div>
 </div>
-<p>The join works exactly as described in the joins chapter: the normalized structure requires joining three tables to assemble a complete view of each order.</p>
+</div>
 </section>
-<section id="observing-constraint-enforcement" class="level2" data-number="10.9">
-<h2 data-number="10.9" class="anchored" data-anchor-id="observing-constraint-enforcement"><span class="header-section-number">10.9</span> Observing Constraint Enforcement</h2>
-<p>With the schema in place, it is instructive to see how the database responds to constraint violations. The following examples are shown as display blocks because they produce errors rather than results.</p>
-<p><strong>Inserting an order that references a non-existent customer:</strong></p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> orders (customer_id, order_date)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">999</span>, <span class="st">'2024-02-01'</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>ERROR:  insert or update on table "orders" violates foreign key constraint
-DETAIL: Key (customer_id)=(999) is not present in table "customers".</code></pre>
-<p><strong>Inserting an order item with a negative quantity:</strong></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> order_items (order_id, product, quantity)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="st">'Charger'</span>, <span class="op">-</span><span class="dv">2</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>ERROR:  new row for relation "order_items" violates check constraint
-        "order_items_quantity_check"
-DETAIL: Failing row contains (1, Charger, -2).</code></pre>
-<p><strong>Inserting a customer with a duplicate email:</strong></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> customers (customer, email)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="st">'Alice Johnson'</span>, <span class="st">'alice@acme.com'</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>ERROR:  duplicate key value violates unique constraint "customers_email_key"
-DETAIL: Key (email)=(alice@acme.com) already exists.</code></pre>
-<p><strong>Deleting a customer who still has orders (RESTRICT):</strong></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> customers <span class="kw">WHERE</span> customer_id <span class="op">=</span> <span class="dv">1</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>ERROR:  update or delete on table "customers" violates foreign key constraint
-        "orders_customer_id_fkey" on table "orders"
-DETAIL: Key (customer_id)=(1) is still referenced from table "orders".</code></pre>
-<p>Each of these errors is the database doing its job. The constraints defined in the schema act as a permanent guard that no application bug or ad-hoc query can circumvent.</p>
-</section>
-<section id="create-table-if-not-exists" class="level2" data-number="10.10">
-<h2 data-number="10.10" class="anchored" data-anchor-id="create-table-if-not-exists"><span class="header-section-number">10.10</span> CREATE TABLE IF NOT EXISTS</h2>
-<p>Running a <code>CREATE TABLE</code> statement against a table that already exists produces an error. The <code>IF NOT EXISTS</code> modifier suppresses that error, making the statement safe to run in a script that may be executed more than once:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> customers (</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    customer_id  SERIAL  <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    customer     TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    email        TEXT    <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If <code>customers</code> already exists, this statement does nothing and reports no error. This is useful in setup scripts and migrations.</p>
-</section>
-<section id="removing-tables" class="level2" data-number="10.11">
-<h2 data-number="10.11" class="anchored" data-anchor-id="removing-tables"><span class="header-section-number">10.11</span> Removing Tables</h2>
-<p><code>DROP TABLE</code> removes a table and all of its data:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> order_items;</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> orders;</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> customers;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Tables must be dropped in reverse creation order: child tables (those with foreign keys pointing to other tables) before parent tables. PostgreSQL will not drop a table that is still referenced by a foreign key in another table.</p>
-<p>To drop a parent table and automatically remove the foreign key constraints that reference it from other tables, use <code>CASCADE</code>:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> customers <span class="kw">CASCADE</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>CASCADE</code> on <code>DROP TABLE</code> removes the constraint definitions in other tables. It does not drop those other tables themselves. Use it carefully: in a complex schema, CASCADE can remove constraints you did not intend to touch.</p>
-<p><code>DROP TABLE IF EXISTS</code> is the complement to <code>CREATE TABLE IF NOT EXISTS</code>: it does nothing if the table does not exist, rather than raising an error.</p>
-</section>
-<section id="modifying-existing-tables" class="level2" data-number="10.12">
-<h2 data-number="10.12" class="anchored" data-anchor-id="modifying-existing-tables"><span class="header-section-number">10.12</span> Modifying Existing Tables</h2>
-<p>After a table is created, <code>ALTER TABLE</code> can change its structure.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Add a new column</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">COLUMN</span> phone TEXT;</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- Add a NOT NULL constraint to an existing column</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- (succeeds only if the column currently has no NULL values)</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">COLUMN</span> phone <span class="kw">SET</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="co">-- Add a named unique constraint</span></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">CONSTRAINT</span> customers_phone_unique <span class="kw">UNIQUE</span> (phone);</span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="co">-- Remove a column</span></span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">COLUMN</span> phone;</span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a><span class="co">-- Add a foreign key after table creation</span></span>
-<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> orders</span>
-<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a><span class="kw">ADD</span> <span class="kw">CONSTRAINT</span> orders_customer_fk</span>
-<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (customer_id) <span class="kw">REFERENCES</span> customers(customer_id);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>ALTER TABLE</code> modifies the live table definition immediately. Adding a <code>NOT NULL</code> constraint to a column that contains NULL values will fail: the database checks all existing rows before accepting the constraint. On large tables, some <code>ALTER TABLE</code> operations acquire locks that block reads and writes for the duration. In a learning context the tables are small enough that this is not a concern, but it is worth knowing before working on production systems.</p>
-</section>
-<section id="exercises" class="level2" data-number="10.13">
-<h2 data-number="10.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">10.13</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="10.13.1">
-<h3 data-number="10.13.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">10.13.1</span> Reflection</h3>
-<p><strong>1.</strong> What is the difference between a column constraint and a table constraint? Give an example of a constraint that must be written at the table level and explain why.</p>
+<section id="exercises" class="level2" data-number="10.11">
+<h2 data-number="10.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">10.11</span> Exercises</h2>
+<p><strong>1.</strong> Connect to your <code>university</code> database and run <code>\dt</code> in psql to list its tables. Confirm that <code>students</code> exists. Then query <code>information_schema.columns</code> to display the column names, data types, and nullability for the <code>students</code> table.</p>
 <hr>
-<p><strong>2.</strong> A column is declared <code>TEXT NOT NULL DEFAULT 'unknown'</code>. An <code>INSERT</code> statement supplies an explicit <code>NULL</code> for that column. What does the database do? Explain the difference between omitting a column from an <code>INSERT</code> and explicitly supplying <code>NULL</code> for it.</p>
+<p><strong>2.</strong> Insert a row into <code>students</code> that violates the <code>gpa</code> CHECK constraint (for example, a GPA of 5.0). Observe the error message. Then insert a row with a NULL GPA and confirm it succeeds.</p>
 <hr>
-<p><strong>3.</strong> Why does the order of <code>CREATE TABLE</code> statements matter when the tables have foreign key relationships? In what order would you drop those same tables?</p>
+<p><strong>3.</strong> Insert two students with the same email address and observe the error. Explain why this constraint belongs in the database rather than only in the application that writes to it.</p>
 <hr>
-<p><strong>4.</strong> What does <code>ON DELETE CASCADE</code> do, and why should it be used carefully? Describe a scenario where <code>CASCADE</code> would be the right choice and one where <code>RESTRICT</code> would be safer.</p>
+<p><strong>4.</strong> Add a <code>phone</code> column of type <code>TEXT</code> to the <code>students</code> table, allowing NULL. Then alter the column to add a CHECK constraint that requires the value to be at least 10 characters long (using <code>char_length(phone) &gt;= 10</code>), or NULL. Test the constraint with a valid and invalid value.</p>
 <hr>
-</section>
-<section id="coding" class="level3" data-number="10.13.2">
-<h3 data-number="10.13.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">10.13.2</span> Coding</h3>
-<p><strong>5.</strong> Write <code>CREATE TABLE</code> statements for a university database that tracks students, courses, and enrollments.</p>
+<p><strong>5.</strong> Write a <code>CREATE TABLE IF NOT EXISTS</code> statement for a <code>courses</code> table with the following rules:</p>
 <ul>
-<li>Each student has an auto-generated ID, a name, and an email (which must be unique).</li>
-<li>Each course has a course code (like “CS101”, used as the natural primary key), a title, and a number of credit hours that must be positive.</li>
-<li>The enrollment table records which student is enrolled in which course and in which semester (for example, <code>'Fall 2024'</code>).</li>
+<li>A natural primary key using a course code such as <code>'CS101'</code> (not a surrogate integer).</li>
+<li>A title that is required.</li>
+<li>A credit hours column that must be a positive integer.</li>
+<li>A department name that defaults to <code>'General'</code>.</li>
 </ul>
-<p>Include all appropriate constraints and write the statements in the correct creation order.</p>
+<p>Run the statement twice and confirm the second execution produces no error.</p>
 <hr>
-<p><strong>6.</strong> Extend the schema from exercise 5 with a <code>grades</code> table. A grade belongs to one enrollment record (not to a student or course independently). The grade value should be constrained to valid letter grades: <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>, or <code>F</code>. Write the <code>CREATE TABLE</code> statement and explain your choice of primary key.</p>
-<hr>
-<p><strong>7.</strong> Using the library loans schema you designed in the normalization chapter exercises, write the full normalized schema as <code>CREATE TABLE</code> statements. Include appropriate constraints, default values, and cascade behaviors. You will need tables for books, patrons, and loans.</p>
-<hr>
-<p><strong>8.</strong> Examine the following table definition:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> employee_projects (</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    emp_id      <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    project_id  <span class="dt">INTEGER</span>  <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    start_date  <span class="dt">DATE</span>     <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span>,</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    end_date    <span class="dt">DATE</span>,</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">role</span>        TEXT,</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">CHECK</span> (end_date <span class="kw">IS</span> <span class="kw">NULL</span> <span class="kw">OR</span> end_date <span class="op">&gt;=</span> start_date),</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (emp_id, project_id)</span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol type="a">
-<li>Can <code>end_date</code> be NULL? What does a NULL value mean in this context?</li>
-<li>What does the <code>CHECK</code> constraint enforce? Why is the <code>end_date IS NULL</code> part necessary?</li>
-<li>What is the primary key? Why is it composite?</li>
-<li>This table has no foreign key declarations. Write the missing <code>FOREIGN KEY</code> constraints, assuming <code>employees</code> and <code>projects</code> tables each use a surrogate integer primary key named <code>emp_id</code> and <code>project_id</code> respectively. Choose appropriate <code>ON DELETE</code> behavior for each and justify your choices.</li>
-</ol>
+<p><strong>6.</strong> Drop the <code>students</code> table, then recreate it using <code>CREATE TABLE IF NOT EXISTS</code>. Verify that the data is gone after the drop and that the table structure is restored after the recreate.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1285,8 +1154,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./secure.html" class="pagination-link" aria-label="Secure">
-        <span class="nav-page-text">Secure</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./26-building-schema.html" class="pagination-link" aria-label="Building a Schema">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Building a Schema</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

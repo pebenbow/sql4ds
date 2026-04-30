@@ -32,7 +32,21 @@ Each chapter is a `.qmd` (Quarto Markdown) file that can contain:
 
 Chapter files are numbered by convention (`01-`, `02-`, etc.) and must be listed under their part in `_quarto.yml` to appear in the book.
 
-The `getting-started.qmd` file is a **part heading** (not a content chapter) — it groups chapters under a section in the TOC.
+Chapters and the parts they belong to have a numbering convention that should be followed:
+- `index.qmd` is exempt from all of the following rules because it is the homepage.
+- All chapters have two-digit numbers. Sections are denoted by the first digit, and chapters are denoted by the second digit. Section "headers" have a second digit of zero, such as `20-design.qmd`, `30-secure.qmd`, etc.
+- All chapters under a given section header should use an incremental numbering pattern. For example, with chapters underneath `30-secure.qmd`, they should be numbered as `31-roles.qmd`, `32-privileges.qmd`, etc.
+- 0x chapters are introductory in nature.
+- 1x chapters are about how to query data from databases, primarily focused on SELECT statements.
+- 2x chapters are about database design, including DDL statements, normalization, etc.
+- 3x chapters are about database security, including roles and privileges.
+- 4x chapters are about deployment and migrations with Supabase.
+- 5x chapters are about ETL with Python (Polars).
+- 9x chapters are the tail end of the book, where we would include appendices, references, etc.
+
+The numbering convention I just described for the files within this repo is decoupled from the chapter numbering of the final product. That numbering is handled by Quarto itself at the time of rendering. This numbering convention is designed to make the repo easier to navigate when viewing it in GitHub or an IDE like Zed or VS Code.
+
+Section header chapters should have a brief (2-5 paragraph) narrative that recaps what was learned in the previous section, introduces the primary learning objectives for the current section, and discusses how the current section relates to the previous section and the overall topic of using SQL for data science. These chapters should include the `{.unnumbered}` class as part of the main heading at the top of the document so they do not get numbered in the table of contents when the book is rendered.
 
 ## Database Connection Pattern
 
@@ -60,7 +74,7 @@ The container must be running before `quarto render` or `quarto preview`:
 docker start open-sql
 ```
 
-If the container has not been created yet, see `02-installing-postgresql.qmd` for the full `docker run` command. Students who mapped the container to a non-default port set `PGPORT=5433` (or their chosen port) in their environment before rendering.
+If the container has not been created yet, see `02-setup.qmd` for the full `docker run` command. Students who mapped the container to a non-default port set `PGPORT=5433` (or their chosen port) in their environment before rendering.
 
 ## Content Conventions
 

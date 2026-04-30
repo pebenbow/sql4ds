@@ -22,19 +22,19 @@ book:
   chapters:
     - index.qmd
 
-    - part: intro.qmd
+    - part: 00-intro.qmd
       chapters:
         - 01-why-learn-sql.qmd
         - 02-setup.qmd
 
-    - part: query.qmd
+    - part: 10-query.qmd
       chapters:
         - 11-select-statements.qmd
         - 12-data-types.qmd
         - 13-joins.qmd
         - 14-set-operations.qmd
 
-    - part: design.qmd
+    - part: 20-design.qmd
       chapters:
         - 21-keys-and-integrity.qmd
         - 22-er-diagrams.qmd
@@ -42,26 +42,26 @@ book:
         - 24-create-table.qmd
         - 26-building-schema.qmd
 
-    - part: secure.qmd
+    - part: 30-secure.qmd
       chapters:
         - 31-roles.qmd
         - 32-privileges.qmd
         - 33-sqli.qmd
 
-    - part: deploy.qmd
+    - part: 40-deploy.qmd
       chapters:
         - 41-supabase-setup.qmd
         - 42-supabase-vscode.qmd
         - 43-database-migrations.qmd
 
-    - part: load.qmd
+    - part: 50-load.qmd
       chapters:
         - 51-extracting-data.qmd
         - 52-transforming-with-polars.qmd
         - 53-loading-with-sqlalchemy.qmd
         - 54-etl-pipeline.qmd
 
-    - references.qmd
+    - 99-references.qmd
 
 filters:
   - quarto-dbml
