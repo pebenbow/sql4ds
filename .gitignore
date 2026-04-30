@@ -10,3 +10,9 @@ solutions/
 
 # Dev symlink inside quarto-dbml extension (points back to source repo)
 _extensions/quarto-dbml/node_modules/quarto-dbml
+
+# Quarto render caches
+*_cache/
+
+# Claude Code project settings
+.claude/
