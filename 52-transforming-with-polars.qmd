@@ -1,4 +1,6 @@
-# Transforming Data with Polars
+---
+title: "Transforming Data with Polars"
+---
 
 Raw data is rarely ready to load. Column names may be inconsistent, values may be missing or malformed, types may need adjusting, and the shape of the data may not match the schema you are loading into. The transformation step handles all of this: filtering, reshaping, computing derived values, and joining sources together into a clean, coherent dataset.
 

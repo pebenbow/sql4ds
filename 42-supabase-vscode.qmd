@@ -1,4 +1,6 @@
-# Deploying from VS Code
+---
+title: "Deploying from VS Code"
+---
 
 The Supabase SQL Editor is a capable tool for one-off queries and quick schema experiments. For sustained development work, though, it has the same drawbacks as any browser-based editor: no version control, no local file history, and no way to coordinate changes across a team. Writing your schema in VS Code and deploying it to Supabase via the command line addresses all three.
 

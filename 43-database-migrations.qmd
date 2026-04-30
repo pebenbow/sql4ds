@@ -1,4 +1,6 @@
-# Database Migrations
+---
+title: "Database Migrations"
+---
 
 When a database is first created, its schema is in a clean, known state. As the work that depends on that database evolves, new tables are added, columns are renamed, indexes are created, constraints are tightened or relaxed. Each of those changes alters the schema. If the changes are made informally, by hand, through a GUI, without recording what was done, the schema becomes something that exists only on that one machine at that one moment. Nobody else can reproduce it, and the history of how it arrived at its current state is gone.
 

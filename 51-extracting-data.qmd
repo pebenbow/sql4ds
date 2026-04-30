@@ -1,4 +1,6 @@
-# Extracting Data from Files and APIs
+---
+title: "Extracting Data from Files and APIs"
+---
 
 The first stage of any ETL pipeline is extraction: pulling raw data from wherever it lives into your working environment. In the real world, data arrives in many forms. A colleague sends a CSV. A vendor exposes a REST API. A data warehouse exports Parquet files to cloud storage. Each format has its own structure, its own quirks, and its own best practices.
 

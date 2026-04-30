@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Pete Benbow">
 
-<title>14&nbsp; Extracting Data from Files and APIs – SQL for Data Science</title>
+<title>17&nbsp; Extracting Data from Files and APIs – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +65,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./32-transforming-with-polars.html" rel="next">
-<link href="./etl-with-python.html" rel="prev">
+<link href="./52-transforming-with-polars.html" rel="next">
+<link href="./load.html" rel="prev">
+<link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -74,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-706344d2ac0d376cb01d0c71f2a45066.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8da5b4427184b79ecddefad3d342027e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -115,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./etl-with-python.html">ETL with Python</a></li><li class="breadcrumb-item"><a href="./31-extracting-data.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./load.html">Load</a></li><li class="breadcrumb-item"><a href="./51-extracting-data.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -132,6 +134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="./">SQL for Data Science</a> 
         <div class="sidebar-tools-main">
+    <a href="https://github.com/pebenbow/open-sql" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -150,19 +153,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./getting-started.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Getting Started</span></a>
+            <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -176,16 +173,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-installing-postgresql.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting Up Your Environment</span></span></a>
+  <a href="./02-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setup</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./querying-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Querying Data</span></a>
+            <a href="./query.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Query</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -193,36 +190,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-select-statements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic SELECT Statements</span></span></a>
+  <a href="./11-select-statements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">SELECT Statements</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-data-types.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types and Type Conversion</span></span></a>
+  <a href="./12-data-types.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types</span></span></a>
   </div>
 </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="./working-with-multiple-tables.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Working with Multiple Tables</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-joins.html" class="sidebar-item-text sidebar-link">
+  <a href="./13-joins.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-set-operations.html" class="sidebar-item-text sidebar-link">
+  <a href="./14-set-operations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
   </div>
 </li>
@@ -230,34 +216,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./database-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Database Design</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <a href="./design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
+  <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-er-diagrams.html" class="sidebar-item-text sidebar-link">
+  <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./09-normal-forms.html" class="sidebar-item-text sidebar-link">
+  <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./10-create-table.html" class="sidebar-item-text sidebar-link">
+  <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
@@ -265,8 +251,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./deploying-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Deploying Databases</span></a>
+            <a href="./secure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Secure</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./deploy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploy</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -274,28 +289,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./21-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./22-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./23-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./etl-with-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ETL with Python</span></a>
+            <a href="./load.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Load</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -303,26 +318,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./31-extracting-data.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./32-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./34-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -343,37 +358,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites"><span class="header-section-number">14.1</span> Prerequisites</a></li>
-  <li><a href="#reading-csv-files" id="toc-reading-csv-files" class="nav-link" data-scroll-target="#reading-csv-files"><span class="header-section-number">14.2</span> Reading CSV Files</a>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites"><span class="header-section-number">17.1</span> Prerequisites</a></li>
+  <li><a href="#reading-csv-files" id="toc-reading-csv-files" class="nav-link" data-scroll-target="#reading-csv-files"><span class="header-section-number">17.2</span> Reading CSV Files</a>
   <ul class="collapse">
-  <li><a href="#handling-null-values" id="toc-handling-null-values" class="nav-link" data-scroll-target="#handling-null-values"><span class="header-section-number">14.2.1</span> Handling Null Values</a></li>
-  <li><a href="#selecting-columns-at-read-time" id="toc-selecting-columns-at-read-time" class="nav-link" data-scroll-target="#selecting-columns-at-read-time"><span class="header-section-number">14.2.2</span> Selecting Columns at Read Time</a></li>
-  <li><a href="#overriding-inferred-types" id="toc-overriding-inferred-types" class="nav-link" data-scroll-target="#overriding-inferred-types"><span class="header-section-number">14.2.3</span> Overriding Inferred Types</a></li>
+  <li><a href="#handling-null-values" id="toc-handling-null-values" class="nav-link" data-scroll-target="#handling-null-values"><span class="header-section-number">17.2.1</span> Handling Null Values</a></li>
+  <li><a href="#selecting-columns-at-read-time" id="toc-selecting-columns-at-read-time" class="nav-link" data-scroll-target="#selecting-columns-at-read-time"><span class="header-section-number">17.2.2</span> Selecting Columns at Read Time</a></li>
+  <li><a href="#overriding-inferred-types" id="toc-overriding-inferred-types" class="nav-link" data-scroll-target="#overriding-inferred-types"><span class="header-section-number">17.2.3</span> Overriding Inferred Types</a></li>
   </ul></li>
-  <li><a href="#reading-json-files" id="toc-reading-json-files" class="nav-link" data-scroll-target="#reading-json-files"><span class="header-section-number">14.3</span> Reading JSON Files</a>
+  <li><a href="#reading-json-files" id="toc-reading-json-files" class="nav-link" data-scroll-target="#reading-json-files"><span class="header-section-number">17.3</span> Reading JSON Files</a>
   <ul class="collapse">
-  <li><a href="#handling-nested-fields" id="toc-handling-nested-fields" class="nav-link" data-scroll-target="#handling-nested-fields"><span class="header-section-number">14.3.1</span> Handling Nested Fields</a></li>
+  <li><a href="#handling-nested-fields" id="toc-handling-nested-fields" class="nav-link" data-scroll-target="#handling-nested-fields"><span class="header-section-number">17.3.1</span> Handling Nested Fields</a></li>
   </ul></li>
-  <li><a href="#reading-parquet-files" id="toc-reading-parquet-files" class="nav-link" data-scroll-target="#reading-parquet-files"><span class="header-section-number">14.4</span> Reading Parquet Files</a>
+  <li><a href="#reading-parquet-files" id="toc-reading-parquet-files" class="nav-link" data-scroll-target="#reading-parquet-files"><span class="header-section-number">17.4</span> Reading Parquet Files</a>
   <ul class="collapse">
-  <li><a href="#size-comparison" id="toc-size-comparison" class="nav-link" data-scroll-target="#size-comparison"><span class="header-section-number">14.4.1</span> Size Comparison</a></li>
-  <li><a href="#reading-a-subset-of-columns" id="toc-reading-a-subset-of-columns" class="nav-link" data-scroll-target="#reading-a-subset-of-columns"><span class="header-section-number">14.4.2</span> Reading a Subset of Columns</a></li>
+  <li><a href="#size-comparison" id="toc-size-comparison" class="nav-link" data-scroll-target="#size-comparison"><span class="header-section-number">17.4.1</span> Size Comparison</a></li>
+  <li><a href="#reading-a-subset-of-columns" id="toc-reading-a-subset-of-columns" class="nav-link" data-scroll-target="#reading-a-subset-of-columns"><span class="header-section-number">17.4.2</span> Reading a Subset of Columns</a></li>
   </ul></li>
-  <li><a href="#fetching-data-from-a-rest-api" id="toc-fetching-data-from-a-rest-api" class="nav-link" data-scroll-target="#fetching-data-from-a-rest-api"><span class="header-section-number">14.5</span> Fetching Data from a REST API</a>
+  <li><a href="#fetching-data-from-a-rest-api" id="toc-fetching-data-from-a-rest-api" class="nav-link" data-scroll-target="#fetching-data-from-a-rest-api"><span class="header-section-number">17.5</span> Fetching Data from a REST API</a>
   <ul class="collapse">
-  <li><a href="#pagination" id="toc-pagination" class="nav-link" data-scroll-target="#pagination"><span class="header-section-number">14.5.1</span> Pagination</a></li>
+  <li><a href="#pagination" id="toc-pagination" class="nav-link" data-scroll-target="#pagination"><span class="header-section-number">17.5.1</span> Pagination</a></li>
   </ul></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">14.6</span> Summary</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">14.7</span> Exercises</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">17.6</span> Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">17.7</span> Exercises</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/51-extracting-data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./etl-with-python.html">ETL with Python</a></li><li class="breadcrumb-item"><a href="./31-extracting-data.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./load.html">Load</a></li><li class="breadcrumb-item"><a href="./51-extracting-data.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></h1>
+<h1 class="title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></h1>
 </div>
 
 
@@ -398,13 +413,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>data/indicators_meta.json</code>: indicator definitions wrapped in a paginated API response envelope</li>
 <li><code>data/indicators.parquet</code>: economic and demographic indicators for 217 countries from 2000 to 2022</li>
 </ul>
-<section id="prerequisites" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">14.1</span> Prerequisites</h2>
+<section id="prerequisites" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">17.1</span> Prerequisites</h2>
 <p>This chapter requires Polars and the <code>requests</code> library. Install them if you have not already:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install polars requests</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="reading-csv-files" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="reading-csv-files"><span class="header-section-number">14.2</span> Reading CSV Files</h2>
+<section id="reading-csv-files" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="reading-csv-files"><span class="header-section-number">17.2</span> Reading CSV Files</h2>
 <p>Comma-separated values (CSV) is the most common data exchange format. Despite its simplicity, CSV files can hide surprises: missing values represented as blank strings or sentinel values like <code>"N/A"</code>, columns whose types are ambiguous, and inconsistent quoting. Polars handles most of this gracefully.</p>
 <p>The <code>pl.read_csv()</code> function reads a CSV file into a Polars DataFrame with automatic type inference:</p>
 <div id="csv-read" class="cell" data-execution_count="1">
@@ -446,8 +461,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>String columns were correctly identified as <code>String</code>. The <code>longitude</code> and <code>latitude</code> columns were inferred as <code>Float64</code> because they contain decimal values.</p>
-<section id="handling-null-values" class="level3" data-number="14.2.1">
-<h3 data-number="14.2.1" class="anchored" data-anchor-id="handling-null-values"><span class="header-section-number">14.2.1</span> Handling Null Values</h3>
+<section id="handling-null-values" class="level3" data-number="17.2.1">
+<h3 data-number="17.2.1" class="anchored" data-anchor-id="handling-null-values"><span class="header-section-number">17.2.1</span> Handling Null Values</h3>
 <p>Seven countries in this dataset have no recorded longitude or latitude: territories and disputed regions such as Gibraltar, Taiwan, and the Channel Islands. Polars represents these missing values as <code>null</code> in the DataFrame:</p>
 <div id="csv-nulls" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>missing_coords <span class="op">=</span> countries.<span class="bu">filter</span>(pl.col(<span class="st">"longitude"</span>).is_null())</span>
@@ -473,8 +488,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pl.read_csv(<span class="st">"data/countries.csv"</span>, null_values<span class="op">=</span>[<span class="st">"N/A"</span>, <span class="st">"-"</span>, <span class="st">""</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You can also pass a dictionary to specify different null sentinels per column, which is useful when different columns use different conventions in the same file.</p>
 </section>
-<section id="selecting-columns-at-read-time" class="level3" data-number="14.2.2">
-<h3 data-number="14.2.2" class="anchored" data-anchor-id="selecting-columns-at-read-time"><span class="header-section-number">14.2.2</span> Selecting Columns at Read Time</h3>
+<section id="selecting-columns-at-read-time" class="level3" data-number="17.2.2">
+<h3 data-number="17.2.2" class="anchored" data-anchor-id="selecting-columns-at-read-time"><span class="header-section-number">17.2.2</span> Selecting Columns at Read Time</h3>
 <p>You rarely need every column in a large file. Polars lets you select specific columns during the read, which avoids loading unnecessary data into memory:</p>
 <div id="csv-select-cols" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>countries_slim <span class="op">=</span> pl.read_csv(</span>
@@ -502,8 +517,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>For quick inspection, <code>.head(n)</code> returns the first <code>n</code> rows and <code>.tail(n)</code> returns the last <code>n</code>.</p>
 </section>
-<section id="overriding-inferred-types" class="level3" data-number="14.2.3">
-<h3 data-number="14.2.3" class="anchored" data-anchor-id="overriding-inferred-types"><span class="header-section-number">14.2.3</span> Overriding Inferred Types</h3>
+<section id="overriding-inferred-types" class="level3" data-number="17.2.3">
+<h3 data-number="17.2.3" class="anchored" data-anchor-id="overriding-inferred-types"><span class="header-section-number">17.2.3</span> Overriding Inferred Types</h3>
 <p>Automatic type inference is convenient but not infallible. Suppose you want to treat <code>region</code> and <code>income_group</code> as categorical variables rather than plain strings. Categoricals store repeated string values more efficiently, which matters for columns with low cardinality (few unique values relative to total rows). Use <code>schema_overrides</code> to specify types explicitly:</p>
 <div id="csv-type-override" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>countries_typed <span class="op">=</span> pl.read_csv(</span>
@@ -522,8 +537,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Notice that <code>region</code>, <code>income_group</code>, and <code>lending_type</code> now show as <code>Categorical</code> while all other columns remain as inferred.</p>
 </section>
 </section>
-<section id="reading-json-files" class="level2" data-number="14.3">
-<h2 data-number="14.3" class="anchored" data-anchor-id="reading-json-files"><span class="header-section-number">14.3</span> Reading JSON Files</h2>
+<section id="reading-json-files" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="reading-json-files"><span class="header-section-number">17.3</span> Reading JSON Files</h2>
 <p>JSON (JavaScript Object Notation) is the standard format for web API responses. It is flexible enough to represent nested structures that CSV cannot: an array of objects, where each object may itself contain nested objects or arrays.</p>
 <p>Polars can read a flat JSON array directly with <code>pl.read_json()</code>. But most real-world API responses wrap the data you actually care about inside a response <em>envelope</em> that includes pagination metadata, status codes, and other fields alongside the records. You cannot read those files with <code>pl.read_json()</code> alone.</p>
 <p>The <code>data/indicators_meta.json</code> file mimics this pattern. Let’s look at its top-level structure first:</p>
@@ -565,8 +580,8 @@ Showing 9 of 9 indicators</code></pre>
 └───────────────────┴─────────────────────────────────┘</code></pre>
 </div>
 </div>
-<section id="handling-nested-fields" class="level3" data-number="14.3.1">
-<h3 data-number="14.3.1" class="anchored" data-anchor-id="handling-nested-fields"><span class="header-section-number">14.3.1</span> Handling Nested Fields</h3>
+<section id="handling-nested-fields" class="level3" data-number="17.3.1">
+<h3 data-number="17.3.1" class="anchored" data-anchor-id="handling-nested-fields"><span class="header-section-number">17.3.1</span> Handling Nested Fields</h3>
 <p>Notice the <code>source</code> column. Rather than a plain string, each row’s <code>source</code> value is itself an object with <code>id</code> and <code>value</code> fields. Polars stores these as the <code>Struct</code> type. Use <code>.struct.field()</code> to extract the nested values into their own columns:</p>
 <div id="json-unnest" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>indicators_meta <span class="op">=</span> (</span>
@@ -600,8 +615,8 @@ Showing 9 of 9 indicators</code></pre>
 <p>This pattern applies broadly: read the raw response with <code>json.load()</code>, extract the list of records by key, build a DataFrame, then use <code>.struct.field()</code> to flatten any nested fields you need.</p>
 </section>
 </section>
-<section id="reading-parquet-files" class="level2" data-number="14.4">
-<h2 data-number="14.4" class="anchored" data-anchor-id="reading-parquet-files"><span class="header-section-number">14.4</span> Reading Parquet Files</h2>
+<section id="reading-parquet-files" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="reading-parquet-files"><span class="header-section-number">17.4</span> Reading Parquet Files</h2>
 <p>Parquet is a columnar storage format designed for analytical workloads. Unlike CSV, which stores data row by row as plain text, Parquet stores each column independently in a binary, compressed format. This makes it far faster to read when you only need a subset of columns, and far smaller on disk.</p>
 <p>Reading a Parquet file with Polars is simple:</p>
 <div id="parquet-read" class="cell" data-execution_count="9">
@@ -618,8 +633,8 @@ Schema({'country_code': String, 'short_name': String, 'region': String, 'income_
 <li>The schema is embedded in the file itself. There is no inference step, and there is no risk of type ambiguity. Whatever types were written by the creator are read back exactly.</li>
 <li>Null counts are visible but do not require any extra work. Columns like <code>gdp_usd</code> and <code>pct_forest_area</code> have missing values for some country-year combinations, and Polars handles them as <code>null</code> automatically.</li>
 </ol>
-<section id="size-comparison" class="level3" data-number="14.4.1">
-<h3 data-number="14.4.1" class="anchored" data-anchor-id="size-comparison"><span class="header-section-number">14.4.1</span> Size Comparison</h3>
+<section id="size-comparison" class="level3" data-number="17.4.1">
+<h3 data-number="17.4.1" class="anchored" data-anchor-id="size-comparison"><span class="header-section-number">17.4.1</span> Size Comparison</h3>
 <p>To appreciate the compression benefit, compare the Parquet file’s size to an equivalent CSV export:</p>
 <div id="parquet-size" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -642,8 +657,8 @@ Ratio:   3.9× smaller as Parquet</code></pre>
 </div>
 <p>The Parquet file is roughly 3 to 4 times smaller. At the scale of millions of rows, this difference translates into meaningfully lower storage costs and faster transfer times.</p>
 </section>
-<section id="reading-a-subset-of-columns" class="level3" data-number="14.4.2">
-<h3 data-number="14.4.2" class="anchored" data-anchor-id="reading-a-subset-of-columns"><span class="header-section-number">14.4.2</span> Reading a Subset of Columns</h3>
+<section id="reading-a-subset-of-columns" class="level3" data-number="17.4.2">
+<h3 data-number="17.4.2" class="anchored" data-anchor-id="reading-a-subset-of-columns"><span class="header-section-number">17.4.2</span> Reading a Subset of Columns</h3>
 <p>Because Parquet stores columns independently, you can read only the columns you need without touching the rest of the file. This is called <em>column pruning</em>, and it is one of Parquet’s most important performance characteristics:</p>
 <div id="parquet-column-pruning" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>gdp_subset <span class="op">=</span> pl.read_parquet(</span>
@@ -669,8 +684,8 @@ Ratio:   3.9× smaller as Parquet</code></pre>
 <p>With a CSV file, you must read the entire file before you can select columns. With Parquet, the columns you omit are never read from disk at all.</p>
 </section>
 </section>
-<section id="fetching-data-from-a-rest-api" class="level2" data-number="14.5">
-<h2 data-number="14.5" class="anchored" data-anchor-id="fetching-data-from-a-rest-api"><span class="header-section-number">14.5</span> Fetching Data from a REST API</h2>
+<section id="fetching-data-from-a-rest-api" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="fetching-data-from-a-rest-api"><span class="header-section-number">17.5</span> Fetching Data from a REST API</h2>
 <p>Many data sources are not files at all: they are web APIs that respond to HTTP requests with JSON. The Python <code>requests</code> library makes it straightforward to query these endpoints.</p>
 <p>The World Bank publishes a free, open API for the development indicators we have been working with throughout this book. The following example fetches the most recent five years of population data for four countries:</p>
 <div id="api-fetch" class="cell" data-execution_count="12">
@@ -732,8 +747,8 @@ Ratio:   3.9× smaller as Parquet</code></pre>
 └───────────────┴──────┴────────────┘</code></pre>
 </div>
 </div>
-<section id="pagination" class="level3" data-number="14.5.1">
-<h3 data-number="14.5.1" class="anchored" data-anchor-id="pagination"><span class="header-section-number">14.5.1</span> Pagination</h3>
+<section id="pagination" class="level3" data-number="17.5.1">
+<h3 data-number="17.5.1" class="anchored" data-anchor-id="pagination"><span class="header-section-number">17.5.1</span> Pagination</h3>
 <p>Most APIs cap the number of records returned per request and include a page count in the envelope. When you need all pages, check the envelope and loop:</p>
 <div id="api-pagination" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>all_records <span class="op">=</span> []</span>
@@ -768,8 +783,8 @@ Non-null populations: 265</code></pre>
 <p>This pattern works for any API that reports a page count. Adapt the stopping condition to match whatever field your API uses: <code>pages</code>, <code>next_page</code>, <code>has_more</code>, a cursor token, and so on.</p>
 </section>
 </section>
-<section id="summary" class="level2" data-number="14.6">
-<h2 data-number="14.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">14.6</span> Summary</h2>
+<section id="summary" class="level2" data-number="17.6">
+<h2 data-number="17.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">17.6</span> Summary</h2>
 <p>The table below summarizes the extraction approach for each source type:</p>
 <table class="caption-top table">
 <colgroup>
@@ -814,8 +829,8 @@ Non-null populations: 265</code></pre>
 </table>
 <p>In the next chapter, you will take the extracted data and apply transformations with Polars: filtering, reshaping, computing new columns, and summarizing.</p>
 </section>
-<section id="exercises" class="level2" data-number="14.7">
-<h2 data-number="14.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">14.7</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="17.7">
+<h2 data-number="17.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">17.7</span> Exercises</h2>
 <ol type="1">
 <li><p>Read <code>data/countries.csv</code> and display the count of countries in each <code>region</code>. Sort the result from the region with the most countries to the fewest.</p></li>
 <li><p>The <code>longitude</code> and <code>latitude</code> columns have null values for 7 countries. Filter the DataFrame to show only those rows, displaying <code>short_name</code>, <code>region</code>, and <code>capital</code>.</p></li>
@@ -918,7 +933,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/sql4ds\.com\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -1252,13 +1267,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./etl-with-python.html" class="pagination-link" aria-label="ETL with Python">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">ETL with Python</span>
+      <a href="./load.html" class="pagination-link" aria-label="Load">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Load</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./32-transforming-with-polars.html" class="pagination-link" aria-label="Transforming Data with Polars">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./52-transforming-with-polars.html" class="pagination-link" aria-label="Transforming Data with Polars">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1270,7 +1285,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/51-extracting-data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

@@ -1,4 +1,6 @@
-# SELECT Statements
+---
+title: "SELECT Statements"
+---
 
 ```{r}
 #| include: false

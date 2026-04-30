@@ -1,4 +1,6 @@
-# Joining Tables
+---
+title: "Joining Tables"
+---
 
 ```{r}
 #| include: false

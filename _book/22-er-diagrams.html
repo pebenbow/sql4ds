@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Pete Benbow">
 
 <title>8&nbsp; Entity-Relationship Diagrams – SQL for Data Science</title>
 <style>
@@ -64,8 +65,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./09-normal-forms.html" rel="next">
-<link href="./07-keys-and-integrity.html" rel="prev">
+<link href="./23-normal-forms.html" rel="next">
+<link href="./21-keys-and-integrity.html" rel="prev">
+<link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -74,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-706344d2ac0d376cb01d0c71f2a45066.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8da5b4427184b79ecddefad3d342027e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -416,7 +418,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./database-design.html">Database Design</a></li><li class="breadcrumb-item"><a href="./08-er-diagrams.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./design.html">Design</a></li><li class="breadcrumb-item"><a href="./22-er-diagrams.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -433,6 +435,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="./">SQL for Data Science</a> 
         <div class="sidebar-tools-main">
+    <a href="https://github.com/pebenbow/open-sql" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -451,19 +454,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./getting-started.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Getting Started</span></a>
+            <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -477,16 +474,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-installing-postgresql.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting Up Your Environment</span></span></a>
+  <a href="./02-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setup</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./querying-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Querying Data</span></a>
+            <a href="./query.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Query</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -494,36 +491,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-select-statements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic SELECT Statements</span></span></a>
+  <a href="./11-select-statements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">SELECT Statements</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-data-types.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types and Type Conversion</span></span></a>
+  <a href="./12-data-types.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types</span></span></a>
   </div>
 </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="./working-with-multiple-tables.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Working with Multiple Tables</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-joins.html" class="sidebar-item-text sidebar-link">
+  <a href="./13-joins.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-set-operations.html" class="sidebar-item-text sidebar-link">
+  <a href="./14-set-operations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
   </div>
 </li>
@@ -531,34 +517,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./database-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Database Design</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <a href="./design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
+  <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-er-diagrams.html" class="sidebar-item-text sidebar-link active">
+  <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./09-normal-forms.html" class="sidebar-item-text sidebar-link">
+  <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./10-create-table.html" class="sidebar-item-text sidebar-link">
+  <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
@@ -566,8 +552,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./deploying-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Deploying Databases</span></a>
+            <a href="./secure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Secure</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./deploy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploy</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -575,28 +590,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./21-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./22-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./23-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./etl-with-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ETL with Python</span></a>
+            <a href="./load.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Load</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -604,26 +619,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./31-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./32-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./34-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -662,12 +677,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#design" id="toc-design" class="nav-link" data-scroll-target="#design"><span class="header-section-number">8.10.2</span> Design</a></li>
   </ul></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/22-er-diagrams.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./database-design.html">Database Design</a></li><li class="breadcrumb-item"><a href="./08-er-diagrams.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./design.html">Design</a></li><li class="breadcrumb-item"><a href="./22-er-diagrams.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></h1>
 </div>
@@ -699,20 +714,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="196" viewbox="0 0 320 196">
   <rect class="dbml-bg" width="320" height="196" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
   <defs>
-    <clippath id="dbml-cp-mtwgyq-0" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-j86p3l-0" clippathunits="userSpaceOnUse">
       <rect x="40" y="78" width="240" height="78" rx="6" ry="6"></rect>
     </clippath>
   </defs>
   <g class="dbml-edges">
   </g>
   <g class="dbml-tables">
-  <g class="dbml-table" data-table-name="customers" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-mtwgyq-0">
+  <g class="dbml-table" data-table-name="customers" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-j86p3l-0">
     <rect class="dbml-card-shadow" x="43" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="40" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">customers</text>
-    <g clip-path="url(#dbml-cp-mtwgyq-0)">
+    <g clip-path="url(#dbml-cp-j86p3l-0)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -784,20 +799,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="196" viewbox="0 0 320 196">
   <rect class="dbml-bg" width="320" height="196" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
   <defs>
-    <clippath id="dbml-cp-3koqgj-0" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-kjhisr-0" clippathunits="userSpaceOnUse">
       <rect x="40" y="78" width="240" height="78" rx="6" ry="6"></rect>
     </clippath>
   </defs>
   <g class="dbml-edges">
   </g>
   <g class="dbml-tables">
-  <g class="dbml-table" data-table-name="order_items" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="38" data-h-names="38" data-clip-id="dbml-cp-3koqgj-0">
+  <g class="dbml-table" data-table-name="order_items" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="38" data-h-names="38" data-clip-id="dbml-cp-kjhisr-0">
     <rect class="dbml-card-shadow" x="43" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="40" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">order_items</text>
-    <g clip-path="url(#dbml-cp-3koqgj-0)">
+    <g clip-path="url(#dbml-cp-kjhisr-0)">
       <g class="dbml-field-row" data-field-type="regular" data-orig-index="0">
         <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-nn-bg,rgba(46,125,50,0.12));pointer-events:none;"></rect>
@@ -979,13 +994,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="372" viewbox="0 0 640 372">
   <rect class="dbml-bg" width="640" height="372" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
   <defs>
-    <clippath id="dbml-cp-n17lfu-0" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-uo6c78-0" clippathunits="userSpaceOnUse">
       <rect x="40" y="78" width="240" height="78" rx="6" ry="6"></rect>
     </clippath>
-    <clippath id="dbml-cp-n17lfu-1" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-uo6c78-1" clippathunits="userSpaceOnUse">
       <rect x="360" y="78" width="240" height="78" rx="6" ry="6"></rect>
     </clippath>
-    <clippath id="dbml-cp-n17lfu-2" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-uo6c78-2" clippathunits="userSpaceOnUse">
       <rect x="40" y="254" width="240" height="78" rx="6" ry="6"></rect>
     </clippath>
   </defs>
@@ -1014,13 +1029,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </g>
   </g>
   <g class="dbml-tables">
-  <g class="dbml-table" data-table-name="customers" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-n17lfu-0">
+  <g class="dbml-table" data-table-name="customers" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-uo6c78-0">
     <rect class="dbml-card-shadow" x="43" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="40" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">customers</text>
-    <g clip-path="url(#dbml-cp-n17lfu-0)">
+    <g clip-path="url(#dbml-cp-uo6c78-0)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -1051,13 +1066,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </g>
     </g>
   </g>
-  <g class="dbml-table" data-table-name="orders" data-x="360" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="90" data-h-names="38" data-clip-id="dbml-cp-n17lfu-1">
+  <g class="dbml-table" data-table-name="orders" data-x="360" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="90" data-h-names="38" data-clip-id="dbml-cp-uo6c78-1">
     <rect class="dbml-card-shadow" x="363" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="360" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="360" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="360" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="480" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">orders</text>
-    <g clip-path="url(#dbml-cp-n17lfu-1)">
+    <g clip-path="url(#dbml-cp-uo6c78-1)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="360" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="368" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -1088,13 +1103,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </g>
     </g>
   </g>
-  <g class="dbml-table" data-table-name="order_items" data-x="40" data-y="216" data-base-y="254" data-header-y="235" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-n17lfu-2">
+  <g class="dbml-table" data-table-name="order_items" data-x="40" data-y="216" data-base-y="254" data-header-y="235" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-uo6c78-2">
     <rect class="dbml-card-shadow" x="43" y="219" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="40" y="216" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="40" y="216" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="40" y="248" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="160" y="241" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">order_items</text>
-    <g clip-path="url(#dbml-cp-n17lfu-2)">
+    <g clip-path="url(#dbml-cp-uo6c78-2)">
       <g class="dbml-field-row" data-field-type="fk" data-orig-index="0">
         <rect x="40" y="254" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="48" y="261" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
@@ -1129,17 +1144,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Two things to observe in the rendered diagram:</p>
 <p><strong>CUSTOMERS to ORDERS:</strong> <code>orders.customer_id</code> is <code>[not null]</code>, so every order must belong to a customer. The diagram shows a mandatory symbol at the <code>CUSTOMERS</code> end. The <code>ORDERS</code> end shows zero-or-many: a customer can exist without any orders.</p>
 <p><strong>ORDERS to ORDER_ITEMS:</strong> <code>order_items.order_id</code> is <code>[not null]</code>, so every line item must belong to an order. The diagram shows a mandatory symbol at the <code>ORDERS</code> end. The <code>ORDER_ITEMS</code> end shows zero-or-many.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
+<div class="callout-body-container">
 <p>The normalization chapter described the <code>ORDER_ITEMS</code> side as “one or many” because an order with no items is not a meaningful business object. DBML and SQL constraints cannot enforce this at the schema level. The zero-or-many rendering is technically correct for what the schema can guarantee; the “at least one” rule lives in application logic.</p>
+</div>
 </div>
 </div>
 </section>
@@ -1150,19 +1162,19 @@ Note
 <svg xmlns="http://www.w3.org/2000/svg" width="960" height="424" viewbox="0 0 960 424">
   <rect class="dbml-bg" width="960" height="424" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
   <defs>
-    <clippath id="dbml-cp-upqpfg-0" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-6t25wk-0" clippathunits="userSpaceOnUse">
       <rect x="40" y="78" width="240" height="52" rx="6" ry="6"></rect>
     </clippath>
-    <clippath id="dbml-cp-upqpfg-1" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-6t25wk-1" clippathunits="userSpaceOnUse">
       <rect x="360" y="78" width="240" height="52" rx="6" ry="6"></rect>
     </clippath>
-    <clippath id="dbml-cp-upqpfg-2" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-6t25wk-2" clippathunits="userSpaceOnUse">
       <rect x="680" y="78" width="240" height="104" rx="6" ry="6"></rect>
     </clippath>
-    <clippath id="dbml-cp-upqpfg-3" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-6t25wk-3" clippathunits="userSpaceOnUse">
       <rect x="40" y="280" width="240" height="52" rx="6" ry="6"></rect>
     </clippath>
-    <clippath id="dbml-cp-upqpfg-4" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-6t25wk-4" clippathunits="userSpaceOnUse">
       <rect x="360" y="280" width="240" height="104" rx="6" ry="6"></rect>
     </clippath>
   </defs>
@@ -1213,13 +1225,13 @@ Note
   </g>
   </g>
   <g class="dbml-tables">
-  <g class="dbml-table" data-table-name="regions" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="90" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-upqpfg-0">
+  <g class="dbml-table" data-table-name="regions" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="90" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-6t25wk-0">
     <rect class="dbml-card-shadow" x="43" y="43" width="240" height="90" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="40" y="40" width="240" height="90" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">regions</text>
-    <g clip-path="url(#dbml-cp-upqpfg-0)">
+    <g clip-path="url(#dbml-cp-6t25wk-0)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -1240,13 +1252,13 @@ Note
       </g>
     </g>
   </g>
-  <g class="dbml-table" data-table-name="income_groups" data-x="360" data-y="40" data-base-y="78" data-header-y="59" data-h-full="90" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-upqpfg-1">
+  <g class="dbml-table" data-table-name="income_groups" data-x="360" data-y="40" data-base-y="78" data-header-y="59" data-h-full="90" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-6t25wk-1">
     <rect class="dbml-card-shadow" x="363" y="43" width="240" height="90" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="360" y="40" width="240" height="90" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="360" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="360" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="480" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">income_groups</text>
-    <g clip-path="url(#dbml-cp-upqpfg-1)">
+    <g clip-path="url(#dbml-cp-6t25wk-1)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="360" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="368" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -1267,13 +1279,13 @@ Note
       </g>
     </g>
   </g>
-  <g class="dbml-table" data-table-name="countries" data-x="680" data-y="40" data-base-y="78" data-header-y="59" data-h-full="142" data-h-keys="116" data-h-names="38" data-clip-id="dbml-cp-upqpfg-2">
+  <g class="dbml-table" data-table-name="countries" data-x="680" data-y="40" data-base-y="78" data-header-y="59" data-h-full="142" data-h-keys="116" data-h-names="38" data-clip-id="dbml-cp-6t25wk-2">
     <rect class="dbml-card-shadow" x="683" y="43" width="240" height="142" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="680" y="40" width="240" height="142" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="680" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="680" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="800" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">countries</text>
-    <g clip-path="url(#dbml-cp-upqpfg-2)">
+    <g clip-path="url(#dbml-cp-6t25wk-2)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="680" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="688" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -1312,13 +1324,13 @@ Note
       </g>
     </g>
   </g>
-  <g class="dbml-table" data-table-name="indicators" data-x="40" data-y="242" data-base-y="280" data-header-y="261" data-h-full="90" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-upqpfg-3">
+  <g class="dbml-table" data-table-name="indicators" data-x="40" data-y="242" data-base-y="280" data-header-y="261" data-h-full="90" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-6t25wk-3">
     <rect class="dbml-card-shadow" x="43" y="245" width="240" height="90" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="40" y="242" width="240" height="90" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="40" y="242" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="40" y="274" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="160" y="267" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">indicators</text>
-    <g clip-path="url(#dbml-cp-upqpfg-3)">
+    <g clip-path="url(#dbml-cp-6t25wk-3)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="40" y="280" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="48" y="287" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -1339,13 +1351,13 @@ Note
       </g>
     </g>
   </g>
-  <g class="dbml-table" data-table-name="observations" data-x="360" data-y="242" data-base-y="280" data-header-y="261" data-h-full="142" data-h-keys="90" data-h-names="38" data-clip-id="dbml-cp-upqpfg-4">
+  <g class="dbml-table" data-table-name="observations" data-x="360" data-y="242" data-base-y="280" data-header-y="261" data-h-full="142" data-h-keys="90" data-h-names="38" data-clip-id="dbml-cp-6t25wk-4">
     <rect class="dbml-card-shadow" x="363" y="245" width="240" height="142" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="360" y="242" width="240" height="142" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="360" y="242" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="360" y="274" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="480" y="267" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">observations</text>
-    <g clip-path="url(#dbml-cp-upqpfg-4)">
+    <g clip-path="url(#dbml-cp-6t25wk-4)">
       <g class="dbml-field-row" data-field-type="fk" data-orig-index="0">
         <rect x="360" y="280" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="368" y="287" width="22" height="12" rx="3" style="fill:var(--dbml-fk-bg,rgba(21,88,176,0.12));pointer-events:none;"></rect>
@@ -1395,7 +1407,7 @@ Note
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="196" viewbox="0 0 320 196">
   <rect class="dbml-bg" width="320" height="196" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
   <defs>
-    <clippath id="dbml-cp-auoe9r-0" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-mcwh4e-0" clippathunits="userSpaceOnUse">
       <rect x="40" y="78" width="240" height="78" rx="6" ry="6"></rect>
     </clippath>
   </defs>
@@ -1413,13 +1425,13 @@ Note
   </g>
   </g>
   <g class="dbml-tables">
-  <g class="dbml-table" data-table-name="employees" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="90" data-h-names="38" data-clip-id="dbml-cp-auoe9r-0">
+  <g class="dbml-table" data-table-name="employees" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="90" data-h-names="38" data-clip-id="dbml-cp-mcwh4e-0">
     <rect class="dbml-card-shadow" x="43" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="40" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">employees</text>
-    <g clip-path="url(#dbml-cp-auoe9r-0)">
+    <g clip-path="url(#dbml-cp-mcwh4e-0)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -1502,13 +1514,13 @@ Note
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="424" viewbox="0 0 640 424">
   <rect class="dbml-bg" width="640" height="424" style="fill:var(--dbml-bg,#f7f9ff);"></rect>
   <defs>
-    <clippath id="dbml-cp-6cmit3-0" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-srxitx-0" clippathunits="userSpaceOnUse">
       <rect x="40" y="78" width="240" height="78" rx="6" ry="6"></rect>
     </clippath>
-    <clippath id="dbml-cp-6cmit3-1" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-srxitx-1" clippathunits="userSpaceOnUse">
       <rect x="360" y="78" width="240" height="78" rx="6" ry="6"></rect>
     </clippath>
-    <clippath id="dbml-cp-6cmit3-2" clippathunits="userSpaceOnUse">
+    <clippath id="dbml-cp-srxitx-2" clippathunits="userSpaceOnUse">
       <rect x="40" y="254" width="240" height="130" rx="6" ry="6"></rect>
     </clippath>
   </defs>
@@ -1537,13 +1549,13 @@ Note
   </g>
   </g>
   <g class="dbml-tables">
-  <g class="dbml-table" data-table-name="doctors" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-6cmit3-0">
+  <g class="dbml-table" data-table-name="doctors" data-x="40" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-srxitx-0">
     <rect class="dbml-card-shadow" x="43" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="40" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="40" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="40" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="160" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">doctors</text>
-    <g clip-path="url(#dbml-cp-6cmit3-0)">
+    <g clip-path="url(#dbml-cp-srxitx-0)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="40" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="48" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -1570,13 +1582,13 @@ Note
       </g>
     </g>
   </g>
-  <g class="dbml-table" data-table-name="patients" data-x="360" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-6cmit3-1">
+  <g class="dbml-table" data-table-name="patients" data-x="360" data-y="40" data-base-y="78" data-header-y="59" data-h-full="116" data-h-keys="64" data-h-names="38" data-clip-id="dbml-cp-srxitx-1">
     <rect class="dbml-card-shadow" x="363" y="43" width="240" height="116" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="360" y="40" width="240" height="116" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="360" y="40" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="360" y="72" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="480" y="65" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">patients</text>
-    <g clip-path="url(#dbml-cp-6cmit3-1)">
+    <g clip-path="url(#dbml-cp-srxitx-1)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="360" y="78" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="368" y="85" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -1605,13 +1617,13 @@ Note
       </g>
     </g>
   </g>
-  <g class="dbml-table" data-table-name="appointments" data-x="40" data-y="216" data-base-y="254" data-header-y="235" data-h-full="168" data-h-keys="116" data-h-names="38" data-clip-id="dbml-cp-6cmit3-2">
+  <g class="dbml-table" data-table-name="appointments" data-x="40" data-y="216" data-base-y="254" data-header-y="235" data-h-full="168" data-h-keys="116" data-h-names="38" data-clip-id="dbml-cp-srxitx-2">
     <rect class="dbml-card-shadow" x="43" y="219" width="240" height="168" rx="6" style="fill:var(--dbml-shadow,rgba(184,200,224,0.35));"></rect>
     <rect class="dbml-card-body" x="40" y="216" width="240" height="168" rx="6" style="fill:var(--dbml-card-bg,#ffffff);stroke:var(--dbml-border,#c0cce4);stroke-width:1;"></rect>
     <rect x="40" y="216" width="240" height="38" rx="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <rect x="40" y="248" width="240" height="6" style="fill:var(--dbml-hdr-bg,#4361a0);"></rect>
     <text x="160" y="241" text-anchor="middle" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;font-weight:600;fill:var(--dbml-hdr-fg,#ffffff);pointer-events:none;">appointments</text>
-    <g clip-path="url(#dbml-cp-6cmit3-2)">
+    <g clip-path="url(#dbml-cp-srxitx-2)">
       <g class="dbml-field-row" data-field-type="pk" data-orig-index="0">
         <rect x="40" y="254" width="240" height="26" style="fill:var(--dbml-row-odd,#f0f3fb);"></rect>
         <rect x="48" y="261" width="22" height="12" rx="3" style="fill:var(--dbml-pk-bg,rgba(178,34,34,0.15));pointer-events:none;"></rect>
@@ -1770,7 +1782,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/sql4ds\.com\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -2104,12 +2116,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./07-keys-and-integrity.html" class="pagination-link" aria-label="Keys and Referential Integrity">
+      <a href="./21-keys-and-integrity.html" class="pagination-link" aria-label="Keys and Referential Integrity">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./09-normal-forms.html" class="pagination-link" aria-label="Database Normalization">
+      <a href="./23-normal-forms.html" class="pagination-link" aria-label="Database Normalization">
         <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -2122,7 +2134,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/22-er-diagrams.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

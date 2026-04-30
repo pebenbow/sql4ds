@@ -1,4 +1,6 @@
-# Loading Data into PostgreSQL with SQLAlchemy
+---
+title: "Loading Data into PostgreSQL with SQLAlchemy"
+---
 
 With clean DataFrames in hand, the final stage of the ETL pipeline is loading them into PostgreSQL. This chapter covers how to do that using SQLAlchemy, the standard Python library for database connectivity.
 

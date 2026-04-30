@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Pete Benbow">
 
-<title>2&nbsp; Setting Up Your Environment – SQL for Data Science</title>
+<title>14&nbsp; Getting Started with Supabase – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +65,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./querying-data.html" rel="next">
-<link href="./01-why-learn-sql.html" rel="prev">
+<link href="./42-supabase-vscode.html" rel="next">
+<link href="./deploy.html" rel="prev">
+<link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -74,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-706344d2ac0d376cb01d0c71f2a45066.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8da5b4427184b79ecddefad3d342027e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -115,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./getting-started.html">Getting Started</a></li><li class="breadcrumb-item"><a href="./02-installing-postgresql.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting Up Your Environment</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./41-supabase-setup.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -132,6 +134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="./">SQL for Data Science</a> 
         <div class="sidebar-tools-main">
+    <a href="https://github.com/pebenbow/open-sql" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -150,19 +153,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction</span></a>
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./getting-started.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Getting Started</span></a>
+            <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -176,16 +173,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-installing-postgresql.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting Up Your Environment</span></span></a>
+  <a href="./02-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setup</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./querying-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Querying Data</span></a>
+            <a href="./query.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Query</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -193,36 +190,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-select-statements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Basic SELECT Statements</span></span></a>
+  <a href="./11-select-statements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">SELECT Statements</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-data-types.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types and Type Conversion</span></span></a>
+  <a href="./12-data-types.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types</span></span></a>
   </div>
 </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="./working-with-multiple-tables.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Working with Multiple Tables</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-joins.html" class="sidebar-item-text sidebar-link">
+  <a href="./13-joins.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-set-operations.html" class="sidebar-item-text sidebar-link">
+  <a href="./14-set-operations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
   </div>
 </li>
@@ -230,34 +216,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./database-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Database Design</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <a href="./design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
+  <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-er-diagrams.html" class="sidebar-item-text sidebar-link">
+  <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./09-normal-forms.html" class="sidebar-item-text sidebar-link">
+  <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./10-create-table.html" class="sidebar-item-text sidebar-link">
+  <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
@@ -265,8 +251,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./deploying-databases.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Deploying Databases</span></a>
+            <a href="./secure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Secure</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./deploy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploy</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -274,28 +289,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./21-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./22-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./23-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./etl-with-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">ETL with Python</span></a>
+            <a href="./load.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Load</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -303,26 +318,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./31-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./32-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./34-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -343,29 +358,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#installing-docker-desktop" id="toc-installing-docker-desktop" class="nav-link active" data-scroll-target="#installing-docker-desktop"><span class="header-section-number">2.1</span> Installing Docker Desktop</a>
-  <ul class="collapse">
-  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows"><span class="header-section-number">2.1.1</span> Windows</a></li>
-  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos"><span class="header-section-number">2.1.2</span> macOS</a></li>
-  <li><a href="#linux" id="toc-linux" class="nav-link" data-scroll-target="#linux"><span class="header-section-number">2.1.3</span> Linux</a></li>
-  </ul></li>
-  <li><a href="#pulling-the-course-image" id="toc-pulling-the-course-image" class="nav-link" data-scroll-target="#pulling-the-course-image"><span class="header-section-number">2.2</span> Pulling the Course Image</a></li>
-  <li><a href="#running-the-container" id="toc-running-the-container" class="nav-link" data-scroll-target="#running-the-container"><span class="header-section-number">2.3</span> Running the Container</a>
-  <ul class="collapse">
-  <li><a href="#basic-setup-recommended" id="toc-basic-setup-recommended" class="nav-link" data-scroll-target="#basic-setup-recommended"><span class="header-section-number">2.3.1</span> Basic Setup (Recommended)</a></li>
-  <li><a href="#if-you-already-have-postgresql-installed" id="toc-if-you-already-have-postgresql-installed" class="nav-link" data-scroll-target="#if-you-already-have-postgresql-installed"><span class="header-section-number">2.3.2</span> If You Already Have PostgreSQL Installed</a></li>
-  </ul></li>
-  <li><a href="#starting-and-stopping-the-container" id="toc-starting-and-stopping-the-container" class="nav-link" data-scroll-target="#starting-and-stopping-the-container"><span class="header-section-number">2.4</span> Starting and Stopping the Container</a></li>
-  <li><a href="#connecting-to-the-database" id="toc-connecting-to-the-database" class="nav-link" data-scroll-target="#connecting-to-the-database"><span class="header-section-number">2.5</span> Connecting to the Database</a></li>
+  <li><a href="#what-is-supabase" id="toc-what-is-supabase" class="nav-link active" data-scroll-target="#what-is-supabase"><span class="header-section-number">14.1</span> What is Supabase?</a></li>
+  <li><a href="#creating-an-account" id="toc-creating-an-account" class="nav-link" data-scroll-target="#creating-an-account"><span class="header-section-number">14.2</span> Creating an Account</a></li>
+  <li><a href="#creating-an-organization-and-project" id="toc-creating-an-organization-and-project" class="nav-link" data-scroll-target="#creating-an-organization-and-project"><span class="header-section-number">14.3</span> Creating an Organization and Project</a></li>
+  <li><a href="#the-dashboard" id="toc-the-dashboard" class="nav-link" data-scroll-target="#the-dashboard"><span class="header-section-number">14.4</span> The Dashboard</a></li>
+  <li><a href="#the-sql-editor" id="toc-the-sql-editor" class="nav-link" data-scroll-target="#the-sql-editor"><span class="header-section-number">14.5</span> The SQL Editor</a></li>
+  <li><a href="#finding-your-connection-string" id="toc-finding-your-connection-string" class="nav-link" data-scroll-target="#finding-your-connection-string"><span class="header-section-number">14.6</span> Finding Your Connection String</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">14.7</span> Exercises</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/41-supabase-setup.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./getting-started.html">Getting Started</a></li><li class="breadcrumb-item"><a href="./02-installing-postgresql.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting Up Your Environment</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./41-supabase-setup.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setting Up Your Environment</span></h1>
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></h1>
 </div>
 
 
@@ -382,202 +390,98 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Before you can run your first SQL query, you need a database to query. Throughout this book, we will use <strong>PostgreSQL</strong>, one of the most widely used open-source relational database systems in the world, as our database engine.</p>
-<p>Rather than asking you to install and configure PostgreSQL directly on your machine, we are going to use <strong>Docker</strong>. Docker lets you run software inside a self-contained environment called a <em>container</em>. Think of a container as a lightweight, portable box that holds an application and everything it needs to run, regardless of what operating system or configuration your computer has.</p>
-<p>For this book, a pre-configured PostgreSQL container has been built and published to Docker Hub at <code>pebenbow/open-sql-docker</code>. When you run this container, you get a PostgreSQL 17 server that is already set up with the sample databases used throughout this textbook. Everyone in the course works with an identical environment, which eliminates the “it works on my machine” problem entirely.</p>
-<section id="installing-docker-desktop" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="installing-docker-desktop"><span class="header-section-number">2.1</span> Installing Docker Desktop</h2>
-<p>Docker Desktop is the application that manages containers on your computer. Follow the instructions for your operating system below.</p>
-<section id="windows" class="level3" data-number="2.1.1">
-<h3 data-number="2.1.1" class="anchored" data-anchor-id="windows"><span class="header-section-number">2.1.1</span> Windows</h3>
-<ol type="1">
-<li><p>Ensure your system meets the requirements: Windows 10 64-bit (version 21H2 or later) or Windows 11. Docker Desktop on Windows uses the <strong>Windows Subsystem for Linux 2 (WSL 2)</strong> backend.</p></li>
-<li><p>If you have not already enabled WSL 2, open PowerShell as Administrator and run:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>wsl <span class="op">--</span>install</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Restart your computer when prompted.</p></li>
-<li><p>Download Docker Desktop for Windows from <a href="https://docs.docker.com/desktop/install/windows-install/">https://docs.docker.com/desktop/install/windows-install/</a>.</p></li>
-<li><p>Run the installer (<code>Docker Desktop Installer.exe</code>). Accept the defaults, ensuring <strong>“Use WSL 2 instead of Hyper-V”</strong> is checked.</p></li>
-<li><p>Once installation completes, launch Docker Desktop from the Start menu. The Docker whale icon will appear in your system tray when it is running.</p></li>
-<li><p>Verify the installation by opening a terminal (PowerShell or Command Prompt) and running:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You should see output like <code>Docker version 27.x.x, build ...</code>.</p></li>
-</ol>
-</section>
-<section id="macos" class="level3" data-number="2.1.2">
-<h3 data-number="2.1.2" class="anchored" data-anchor-id="macos"><span class="header-section-number">2.1.2</span> macOS</h3>
-<ol type="1">
-<li><p>Download Docker Desktop for Mac from <a href="https://docs.docker.com/desktop/install/mac-install/">https://docs.docker.com/desktop/install/mac-install/</a>.</p>
-<p>Choose the correct installer for your hardware:</p>
-<ul>
-<li><strong>Apple silicon (M1/M2/M3/M4):</strong> Download the <code>Apple Silicon</code> installer.</li>
-<li><strong>Intel chip:</strong> Download the <code>Intel Chip</code> installer.</li>
-</ul>
-<p>If you are unsure which chip your Mac has, click the Apple menu () → <strong>About This Mac</strong>.</p></li>
-<li><p>Open the downloaded <code>.dmg</code> file, drag <strong>Docker</strong> to your Applications folder, and launch it.</p></li>
-<li><p>macOS will prompt you for your password to allow Docker to install its networking components. This is expected.</p></li>
-<li><p>The Docker whale icon will appear in your menu bar when Docker Desktop is running.</p></li>
-<li><p>Verify the installation by opening <strong>Terminal</strong> and running:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ol>
-</section>
-<section id="linux" class="level3" data-number="2.1.3">
-<h3 data-number="2.1.3" class="anchored" data-anchor-id="linux"><span class="header-section-number">2.1.3</span> Linux</h3>
-<p>Docker Desktop is available for several Linux distributions. The installation steps vary by distribution, so follow the guide for your system on the Docker documentation site: <a href="https://docs.docker.com/desktop/install/linux/">https://docs.docker.com/desktop/install/linux/</a>.</p>
-<p>If you prefer not to install Docker Desktop on Linux, you can install the Docker Engine (CLI only) directly. See <a href="https://docs.docker.com/engine/install/">https://docs.docker.com/engine/install/</a> and choose your distribution from the list.</p>
-<p>After installation, verify Docker is running:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run hello-world</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The second command downloads a small test image and prints a confirmation message. If you see “Hello from Docker!”, the installation was successful.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
+<p>The chapters in this section move beyond writing SQL against a local database and into the work of deploying and managing a database in the cloud. That shift introduces questions that local development does not: How do you create and configure a hosted database? How do you push schema changes from your development machine to a remote server without breaking existing data? How do you keep track of what changed, when, and why?</p>
+<p>This chapter covers the first step: setting up a Supabase account and learning your way around its interface. The following chapters introduce the Supabase CLI, which brings the deployment workflow into VS Code, and database migrations, which give schema changes a versioned, reproducible history.</p>
+<section id="what-is-supabase" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="what-is-supabase"><span class="header-section-number">14.1</span> What is Supabase?</h2>
+<p>Supabase is an open-source backend platform built on PostgreSQL. It provides hosted PostgreSQL databases alongside a web interface, a SQL editor, auto-generated APIs, user authentication, and file storage. For this textbook, the focus is on the database layer: the managed PostgreSQL service, the browser-based SQL editor, and the migration tooling that makes schema changes trackable and reproducible.</p>
+<p>Supabase is a good choice for learning deployment because it runs standard PostgreSQL, its free tier is genuinely usable for coursework, and the tooling is designed to work well with local development environments. Everything you learn here transfers directly to other PostgreSQL hosting providers.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Tip
+<div class="callout-body-container">
+<p>The Supabase free tier includes two active projects and 500 MB of database storage per project. Projects on the free plan pause automatically after one week of inactivity and resume when you visit them in the dashboard. For coursework, this means your database will occasionally need a moment to wake up before accepting connections.</p>
 </div>
-</div>
-<div class="callout-body-container callout-body">
-<p>On Linux, Docker commands typically require <code>sudo</code>. To run Docker without <code>sudo</code>, add your user to the <code>docker</code> group:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> usermod <span class="at">-aG</span> docker <span class="va">$USER</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Then log out and back in for the change to take effect.</p>
 </div>
 </div>
 </section>
+<section id="creating-an-account" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="creating-an-account"><span class="header-section-number">14.2</span> Creating an Account</h2>
+<p>Go to <a href="https://supabase.com">supabase.com</a> and click <strong>Start your project</strong>. You can sign up with a GitHub account, which avoids creating a separate password and is the recommended option if you already use GitHub. After signing in for the first time, Supabase will ask you to create an organization.</p>
 </section>
-<section id="pulling-the-course-image" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="pulling-the-course-image"><span class="header-section-number">2.2</span> Pulling the Course Image</h2>
-<p>With Docker Desktop installed and running, you can download the course image from Docker Hub. Open a terminal and run:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull pebenbow/open-sql-docker:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Docker will download the image in layers and display progress as it goes. This only needs to be done once (or when you want to update to a newer version of the image).</p>
+<section id="creating-an-organization-and-project" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="creating-an-organization-and-project"><span class="header-section-number">14.3</span> Creating an Organization and Project</h2>
+<p>Supabase organizes work into <strong>organizations</strong> and <strong>projects</strong>. An organization is the top-level container for your projects, billing, and team members. A project is a single PostgreSQL database instance with its own connection credentials, storage, and configuration.</p>
+<p>Give your organization a name (your name or course name works fine), then create your first project:</p>
+<ol type="1">
+<li>Click <strong>New project</strong> in the dashboard.</li>
+<li>Select your organization.</li>
+<li>Enter a project name.</li>
+<li>Set a strong database password and save it somewhere you can retrieve it later. You will need it to connect external tools.</li>
+<li>Choose a region geographically close to you.</li>
+<li>Click <strong>Create new project</strong>.</li>
+</ol>
+<p>Provisioning takes about a minute. During this time Supabase is allocating a PostgreSQL instance, configuring networking, and setting up the supporting services. When it finishes, you land on the project dashboard.</p>
 </section>
-<section id="running-the-container" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="running-the-container"><span class="header-section-number">2.3</span> Running the Container</h2>
-<section id="basic-setup-recommended" class="level3" data-number="2.3.1">
-<h3 data-number="2.3.1" class="anchored" data-anchor-id="basic-setup-recommended"><span class="header-section-number">2.3.1</span> Basic Setup (Recommended)</h3>
-<p>The following command starts the course container with a <strong>persistent data volume</strong> so that any changes you make to the database are saved even if you stop or restart the container:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--name</span> open-sql <span class="dt">\</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 5432:5432 <span class="dt">\</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-v</span> open-sql-data:/var/lib/postgresql/data <span class="dt">\</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-e</span> POSTGRES_PASSWORD=postgres <span class="dt">\</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  pebenbow/open-sql-docker:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Let’s break down each flag:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 40%">
-<col style="width: 60%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Flag</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>--name open-sql</code></td>
-<td>Gives the container a memorable name so you can start/stop it by name</td>
-</tr>
-<tr class="even">
-<td><code>-p 5432:5432</code></td>
-<td>Maps port 5432 on your computer to port 5432 inside the container</td>
-</tr>
-<tr class="odd">
-<td><code>-v open-sql-data:/var/lib/postgresql/data</code></td>
-<td>Creates a named volume (<code>open-sql-data</code>) for persistent storage</td>
-</tr>
-<tr class="even">
-<td><code>-e POSTGRES_PASSWORD=postgres</code></td>
-<td>Sets the database password</td>
-</tr>
-</tbody>
-</table>
-<p>The first time you run this command, Docker creates the volume and initializes the database. On subsequent runs, the existing volume (and all your data) will be used automatically.</p>
-<p>To run the container in the background (so it doesn’t occupy your terminal), add <code>-d</code> (detached mode):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">--name</span> open-sql <span class="dt">\</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 5432:5432 <span class="dt">\</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-v</span> open-sql-data:/var/lib/postgresql/data <span class="dt">\</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-e</span> POSTGRES_PASSWORD=postgres <span class="dt">\</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  pebenbow/open-sql-docker:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="the-dashboard" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="the-dashboard"><span class="header-section-number">14.4</span> The Dashboard</h2>
+<p>The left-hand navigation of the Supabase dashboard groups functionality into several areas. You will not use all of them for database work, but it is worth knowing what is there.</p>
+<p><strong>Table Editor.</strong> A spreadsheet-style view of your tables. You can browse rows, insert data, and filter results without writing SQL. It is convenient for quick inspection but not a substitute for the SQL Editor when you need precision.</p>
+<p><strong>SQL Editor.</strong> A browser-based interface for writing and running SQL against your database. This is the main tool for schema work in this chapter. It supports full PostgreSQL syntax, saves query history, and lets you save frequently used queries.</p>
+<p><strong>Database.</strong> Sub-pages for tables, views, functions, triggers, extensions, indexes, and roles. The Tables page lists every table in your database with column details and row counts. The Extensions page lets you enable PostgreSQL extensions such as <code>uuid-ossp</code> or <code>pgcrypto</code> with a toggle rather than a SQL command.</p>
+<p><strong>Authentication, Storage, Edge Functions.</strong> These are parts of the Supabase platform beyond the database layer and are not covered in this textbook.</p>
+<p><strong>Project Settings.</strong> Configuration for the project, including API keys, connection strings, and general settings. The Database section under Settings is where you find the credentials needed to connect external tools.</p>
 </section>
-<section id="if-you-already-have-postgresql-installed" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="if-you-already-have-postgresql-installed"><span class="header-section-number">2.3.2</span> If You Already Have PostgreSQL Installed</h3>
-<p>If you already have PostgreSQL running on your machine, it is likely using port 5432, which would conflict with the container. In that case, map the container to a different host port. Port <strong>5433</strong> is a common choice:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">--name</span> open-sql <span class="dt">\</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 5433:5432 <span class="dt">\</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-v</span> open-sql-data:/var/lib/postgresql/data <span class="dt">\</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-e</span> POSTGRES_PASSWORD=postgres <span class="dt">\</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  pebenbow/open-sql-docker:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The format <code>-p HOST_PORT:CONTAINER_PORT</code> means “connect port <code>HOST_PORT</code> on my machine to port <code>CONTAINER_PORT</code> inside the container.” The database inside the container still listens on 5432; you just reach it from the outside via 5433.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<section id="the-sql-editor" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="the-sql-editor"><span class="header-section-number">14.5</span> The SQL Editor</h2>
+<p>Click <strong>SQL Editor</strong> in the left navigation to open the query interface. The editor supports the full PostgreSQL dialect. You can write multi-statement scripts, use <code>Ctrl+Enter</code> (or <code>Cmd+Enter</code> on macOS) to run a query, and save named snippets for later use.</p>
+<p>To create a table, write a <code>CREATE TABLE</code> statement and run it:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> students (</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">id</span>          SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    last_name   TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    first_name  TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    enrolled_on <span class="dt">DATE</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The result appears below the editor. Switch to the Table Editor to see the new table listed, or run a query to confirm:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> table_name</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> information_schema.<span class="kw">tables</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> table_schema <span class="op">=</span> <span class="st">'public'</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> table_name;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Error messages in the SQL Editor include the full PostgreSQL error text, so troubleshooting syntax problems works the same way it does with a local database.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-Note
+<div class="callout-body-container">
+<p>The SQL Editor in Supabase connects to the <code>public</code> schema by default. If you create objects in other schemas, you may need to qualify them with the schema name (for example, <code>analytics.events</code> rather than just <code>events</code>).</p>
 </div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Remember this port number. Any time this book shows a connection using port <code>5432</code>, substitute <code>5433</code> (or whichever port you chose) if you used an alternate port mapping.</p>
 </div>
 </div>
 </section>
+<section id="finding-your-connection-string" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="finding-your-connection-string"><span class="header-section-number">14.6</span> Finding Your Connection String</h2>
+<p>External tools such as psql, pgAdmin, DBeaver, or the VS Code extensions introduced in the next chapter connect to your Supabase database using a connection string. To find yours:</p>
+<ol type="1">
+<li>Click <strong>Project Settings</strong> in the left navigation.</li>
+<li>Click <strong>Database</strong> under the Settings section.</li>
+<li>Scroll to the <strong>Connection string</strong> section.</li>
+</ol>
+<p>Supabase provides the connection string in several formats. The URI format is the most portable:</p>
+<pre><code>postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres</code></pre>
+<p>Replace <code>[YOUR-PASSWORD]</code> with the database password you set during project creation. The <code>[PROJECT-REF]</code> portion is a short alphanumeric string unique to your project; Supabase fills it in automatically when you copy the string from the dashboard.</p>
+<p>Keep this connection string available. The next chapter uses it to link your local development environment to this remote database.</p>
 </section>
-<section id="starting-and-stopping-the-container" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="starting-and-stopping-the-container"><span class="header-section-number">2.4</span> Starting and Stopping the Container</h2>
-<p>Once you have created the container with <code>docker run</code>, you manage it with <code>docker start</code> and <code>docker stop</code> rather than <code>docker run</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start the container</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> start open-sql</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Stop the container</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> stop open-sql</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check whether the container is running</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You do not need to keep the container running all the time. Start it when you sit down to work through the book, and stop it when you are done.</p>
-</section>
-<section id="connecting-to-the-database" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="connecting-to-the-database"><span class="header-section-number">2.5</span> Connecting to the Database</h2>
-<p>Your connection credentials for the course container are:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 21%">
-<col style="width: 78%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Setting</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Host</td>
-<td><code>localhost</code></td>
-</tr>
-<tr class="even">
-<td>Port</td>
-<td><code>5432</code> (or <code>5433</code> if you used the alternate port)</td>
-</tr>
-<tr class="odd">
-<td>Database</td>
-<td>Depends on the lesson, but start with <code>postgres</code> whenever creating new databases</td>
-</tr>
-<tr class="even">
-<td>Username</td>
-<td><code>postgres</code></td>
-</tr>
-<tr class="odd">
-<td>Password</td>
-<td><code>postgres</code></td>
-</tr>
-</tbody>
-</table>
-<p>You can verify the connection is working from the terminal using <code>psql</code> (the PostgreSQL command-line client). If you do not have <code>psql</code> installed locally, you can run it from inside the container itself:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> open-sql psql <span class="at">-U</span> postgres</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If you see the <code>postgres=#</code> prompt, your container is running correctly and you are ready to start writing SQL.</p>
-<p>Type <code>\q</code> to exit the <code>psql</code> prompt.</p>
+<section id="exercises" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">14.7</span> Exercises</h2>
+<ol type="1">
+<li><p>Create a Supabase account and project following the steps in this chapter. Note the region you selected and the project reference ID shown in Project Settings.</p></li>
+<li><p>In the SQL Editor, create a table called <code>courses</code> with columns for a surrogate primary key, a course code (text, not null), a course title (text, not null), and a credit hours value (integer, not null). Verify the table appears in the Table Editor.</p></li>
+<li><p>Insert two rows into the <code>courses</code> table using <code>INSERT INTO</code> in the SQL Editor. Use the Table Editor to confirm that the rows are visible.</p></li>
+<li><p>Drop the <code>courses</code> table using <code>DROP TABLE</code>. Confirm in the Table Editor that it no longer appears. Explain why being able to run DDL statements directly in the SQL Editor is both useful and something to be careful about.</p></li>
+</ol>
 
 
 </section>
@@ -673,7 +577,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/sql4ds\.com\/");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -1007,13 +911,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./01-why-learn-sql.html" class="pagination-link" aria-label="Why Learn SQL?">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Learn SQL?</span></span>
+      <a href="./deploy.html" class="pagination-link" aria-label="Deploy">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Deploy</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./querying-data.html" class="pagination-link" aria-label="Querying Data">
-        <span class="nav-page-text">Querying Data</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./42-supabase-vscode.html" class="pagination-link" aria-label="Deploying from VS Code">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1025,7 +929,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/41-supabase-setup.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

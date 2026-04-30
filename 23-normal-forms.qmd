@@ -195,6 +195,8 @@ In practice, 3NF is the appropriate target for most transactional databases. Vio
 
 There are also situations where *denormalization* (deliberately reintroducing redundancy) is appropriate. Data warehouses and analytical systems sometimes store pre-computed aggregates or flattened "wide" tables to support fast reporting queries. When you denormalize, you are making a deliberate trade: faster reads at the cost of more complex write logic and more disciplined maintenance. That trade is reasonable in specific contexts. The key is to make it deliberately, with a clear understanding of what you are giving up and why.
 
+The next chapter translates these design decisions into working SQL. You will implement the normalized orders schema from this chapter as `CREATE TABLE` statements in a PostgreSQL database running on your local Docker container, adding primary keys, foreign keys, and constraints that enforce the rules discussed here at the database level.
+
 ## Exercises
 
 ### Reflection

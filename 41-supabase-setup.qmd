@@ -1,4 +1,6 @@
-# Getting Started with Supabase
+---
+title: "Getting Started with Supabase"
+---
 
 The chapters in this section move beyond writing SQL against a local database and into the work of deploying and managing a database in the cloud. That shift introduces questions that local development does not: How do you create and configure a hosted database? How do you push schema changes from your development machine to a remote server without breaking existing data? How do you keep track of what changed, when, and why?
 

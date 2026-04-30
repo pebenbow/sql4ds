@@ -40,10 +40,13 @@ book:
         - 22-er-diagrams.qmd
         - 23-normal-forms.qmd
         - 24-create-table.qmd
+        - 26-building-schema.qmd
 
     - part: secure.qmd
       chapters:
         - 31-roles.qmd
+        - 32-privileges.qmd
+        - 33-sqli.qmd
 
     - part: deploy.qmd
       chapters:

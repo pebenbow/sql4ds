@@ -1,4 +1,6 @@
-# Welcome {.unnumbered}
+---
+title: "Welcome"
+---
 
 Welcome to _SQL for Data Science_, the free online textbook that aims to help students, researchers, and professional data scientists understand the world of SQL and relational databases!
 

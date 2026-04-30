@@ -1,4 +1,6 @@
-# A Complete ETL Pipeline
+---
+title: "A Complete ETL Pipeline"
+---
 
 The previous three chapters covered each stage of the ETL process in isolation: extracting data from files and APIs, transforming it with Polars, and loading it into PostgreSQL with SQLAlchemy. In this chapter, you will tie those stages together into a single, repeatable pipeline function.
 
