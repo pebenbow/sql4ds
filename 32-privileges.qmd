@@ -2,3 +2,251 @@
 title: "Privileges"
 ---
 
+The previous chapter established that a role is PostgreSQL's unified concept for identity: both login accounts and permission groups are roles. This chapter addresses the second half of the security model — what those roles are actually *allowed to do*.
+
+In PostgreSQL, a **privilege** is an explicit permission that grants a role the right to perform a specific action on a specific object. Nothing is permitted by default. A newly created role that logs in successfully cannot read any table, execute any function, or create any schema until a privilege is granted. This fail-closed design means security is opt-in rather than opt-out.
+
+The examples in this chapter use the `university` database and the `students` table created in the previous section. The roles `alice` and `bob` from the previous chapter are used here as the grantees. If you dropped them after the exercises, recreate them before continuing:
+
+```sql
+CREATE ROLE alice WITH LOGIN PASSWORD 'pw1';
+CREATE ROLE bob   WITH LOGIN PASSWORD 'pw2';
+CREATE ROLE reporting;
+GRANT reporting TO alice;
+GRANT reporting TO bob;
+```
+
+## Object Privileges
+
+PostgreSQL assigns privileges at the level of individual database objects. The privileges available depend on the object type:
+
+| Object | Available Privileges |
+|--------|---------------------|
+| Table or view | `SELECT`, `INSERT`, `UPDATE`, `DELETE`, `TRUNCATE`, `REFERENCES`, `TRIGGER` |
+| Sequence | `USAGE`, `SELECT`, `UPDATE` |
+| Schema | `USAGE`, `CREATE` |
+| Database | `CONNECT`, `CREATE`, `TEMP` |
+| Function | `EXECUTE` |
+
+For most data work, the privileges you care about most are `SELECT`, `INSERT`, `UPDATE`, `DELETE` on tables, `USAGE` on schemas, and `CONNECT` on databases.
+
+## GRANT
+
+The `GRANT` statement gives one or more privileges to one or more roles:
+
+```sql
+GRANT privilege [, privilege ...]
+ON   object_type object_name
+TO   role_name [, role_name ...];
+```
+
+Grant read access on the `students` table to the `reporting` group role:
+
+```sql
+GRANT SELECT ON students TO reporting;
+```
+
+Because `alice` and `bob` are members of `reporting` and have `INHERIT` enabled, they immediately acquire `SELECT` on `students` without needing individual grants.
+
+Grant multiple privileges in a single statement:
+
+```sql
+GRANT SELECT, INSERT, UPDATE ON students TO reporting;
+```
+
+Grant on all tables in a schema at once using `ALL TABLES IN SCHEMA`:
+
+```sql
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO reporting;
+```
+
+### Granting to PUBLIC
+
+The special grantee `PUBLIC` represents every role in the database. PostgreSQL grants `CONNECT` on every new database and `USAGE` on the `public` schema to `PUBLIC` by default. You can revoke these defaults to tighten security:
+
+```sql
+REVOKE CONNECT ON DATABASE university FROM PUBLIC;
+REVOKE CREATE  ON SCHEMA public FROM PUBLIC;
+```
+
+After revoking the schema `CREATE` privilege from `PUBLIC`, users can still read existing tables but cannot create new objects in `public` without an explicit grant.
+
+### WITH GRANT OPTION
+
+A role that receives a privilege with `WITH GRANT OPTION` can pass that privilege on to other roles:
+
+```sql
+GRANT SELECT ON students TO alice WITH GRANT OPTION;
+```
+
+Use this carefully. If `alice` later has her grant revoked, any grants she made downstream are also revoked automatically.
+
+## REVOKE
+
+`REVOKE` removes a previously granted privilege:
+
+```sql
+REVOKE privilege [, privilege ...]
+ON   object_type object_name
+FROM role_name [, role_name ...];
+```
+
+Revoke write access from `reporting` while leaving read access intact:
+
+```sql
+REVOKE INSERT, UPDATE ON students FROM reporting;
+```
+
+To revoke all privileges on an object at once:
+
+```sql
+REVOKE ALL ON students FROM reporting;
+```
+
+### Cascade
+
+If a role granted a privilege `WITH GRANT OPTION` and that role's grant is now revoked, use `CASCADE` to also revoke any downstream grants that role made:
+
+```sql
+REVOKE SELECT ON students FROM alice CASCADE;
+```
+
+Without `CASCADE`, the revoke statement will fail if downstream grants exist.
+
+## Checking Privileges
+
+### The \dp meta-command
+
+In `psql`, `\dp table_name` displays the access control list (ACL) for a table:
+
+```
+\dp students
+```
+
+The output uses a compact notation where each entry takes the form `grantee=privilege_letters/grantor`. The letters map to privileges: `r` = SELECT, `a` = INSERT, `w` = UPDATE, `d` = DELETE, `D` = TRUNCATE, `x` = REFERENCES, `t` = TRIGGER.
+
+### information_schema.role_table_grants
+
+For a more readable view, query the `information_schema`:
+
+```sql
+SELECT grantee, privilege_type, is_grantable
+FROM   information_schema.role_table_grants
+WHERE  table_name = 'students'
+ORDER  BY grantee, privilege_type;
+```
+
+This view shows which roles have which privileges on the table, whether the privilege was granted with grant option, and who made the grant.
+
+### has_table_privilege
+
+The `has_table_privilege()` function lets you test whether a specific role has a specific privilege:
+
+```sql
+SELECT has_table_privilege('alice', 'students', 'SELECT');
+SELECT has_table_privilege('bob',   'students', 'INSERT');
+```
+
+This is useful for auditing access before making changes.
+
+## DEFAULT PRIVILEGES
+
+A common frustration with PostgreSQL privileges is that `GRANT SELECT ON ALL TABLES IN SCHEMA public TO reporting` covers only tables that *already exist*. New tables created later receive no grants automatically.
+
+`ALTER DEFAULT PRIVILEGES` solves this by specifying the privileges that should be granted to a role whenever a new object is created:
+
+```sql
+ALTER DEFAULT PRIVILEGES
+    FOR ROLE postgres
+    IN SCHEMA public
+    GRANT SELECT ON TABLES TO reporting;
+```
+
+This statement says: whenever the `postgres` role creates a new table in the `public` schema, automatically grant `SELECT` on that table to `reporting`. The `FOR ROLE` clause specifies whose future creates this applies to. If you have multiple roles that create tables, you must set default privileges separately for each.
+
+To verify the current default privileges:
+
+```sql
+SELECT * FROM pg_default_acl;
+```
+
+## Schema-Level Access Control
+
+The schema is an important but easily overlooked layer of the privilege system. A role needs both:
+
+1. `USAGE` on the schema to see objects inside it.
+2. The appropriate object privilege (`SELECT`, `INSERT`, etc.) on each object.
+
+Having `SELECT` on a table but not `USAGE` on its schema produces a "permission denied for schema" error. Having `USAGE` on the schema but not `SELECT` on a table produces a "permission denied for table" error. Both grants are required.
+
+When building a clean permission model for multiple user types, schemas themselves become a useful organizing principle. Here is a pattern for a database with separate namespaces for different teams:
+
+```sql
+-- Create schemas
+CREATE SCHEMA registrar;
+CREATE SCHEMA finance;
+
+-- Grant access to appropriate groups
+GRANT USAGE ON SCHEMA registrar TO reporting;
+GRANT USAGE ON SCHEMA finance   TO db_admin;
+
+-- Create tables in their schemas
+CREATE TABLE registrar.students  ( ... );
+CREATE TABLE registrar.courses   ( ... );
+CREATE TABLE finance.tuition     ( ... );
+
+-- Grant default privileges within each schema
+ALTER DEFAULT PRIVILEGES IN SCHEMA registrar
+    GRANT SELECT ON TABLES TO reporting;
+```
+
+With this structure, the `reporting` group can read registrar data but has no visibility into finance tables.
+
+## A Complete Privilege Setup
+
+Pulling the pieces together, here is a coherent privilege model for the `university` database using the roles defined in the previous chapter:
+
+```sql
+-- Step 1: Restrict public access to the database
+REVOKE CONNECT ON DATABASE university FROM PUBLIC;
+REVOKE CREATE  ON SCHEMA public FROM PUBLIC;
+
+-- Step 2: Allow the reporting group to connect and see the schema
+GRANT CONNECT ON DATABASE university TO reporting;
+GRANT USAGE   ON SCHEMA public       TO reporting;
+
+-- Step 3: Grant read access to existing tables
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO reporting;
+
+-- Step 4: Set default privileges for tables created in the future
+ALTER DEFAULT PRIVILEGES
+    FOR ROLE postgres
+    IN SCHEMA public
+    GRANT SELECT ON TABLES TO reporting;
+```
+
+After these four steps, `alice` and `bob` — as members of `reporting` — can connect to `university`, see tables in `public`, and query any current or future table, without being able to write or create objects.
+
+## Exercises
+
+**1.** Connect to the `university` database as the `postgres` superuser. Grant `SELECT` on the `students` table to `alice` directly (not through a group role). Run `\dp students` in `psql` and confirm the grant appears in the ACL. Then query `information_schema.role_table_grants` to view the same information in tabular form.
+
+---
+
+**2.** Revoke `alice`'s direct `SELECT` grant. Grant `SELECT` on `students` to the `reporting` role instead. Connect as `alice` (using `SET ROLE alice` or a new connection) and verify that she can still run `SELECT * FROM students`. Explain why the revocation of the direct grant did not lose her access.
+
+---
+
+**3.** Using `REVOKE ALL ON students FROM reporting`, remove all privileges from the `reporting` role. Confirm in `\dp students` that the ACL is empty. Then try to run `SELECT * FROM students` as `alice` (using `SET ROLE`) and observe the error.
+
+---
+
+**4.** Run `GRANT SELECT ON ALL TABLES IN SCHEMA public TO reporting`. Then create a new table `courses` with at least two columns. Try to query `courses` as `alice`. Does the grant cover the new table? Explain why or why not, and describe what would need to change for `alice` to automatically get access to future tables.
+
+---
+
+**5.** Set up the default privileges pattern from this chapter so that any table the `postgres` role creates in the `public` schema is automatically readable by `reporting`. Drop and recreate the `courses` table. Verify without an explicit `GRANT` that `alice` can query `courses`.
+
+---
+
+**6.** Revoke `CREATE` on the `public` schema from `PUBLIC`. Then, as `alice` (using `SET ROLE`), attempt to create a table. Observe the error. Grant `CREATE` on the schema to `alice` directly and retry. Explain the two-layer requirement: schema-level `USAGE` plus `CREATE`, and object-level privilege.

