@@ -402,7 +402,18 @@ WHERE last_name LIKE 'H%'
 ORDER BY last_name;
 ```
 
-Lowercase `'h%'` would return no results here because text matching with `LIKE` is case-sensitive, and no last names in this table begin with a lower-case h. If you need case-insensitive pattern matching, use `ILIKE` instead of `LIKE`.
+Lowercase `'h%'` would return no results here because text matching with `LIKE` is case-sensitive, and no last names in this table begin with a lower-case h. `ILIKE` works identically to `LIKE` but ignores case. Replacing `LIKE` with `ILIKE` makes the same pattern work regardless of how the value is capitalized:
+
+```{sql}
+#| connection: con
+#| label: where-ilike
+SELECT first_name, last_name, primary_genre, birth_country
+FROM actors
+WHERE last_name ILIKE 'h%'
+ORDER BY last_name;
+```
+
+Both queries return the same fourteen rows because the data happens to be consistently capitalized. The difference becomes meaningful when data entry is inconsistent — for example, if `primary_genre` values were stored as a mix of `'drama'`, `'Drama'`, and `'DRAMA'`, a `LIKE` filter for `'drama'` would miss the capitalized variants while `ILIKE` would catch all of them.
 
 With `%` wildcards on both sides of a search term, you can find text that occurs anywhere in a column. The following query finds actors whose birth names contain the word "Schwartz" or any other substring:
 
