@@ -101,6 +101,36 @@ ORDER BY primary_genre, sex;
 
 Each row now represents a unique genre-sex pairing. This lets you compare, for example, whether male and female Drama actors differ in their average nomination counts.
 
+### Conditional Aggregation with FILTER
+
+The `FILTER` clause attaches a condition to a single aggregate function, telling it to count (or sum, or average) only the rows that satisfy that condition. This lets you compute multiple conditional summaries in the same query without writing separate subqueries.
+
+```sql
+aggregate_function(expression) FILTER (WHERE condition)
+```
+
+The following query counts all actors per genre, then adds separate columns for those who have won at least one Oscar, those with an honorary Oscar, and those who are still living — all in a single pass over the table:
+
+```{sql}
+#| connection: con
+#| label: filter-clause
+SELECT
+    primary_genre,
+    COUNT(*)                                        AS total_actors,
+    COUNT(*) FILTER (WHERE oscar_wins > 0)          AS competitive_winners,
+    COUNT(*) FILTER (WHERE has_honorary_oscar)      AS honorary_recipients,
+    COUNT(*) FILTER (WHERE death_date IS NULL)      AS still_living
+FROM actors
+GROUP BY primary_genre
+ORDER BY total_actors DESC;
+```
+
+Each `FILTER` condition is evaluated independently. An actor can satisfy multiple conditions and be counted in multiple filtered columns simultaneously.
+
+::: {.callout-note}
+`FILTER` is specific to PostgreSQL and a handful of other databases. In databases that do not support it, the equivalent technique is to use `SUM` with a `CASE` expression: `SUM(CASE WHEN oscar_wins > 0 THEN 1 ELSE 0 END)`. The `FILTER` form is cleaner and more readable when it is available.
+:::
+
 ## Filtering Groups with HAVING
 
 `WHERE` filters rows before grouping. Once groups are formed, you cannot use `WHERE` to filter them — the groups do not exist yet when `WHERE` runs. `HAVING` is the clause that filters groups *after* they have been computed.
@@ -154,6 +184,61 @@ ORDER BY combined_box_office_millions DESC;
 ```
 
 The `WHERE death_date IS NULL` clause excludes deceased actors before any grouping occurs. `HAVING COUNT(*) >= 3` then keeps only countries where at least three living actors remain.
+
+## Subtotals with ROLLUP and CUBE
+
+Standard `GROUP BY` returns one row per unique combination of the grouping columns, with no subtotals. `ROLLUP` and `CUBE` are extensions that automatically add summary rows to the result.
+
+### ROLLUP
+
+`ROLLUP` generates subtotals along a hierarchy. `GROUP BY ROLLUP(a, b)` produces:
+
+- One row per unique `(a, b)` combination
+- One subtotal row per unique value of `a` (aggregating across all values of `b`)
+- One grand total row (aggregating across everything)
+
+The subtotal and grand total rows have `NULL` in the columns that were rolled up. The following query counts actors by birth country and genre for three countries, with subtotals per country and a grand total:
+
+```{sql}
+#| connection: con
+#| label: rollup
+SELECT
+    birth_country,
+    primary_genre,
+    COUNT(*) AS actors
+FROM actors
+WHERE birth_country IN ('USA', 'UK', 'France')
+GROUP BY ROLLUP (birth_country, primary_genre)
+ORDER BY birth_country NULLS LAST, primary_genre NULLS LAST;
+```
+
+The rows where `primary_genre` is NULL are the per-country subtotals — for example, the row with `birth_country = 'UK'` and `primary_genre = NULL` shows the total actor count across all genres for UK actors. The final row where both columns are NULL is the grand total.
+
+::: {.callout-warning}
+The NULL values in ROLLUP and CUBE results represent subtotal aggregations, not missing data. This can cause confusion when your grouping columns also contain genuine NULL values. The `GROUPING()` function can distinguish the two cases, but for most analytical work the context makes the distinction clear.
+:::
+
+### CUBE
+
+`CUBE` generates subtotals for every possible combination of the grouping columns, not just the hierarchical rollup. `GROUP BY CUBE(a, b)` produces rows for `(a, b)`, `(a)`, `(b)`, and `()` — all four combinations of including or excluding each column.
+
+The following query uses two countries and three genres to keep the output readable:
+
+```{sql}
+#| connection: con
+#| label: cube
+SELECT
+    birth_country,
+    primary_genre,
+    COUNT(*) AS actors
+FROM actors
+WHERE birth_country IN ('USA', 'UK')
+  AND primary_genre IN ('Drama', 'Action', 'Comedy')
+GROUP BY CUBE (birth_country, primary_genre)
+ORDER BY birth_country NULLS LAST, primary_genre NULLS LAST;
+```
+
+Compared to `ROLLUP`, the result includes two additional rows: one per genre summing across both countries (where `birth_country` is NULL but `primary_genre` is not), and one grand total. `CUBE` is most useful when there is no natural hierarchy and you want to slice the data every possible way in a single query.
 
 ## The Logical Order of Execution
 
@@ -246,8 +331,16 @@ HAVING avg_noms > 2;
 
 ---
 
-**7.** Write a query that shows the number of living actors and the number of deceased actors for each primary genre. Filter to genres that have at least five actors total (living and deceased combined). Sort by total actors descending.
+**7.** Write a query that shows the number of living actors and the number of deceased actors for each primary genre using the `FILTER` clause. Include a third column with the total actor count per genre. Filter to genres that have at least five actors total. Sort by total actors descending.
 
 ---
 
 **8.** Write a query that finds the single birth country with the highest total box office across all its actors. Return the country name and the total in billions, rounded to two decimal places.
+
+---
+
+**9.** Write a query using `ROLLUP` that shows actor counts by `primary_genre` and `sex`, with subtotals per genre and a grand total. Limit the result to actors born in the USA. Order by genre (NULLs last) then sex (NULLs last).
+
+---
+
+**10.** Write a query using `CUBE` on `primary_genre` and `sex` that produces counts for every combination of those two dimensions, including the per-genre totals, per-sex totals, and the grand total. Limit to Drama, Action, and Comedy genres. How many rows does the result contain?
