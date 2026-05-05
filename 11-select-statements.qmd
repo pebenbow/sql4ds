@@ -306,10 +306,21 @@ WHERE oscar_nominations BETWEEN 3 AND 8
 ORDER BY oscar_nominations DESC;
 ```
 
-With strings, `BETWEEN` uses alphabetical (lexicographic) order, so `last_name BETWEEN 'D' AND 'H'` returns names that sort between those two letters. The boundary behavior is the same — both ends are inclusive — but the alphabetical cutoffs can be unintuitive, since `'H'` matches only the single character `H`, not every name beginning with H.
+With strings, `BETWEEN` uses alphabetical (lexicographic) order. The boundary behavior is the same — both ends are inclusive — but the upper boundary catches only that exact string, not everything that begins with it. `last_name BETWEEN 'D' AND 'H'` would miss `Hanks`, `Hepburn`, and every other name that starts with H but sorts after the bare letter `H`. The correct way to express "last names beginning with D through H" is a half-open range using explicit operators:
+
+```{sql}
+#| connection: con
+#| label: where-string-range
+SELECT first_name, last_name, primary_genre
+FROM actors
+WHERE last_name >= 'D' AND last_name < 'I'
+ORDER BY last_name;
+```
+
+The lower bound `>= 'D'` is inclusive and works as expected. The upper bound uses `< 'I'` rather than `<= 'H'` precisely because `'H'` alone would exclude names like `Hanks` and `Hoffman` that sort after the single character `H`.
 
 ::: {.callout-warning}
-Prefer explicit `>=` and `<=` comparisons over `BETWEEN` for most situations. The inclusive behavior is easy to forget, which makes off-by-one errors common, and `BETWEEN` cannot express half-open ranges (for example, "1950 up to but not including 1970"). The alphabetical edge cases with strings make it especially error-prone there. Explicit operators are unambiguous. `BETWEEN` is fine when you encounter it in existing code or reach for it with simple integer or date ranges, but it is not the preferred form for new queries.
+Prefer explicit `>=` and `<=` comparisons over `BETWEEN` for most situations. The inclusive behavior is easy to forget, which makes off-by-one errors common, and `BETWEEN` cannot express half-open ranges. The alphabetical edge cases with strings make it especially error-prone there. Explicit operators are unambiguous. `BETWEEN` is fine when you encounter it in existing code or reach for it with simple integer or date ranges, but it is not the preferred form for new queries.
 :::
 
 ### NULL Values and IS NULL
