@@ -199,7 +199,9 @@ Standard `GROUP BY` returns one row per unique combination of the grouping colum
 - One subtotal row per unique value of `a` (aggregating across all values of `b`)
 - One grand total row (aggregating across everything)
 
-The subtotal and grand total rows have `NULL` in the columns that were rolled up. The following query counts actors by birth country and genre for three countries, with subtotals per country and a grand total:
+The subtotal and grand total rows have `NULL` in the columns that were rolled up. By default, PostgreSQL sorts `NULL` values after all non-NULL values in ascending order and before them in descending order. Because `ROLLUP` results contain meaningful `NULL` values in the grouping columns, the `ORDER BY` clause uses `NULLS LAST` to push the subtotal and grand total rows to the bottom regardless of sort direction, keeping the detail rows together at the top.
+
+The following query counts actors by birth country and genre for three countries, with subtotals per country and a grand total:
 
 ```{sql}
 #| connection: con

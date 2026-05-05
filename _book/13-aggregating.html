@@ -933,7 +933,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>One subtotal row per unique value of <code>a</code> (aggregating across all values of <code>b</code>)</li>
 <li>One grand total row (aggregating across everything)</li>
 </ul>
-<p>The subtotal and grand total rows have <code>NULL</code> in the columns that were rolled up. The following query counts actors by birth country and genre for three countries, with subtotals per country and a grand total:</p>
+<p>The subtotal and grand total rows have <code>NULL</code> in the columns that were rolled up. By default, PostgreSQL sorts <code>NULL</code> values after all non-NULL values in ascending order and before them in descending order. Because <code>ROLLUP</code> results contain meaningful <code>NULL</code> values in the grouping columns, the <code>ORDER BY</code> clause uses <code>NULLS LAST</code> to push the subtotal and grand total rows to the bottom regardless of sort direction, keeping the detail rows together at the top.</p>
+<p>The following query counts actors by birth country and genre for three countries, with subtotals per country and a grand total:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    birth_country,</span>
@@ -981,7 +982,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: left;">France</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NULL</td>
 <td style="text-align: right;">14</td>
 </tr>
 <tr class="odd">
@@ -1062,7 +1063,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: left;">UK</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NULL</td>
 <td style="text-align: right;">29</td>
 </tr>
 <tr class="odd">
@@ -1082,16 +1083,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: left;">USA</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NULL</td>
 <td style="text-align: right;">90</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NULL</td>
 <td style="text-align: left;">Action</td>
 <td style="text-align: right;">11</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NULL</td>
 <td style="text-align: left;">Comedy</td>
 <td style="text-align: right;">17</td>
 </tr>
@@ -1168,8 +1169,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">65</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: left;">NULL</td>
+<td style="text-align: left;">NULL</td>
 <td style="text-align: right;">177</td>
 </tr>
 </tbody>
