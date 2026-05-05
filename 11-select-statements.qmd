@@ -6,19 +6,23 @@ title: "SELECT Statements"
 #| include: false
 library(DBI)
 library(RPostgres)
+
+PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
+PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
+
 con <- dbConnect(
   Postgres(),
   host     = "localhost",
-  port     = as.integer(Sys.getenv("PGPORT", unset = "5432")),
-  dbname   = "countries",
+  port     = PGPORT,
+  dbname   = "actors",
   user     = "postgres",
-  password = Sys.getenv("PGPASS", unset = "postgres")
+  password = PGPASS
 )
 ```
 
-Now that your database environment is up and running, it is time to write some SQL. The most fundamental operation in SQL is the **query**: a question you ask the database, written in a structured way that the database engine can understand and answer. In this chapter, you will write your first queries against the `countries` database that ships with the course Docker image.
+Now that your database environment is up and running, it is time to write some SQL. The most fundamental operation in SQL is the **query**: a question you ask the database, written in a structured way that the database engine can understand and answer. In this chapter, you will write your first queries against the `actors` database that ships with the course Docker image.
 
-The `countries` table contains one row per country or territory, covering 215 entries from a 2022 snapshot of World Bank data. Each row records the country's name, ISO codes, population, land area, world region, capital city, and geographic coordinates. It is a rich dataset for learning SQL because it mixes text columns, whole numbers, decimal numbers, and dates in a single table.
+The `actors` table contains one row per actor, covering 200 entries drawn from film history. Each row records the actor's name, birth name (for those who used a stage name), sex, birth and death dates, country of birth, height, Oscar nominations and wins, and primary film genre. It is a rich dataset for learning SQL because it mixes text columns, fixed-length character fields, whole numbers, and dates in a single table.
 
 By the end of this chapter, you will know how to retrieve data from a table, choose which columns to display, compute new values from existing ones, filter rows by any condition you can describe, sort the results, and cap how many rows are returned.
 
@@ -37,11 +41,11 @@ The quickest way to see everything a table contains is to use an asterisk (`*`) 
 #| connection: con
 #| label: select-star
 SELECT *
-FROM countries
+FROM actors
 LIMIT 5;
 ```
 
-The `LIMIT 5` at the end restricts the output to five rows. Without it, the query would return all 215 rows in the table. This is similar to the `head()` function in R or Python. You will learn more about `LIMIT` later in this chapter, but getting into the habit of adding it while exploring an unfamiliar table is a good practice.
+The `LIMIT 5` at the end restricts the output to five rows. Without it, the query would return all 200 rows in the table. This is similar to the `head()` function in R or Python. You will learn more about `LIMIT` later in this chapter, but getting into the habit of adding it while exploring an unfamiliar table is good practice.
 
 ### Selecting Specific Columns
 
@@ -50,8 +54,8 @@ In most real situations, you will not want every column. Listing only the column
 ```{sql}
 #| connection: con
 #| label: select-columns
-SELECT country, capital, region, population
-FROM countries;
+SELECT first_name, last_name, birth_country, primary_genre
+FROM actors;
 ```
 
 Column names are listed after `SELECT`, separated by commas. The database returns them in exactly the order you specify, regardless of how they are arranged inside the table.
@@ -72,11 +76,13 @@ By default, a column in your result inherits the name it has in the table. You c
 #| connection: con
 #| label: aliases
 SELECT
-    country    AS name,
-    iso3c      AS code,
-    region     AS world_region,
-    population AS population_2022
-FROM countries;
+    first_name        AS given_name,
+    last_name         AS surname,
+    birth_country     AS country,
+    primary_genre     AS genre,
+    oscar_nominations AS nominations
+FROM actors
+LIMIT 10;
 ```
 
 The `AS` keyword is optional in PostgreSQL; you can write the alias directly after the column name without it. Using `AS` explicitly is recommended, however, because it makes the intent of the query immediately clear to anyone reading it.
@@ -89,40 +95,48 @@ PostgreSQL uses the `||` operator to concatenate (join) strings together. This l
 #| connection: con
 #| label: concatenation
 SELECT
-    country || ' (' || iso3c || ')' AS display_name,
-    capital,
-    region
-FROM countries;
+    first_name || ' ' || last_name AS full_name,
+    birth_country,
+    primary_genre
+FROM actors
+LIMIT 10;
 ```
 
-Here, three values are joined into one: the country name, a space and opening parenthesis, the three-letter ISO code, and a closing parenthesis. The result is a compact label like `Afghanistan (AFG)`.
+You can add as many literal strings as you like. Here, a comma and space are inserted between the last name and the birth country to produce a compact bio label:
+
+```{sql}
+#| connection: con
+#| label: concatenation-2
+SELECT
+    first_name || ' ' || last_name || ', ' || birth_country AS bio_label,
+    primary_genre
+FROM actors
+LIMIT 10;
+```
 
 ::: {.callout-note}
-If any value being concatenated is `NULL`, the entire result of `||` becomes `NULL`. The `countries` table has a handful of rows where `capital` is missing; if you were to concatenate `capital` into a string without accounting for that, those rows would produce a `NULL` result. The `COALESCE` function, covered in a later chapter, handles this situation cleanly.
+If any value being concatenated is `NULL`, the entire result of `||` becomes `NULL`. The `actors` table has a `birth_name` column that is NULL for most actors. If you concatenated `birth_name` into a label without accounting for that, those rows would produce a NULL result. The `COALESCE` function, covered in a later chapter, handles this situation cleanly.
 :::
 
 ### Arithmetic Operations
 
 SQL treats numeric columns like variables in an algebraic expression. You can add, subtract, multiply, and divide columns and constants using standard arithmetic operators (`+`, `-`, `*`, `/`).
 
-As an example, population density (people per square kilometer) is not stored in the table, but you can calculate it from `population` and `area`. Seven countries in the dataset have no recorded area, so the query filters them out first.
+As an example, `height_cm` stores each actor's height in centimeters. You can convert that to inches by dividing by 2.54:
 
 ```{sql}
 #| connection: con
 #| label: arithmetic
 SELECT
-    country,
-    population,
-    area,
-    ROUND(population::numeric / area, 1) AS pop_per_sq_km
-FROM countries
-WHERE area IS NOT NULL
-ORDER BY pop_per_sq_km DESC;
+    first_name || ' ' || last_name AS full_name,
+    height_cm,
+    ROUND(height_cm / 2.54::numeric, 1) AS height_in
+FROM actors
+ORDER BY height_cm DESC
+LIMIT 10;
 ```
 
-`ROUND(value, 1)` rounds the result to one decimal place. The `::numeric` cast converts the `population` column (stored as a whole-number `bigint`) to a decimal type before dividing, which is necessary to get a decimal result rather than integer division.
-
-Monaco leads the list by a wide margin, followed by Singapore and Bahrain. The high density values for these small, densely settled territories illustrate why raw population numbers alone can be misleading without geographic context.
+`ROUND(value, 1)` rounds the result to one decimal place. The `::numeric` cast converts the `2.54` literal to a decimal type before dividing, which ensures a decimal result rather than integer division.
 
 ## Exploring Data with DISTINCT and COUNT
 
@@ -132,17 +146,17 @@ Two features of the `SELECT` clause are especially useful when you first sit dow
 
 Adding the `DISTINCT` keyword immediately after `SELECT` tells the database to return only unique combinations of the specified columns, removing any duplicate rows from the result.
 
-A common use is to see every unique value that appears in a categorical column. The `countries` table has 215 rows but only seven distinct world regions. Without `DISTINCT`, selecting the `region` column would return 215 rows with many repeated values. With it, you get the seven unique values once each:
+A common use is to see every unique value that appears in a categorical column. The `actors` table has 200 rows but only eight distinct primary genres. Without `DISTINCT`, selecting the `primary_genre` column would return 200 rows with many repeated values. With it, you get the eight unique values once each:
 
 ```{sql}
 #| connection: con
-#| label: distinct-region
-SELECT DISTINCT region
-FROM countries
-ORDER BY region;
+#| label: distinct-genre
+SELECT DISTINCT primary_genre
+FROM actors
+ORDER BY primary_genre;
 ```
 
-`DISTINCT` applies to the full combination of columns listed, not just the first one. If you write `SELECT DISTINCT region, capital`, the result contains each unique pairing of those two values rather than unique regions alone.
+`DISTINCT` applies to the full combination of columns listed, not just the first one. If you write `SELECT DISTINCT primary_genre, birth_country`, the result contains each unique pairing of those two values rather than unique genres alone.
 
 ::: {.callout-tip}
 `SELECT DISTINCT` is useful for a quick look at what values exist in a column, but it is not a substitute for proper data profiling. For large tables, counting how many rows correspond to each distinct value tells you much more than the list of values alone. `GROUP BY`, covered in a later chapter, is the right tool for that.
@@ -155,8 +169,8 @@ ORDER BY region;
 ```{sql}
 #| connection: con
 #| label: count-all
-SELECT COUNT(*) AS total_countries
-FROM countries;
+SELECT COUNT(*) AS total_actors
+FROM actors;
 ```
 
 Paired with a `WHERE` clause, `COUNT(*)` counts only the rows that satisfy the filter:
@@ -164,9 +178,9 @@ Paired with a `WHERE` clause, `COUNT(*)` counts only the rows that satisfy the f
 ```{sql}
 #| connection: con
 #| label: count-filtered
-SELECT COUNT(*) AS south_asia_count
-FROM countries
-WHERE region = 'South Asia';
+SELECT COUNT(*) AS drama_actors
+FROM actors
+WHERE primary_genre = 'Drama';
 ```
 
 `COUNT(column_name)`, with a specific column instead of `*`, counts only rows where that column is not NULL. This makes it a convenient way to measure how complete your data is:
@@ -175,25 +189,25 @@ WHERE region = 'South Asia';
 #| connection: con
 #| label: count-nulls
 SELECT
-    COUNT(*)       AS total_rows,
-    COUNT(area)    AS rows_with_area,
-    COUNT(capital) AS rows_with_capital
-FROM countries;
+    COUNT(*)          AS total_rows,
+    COUNT(birth_name) AS rows_with_birth_name,
+    COUNT(death_date) AS rows_with_death_date
+FROM actors;
 ```
 
-The result shows that 208 of the 215 rows have a recorded area and 209 have a recorded capital, immediately revealing which columns have missing data and how many gaps exist.
+The `birth_name` column records an actor's legal name when they perform under a stage name. The result shows that only 70 of the 200 actors have a recorded birth name, meaning 130 either perform under their real name or have no birth name on record. Similarly, `death_date` is NULL for living actors, so `COUNT(death_date)` reveals how many actors in the table are deceased.
 
 `COUNT(DISTINCT column)` combines both ideas, counting how many unique values appear in a column:
 
 ```{sql}
 #| connection: con
 #| label: count-distinct
-SELECT COUNT(DISTINCT region) AS num_regions
-FROM countries;
+SELECT COUNT(DISTINCT birth_country) AS num_countries
+FROM actors;
 ```
 
 ::: {.callout-note}
-`COUNT` belongs to a family of aggregate functions that summarize groups of rows into a single value. Others include `SUM()`, `AVG()`, `MIN()`, and `MAX()`. These become significantly more powerful when paired with `GROUP BY`, which computes a separate summary for each category in a column, such as the number of countries per region or the average population per continent. `GROUP BY` is covered in its own chapter.
+`COUNT` belongs to a family of aggregate functions that summarize groups of rows into a single value. Others include `SUM()`, `AVG()`, `MIN()`, and `MAX()`. These become significantly more powerful when paired with `GROUP BY`, which computes a separate summary for each category in a column, such as the number of actors per genre or the average height per birth country. `GROUP BY` is covered in its own chapter.
 :::
 
 ## Filtering Rows with WHERE
@@ -208,25 +222,24 @@ WHERE condition;
 
 ### Comparing Text Values
 
-Use a single equals sign (`=`) to match a text value exactly. Text comparisons in PostgreSQL are case-sensitive by default, so `'South Asia'` and `'south asia'` are not the same.
+Use a single equals sign (`=`) to match a text value exactly. Text comparisons in PostgreSQL are case-sensitive by default, so `'Drama'` and `'drama'` are not the same.
 
 ```{sql}
 #| connection: con
 #| label: where-text
-SELECT country, capital, population
-FROM countries
-WHERE region = 'South Asia'
-ORDER BY population DESC;
+SELECT first_name, last_name, birth_country, oscar_nominations
+FROM actors
+WHERE primary_genre = 'Drama'
+ORDER BY oscar_nominations DESC
+LIMIT 10;
 ```
-
-The South Asia region contains eight countries. Sorting by population descending puts India and Pakistan at the top of the list, where you would expect them.
 
 To exclude a value instead of matching it, use `<>` (or the equivalent `!=`):
 
 ```sql
-SELECT country, region
-FROM countries
-WHERE region <> 'North America';
+SELECT first_name, last_name, primary_genre
+FROM actors
+WHERE primary_genre <> 'Drama';
 ```
 
 ### Comparing Numeric Values
@@ -236,41 +249,59 @@ The standard comparison operators work on numeric columns: `<`, `>`, `<=`, `>=`,
 ```{sql}
 #| connection: con
 #| label: where-numeric
-SELECT country, region, population
-FROM countries
-WHERE population > 100000000
-ORDER BY population DESC;
+SELECT first_name, last_name, oscar_nominations, oscar_wins
+FROM actors
+WHERE oscar_nominations >= 5
+ORDER BY oscar_nominations DESC;
 ```
 
-Eleven countries have populations exceeding 100 million. Notice that the result includes countries from several different regions, which you can verify by scanning the `region` column.
+Fifteen actors in the table have received five or more Oscar nominations. Meryl Streep leads with 21 nominations, more than any other actor in the dataset.
+
+### Comparing Date Values
+
+Date columns can be compared with the same operators as numbers. PostgreSQL accepts date literals in `'YYYY-MM-DD'` format.
+
+```{sql}
+#| connection: con
+#| label: where-date
+SELECT first_name, last_name, birth_date, birth_country
+FROM actors
+WHERE birth_date >= '1980-01-01'
+ORDER BY birth_date;
+```
+
+This query returns actors born in 1980 or later, representing the youngest generation in the dataset.
 
 ### NULL Values and IS NULL
 
 **NULL** is a special marker in SQL that represents the absence of a value. It is not the same as zero, an empty string, or a blank space. NULL means that no value was recorded for that column in that row at all.
 
-Seven countries in the `countries` table have no recorded land area. You can find them using `IS NULL`:
+The `death_date` column is NULL for actors who are still living. You can find living actors using `IS NULL`:
 
 ```{sql}
 #| connection: con
 #| label: where-is-null
-SELECT country, iso3c, region, area
-FROM countries
-WHERE area IS NULL;
+SELECT first_name, last_name, birth_date, birth_country
+FROM actors
+WHERE death_date IS NULL
+ORDER BY birth_date
+LIMIT 10;
 ```
 
-To find rows where a value *is* present, use `IS NOT NULL`. You saw this earlier in the arithmetic section, where `WHERE area IS NOT NULL` excluded those seven rows before computing population density. As a standalone example:
+To find rows where a value *is* present, use `IS NOT NULL`. The following query returns only deceased actors by requiring that `death_date` has been recorded:
 
 ```{sql}
 #| connection: con
 #| label: where-is-not-null
-SELECT country, iso3c, region, area
-FROM countries
-WHERE area IS NOT NULL
-ORDER BY area DESC;
+SELECT first_name, last_name, birth_date, death_date
+FROM actors
+WHERE death_date IS NOT NULL
+ORDER BY death_date DESC
+LIMIT 10;
 ```
 
 ::: {.callout-warning}
-You cannot test for NULL using `=`. Writing `WHERE area = NULL` always returns zero rows, because NULL is not considered equal to anything, not even another NULL. Always use `IS NULL` or `IS NOT NULL` when checking for missing values.
+You cannot test for NULL using `=`. Writing `WHERE birth_name = NULL` always returns zero rows, because NULL is not considered equal to anything, not even another NULL. Always use `IS NULL` or `IS NOT NULL` when checking for missing values.
 :::
 
 ### Combining Conditions with AND and OR
@@ -283,22 +314,22 @@ A `WHERE` clause can include multiple conditions joined by `AND` or `OR`.
 ```{sql}
 #| connection: con
 #| label: where-and
-SELECT country, population, area
-FROM countries
-WHERE region = 'Latin America & Caribbean'
-  AND population > 10000000
-ORDER BY population DESC;
+SELECT first_name, last_name, birth_country, oscar_nominations, oscar_wins
+FROM actors
+WHERE primary_genre = 'Drama'
+  AND oscar_wins > 0
+ORDER BY oscar_wins DESC, oscar_nominations DESC;
 ```
 
-This query returns the 14 countries in Latin America and the Caribbean with populations above 10 million. Brazil leads comfortably, with roughly 1.6 times Mexico's population.
+This query returns Drama actors who have won at least one Oscar, sorted by wins and then by total nominations to break ties.
 
 ::: {.callout-tip}
 When combining `AND` and `OR` in the same `WHERE` clause, use parentheses to make your intentions explicit. SQL evaluates `AND` before `OR`, which can produce surprising results if conditions are not grouped clearly.
 
 ```sql
--- Returns rows where region matches AND either population condition is true
-WHERE region = 'South Asia'
-  AND (population > 50000000 OR population < 1000000)
+-- Returns actors in Drama or Comedy who have at least one nomination
+WHERE (primary_genre = 'Drama' OR primary_genre = 'Comedy')
+  AND oscar_nominations > 0
 ```
 :::
 
@@ -309,28 +340,27 @@ The `LIKE` operator filters text columns using simple patterns. Two wildcard cha
 - `%` matches any sequence of zero or more characters.
 - `_` matches exactly one character.
 
-The following example finds all countries whose names begin with C:
+The following example finds all actors whose last names begin with H:
 
 ```{sql}
 #| connection: con
 #| label: where-like
-SELECT country, iso3c, capital, region
-FROM countries
-WHERE country LIKE 'C%'
-ORDER BY country;
+SELECT first_name, last_name, primary_genre, birth_country
+FROM actors
+WHERE last_name LIKE 'H%'
+ORDER BY last_name;
 ```
 
-Lowercase `'c%'` would return no results here because text matching with `LIKE` is case-sensitive, and no country names begin with a lower-case C. If you need to perform case-insensitive pattern matching, use `ILIKE` instead of `LIKE`.
+Lowercase `'h%'` would return no results here because text matching with `LIKE` is case-sensitive, and no last names in this table begin with a lower-case h. If you need case-insensitive pattern matching, use `ILIKE` instead of `LIKE`.
 
-With multiple wildcards, you can search for text that occurs anywhere in a given column. In this example, by adding the `%` wildcard both before and after our search term, we can find any and all countries whose names contain the string "Virgin," regardless of whether it comes at the start of the name, the end, or somewhere in the middle.
+With `%` wildcards on both sides of a search term, you can find text that occurs anywhere in a column. The following query finds actors whose birth names contain the word "Schwartz" or any other substring:
 
 ```{sql}
 #| connection: con
 #| label: where-like-2
-SELECT country, iso3c, capital, region
-FROM countries
-WHERE country LIKE '%Virgin%'
-ORDER BY country;
+SELECT first_name, last_name, birth_name
+FROM actors
+WHERE birth_name LIKE '%Bernard%';
 ```
 
 ### Matching a List of Values with IN
@@ -340,25 +370,30 @@ When you want to match any one of several specific values, `IN` is more readable
 ```{sql}
 #| connection: con
 #| label: where-in
-SELECT country, region, population
-FROM countries
-WHERE region IN ('South Asia', 'East Asia & Pacific')
-ORDER BY region, population DESC;
+SELECT first_name, last_name, birth_country, oscar_nominations
+FROM actors
+WHERE birth_country IN ('UK', 'Australia', 'Ireland')
+ORDER BY birth_country, oscar_nominations DESC;
 ```
 
 ### Negating Conditions with NOT
 
 The `NOT` keyword reverses the result of a condition. It can be placed in front of `LIKE`, `IN`, `BETWEEN`, and similar operators to express "everything except what this pattern matches."
 
-`NOT LIKE` excludes rows that match a pattern. The query below returns countries whose names do not contain the word "Republic":
+`NOT LIKE` excludes rows that match a pattern. The query below returns actors whose last names do not begin with a vowel:
 
 ```{sql}
 #| connection: con
 #| label: where-not-like
-SELECT country, region
-FROM countries
-WHERE country NOT LIKE '%Republic%'
-ORDER BY country;
+SELECT first_name, last_name, primary_genre
+FROM actors
+WHERE last_name NOT LIKE 'A%'
+  AND last_name NOT LIKE 'E%'
+  AND last_name NOT LIKE 'I%'
+  AND last_name NOT LIKE 'O%'
+  AND last_name NOT LIKE 'U%'
+ORDER BY last_name
+LIMIT 10;
 ```
 
 `NOT IN` excludes rows whose column value matches any entry in the list:
@@ -366,10 +401,10 @@ ORDER BY country;
 ```{sql}
 #| connection: con
 #| label: where-not-in
-SELECT country, region, population
-FROM countries
-WHERE region NOT IN ('North America', 'Europe & Central Asia')
-ORDER BY population DESC;
+SELECT first_name, last_name, birth_country, primary_genre
+FROM actors
+WHERE primary_genre NOT IN ('Drama', 'Action')
+ORDER BY primary_genre, last_name;
 ```
 
 `IS NOT NULL`, introduced in the previous section, follows the same pattern and is technically a `NOT` form as well.
@@ -378,10 +413,10 @@ ORDER BY population DESC;
 `NOT` can also be written as a prefix before a parenthesized condition:
 
 ```sql
-WHERE NOT (region = 'North America')
+WHERE NOT (primary_genre = 'Drama')
 ```
 
-This is equivalent to `WHERE region <> 'North America'`. The prefix form is more useful when negating a compound condition that would be awkward to rewrite with `<>` or other operators.
+This is equivalent to `WHERE primary_genre <> 'Drama'`. The prefix form is more useful when negating a compound condition that would be awkward to rewrite with `<>` or other operators.
 :::
 
 #### NOT IN and NULL Values
@@ -393,20 +428,20 @@ When a NULL appears anywhere in the list passed to `NOT IN`, the condition retur
 ```{sql}
 #| connection: con
 #| label: not-in-null-list
-SELECT country, region, iso3c, area
-FROM countries
-WHERE region NOT IN ('North America', 'Europe & Central Asia', NULL);
+SELECT first_name, last_name, primary_genre
+FROM actors
+WHERE primary_genre NOT IN ('Drama', 'Action', NULL);
 ```
 
-This returns zero rows despite the fact most of the 215 countries belong to neither of the two named regions here. The reason comes down to how SQL evaluates NULL comparisons. The expression `region NOT IN ('North America', 'Europe & Central Asia', NULL)` expands internally to:
+This returns zero rows despite the fact that most actors in the table are neither Drama nor Action performers. The reason comes down to how SQL evaluates NULL comparisons. The expression `primary_genre NOT IN ('Drama', 'Action', NULL)` expands internally to:
 
 ```sql
-region <> 'North America'
-AND region <> 'Europe & Central Asia'
-AND region <> NULL
+primary_genre <> 'Drama'
+AND primary_genre <> 'Action'
+AND primary_genre <> NULL
 ```
 
-The third condition, `region <> NULL`, never evaluates to TRUE or FALSE. As covered earlier, any comparison with NULL produces NULL, meaning the result is unknown. When one part of an `AND` chain is unknown, the entire expression is unknown, and the row is excluded from the output. Because this applies to every row in the table, the query returns nothing.
+The third condition, `primary_genre <> NULL`, never evaluates to TRUE or FALSE. Any comparison with NULL produces NULL, meaning the result is unknown. When one part of an `AND` chain is unknown, the entire expression is unknown, and the row is excluded from the output. Because this applies to every row in the table, the query returns nothing.
 
 ::: {.callout-warning}
 A single NULL anywhere in the list passed to `NOT IN` silently causes the entire condition to return no rows. Because no error is raised, this problem can go unnoticed for a long time. When building a list for `NOT IN`, verify that it contains no NULL values. A later chapter covers how this same issue arises when the list comes from a subquery rather than a literal set of values, and introduces `NOT EXISTS` as the preferred alternative in those situations. Unlike `NOT IN`, `NOT EXISTS` handles NULL values correctly and does not produce this silent failure.
@@ -414,7 +449,7 @@ A single NULL anywhere in the list passed to `NOT IN` silently causes the entire
 
 ## Sorting Results with ORDER BY
 
-By default, a database returns rows in no particular order. The physical order of data in storage has nothing to do with alphabetical order, population size, or any other meaningful sequence. The `ORDER BY` clause lets you specify the order you want.
+By default, a database returns rows in no particular order. The physical order of data in storage has nothing to do with alphabetical order, nomination count, or any other meaningful sequence. The `ORDER BY` clause lets you specify the order you want.
 
 ```sql
 SELECT column1, column2
@@ -427,9 +462,9 @@ ORDER BY column1 ASC;
 ```{sql}
 #| connection: con
 #| label: order-by-single
-SELECT country, region, population
-FROM countries
-ORDER BY population DESC;
+SELECT first_name, last_name, oscar_nominations, oscar_wins
+FROM actors
+ORDER BY oscar_nominations DESC;
 ```
 
 ### Sorting by Multiple Columns
@@ -439,29 +474,28 @@ You can sort by more than one column by listing them after `ORDER BY`, separated
 ```{sql}
 #| connection: con
 #| label: order-by-multi
-#| max.print: 20
-SELECT country, region, population
-FROM countries
-ORDER BY region ASC, population DESC;
+SELECT first_name, last_name, primary_genre, oscar_nominations
+FROM actors
+ORDER BY primary_genre ASC, oscar_nominations DESC;
 ```
 
-This query first groups rows by region alphabetically, then within each region sorts countries from most populous to least. The result lets you compare countries within each region at a glance.
+This query first groups rows by genre alphabetically, then within each genre sorts actors from most nominated to least. The result lets you compare the most decorated actors within each genre at a glance.
 
 ## Limiting Results with LIMIT
 
-The `LIMIT` clause caps the number of rows returned by a query. It is most useful when combined with `ORDER BY`, because the two together let you answer "top N" questions: the ten most populous countries, the five smallest territories by area, and so on.
+The `LIMIT` clause caps the number of rows returned by a query. It is most useful when combined with `ORDER BY`, because the two together let you answer "top N" questions: the ten most nominated actors, the five tallest actors, and so on.
 
 ```{sql}
 #| connection: con
 #| label: limit-with-order
-SELECT country, region, population
-FROM countries
-ORDER BY population DESC
+SELECT first_name, last_name, primary_genre, oscar_nominations
+FROM actors
+ORDER BY oscar_nominations DESC
 LIMIT 10;
 ```
 
 ::: {.callout-warning}
-Using `LIMIT` without `ORDER BY` returns an arbitrary subset of rows. Which rows you get depends on how the database happens to store and retrieve data at that moment, which can vary between runs. If you need a specific subset (such as the largest, smallest, newest, or oldest), always pair `LIMIT` with an `ORDER BY` that defines what "first" means.
+Using `LIMIT` without `ORDER BY` returns an arbitrary subset of rows. Which rows you get depends on how the database happens to store and retrieve data at that moment, which can vary between runs. If you need a specific subset (such as the most nominated, tallest, or earliest-born), always pair `LIMIT` with an `ORDER BY` that defines what "first" means.
 :::
 
 ## Putting It All Together
@@ -474,20 +508,20 @@ The clauses covered in this chapter can be combined in a single query. PostgreSQ
 4. `ORDER BY` (sort the result)
 5. `LIMIT` (cut the result to the requested number of rows)
 
-The query below uses all of these clauses together to find the ten most populous countries in Europe and Central Asia, showing a computed population density alongside each country's name and capital.
+The query below uses all of these clauses together to find the ten most Oscar-nominated actors born outside the United States, showing their full name, birth country, nomination total, and wins.
 
 ```{sql}
 #| connection: con
 #| label: combined
 SELECT
-    country || ' (' || iso3c || ')' AS display_name,
-    capital,
-    population,
-    ROUND(population::numeric / area, 1) AS pop_per_sq_km
-FROM countries
-WHERE region = 'Europe & Central Asia'
-  AND area IS NOT NULL
-ORDER BY population DESC
+    first_name || ' ' || last_name AS full_name,
+    birth_country,
+    oscar_nominations,
+    oscar_wins
+FROM actors
+WHERE birth_country <> 'USA'
+  AND death_date IS NULL
+ORDER BY oscar_nominations DESC
 LIMIT 10;
 ```
 
@@ -495,29 +529,29 @@ Reading a query like this from top to bottom is natural once you understand what
 
 ## SQL as a Declarative Language
 
-Now that you hopefully understand how a basic `SELECT` statement is written, it's important to understand something fundamental about how SQL thinks, because it is different from how R and Python think.
+Now that you have a sense for how a basic `SELECT` statement is written, it is important to understand something fundamental about how SQL thinks, because it is different from how R and Python think.
 
 If you have experience with either of those languages, you are accustomed to writing programs that specify a sequence of steps. You tell the computer exactly what to do and in what order: load this data, filter these rows, select these columns, sort the result. This style is called **imperative** programming, because you are issuing commands.
 
 SQL is **declarative**. Rather than specifying steps, you describe the result you want and let the database engine figure out how to produce it.
 
-To make the contrast concrete, consider retrieving the South Asian countries sorted by population. In Python with pandas, you might write:
+To make the contrast concrete, consider retrieving Drama actors sorted by nomination count. In Python with pandas, you might write:
 
 ```python
-south_asia = df[df["region"] == "South Asia"]
+drama = df[df["primary_genre"] == "Drama"]
 result = (
-    south_asia[["country", "population"]]
-    .sort_values("population", ascending=False)
+    drama[["first_name", "last_name", "oscar_nominations"]]
+    .sort_values("oscar_nominations", ascending=False)
 )
 ```
 
 In R with dplyr:
 
 ```r
-result <- countries |>
-  filter(region == "South Asia") |>
-  select(country, population) |>
-  arrange(desc(population))
+result <- actors |>
+  filter(primary_genre == "Drama") |>
+  select(first_name, last_name, oscar_nominations) |>
+  arrange(desc(oscar_nominations))
 ```
 
 Both of these describe a sequence of operations. The order of the instructions matches the intended order of execution.
@@ -525,13 +559,13 @@ Both of these describe a sequence of operations. The order of the instructions m
 The equivalent SQL looks like this:
 
 ```sql
-SELECT country, population
-FROM countries
-WHERE region = 'South Asia'
-ORDER BY population DESC;
+SELECT first_name, last_name, oscar_nominations
+FROM actors
+WHERE primary_genre = 'Drama'
+ORDER BY oscar_nominations DESC;
 ```
 
-The SQL query does not describe steps. It describes a result: "I want the `country` and `population` columns, from the `countries` table, restricted to rows where `region` is `'South Asia'`, sorted by `population` descending." The database engine reads that description and decides for itself how to retrieve the data efficiently. It may use an index, reorder internal operations, or parallelize work across processors. You do not control those decisions, and most of the time you do not need to.
+The SQL query does not describe steps. It describes a result: "I want the `first_name`, `last_name`, and `oscar_nominations` columns, from the `actors` table, restricted to rows where `primary_genre` is `'Drama'`, sorted by `oscar_nominations` descending." The database engine reads that description and decides for itself how to retrieve the data efficiently. It may use an index, reorder internal operations, or parallelize work across processors. You do not control those decisions, and most of the time you do not need to.
 
 ### Set-Based Thinking
 
@@ -564,21 +598,21 @@ But the database processes the clauses in this logical order:
 The most common practical consequence of this is that column aliases defined in `SELECT` cannot be referenced in a `WHERE` clause, because `WHERE` runs before `SELECT`. The following query fails for exactly that reason:
 
 ```sql
--- This fails: 'density' is not defined when WHERE runs
-SELECT population / area AS density
-FROM countries
-WHERE density > 100;
+-- This fails: 'height_in' is not defined when WHERE runs
+SELECT ROUND(height_cm / 2.54::numeric, 1) AS height_in
+FROM actors
+WHERE height_in > 72;
 ```
 
 You have to repeat the expression in `WHERE` instead:
 
 ```sql
-SELECT population / area AS density
-FROM countries
-WHERE population / area > 100;
+SELECT ROUND(height_cm / 2.54::numeric, 1) AS height_in
+FROM actors
+WHERE ROUND(height_cm / 2.54::numeric, 1) > 72;
 ```
 
-`ORDER BY` is an exception: most databases, including PostgreSQL, allow `ORDER BY` to reference aliases defined in `SELECT`, because `ORDER BY` is evaluated after `SELECT`. That is why `ORDER BY density` would work in the query above even though `WHERE density` does not.
+`ORDER BY` is an exception: most databases, including PostgreSQL, allow `ORDER BY` to reference aliases defined in `SELECT`, because `ORDER BY` is evaluated after `SELECT`. That is why `ORDER BY height_in` would work in the query above even though `WHERE height_in` does not.
 
 Keeping this logical order in mind will make otherwise cryptic error messages much easier to diagnose as your queries grow more complex.
 
@@ -588,34 +622,34 @@ Keeping this logical order in mind will make otherwise cryptic error messages mu
 
 1. SQL is described in this chapter as a "declarative" programming language, while R and Python are "imperative." In your own words, explain what that distinction means. How does it change the way you approach writing a query compared to writing a data pipeline in R or Python?
 
-2. A colleague writes the following query hoping to find all countries with a population density above 500 people per square kilometer, but PostgreSQL returns an error. Identify the problem and explain how to fix it.
+2. A colleague writes the following query hoping to find all actors who are over six feet tall (approximately 183 cm), but PostgreSQL returns an error. Identify the problem and explain how to fix it.
 
    ```sql
-   SELECT country, ROUND(population::numeric / area, 1) AS density
-   FROM countries
-   WHERE density > 500;
+   SELECT first_name, last_name, ROUND(height_cm / 2.54::numeric, 1) AS height_in
+   FROM actors
+   WHERE height_in > 72;
    ```
 
-3. Explain the difference between `COUNT(*)` and `COUNT(area)` as they apply to the `countries` table. Under what circumstances would the two expressions return different values?
+3. Explain the difference between `COUNT(*)` and `COUNT(birth_name)` as they apply to the `actors` table. Under what circumstances would the two expressions return different values?
 
-4. A classmate wants to retrieve all countries where no capital city has been recorded. They write the query below, but it always returns zero rows. Why? What should they write instead?
+4. A classmate wants to retrieve all actors for whom no birth name has been recorded. They write the query below, but it always returns zero rows. Why? What should they write instead?
 
    ```sql
-   SELECT country
-   FROM countries
-   WHERE capital = NULL;
+   SELECT first_name, last_name
+   FROM actors
+   WHERE birth_name = NULL;
    ```
 
 ### Coding
 
-For each exercise below, write a SQL query against the `countries` database. Try to write the query yourself before checking the solutions.
+For each exercise below, write a SQL query against the `actors` database.
 
-5. Write a query that retrieves the country name, capital city, and region for every country in the table. Sort the results alphabetically by country name.
+5. Write a query that retrieves the first name, last name, birth country, and primary genre for every actor in the table. Sort the results alphabetically by last name.
 
-6. Write a query that returns the country name and population for all countries in the `Sub-Saharan Africa` region, sorted from most populous to least populous.
+6. Write a query that returns the full name (first and last name combined into a single column called `full_name`), birth country, and Oscar nomination count for all actors born in the United Kingdom, sorted from most to least nominated.
 
-7. Write a query that builds a formatted label for each country by combining its name and three-letter ISO code in the format `Country Name (ISO3C)`. Call the resulting column `display_name`. Return only countries whose names begin with the letter S, sorted alphabetically.
+7. Write a query that shows only the distinct birth countries represented in the `actors` table, sorted alphabetically. Then write a second query using `COUNT(DISTINCT birth_country)` to confirm the total number of unique countries.
 
-8. Write a query that returns the country name, population, area, and population density rounded to one decimal place for all countries in the `Europe & Central Asia` region that have a recorded area. Name the density column `pop_per_sq_km` and sort from highest density to lowest.
+8. Write a query that returns the first name, last name, height in centimeters, and height converted to inches (rounded to one decimal place, named `height_in`) for all actors over 185 cm tall. Sort from tallest to shortest.
 
-9. Write a query that returns the country name, capital, and population for all countries that satisfy every one of the following conditions: the country name contains the word "Republic", the population is greater than five million, and a capital city has been recorded. Sort the results by population in descending order.
+9. Write a query that returns the first name, last name, primary genre, Oscar nominations, and Oscar wins for all actors who meet every one of the following conditions: they are still living (no death date recorded), they have received at least three Oscar nominations, and they were born in the USA. Sort the results by Oscar nominations in descending order.
