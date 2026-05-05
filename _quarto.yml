@@ -31,8 +31,9 @@ book:
       chapters:
         - 11-select-statements.qmd
         - 12-data-types.qmd
-        - 13-joins.qmd
-        - 14-set-operations.qmd
+        - 13-aggregating.qmd
+        - 14-joins.qmd
+        - 15-set-operations.qmd
 
     - part: 20-design.qmd
       chapters:

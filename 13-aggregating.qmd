@@ -1,0 +1,253 @@
+---
+title: "Aggregating with GROUP BY"
+---
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
+PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
+
+con <- dbConnect(
+  Postgres(),
+  host     = "localhost",
+  port     = PGPORT,
+  dbname   = "actors",
+  user     = "postgres",
+  password = PGPASS
+)
+```
+
+The previous chapters covered queries that return one row per row in the table. Every `SELECT` statement you have written so far has been a one-in, one-out operation: each row that passes the `WHERE` filter produces exactly one row in the result.
+
+`GROUP BY` changes that. It collapses multiple rows into a single summary row, one per group. Instead of asking "what are the oscar nominations for each actor," you can ask "what is the average oscar nomination count per genre." Instead of listing every actor, you get one row per genre with a summary value computed across all actors in that group.
+
+This is one of the most frequently used features in SQL for data analysis, and it pairs directly with the aggregate functions introduced briefly in the SELECT chapter: `COUNT`, `SUM`, `AVG`, `MIN`, and `MAX`.
+
+## Aggregate Functions
+
+An **aggregate function** takes a set of rows as input and returns a single value. You have already seen `COUNT(*)` used on its own. When combined with `GROUP BY`, aggregate functions compute a separate result for each group rather than for the entire table.
+
+The five core aggregate functions are:
+
+| Function | Returns |
+|----------|---------|
+| `COUNT(*)` | Number of rows |
+| `COUNT(column)` | Number of non-NULL values in the column |
+| `SUM(column)` | Total of all values |
+| `AVG(column)` | Arithmetic mean of all values |
+| `MIN(column)` | Smallest value |
+| `MAX(column)` | Largest value |
+
+Before using `GROUP BY`, it is worth seeing these functions applied to the entire table, without any grouping:
+
+```{sql}
+#| connection: con
+#| label: agg-no-group
+SELECT
+    COUNT(*)                              AS total_actors,
+    SUM(oscar_wins)                       AS total_wins,
+    ROUND(AVG(oscar_nominations), 1)      AS avg_nominations,
+    MAX(total_box_office_usd) / 1000000   AS highest_box_office_millions
+FROM actors;
+```
+
+This returns a single row summarizing all 200 actors. `GROUP BY` lets you compute that same summary separately for each value of a categorical column.
+
+## The GROUP BY Clause
+
+```sql
+SELECT   grouping_column, aggregate_function(column)
+FROM     table_name
+GROUP BY grouping_column;
+```
+
+The `GROUP BY` clause comes after `WHERE` and before `ORDER BY`. The column you group by must appear in the `SELECT` list. Every column in `SELECT` that is not inside an aggregate function must appear in `GROUP BY` — this is a hard rule PostgreSQL enforces.
+
+The following query counts actors and totals Oscar wins for each primary genre:
+
+```{sql}
+#| connection: con
+#| label: group-by-genre
+SELECT
+    primary_genre,
+    COUNT(*)        AS actor_count,
+    SUM(oscar_wins) AS total_wins
+FROM actors
+GROUP BY primary_genre
+ORDER BY actor_count DESC;
+```
+
+The result has one row per genre. Drama dominates with 135 actors and 115 wins. Action comes second by count but its wins are comparatively low — a reflection of the Academy's historical preference for dramatic performances over action roles.
+
+### Grouping by Multiple Columns
+
+You can group by more than one column by listing them in `GROUP BY`, separated by commas. The database creates one group per unique combination of those columns.
+
+```{sql}
+#| connection: con
+#| label: group-by-multi
+SELECT
+    primary_genre,
+    sex,
+    COUNT(*)                            AS actor_count,
+    ROUND(AVG(oscar_nominations), 1)    AS avg_nominations
+FROM actors
+GROUP BY primary_genre, sex
+ORDER BY primary_genre, sex;
+```
+
+Each row now represents a unique genre-sex pairing. This lets you compare, for example, whether male and female Drama actors differ in their average nomination counts.
+
+## Filtering Groups with HAVING
+
+`WHERE` filters rows before grouping. Once groups are formed, you cannot use `WHERE` to filter them — the groups do not exist yet when `WHERE` runs. `HAVING` is the clause that filters groups *after* they have been computed.
+
+```sql
+SELECT   grouping_column, aggregate_function(column)
+FROM     table_name
+GROUP BY grouping_column
+HAVING   aggregate_condition;
+```
+
+The following query returns only birth countries that have produced at least five actors in the dataset:
+
+```{sql}
+#| connection: con
+#| label: having-basic
+SELECT
+    birth_country,
+    COUNT(*)        AS actor_count,
+    SUM(oscar_wins) AS total_wins
+FROM actors
+GROUP BY birth_country
+HAVING COUNT(*) >= 5
+ORDER BY actor_count DESC;
+```
+
+Without `HAVING COUNT(*) >= 5`, this query would return all 19 birth countries, including several with only one or two actors. `HAVING` lets you focus on groups that meet a meaningful threshold.
+
+::: {.callout-tip}
+A useful way to remember the difference: `WHERE` filters **rows** before grouping; `HAVING` filters **groups** after grouping. If the condition references an aggregate function like `COUNT()` or `AVG()`, it belongs in `HAVING`. If it references a plain column value, it belongs in `WHERE`.
+:::
+
+### Combining WHERE and HAVING
+
+`WHERE` and `HAVING` can appear in the same query. `WHERE` narrows the rows that are fed into the grouping step, and `HAVING` then narrows the resulting groups.
+
+The following query asks: among actors who are still living, which birth countries have produced at least three of them, and what is their combined box office?
+
+```{sql}
+#| connection: con
+#| label: where-and-having
+SELECT
+    birth_country,
+    COUNT(*)                                        AS living_actors,
+    SUM(total_box_office_usd) / 1000000             AS combined_box_office_millions
+FROM actors
+WHERE death_date IS NULL
+GROUP BY birth_country
+HAVING COUNT(*) >= 3
+ORDER BY combined_box_office_millions DESC;
+```
+
+The `WHERE death_date IS NULL` clause excludes deceased actors before any grouping occurs. `HAVING COUNT(*) >= 3` then keeps only countries where at least three living actors remain.
+
+## The Logical Order of Execution
+
+The full logical order of a query with aggregation is:
+
+1. `FROM` — identify the table
+2. `WHERE` — filter individual rows
+3. `GROUP BY` — form groups
+4. Aggregate functions — compute summary values per group
+5. `HAVING` — filter groups
+6. `SELECT` — compute and name output columns
+7. `ORDER BY` — sort the result
+8. `LIMIT` — trim to the requested row count
+
+This order has a practical consequence: aggregate functions and column aliases defined in `SELECT` cannot be referenced in `HAVING`, because `HAVING` runs before `SELECT`. You must repeat the aggregate expression:
+
+```sql
+-- This fails: 'avg_noms' is not defined when HAVING runs
+SELECT primary_genre, ROUND(AVG(oscar_nominations), 1) AS avg_noms
+FROM actors
+GROUP BY primary_genre
+HAVING avg_noms > 2;
+
+-- This works: repeat the expression
+SELECT primary_genre, ROUND(AVG(oscar_nominations), 1) AS avg_noms
+FROM actors
+GROUP BY primary_genre
+HAVING AVG(oscar_nominations) > 2;
+```
+
+## NULL Values in Aggregation
+
+Aggregate functions handle NULL values consistently: they ignore them. `AVG(column)` computes the mean of only the non-NULL values. `SUM(column)` adds only the non-NULL values. `COUNT(column)` counts only the non-NULL values. `COUNT(*)` is the exception — it counts every row regardless of NULLs.
+
+The `actors` table has no NULL values in the numeric columns used in this chapter, but the behavior is worth knowing. If a new actor were added with `total_box_office_usd` left NULL, `AVG(total_box_office_usd)` would exclude that actor from the average entirely rather than treating the NULL as zero.
+
+## Putting It All Together
+
+The following query combines all the clauses covered in this chapter to answer a specific question: for each primary genre with more than two actors born outside the USA, what are the actor count, total Oscar wins, and average box office in millions?
+
+```{sql}
+#| connection: con
+#| label: combined
+SELECT
+    primary_genre,
+    COUNT(*)                                         AS actor_count,
+    SUM(oscar_wins)                                  AS total_wins,
+    ROUND(AVG(total_box_office_usd) / 1000000, 0)    AS avg_box_office_millions
+FROM actors
+WHERE birth_country <> 'USA'
+GROUP BY primary_genre
+HAVING COUNT(*) > 2
+ORDER BY actor_count DESC;
+```
+
+## Exercises
+
+### Reflection
+
+**1.** Explain the difference between `WHERE` and `HAVING`. Write an example of a condition that must go in `WHERE` and one that must go in `HAVING`, and explain why each belongs where it does.
+
+---
+
+**2.** A student writes the following query intending to find genres where the average number of Oscar nominations exceeds 2, but PostgreSQL returns an error. Identify the problem and fix it.
+
+```sql
+SELECT primary_genre, ROUND(AVG(oscar_nominations), 1) AS avg_noms
+FROM actors
+GROUP BY primary_genre
+HAVING avg_noms > 2;
+```
+
+---
+
+**3.** Explain why `COUNT(*)` and `COUNT(birth_name)` would return different values when used inside a `GROUP BY` query. In what situation would they return the same value for every group?
+
+---
+
+### Coding
+
+**4.** Write a query that counts the number of actors from each birth country. Return only countries with at least two actors, sorted from most to fewest.
+
+---
+
+**5.** Write a query that shows, for each primary genre, the total number of Oscar nominations and the total number of Oscar wins. Include a third column that expresses wins as a percentage of nominations, rounded to one decimal place. Sort by total nominations descending.
+
+---
+
+**6.** Write a query that returns the birth country, actor count, and average height in centimeters (rounded to one decimal place) for all birth countries that have produced at least three actors. Sort by average height descending.
+
+---
+
+**7.** Write a query that shows the number of living actors and the number of deceased actors for each primary genre. Filter to genres that have at least five actors total (living and deceased combined). Sort by total actors descending.
+
+---
+
+**8.** Write a query that finds the single birth country with the highest total box office across all its actors. Return the country name and the total in billions, rounded to two decimal places.
