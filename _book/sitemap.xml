@@ -42,7 +42,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/20-analyze.html</loc>
-    <lastmod>2026-05-05T15:20:34.616Z</lastmod>
+    <lastmod>2026-05-05T15:31:13.076Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/21-conditional.html</loc>
@@ -102,7 +102,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/40-optimize.html</loc>
-    <lastmod>2026-05-05T15:20:46.912Z</lastmod>
+    <lastmod>2026-05-05T15:30:56.134Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/41-explain.html</loc>
@@ -133,40 +133,40 @@
     <lastmod>2026-04-30T13:12:14.053Z</lastmod>
   </url>
   <url>
-    <loc>https://sql4ds.com/60-deploy.html</loc>
-    <lastmod>2026-04-30T12:45:41.124Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sql4ds.com/61-supabase-setup.html</loc>
-    <lastmod>2026-04-30T12:34:54.016Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sql4ds.com/62-supabase-vscode.html</loc>
-    <lastmod>2026-04-30T12:34:54.019Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sql4ds.com/63-database-migrations.html</loc>
-    <lastmod>2026-04-30T12:34:54.023Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sql4ds.com/70-load.html</loc>
+    <loc>https://sql4ds.com/60-load.html</loc>
     <lastmod>2026-04-30T12:45:46.444Z</lastmod>
   </url>
   <url>
-    <loc>https://sql4ds.com/71-extracting-data.html</loc>
+    <loc>https://sql4ds.com/61-extracting-data.html</loc>
     <lastmod>2026-04-30T12:34:54.028Z</lastmod>
   </url>
   <url>
-    <loc>https://sql4ds.com/72-transforming-with-polars.html</loc>
+    <loc>https://sql4ds.com/62-transforming-with-polars.html</loc>
     <lastmod>2026-04-30T12:34:54.033Z</lastmod>
   </url>
   <url>
-    <loc>https://sql4ds.com/73-loading-with-sqlalchemy.html</loc>
+    <loc>https://sql4ds.com/63-loading-with-sqlalchemy.html</loc>
     <lastmod>2026-04-30T12:34:54.038Z</lastmod>
   </url>
   <url>
-    <loc>https://sql4ds.com/74-etl-pipeline.html</loc>
+    <loc>https://sql4ds.com/64-etl-pipeline.html</loc>
     <lastmod>2026-04-30T12:34:54.043Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sql4ds.com/70-deploy.html</loc>
+    <lastmod>2026-04-30T12:45:41.124Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sql4ds.com/71-supabase-setup.html</loc>
+    <lastmod>2026-04-30T12:34:54.016Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sql4ds.com/72-supabase-vscode.html</loc>
+    <lastmod>2026-04-30T12:34:54.019Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sql4ds.com/73-database-migrations.html</loc>
+    <lastmod>2026-04-30T12:34:54.023Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/99-references.html</loc>

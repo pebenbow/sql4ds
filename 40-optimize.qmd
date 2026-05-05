@@ -1,4 +1,4 @@
-# Optimizing Queries {.unnumbered}
+# Optimize {.unnumbered}
 
 The previous sections covered how to design a schema and how to query it. A query that returns the right answer is necessary but not sufficient: at small data volumes correctness is all that matters, but as tables grow into the millions or billions of rows the same correct query can take seconds or minutes depending on how the database executes it.
 

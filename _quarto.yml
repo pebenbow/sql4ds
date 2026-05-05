@@ -66,18 +66,18 @@ book:
         - 52-privileges.qmd
         - 53-sqli.qmd
 
-    - part: 60-deploy.qmd
+    - part: 60-load.qmd
       chapters:
-        - 61-supabase-setup.qmd
-        - 62-supabase-vscode.qmd
-        - 63-database-migrations.qmd
+        - 61-extracting-data.qmd
+        - 62-transforming-with-polars.qmd
+        - 63-loading-with-sqlalchemy.qmd
+        - 64-etl-pipeline.qmd
 
-    - part: 70-load.qmd
+    - part: 70-deploy.qmd
       chapters:
-        - 71-extracting-data.qmd
-        - 72-transforming-with-polars.qmd
-        - 73-loading-with-sqlalchemy.qmd
-        - 74-etl-pipeline.qmd
+        - 71-supabase-setup.qmd
+        - 72-supabase-vscode.qmd
+        - 73-database-migrations.qmd
 
     - 99-references.qmd
 

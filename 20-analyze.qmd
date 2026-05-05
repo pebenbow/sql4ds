@@ -1,4 +1,4 @@
-# Analyzing Data {.unnumbered}
+# Analyze {.unnumbered}
 
 The previous section covered the mechanics of querying: how to retrieve rows, filter them, sort them, and combine data from multiple tables. Those tools answer questions about individual rows and sets of rows as they exist in the database. This section is about something different: using SQL to compute, summarize, and draw insight from data at scale.
 
