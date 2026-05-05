@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>6&nbsp; Set Operations – SQL for Data Science</title>
+<title>7&nbsp; Set Operations – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./20-design.html" rel="next">
-<link href="./13-joins.html" rel="prev">
+<link href="./14-joins.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-query.html">Query</a></li><li class="breadcrumb-item"><a href="./14-set-operations.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-query.html">Query</a></li><li class="breadcrumb-item"><a href="./15-set-operations.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Set Operations</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -202,14 +202,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./13-joins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  <a href="./13-aggregating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aggregating with GROUP BY</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./14-set-operations.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
+  <a href="./14-joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-set-operations.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
   </div>
 </li>
       </ul>
@@ -226,31 +232,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
       </ul>
@@ -267,19 +273,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
   </div>
 </li>
       </ul>
@@ -296,19 +302,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
@@ -325,25 +331,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -364,27 +370,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#requirements" id="toc-requirements" class="nav-link active" data-scroll-target="#requirements"><span class="header-section-number">6.1</span> Requirements</a></li>
-  <li><a href="#union-all" id="toc-union-all" class="nav-link" data-scroll-target="#union-all"><span class="header-section-number">6.2</span> UNION ALL</a></li>
-  <li><a href="#union" id="toc-union" class="nav-link" data-scroll-target="#union"><span class="header-section-number">6.3</span> UNION</a></li>
-  <li><a href="#intersect" id="toc-intersect" class="nav-link" data-scroll-target="#intersect"><span class="header-section-number">6.4</span> INTERSECT</a></li>
-  <li><a href="#except" id="toc-except" class="nav-link" data-scroll-target="#except"><span class="header-section-number">6.5</span> EXCEPT</a></li>
-  <li><a href="#ordering-the-combined-result" id="toc-ordering-the-combined-result" class="nav-link" data-scroll-target="#ordering-the-combined-result"><span class="header-section-number">6.6</span> Ordering the Combined Result</a></li>
-  <li><a href="#chaining-set-operations" id="toc-chaining-set-operations" class="nav-link" data-scroll-target="#chaining-set-operations"><span class="header-section-number">6.7</span> Chaining Set Operations</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.8</span> Exercises</a>
+  <li><a href="#requirements" id="toc-requirements" class="nav-link active" data-scroll-target="#requirements"><span class="header-section-number">7.1</span> Requirements</a></li>
+  <li><a href="#union-all" id="toc-union-all" class="nav-link" data-scroll-target="#union-all"><span class="header-section-number">7.2</span> UNION ALL</a></li>
+  <li><a href="#union" id="toc-union" class="nav-link" data-scroll-target="#union"><span class="header-section-number">7.3</span> UNION</a></li>
+  <li><a href="#intersect" id="toc-intersect" class="nav-link" data-scroll-target="#intersect"><span class="header-section-number">7.4</span> INTERSECT</a></li>
+  <li><a href="#except" id="toc-except" class="nav-link" data-scroll-target="#except"><span class="header-section-number">7.5</span> EXCEPT</a></li>
+  <li><a href="#ordering-the-combined-result" id="toc-ordering-the-combined-result" class="nav-link" data-scroll-target="#ordering-the-combined-result"><span class="header-section-number">7.6</span> Ordering the Combined Result</a></li>
+  <li><a href="#chaining-set-operations" id="toc-chaining-set-operations" class="nav-link" data-scroll-target="#chaining-set-operations"><span class="header-section-number">7.7</span> Chaining Set Operations</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.8</span> Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">6.8.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">6.8.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">7.8.1</span> Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">7.8.2</span> Coding</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/14-set-operations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/15-set-operations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-query.html">Query</a></li><li class="breadcrumb-item"><a href="./14-set-operations.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-query.html">Query</a></li><li class="breadcrumb-item"><a href="./15-set-operations.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Set Operations</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></h1>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Set Operations</span></h1>
 </div>
 
 
@@ -432,8 +438,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<section id="requirements" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="requirements"><span class="header-section-number">6.1</span> Requirements</h2>
+<section id="requirements" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="requirements"><span class="header-section-number">7.1</span> Requirements</h2>
 <p>For two queries to be combined with a set operation, their result sets must be <strong>union-compatible</strong>:</p>
 <ol type="1">
 <li>Both queries must return the same number of columns.</li>
@@ -442,8 +448,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>These rules apply to all three operations. Violating any of them produces an error before any rows are returned.</p>
 </section>
-<section id="union-all" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="union-all"><span class="header-section-number">6.2</span> UNION ALL</h2>
+<section id="union-all" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="union-all"><span class="header-section-number">7.2</span> UNION ALL</h2>
 <p><code>UNION ALL</code> stacks two result sets together and returns every row from both, including duplicates. It is the simplest set operation conceptually: the result is everything on the left, followed by everything on the right.</p>
 <p>The query below combines all low-income and lower-middle-income countries into a single list.</p>
 <div class="cell">
@@ -471,44 +477,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Algeria</td>
-<td style="text-align: left;">Lower middle income</td>
+<td style="text-align: left;">Afghanistan</td>
+<td style="text-align: left;">Low income</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Angola</td>
-<td style="text-align: left;">Lower middle income</td>
+<td style="text-align: left;">Burkina Faso</td>
+<td style="text-align: left;">Low income</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Bangladesh</td>
-<td style="text-align: left;">Lower middle income</td>
+<td style="text-align: left;">Burundi</td>
+<td style="text-align: left;">Low income</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Benin</td>
-<td style="text-align: left;">Lower middle income</td>
+<td style="text-align: left;">Central African Republic</td>
+<td style="text-align: left;">Low income</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Bhutan</td>
-<td style="text-align: left;">Lower middle income</td>
+<td style="text-align: left;">Chad</td>
+<td style="text-align: left;">Low income</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Bolivia</td>
-<td style="text-align: left;">Lower middle income</td>
+<td style="text-align: left;">Congo, Dem. Rep.</td>
+<td style="text-align: left;">Low income</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Cabo Verde</td>
-<td style="text-align: left;">Lower middle income</td>
+<td style="text-align: left;">Eritrea</td>
+<td style="text-align: left;">Low income</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Cambodia</td>
-<td style="text-align: left;">Lower middle income</td>
+<td style="text-align: left;">Ethiopia</td>
+<td style="text-align: left;">Low income</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Cameroon</td>
-<td style="text-align: left;">Lower middle income</td>
+<td style="text-align: left;">Gambia, The</td>
+<td style="text-align: left;">Low income</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Comoros</td>
-<td style="text-align: left;">Lower middle income</td>
+<td style="text-align: left;">Guinea</td>
+<td style="text-align: left;">Low income</td>
 </tr>
 </tbody>
 </table>
@@ -517,8 +523,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The result has one row per country across both income groups. Because no country can belong to two income groups simultaneously, no duplicates exist here and <code>UNION ALL</code> and <code>UNION</code> would produce identical results. The next section uses an example where that is not the case.</p>
 <p><code>UNION ALL</code> is generally faster than <code>UNION</code> because it does no additional work to identify and remove duplicates. When you are certain the two result sets are disjoint, or when duplicates are acceptable, prefer <code>UNION ALL</code>.</p>
 </section>
-<section id="union" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="union"><span class="header-section-number">6.3</span> UNION</h2>
+<section id="union" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="union"><span class="header-section-number">7.3</span> UNION</h2>
 <p><code>UNION</code> works exactly like <code>UNION ALL</code> but adds a deduplication step: any row that appears in both result sets is included only once in the final output.</p>
 <p>To see the difference, consider the question: which countries appeared in the top ten by GDP per capita in both 2000 and 2022? <code>UNION ALL</code> gives every entry from both ranked lists, while <code>UNION</code> collapses the countries that appeared in both down to a single row.</p>
 <div class="cell">
@@ -665,8 +671,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="intersect" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="intersect"><span class="header-section-number">6.4</span> INTERSECT</h2>
+<section id="intersect" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="intersect"><span class="header-section-number">7.4</span> INTERSECT</h2>
 <p><code>INTERSECT</code> returns only the rows that appear in <strong>both</strong> result sets. It is the overlap.</p>
 <p>The <code>UNION</code> example above showed which countries appeared in either top-ten list. <code>INTERSECT</code> answers the narrower question: which countries appeared in both? The threshold here is raised to the top twenty to produce a more interesting result.</p>
 <div class="cell">
@@ -737,8 +743,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Fourteen countries appear in the top twenty by GDP per capita in both 2000 and 2022, representing a core group of economies that have ranked among the world’s wealthiest for at least two decades.</p>
 <p><code>INTERSECT</code> implicitly deduplicates, just like <code>UNION</code>. PostgreSQL also supports <code>INTERSECT ALL</code>, which preserves duplicates by keeping each row as many times as it appears in <em>both</em> result sets (the minimum count). <code>INTERSECT ALL</code> is rarely needed in practice.</p>
 </section>
-<section id="except" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="except"><span class="header-section-number">6.5</span> EXCEPT</h2>
+<section id="except" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="except"><span class="header-section-number">7.5</span> EXCEPT</h2>
 <p><code>EXCEPT</code> returns rows from the first result set that do <strong>not</strong> appear in the second. The order of the two queries matters: <code>A EXCEPT B</code> and <code>B EXCEPT A</code> return different results.</p>
 <p>The <code>indicators</code> table contains data stretching back to 1960, but many countries did not exist as independent nations at the start of that period. The query below identifies countries that have forest area data for 2022 but not for 1990, a gap that reveals which nations were established after 1990 rather than which ones simply have incomplete records.</p>
 <div class="cell">
@@ -866,8 +872,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Only a handful of countries had 1990 forest area data that is absent from 2022. This asymmetry is typical of <code>EXCEPT</code>: the result depends entirely on which query is listed first.</p>
 <p>Like <code>INTERSECT</code>, <code>EXCEPT</code> implicitly deduplicates. PostgreSQL supports <code>EXCEPT ALL</code> to preserve duplicates, but it is seldom used.</p>
 </section>
-<section id="ordering-the-combined-result" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="ordering-the-combined-result"><span class="header-section-number">6.6</span> Ordering the Combined Result</h2>
+<section id="ordering-the-combined-result" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="ordering-the-combined-result"><span class="header-section-number">7.6</span> Ordering the Combined Result</h2>
 <p>A single <code>ORDER BY</code> clause at the end of the entire statement sorts the combined result. It must reference columns by the names established in the first query, since those are the names the combined result carries.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> short_name, income_group</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
@@ -882,8 +888,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> income_group, short_name;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You cannot place <code>ORDER BY</code> at the end of the first query alone without parentheses: the database will raise a syntax error because <code>ORDER BY</code> is interpreted as applying to the entire statement, not just the first component. If you need each component sorted for its own <code>LIMIT</code> clause (as in the top-ten examples above), wrap that component in parentheses.</p>
 </section>
-<section id="chaining-set-operations" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="chaining-set-operations"><span class="header-section-number">6.7</span> Chaining Set Operations</h2>
+<section id="chaining-set-operations" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="chaining-set-operations"><span class="header-section-number">7.7</span> Chaining Set Operations</h2>
 <p>Multiple set operations can be chained in a single statement:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> short_name <span class="kw">FROM</span> countries <span class="kw">WHERE</span> income_group <span class="op">=</span> <span class="st">'Low income'</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">UNION</span></span>
@@ -892,10 +898,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> short_name <span class="kw">FROM</span> countries <span class="kw">WHERE</span> region <span class="op">=</span> <span class="st">'South Asia'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>When mixing operation types, be aware that <code>INTERSECT</code> binds more tightly than <code>UNION</code> and <code>EXCEPT</code>, similar to how multiplication binds before addition. The expression <code>A UNION B INTERSECT C</code> is evaluated as <code>A UNION (B INTERSECT C)</code>, not <code>(A UNION B) INTERSECT C</code>. Use parentheses to make the intended order explicit whenever you chain more than one type of set operation.</p>
 </section>
-<section id="exercises" class="level2" data-number="6.8">
-<h2 data-number="6.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.8</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="6.8.1">
-<h3 data-number="6.8.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">6.8.1</span> Reflection</h3>
+<section id="exercises" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">7.8</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="7.8.1">
+<h3 data-number="7.8.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">7.8.1</span> Reflection</h3>
 <ol type="1">
 <li><p>Explain the difference between <code>UNION</code> and <code>UNION ALL</code>. When would you prefer one over the other?</p></li>
 <li><p>A colleague combines two queries with <code>UNION</code> and gets back fewer rows than expected. What could explain the lower row count?</p></li>
@@ -903,8 +909,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Why must both queries in a set operation return the same number of columns with compatible data types? What would go wrong if they did not?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="6.8.2">
-<h3 data-number="6.8.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">6.8.2</span> Coding</h3>
+<section id="coding" class="level3" data-number="7.8.2">
+<h3 data-number="7.8.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">7.8.2</span> Coding</h3>
 <ol start="5" type="1">
 <li><p>Write a query using <code>UNION ALL</code> that combines all high-income countries and all upper-middle-income countries into a single result set. Include the <code>short_name</code> and <code>income_group</code> columns. Sort alphabetically by <code>short_name</code>.</p></li>
 <li><p>Rewrite the query from exercise 5 using <code>UNION</code> instead of <code>UNION ALL</code>. Explain whether the row count changes and why.</p></li>
@@ -1342,8 +1348,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./13-joins.html" class="pagination-link" aria-label="Joining Tables">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span>
+      <a href="./14-joins.html" class="pagination-link" aria-label="Joining Tables">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Joining Tables</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -1360,7 +1366,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/14-set-operations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/15-set-operations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

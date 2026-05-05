@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>16&nbsp; Deploying from VS Code – SQL for Data Science</title>
+<title>17&nbsp; Deploying from VS Code – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40-deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./42-supabase-vscode.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40-deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./42-supabase-vscode.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -202,14 +202,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./13-joins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  <a href="./13-aggregating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aggregating with GROUP BY</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./14-set-operations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
+  <a href="./14-joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-set-operations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
   </div>
 </li>
       </ul>
@@ -226,31 +232,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
       </ul>
@@ -267,19 +273,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
   </div>
 </li>
       </ul>
@@ -296,19 +302,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
@@ -325,25 +331,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -364,26 +370,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-supabase-cli" id="toc-the-supabase-cli" class="nav-link active" data-scroll-target="#the-supabase-cli"><span class="header-section-number">16.1</span> The Supabase CLI</a>
+  <li><a href="#the-supabase-cli" id="toc-the-supabase-cli" class="nav-link active" data-scroll-target="#the-supabase-cli"><span class="header-section-number">17.1</span> The Supabase CLI</a>
   <ul class="collapse">
-  <li><a href="#installing-the-cli" id="toc-installing-the-cli" class="nav-link" data-scroll-target="#installing-the-cli"><span class="header-section-number">16.1.1</span> Installing the CLI</a></li>
-  <li><a href="#logging-in" id="toc-logging-in" class="nav-link" data-scroll-target="#logging-in"><span class="header-section-number">16.1.2</span> Logging In</a></li>
+  <li><a href="#installing-the-cli" id="toc-installing-the-cli" class="nav-link" data-scroll-target="#installing-the-cli"><span class="header-section-number">17.1.1</span> Installing the CLI</a></li>
+  <li><a href="#logging-in" id="toc-logging-in" class="nav-link" data-scroll-target="#logging-in"><span class="header-section-number">17.1.2</span> Logging In</a></li>
   </ul></li>
-  <li><a href="#initializing-a-local-project" id="toc-initializing-a-local-project" class="nav-link" data-scroll-target="#initializing-a-local-project"><span class="header-section-number">16.2</span> Initializing a Local Project</a></li>
-  <li><a href="#linking-to-your-remote-project" id="toc-linking-to-your-remote-project" class="nav-link" data-scroll-target="#linking-to-your-remote-project"><span class="header-section-number">16.3</span> Linking to Your Remote Project</a></li>
-  <li><a href="#writing-your-first-migration" id="toc-writing-your-first-migration" class="nav-link" data-scroll-target="#writing-your-first-migration"><span class="header-section-number">16.4</span> Writing Your First Migration</a></li>
-  <li><a href="#pushing-to-supabase" id="toc-pushing-to-supabase" class="nav-link" data-scroll-target="#pushing-to-supabase"><span class="header-section-number">16.5</span> Pushing to Supabase</a></li>
-  <li><a href="#querying-supabase-from-vs-code" id="toc-querying-supabase-from-vs-code" class="nav-link" data-scroll-target="#querying-supabase-from-vs-code"><span class="header-section-number">16.6</span> Querying Supabase from VS Code</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">16.7</span> Exercises</a></li>
+  <li><a href="#initializing-a-local-project" id="toc-initializing-a-local-project" class="nav-link" data-scroll-target="#initializing-a-local-project"><span class="header-section-number">17.2</span> Initializing a Local Project</a></li>
+  <li><a href="#linking-to-your-remote-project" id="toc-linking-to-your-remote-project" class="nav-link" data-scroll-target="#linking-to-your-remote-project"><span class="header-section-number">17.3</span> Linking to Your Remote Project</a></li>
+  <li><a href="#writing-your-first-migration" id="toc-writing-your-first-migration" class="nav-link" data-scroll-target="#writing-your-first-migration"><span class="header-section-number">17.4</span> Writing Your First Migration</a></li>
+  <li><a href="#pushing-to-supabase" id="toc-pushing-to-supabase" class="nav-link" data-scroll-target="#pushing-to-supabase"><span class="header-section-number">17.5</span> Pushing to Supabase</a></li>
+  <li><a href="#querying-supabase-from-vs-code" id="toc-querying-supabase-from-vs-code" class="nav-link" data-scroll-target="#querying-supabase-from-vs-code"><span class="header-section-number">17.6</span> Querying Supabase from VS Code</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">17.7</span> Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/42-supabase-vscode.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40-deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./42-supabase-vscode.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40-deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./42-supabase-vscode.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></h1>
+<h1 class="title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></h1>
 </div>
 
 
@@ -402,11 +408,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>The Supabase SQL Editor is a capable tool for one-off queries and quick schema experiments. For sustained development work, though, it has the same drawbacks as any browser-based editor: no version control, no local file history, and no way to coordinate changes across a team. Writing your schema in VS Code and deploying it to Supabase via the command line addresses all three.</p>
 <p>This chapter introduces the Supabase CLI and walks through connecting it to the project you created in the previous chapter. By the end, you will be able to write SQL in VS Code, push schema changes to your remote Supabase database from the integrated terminal, and query the remote database from inside VS Code without switching to the browser.</p>
-<section id="the-supabase-cli" class="level2" data-number="16.1">
-<h2 data-number="16.1" class="anchored" data-anchor-id="the-supabase-cli"><span class="header-section-number">16.1</span> The Supabase CLI</h2>
+<section id="the-supabase-cli" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="the-supabase-cli"><span class="header-section-number">17.1</span> The Supabase CLI</h2>
 <p>The Supabase CLI is a command-line tool that manages the connection between your local development environment and a remote Supabase project. It handles authentication, project initialization, and database deployment. It is the foundation for the migration workflow introduced in the next chapter.</p>
-<section id="installing-the-cli" class="level3" data-number="16.1.1">
-<h3 data-number="16.1.1" class="anchored" data-anchor-id="installing-the-cli"><span class="header-section-number">16.1.1</span> Installing the CLI</h3>
+<section id="installing-the-cli" class="level3" data-number="17.1.1">
+<h3 data-number="17.1.1" class="anchored" data-anchor-id="installing-the-cli"><span class="header-section-number">17.1.1</span> Installing the CLI</h3>
 <p>Installation instructions vary by operating system. Choose the method appropriate for your machine.</p>
 <p><strong>macOS (Homebrew):</strong></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install supabase/tap/supabase</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -419,15 +425,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>After installation, confirm that the CLI is available:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="logging-in" class="level3" data-number="16.1.2">
-<h3 data-number="16.1.2" class="anchored" data-anchor-id="logging-in"><span class="header-section-number">16.1.2</span> Logging In</h3>
+<section id="logging-in" class="level3" data-number="17.1.2">
+<h3 data-number="17.1.2" class="anchored" data-anchor-id="logging-in"><span class="header-section-number">17.1.2</span> Logging In</h3>
 <p>Connect the CLI to your Supabase account:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> login</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This opens a browser window asking you to authorize the CLI. After approving access, the CLI stores your credentials locally. You will not need to log in again unless you switch machines or revoke the session.</p>
 </section>
 </section>
-<section id="initializing-a-local-project" class="level2" data-number="16.2">
-<h2 data-number="16.2" class="anchored" data-anchor-id="initializing-a-local-project"><span class="header-section-number">16.2</span> Initializing a Local Project</h2>
+<section id="initializing-a-local-project" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="initializing-a-local-project"><span class="header-section-number">17.2</span> Initializing a Local Project</h2>
 <p>In VS Code, open the folder where you want to keep your database project files. If this folder is already a git repository, that is ideal: the files the CLI generates are meant to be committed alongside your code.</p>
 <p>Open the integrated terminal with <code>Ctrl+``</code> (backtick) or via the Terminal menu, then run:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> init</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -440,8 +446,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add supabase/</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Initialize Supabase project structure"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="linking-to-your-remote-project" class="level2" data-number="16.3">
-<h2 data-number="16.3" class="anchored" data-anchor-id="linking-to-your-remote-project"><span class="header-section-number">16.3</span> Linking to Your Remote Project</h2>
+<section id="linking-to-your-remote-project" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="linking-to-your-remote-project"><span class="header-section-number">17.3</span> Linking to Your Remote Project</h2>
 <p>The CLI needs to know which Supabase project to deploy to. The link is made using your project’s reference ID.</p>
 <p>To find your reference ID:</p>
 <ol type="1">
@@ -463,8 +469,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="writing-your-first-migration" class="level2" data-number="16.4">
-<h2 data-number="16.4" class="anchored" data-anchor-id="writing-your-first-migration"><span class="header-section-number">16.4</span> Writing Your First Migration</h2>
+<section id="writing-your-first-migration" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="writing-your-first-migration"><span class="header-section-number">17.4</span> Writing Your First Migration</h2>
 <p>With the project initialized and linked, you are ready to write schema changes locally and push them to Supabase. The mechanism for doing this is the migration file.</p>
 <p>Create your first migration:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> migration new create_products_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -480,8 +486,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Save the file. The migration is ready to apply.</p>
 </section>
-<section id="pushing-to-supabase" class="level2" data-number="16.5">
-<h2 data-number="16.5" class="anchored" data-anchor-id="pushing-to-supabase"><span class="header-section-number">16.5</span> Pushing to Supabase</h2>
+<section id="pushing-to-supabase" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="pushing-to-supabase"><span class="header-section-number">17.5</span> Pushing to Supabase</h2>
 <p>Deploy all pending migration files to the remote database:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> db push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The CLI connects to your linked project, checks which migrations have already been applied, and runs only the new ones. For a fresh project with one migration file, it will run the <code>create_products_table</code> migration and report success.</p>
@@ -493,8 +499,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> ordinal_position;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This is the core deployment loop: write SQL locally in VS Code, push it to Supabase with one command, verify in the dashboard. The next chapter builds on this loop by explaining the migration system in more depth, including how Supabase tracks which files have been applied and how to design migrations that are safe to run and, if necessary, to roll back.</p>
 </section>
-<section id="querying-supabase-from-vs-code" class="level2" data-number="16.6">
-<h2 data-number="16.6" class="anchored" data-anchor-id="querying-supabase-from-vs-code"><span class="header-section-number">16.6</span> Querying Supabase from VS Code</h2>
+<section id="querying-supabase-from-vs-code" class="level2" data-number="17.6">
+<h2 data-number="17.6" class="anchored" data-anchor-id="querying-supabase-from-vs-code"><span class="header-section-number">17.6</span> Querying Supabase from VS Code</h2>
 <p>Pushing schema changes from VS Code is one half of the workflow. The other half is querying the remote database from inside VS Code without switching to the browser. Two VS Code extensions handle this well together: <strong>SQLTools</strong> (by Matheus Teixeira) and the <strong>SQLTools PostgreSQL/CockroachDB Driver</strong>.</p>
 <p>Install both from the VS Code Extensions panel (search for <code>SQLTools</code> and <code>SQLTools PostgreSQL</code>). Then:</p>
 <ol type="1">
@@ -522,8 +528,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="exercises" class="level2" data-number="16.7">
-<h2 data-number="16.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">16.7</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="17.7">
+<h2 data-number="17.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">17.7</span> Exercises</h2>
 <ol type="1">
 <li><p>Install the Supabase CLI on your machine and confirm the version with <code>supabase --version</code>.</p></li>
 <li><p>Create a new folder, initialize a Supabase project inside it with <code>supabase init</code>, and link it to your Supabase project from the previous chapter. Commit the generated <code>supabase/</code> directory to a git repository.</p></li>
@@ -961,12 +967,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./41-supabase-setup.html" class="pagination-link" aria-label="Getting Started with Supabase">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./43-database-migrations.html" class="pagination-link" aria-label="Database Migrations">
-        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Database Migrations</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

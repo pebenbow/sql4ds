@@ -55,27 +55,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -85,7 +65,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./13-joins.html" rel="next">
+<link href="./13-aggregating.html" rel="next">
 <link href="./11-select-statements.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
@@ -222,14 +202,20 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./13-joins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  <a href="./13-aggregating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aggregating with GROUP BY</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./14-set-operations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
+  <a href="./14-joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-set-operations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
   </div>
 </li>
       </ul>
@@ -246,31 +232,31 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
       </ul>
@@ -287,19 +273,19 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
   </div>
 </li>
       </ul>
@@ -316,19 +302,19 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
@@ -345,25 +331,25 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -405,6 +391,7 @@ div.csl-indent {
   <li><a href="#time" id="toc-time" class="nav-link" data-scroll-target="#time"><span class="header-section-number">4.5.2</span> TIME</a></li>
   <li><a href="#timestamp" id="toc-timestamp" class="nav-link" data-scroll-target="#timestamp"><span class="header-section-number">4.5.3</span> TIMESTAMP</a></li>
   <li><a href="#interval" id="toc-interval" class="nav-link" data-scroll-target="#interval"><span class="header-section-number">4.5.4</span> INTERVAL</a></li>
+  <li><a href="#extract" id="toc-extract" class="nav-link" data-scroll-target="#extract"><span class="header-section-number">4.5.5</span> EXTRACT</a></li>
   </ul></li>
   <li><a href="#type-conversion" id="toc-type-conversion" class="nav-link" data-scroll-target="#type-conversion"><span class="header-section-number">4.6</span> Type Conversion</a>
   <ul class="collapse">
@@ -440,180 +427,155 @@ div.csl-indent {
 
 
 <p>In the previous chapter, you encountered a line that looked like this:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ROUND</span>(population:<span class="ch">:numeric</span> <span class="op">/</span> area, <span class="dv">1</span>) <span class="kw">AS</span> pop_per_sq_km</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ROUND</span>(height_cm <span class="op">/</span> <span class="fl">2.54</span>:<span class="ch">:numeric</span>, <span class="dv">1</span>) <span class="kw">AS</span> height_in</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The <code>::numeric</code> piece is a <strong>type cast</strong>: an instruction that tells PostgreSQL to treat one value as a different data type. This chapter explains why that was necessary, what data types PostgreSQL provides, and how to convert between them.</p>
 <p>Every value stored in a database has a data type, which tells the database how to store the value, how much space to allocate, and what operations are valid on it. Adding two integers produces a different result than concatenating two strings, and dividing a whole number by another whole number produces a different result than dividing two decimals. Choosing the right data type for each column is one of the most consequential decisions you make when designing a database.</p>
 <section id="inspecting-column-types" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="inspecting-column-types"><span class="header-section-number">4.1</span> Inspecting Column Types</h2>
-<p>Before discussing types in the abstract, it helps to see what types the <code>countries</code> table actually uses. The most straightforward way to do this is to query the database’s <code>information_schema</code>, a set of background objects in every PostgreSQL database that describe the structure of the database itself, like a metadata catalog.</p>
-<p>There are numerous tables in <code>information_schema</code> you can explore</p>
+<p>Before discussing types in the abstract, it helps to see what types the <code>actors</code> table actually uses. The most direct way to do this is to query <code>information_schema.columns</code>, a catalog view available in every PostgreSQL database that describes the structure of the database itself.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column_name, data_type</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> information_schema.<span class="kw">columns</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> table_name <span class="op">=</span> <span class="st">'countries'</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> ordinal_position;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>11 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">column_name</th>
-<th style="text-align: left;">data_type</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">country</td>
-<td style="text-align: left;">character varying</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">iso2c</td>
-<td style="text-align: left;">character varying</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">iso3c</td>
-<td style="text-align: left;">character varying</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">yr</td>
-<td style="text-align: left;">integer</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">population</td>
-<td style="text-align: left;">bigint</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">area</td>
-<td style="text-align: left;">numeric</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">lastupdated</td>
-<td style="text-align: left;">date</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">region</td>
-<td style="text-align: left;">character varying</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">capital</td>
-<td style="text-align: left;">character varying</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">longitude</td>
-<td style="text-align: left;">real</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">latitude</td>
-<td style="text-align: left;">real</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>An alternative approach uses the <code>pg_typeof()</code> function to return the data type of any <strong>expression</strong> in your query. This includes columns in tables, but it can also be used to see the data type that is produced by an arithmetic expression, like in the example here.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country,</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    pg_typeof(population) <span class="kw">AS</span> pop_typeof,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(area) <span class="kw">AS</span> area_typeof,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(population:<span class="ch">:numeric</span> <span class="op">/</span> area, <span class="dv">1</span>) <span class="kw">AS</span> pop_per_sq_km,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fu">ROUND</span>(population:<span class="ch">:numeric</span> <span class="op">/</span> area, <span class="dv">1</span>)) <span class="kw">AS</span> density_typeof</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> area <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column_name, data_type, character_maximum_length,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>       numeric_precision, numeric_scale</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   information_schema.<span class="kw">columns</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  table_name <span class="op">=</span> <span class="st">'actors'</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> ordinal_position;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
 <colgroup>
-<col style="width: 27%">
-<col style="width: 15%">
-<col style="width: 16%">
 <col style="width: 19%">
-<col style="width: 20%">
+<col style="width: 19%">
+<col style="width: 26%">
+<col style="width: 19%">
+<col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">country</th>
-<th style="text-align: left;">pop_typeof</th>
-<th style="text-align: left;">area_typeof</th>
-<th style="text-align: right;">pop_per_sq_km</th>
-<th style="text-align: left;">density_typeof</th>
+<th style="text-align: left;">column_name</th>
+<th style="text-align: left;">data_type</th>
+<th style="text-align: right;">character_maximum_length</th>
+<th style="text-align: right;">numeric_precision</th>
+<th style="text-align: right;">numeric_scale</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Afghanistan</td>
-<td style="text-align: left;">bigint</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">62.2</td>
-<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">actor_id</td>
+<td style="text-align: left;">integer</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Albania</td>
-<td style="text-align: left;">bigint</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">101.4</td>
-<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">first_name</td>
+<td style="text-align: left;">character varying</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">NULL</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Algeria</td>
-<td style="text-align: left;">bigint</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">19.1</td>
-<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">last_name</td>
+<td style="text-align: left;">character varying</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">NULL</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">American Samoa</td>
-<td style="text-align: left;">bigint</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">241.7</td>
-<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">birth_name</td>
+<td style="text-align: left;">character varying</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">NULL</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Andorra</td>
-<td style="text-align: left;">bigint</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">169.6</td>
-<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">sex</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">NULL</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Angola</td>
-<td style="text-align: left;">bigint</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">28.6</td>
-<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">birth_date</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">NULL</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Antigua and Barbuda</td>
-<td style="text-align: left;">bigint</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">211.0</td>
-<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">death_date</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">NULL</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Argentina</td>
-<td style="text-align: left;">bigint</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">16.6</td>
-<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">birth_country</td>
+<td style="text-align: left;">character varying</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">NULL</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Armenia</td>
-<td style="text-align: left;">bigint</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">104.3</td>
-<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">height_cm</td>
+<td style="text-align: left;">smallint</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Aruba</td>
-<td style="text-align: left;">bigint</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">596.2</td>
+<td style="text-align: left;">oscar_nominations</td>
+<td style="text-align: left;">smallint</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The <code>data_type</code> column uses standard SQL type names. <code>character varying</code> is the standard name for <code>VARCHAR</code>, and <code>character</code> is the standard name for <code>CHAR</code>. PostgreSQL accepts both forms — the catalog stores the standard names regardless of which form you used when creating the table.</p>
+<p>An alternative approach uses the <code>pg_typeof()</code> function to return the data type of any <strong>expression</strong> in your query. This includes table columns, but it also works on computed expressions, literals, and the results of function calls.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    pg_typeof(actor_id)             <span class="kw">AS</span> actor_id_type,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(height_cm)            <span class="kw">AS</span> height_cm_type,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    pg_typeof(birth_date)           <span class="kw">AS</span> birth_date_type,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    pg_typeof(has_honorary_oscar)   <span class="kw">AS</span> honorary_type,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    pg_typeof(total_box_office_usd) <span class="kw">AS</span> box_office_type</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">1</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>1 records</caption>
+<colgroup>
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 21%">
+<col style="width: 18%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">actor_id_type</th>
+<th style="text-align: left;">height_cm_type</th>
+<th style="text-align: left;">birth_date_type</th>
+<th style="text-align: left;">honorary_type</th>
+<th style="text-align: left;">box_office_type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">integer</td>
+<td style="text-align: left;">smallint</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: left;">boolean</td>
 <td style="text-align: left;">numeric</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>The result maps each column to a concrete type. The sections below work through each of these type families, explain what they mean, and show where they appear in the table.</p>
+<p>The sections below work through each type family, explain what they mean, and show where they appear in the <code>actors</code> table.</p>
 </section>
 <section id="text-types" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="text-types"><span class="header-section-number">4.2</span> Text Types</h2>
@@ -621,19 +583,97 @@ div.csl-indent {
 <section id="charn" class="level3" data-number="4.2.1">
 <h3 data-number="4.2.1" class="anchored" data-anchor-id="charn"><span class="header-section-number">4.2.1</span> CHAR(n)</h3>
 <p><code>CHAR(n)</code> stores a fixed-length string of exactly <code>n</code> characters. If the value you insert is shorter than <code>n</code>, PostgreSQL pads it with trailing spaces to reach the declared length. If it is longer, you get an error.</p>
-<p>Fixed-length character types made sense decades ago when storage was expensive and padding simplified low-level file management. They are rarely used in modern database design, but you will encounter them in older systems and legacy schemas, so it is worth knowing what they are.</p>
+<p>The <code>sex</code> column in the <code>actors</code> table is <code>CHAR(1)</code> — exactly one character, always either <code>'M'</code> or <code>'F'</code>. Fixed-length types like this made sense decades ago when storage was expensive and padding simplified low-level file management. For a single-character code that is always exactly one character long, <code>CHAR(1)</code> is still a reasonable choice. In most other situations, <code>VARCHAR</code> or <code>TEXT</code> is preferable.</p>
 </section>
 <section id="varcharn" class="level3" data-number="4.2.2">
 <h3 data-number="4.2.2" class="anchored" data-anchor-id="varcharn"><span class="header-section-number">4.2.2</span> VARCHAR(n)</h3>
-<p><code>VARCHAR(n)</code> stores a variable-length string up to a maximum of <code>n</code> characters. No padding is added; the value is stored exactly as written. Most of the text columns in the <code>countries</code> table are <code>VARCHAR(200)</code>, meaning they can hold up to 200 characters. You can also specify <code>VARCHAR</code> without the length limit <code>n</code>, which creates a column that can store as much text as you need.</p>
-<p><code>VARCHAR</code> is also often written out as <code>character varying</code>, like in the queries above from the <code>information_schema</code> table.</p>
+<p><code>VARCHAR(n)</code> stores a variable-length string up to a maximum of <code>n</code> characters. No padding is added; the value is stored exactly as written. Most of the text columns in the <code>actors</code> table use <code>VARCHAR</code> with a length limit — <code>first_name</code> and <code>last_name</code> are <code>VARCHAR(50)</code>, <code>birth_country</code> and <code>primary_genre</code> are shorter, and <code>birth_name</code> is <code>VARCHAR(100)</code> to accommodate longer legal names.</p>
+<p><code>VARCHAR</code> is also written as <code>character varying</code> in catalog queries, as you saw in the <code>information_schema</code> output above.</p>
 </section>
 <section id="text" class="level3" data-number="4.2.3">
 <h3 data-number="4.2.3" class="anchored" data-anchor-id="text"><span class="header-section-number">4.2.3</span> TEXT</h3>
-<p><code>TEXT</code> stores a variable-length string with no upper limit on length. In PostgreSQL, <code>TEXT</code> and <code>VARCHAR</code> are implemented identically under the hood; the only practical difference is that <code>VARCHAR(n)</code> enforces a length cap, whereas <code>TEXT</code> and <code>VARCHAR</code> (without <code>n</code>) do not.</p>
-<p>In most other databases, <code>VARCHAR(n)</code> is the default choice for text columns. I spent the first several years of my career working almost exclusively in Microsoft SQL Server, where the <code>TEXT</code> data type was deprecated decades ago because using <code>TEXT</code> took up much more storage space and led to slower queries, so the best practice I learned was always to use <code>VARCHAR(n)</code> data types. However, PostgreSQL implements <code>TEXT</code> differently from other variations of SQL databases. Using <code>TEXT</code> in PostgreSQL poses no performance or storage concerns, so it avoids the overhead of enforcing a length constraint that is rarely meaningful in practice.</p>
-<p>For more on this, read <a href="https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don't_use_varchar(n)_by_default" target="_blank">Don’t use varchar(n) by default</a> from the PostgreSQL wiki.</p>
-<p>Thus, if you do not have a specific reason to cap the length of a column, <code>TEXT</code> is a reasonable default.</p>
+<p><code>TEXT</code> stores a variable-length string with no upper limit on length. The <code>notable_role</code> column uses <code>TEXT</code> — film titles have no predictable maximum length, and there is no meaningful cap to enforce.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, notable_role</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> last_name</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span>  <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">first_name</th>
+<th style="text-align: left;">last_name</th>
+<th style="text-align: left;">notable_role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Victoria</td>
+<td style="text-align: left;">Abril</td>
+<td style="text-align: left;">Tie Me Up! Tie Me Down!</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Amy</td>
+<td style="text-align: left;">Adams</td>
+<td style="text-align: left;">Arrival</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mahershala</td>
+<td style="text-align: left;">Ali</td>
+<td style="text-align: left;">Moonlight</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bibi</td>
+<td style="text-align: left;">Andersson</td>
+<td style="text-align: left;">Persona</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Harriet</td>
+<td style="text-align: left;">Andersson</td>
+<td style="text-align: left;">Summer with Monika</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Julie</td>
+<td style="text-align: left;">Andrews</td>
+<td style="text-align: left;">The Sound of Music</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Fred</td>
+<td style="text-align: left;">Astaire</td>
+<td style="text-align: left;">Top Hat</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Amitabh</td>
+<td style="text-align: left;">Bachchan</td>
+<td style="text-align: left;">Deewar</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kevin</td>
+<td style="text-align: left;">Bacon</td>
+<td style="text-align: left;">A Few Good Men</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eric</td>
+<td style="text-align: left;">Bana</td>
+<td style="text-align: left;">Munich</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In PostgreSQL, <code>TEXT</code> and <code>VARCHAR</code> without a length limit are implemented identically under the hood. The only practical difference is that <code>VARCHAR(n)</code> enforces a length cap, whereas <code>TEXT</code> does not. Some other databases deprecated <code>TEXT</code> years ago because it was inefficient, which led to a widespread convention of always using <code>VARCHAR(n)</code>. PostgreSQL does not have that limitation. If you do not have a specific reason to cap the length of a column, <code>TEXT</code> is a reasonable default.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>For more on this, see <a href="https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don't_use_varchar(n)_by_default" target="_blank">Don’t use varchar(n) by default</a> from the PostgreSQL wiki.</p>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="numeric-types" class="level2" data-number="4.3">
@@ -644,9 +684,9 @@ div.csl-indent {
 <p>Integer types store whole numbers with no decimal component. PostgreSQL provides three sizes:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 17%">
-<col style="width: 13%">
-<col style="width: 69%">
+<col style="width: 15%">
+<col style="width: 11%">
+<col style="width: 73%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -659,51 +699,132 @@ div.csl-indent {
 <tr class="odd">
 <td><code>SMALLINT</code></td>
 <td>2 bytes</td>
-<td>-32,768 to 32,767</td>
+<td>−32,768 to 32,767</td>
 </tr>
 <tr class="even">
 <td><code>INTEGER</code></td>
 <td>4 bytes</td>
-<td>-2,147,483,648 to 2,147,483,647</td>
+<td>−2,147,483,648 to 2,147,483,647</td>
 </tr>
 <tr class="odd">
 <td><code>BIGINT</code></td>
 <td>8 bytes</td>
-<td>-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</td>
+<td>−9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</td>
 </tr>
 </tbody>
 </table>
-<p>The <code>yr</code> column in the <code>countries</code> table is an <code>INTEGER</code>, appropriate for a four-digit year. The <code>population</code> column is a <code>BIGINT</code>, which may seem excessive since the largest country in the world, India, only has a 2022 population of about 1.4 billion, but it is a prudent choice because 32-bit integer types like <code>INTEGER</code> would not be able to store values above roughly two billion.</p>
-<p>In practice, any column that could potentially hold a value above a certain threshold should be defined with a data type that can accommodate that value to avoid potential future overflow issues. An <strong>overflow error</strong> occurs when you try to store a value that is too large for the data type of the column. For example, PostgreSQL usually returns a message like this when it encounters an overflow error on an integer-type column:</p>
+<p>The <code>actors</code> table uses <code>SMALLINT</code> for <code>height_cm</code>, <code>oscar_nominations</code>, and <code>oscar_wins</code> — all values that comfortably fit within the −32,768 to 32,767 range. <code>actor_id</code> uses plain <code>INTEGER</code>. No column uses <code>BIGINT</code>, but it is the right choice whenever a whole-number value could exceed roughly two billion — population counts, row identifiers in very large tables, or any counter expected to grow without bound.</p>
+<p>An <strong>overflow error</strong> occurs when you try to store a value that is too large for the column’s type. PostgreSQL raises an error like this:</p>
 <pre><code>SQLSTATE 22003: integer out of range</code></pre>
-<p>For example, if we had defined <code>population</code> as <code>SMALLINT</code> and then tried to insert India’s population of 1.4 billion, you would get an overflow error similar to the one above because 1.4 billion exceeds the maximum value for the <code>SMALLINT</code> type.</p>
-<p><code>BIGINT</code> is a 64-bit integer type, meaning it has more storage capacity in terms of bytes. Crucially, 64-bit integers are not significantly more expensive to store or compute with than 32-bit integers on modern hardware, so it poses very little harm to use <code>BIGINT</code> for any whole-number column that could potentially exceed the limits of <code>INTEGER</code>. In fact, many database designers choose to use <code>BIGINT</code> for all whole-number columns as a best practice to future-proof their schemas against overflow issues <span class="citation" data-cites="lambert2021">(<a href="99-references.html#ref-lambert2021" role="doc-biblioref">Lambert 2021</a>)</span>.</p>
-<p>In olden times, it was best practice to choose the smallest type that comfortably fits your data. With modern hardware and PostgreSQL’s efficient implementation of <code>BIGINT</code>, it is often more practical to use <code>BIGINT</code> for all whole-number columns unless you have a specific reason to use a smaller type. This approach simplifies schema design and eliminates the risk of overflow errors without incurring significant performance or storage costs.</p>
+<p>On modern hardware, <code>BIGINT</code> is not meaningfully more expensive to store or query than <code>INTEGER</code>. Many database designers use <code>BIGINT</code> for all whole-number columns as a precaution, to avoid having to migrate a column type later when values grow larger than anticipated.</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>PostgreSQL also provides <code>SERIAL</code>, <code>SMALLSERIAL</code>, and <code>BIGSERIAL</code> as shorthand for auto-incrementing integer columns. They are commonly used for primary keys, a topic which we will cover in an upcoming chapter. Modern PostgreSQL (version 10 and later) prefers <code>GENERATED ALWAYS AS IDENTITY</code> for new tables, but you will see <code>SERIAL</code> frequently in existing schemas.</p>
+<p>PostgreSQL also provides <code>SERIAL</code>, <code>SMALLSERIAL</code>, and <code>BIGSERIAL</code> as shorthand for auto-incrementing integer columns, commonly used for primary keys. Modern PostgreSQL (version 10 and later) prefers <code>GENERATED ALWAYS AS IDENTITY</code> for new tables, but you will see <code>SERIAL</code> frequently in existing schemas. Both are covered in the chapter on creating tables.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="numeric-and-decimal" class="level3" data-number="4.3.2">
 <h3 data-number="4.3.2" class="anchored" data-anchor-id="numeric-and-decimal"><span class="header-section-number">4.3.2</span> NUMERIC and DECIMAL</h3>
-<p><code>NUMERIC(precision, scale)</code> stores exact decimal numbers. The <code>precision</code> is the total number of significant digits, and <code>scale</code> is the number of digits to the right of the decimal point. <code>DECIMAL</code> is a synonym for <code>NUMERIC</code>; they are interchangeable data types.</p>
-<p>For example, <code>NUMERIC(8, 2)</code> can store values up to 999,999.99 with exactly two decimal places. The <code>area</code> column in the <code>countries</code> table is plain <code>NUMERIC</code> with no precision or scale specified, which means it can hold a decimal number of any size with any number of decimal digits.</p>
-<p>Because <code>NUMERIC</code> uses exact arithmetic, it is the correct choice for financial and monetary data where rounding errors are unacceptable.</p>
+<p><code>NUMERIC(precision, scale)</code> stores exact decimal numbers. The <code>precision</code> is the total number of significant digits, and <code>scale</code> is the number of digits to the right of the decimal point. <code>DECIMAL</code> is a synonym for <code>NUMERIC</code>; they are interchangeable.</p>
+<p>The <code>total_box_office_usd</code> column is <code>NUMERIC(12, 0)</code> — up to twelve significant digits with no decimal places, suitable for whole-dollar box office figures up to $999,999,999,999.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       total_box_office_usd,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>       total_box_office_usd <span class="op">/</span> <span class="dv">1000000</span> <span class="kw">AS</span> millions</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> total_box_office_usd <span class="kw">DESC</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span>  <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">first_name</th>
+<th style="text-align: left;">last_name</th>
+<th style="text-align: right;">total_box_office_usd</th>
+<th style="text-align: right;">millions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Chris</td>
+<td style="text-align: left;">Hemsworth</td>
+<td style="text-align: right;">9.2e+09</td>
+<td style="text-align: right;">9200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cate</td>
+<td style="text-align: left;">Blanchett</td>
+<td style="text-align: right;">5.1e+09</td>
+<td style="text-align: right;">5100</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tom</td>
+<td style="text-align: left;">Hanks</td>
+<td style="text-align: right;">4.8e+09</td>
+<td style="text-align: right;">4800</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hugh</td>
+<td style="text-align: left;">Jackman</td>
+<td style="text-align: right;">4.6e+09</td>
+<td style="text-align: right;">4600</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Benedict</td>
+<td style="text-align: left;">Cumberbatch</td>
+<td style="text-align: right;">4.5e+09</td>
+<td style="text-align: right;">4500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jennifer</td>
+<td style="text-align: left;">Lawrence</td>
+<td style="text-align: right;">4.2e+09</td>
+<td style="text-align: right;">4200</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brad</td>
+<td style="text-align: left;">Pitt</td>
+<td style="text-align: right;">4.1e+09</td>
+<td style="text-align: right;">4100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Nicole</td>
+<td style="text-align: left;">Kidman</td>
+<td style="text-align: right;">3.8e+09</td>
+<td style="text-align: right;">3800</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Robert</td>
+<td style="text-align: left;">De Niro</td>
+<td style="text-align: right;">3.5e+09</td>
+<td style="text-align: right;">3500</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Julia</td>
+<td style="text-align: left;">Roberts</td>
+<td style="text-align: right;">3.4e+09</td>
+<td style="text-align: right;">3400</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Because <code>NUMERIC</code> uses exact arithmetic, it is the correct choice for financial and monetary data where rounding errors are unacceptable. The result of dividing two <code>NUMERIC</code> values is always exact, unlike floating-point arithmetic.</p>
 </section>
 <section id="money" class="level3" data-number="4.3.3">
 <h3 data-number="4.3.3" class="anchored" data-anchor-id="money"><span class="header-section-number">4.3.3</span> MONEY</h3>
-<p>PostgreSQL includes a <code>MONEY</code> type specifically for currency amounts. It stores values as an 8-byte integer internally and always displays them with exactly two decimal places, formatted according to the database server’s locale setting. On a server configured for <code>en_US.utf8</code>, for example, the value <code>1234.56</code> is stored and displayed as <code>$1,234.56</code>, complete with dollar sign and thousands separator.</p>
+<p>PostgreSQL includes a <code>MONEY</code> type specifically for currency amounts. It stores values as an 8-byte integer internally and always displays them with exactly two decimal places, formatted according to the database server’s locale setting.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span>                <span class="kw">AS</span> amount,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span>)     <span class="kw">AS</span> stored_as,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span>:<span class="ch">:text</span>          <span class="kw">AS</span> text_representation;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span>                  <span class="kw">AS</span> amount,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span>)       <span class="kw">AS</span> stored_as,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span>:<span class="ch">:text</span>            <span class="kw">AS</span> text_representation;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>1 records</caption>
@@ -725,14 +846,14 @@ div.csl-indent {
 </div>
 </div>
 <p>At first glance, <code>MONEY</code> looks convenient for financial data. In practice, it has several rough edges worth understanding.</p>
-<p><strong>Locale-dependent output.</strong> The formatted output of a <code>MONEY</code> value depends on the <code>lc_monetary</code> locale configured on the server. Two databases with different locale settings will display the same stored value differently, and a value accepted as valid input on one server may be rejected as invalid on another. This makes <code>MONEY</code> values fragile to move between systems.</p>
-<p><strong>Arithmetic produces unexpected types.</strong> Dividing a <code>MONEY</code> value by an integer returns <code>MONEY</code>, which is intuitive. Dividing a <code>MONEY</code> value by another <code>MONEY</code> value, however, returns <code>DOUBLE PRECISION</code>, not <code>MONEY</code> or <code>NUMERIC</code>. This means computing a ratio or percentage between two monetary amounts quietly introduces floating-point approximation into a calculation you might expect to be exact.</p>
+<p><strong>Locale-dependent output.</strong> The formatted output of a <code>MONEY</code> value depends on the <code>lc_monetary</code> locale configured on the server. Two databases with different locale settings will display the same stored value differently, and a value accepted as valid input on one server may be rejected on another.</p>
+<p><strong>Arithmetic produces unexpected types.</strong> Dividing a <code>MONEY</code> value by an integer returns <code>MONEY</code>, which is intuitive. Dividing a <code>MONEY</code> value by another <code>MONEY</code> value, however, returns <code>DOUBLE PRECISION</code>, not <code>MONEY</code> or <code>NUMERIC</code>. This silently introduces floating-point approximation into a calculation you might expect to be exact.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">2</span>                   <span class="kw">AS</span> divided_by_int,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">2</span>)        <span class="kw">AS</span> type_after_int_division,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">100</span>:<span class="ch">:money</span>          <span class="kw">AS</span> divided_by_money,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">100</span>:<span class="ch">:money</span>) <span class="kw">AS</span> type_after_money_division;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">2</span>                    <span class="kw">AS</span> divided_by_int,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">2</span>)         <span class="kw">AS</span> type_after_int_division,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">100</span>:<span class="ch">:money</span>           <span class="kw">AS</span> divided_by_money,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">100</span>:<span class="ch">:money</span>) <span class="kw">AS</span> type_after_money_division;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>1 records</caption>
@@ -761,28 +882,53 @@ div.csl-indent {
 </table>
 </div>
 </div>
-<p><strong>Casting requires care.</strong> In PostgreSQL 17, <code>MONEY</code> can be cast directly to <code>NUMERIC</code>. In older versions, the cast had to pass through <code>TEXT</code> first (<code>money_col::text::numeric</code>) because the <code>MONEY</code> to <code>NUMERIC</code> cast path was not defined. Even today, the <code>TEXT</code> representation of a <code>MONEY</code> value includes the currency symbol and locale-specific formatting, so code that depends on <code>MONEY::TEXT</code> producing a plain number will break on servers with different locale settings.</p>
 <div class="callout callout-style-simple callout-warning">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>The PostgreSQL wiki’s “Don’t Do This” guide lists <code>MONEY</code> as a type to avoid, for the reasons above. For financial data, <code>NUMERIC(precision, 2)</code> is the safer and more portable choice: it provides exact arithmetic, predictable output regardless of server locale, and straightforward casting to other numeric types. You will encounter <code>MONEY</code> in existing databases, so it is important to recognize it, but new columns storing currency should use <code>NUMERIC</code>.</p>
+<p>The PostgreSQL wiki’s “Don’t Do This” guide lists <code>MONEY</code> as a type to avoid. For financial data, <code>NUMERIC(precision, 2)</code> is the safer and more portable choice. You will encounter <code>MONEY</code> in existing databases, so it is important to recognize it, but new columns storing currency should use <code>NUMERIC</code>.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="real-and-double-precision" class="level3" data-number="4.3.4">
 <h3 data-number="4.3.4" class="anchored" data-anchor-id="real-and-double-precision"><span class="header-section-number">4.3.4</span> REAL and DOUBLE PRECISION</h3>
-<p><code>REAL</code> (4 bytes) and <code>DOUBLE PRECISION</code> (8 bytes) store floating-point numbers, which are approximations rather than exact values. They follow the IEEE 754 standard used by most programming languages for <code>float</code> and <code>double</code> types. The <code>longitude</code> and <code>latitude</code> columns in the <code>countries</code> table are both <code>REAL</code>, providing roughly six significant decimal digits of precision, which is more than adequate for geographic coordinates.</p>
+<p><code>REAL</code> (4 bytes) and <code>DOUBLE PRECISION</code> (8 bytes) store floating-point numbers — approximations rather than exact values. They follow the IEEE 754 standard used by most programming languages for <code>float</code> and <code>double</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">3.14</span>)            <span class="kw">AS</span> uncast_literal,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">3.14</span>:<span class="ch">:real</span>)      <span class="kw">AS</span> real_type,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">3.14</span>:<span class="ch">:float8</span>)    <span class="kw">AS</span> double_type;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">uncast_literal</th>
+<th style="text-align: left;">real_type</th>
+<th style="text-align: left;">double_type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">real</td>
+<td style="text-align: left;">double precision</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Floating-point types are appropriate for scientific measurements, geographic coordinates, and other values where a tiny approximation error is acceptable. They are not appropriate for financial amounts.</p>
 <div class="callout callout-style-simple callout-warning">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>Floating-point arithmetic can introduce tiny rounding errors that accumulate with repeated calculations. This makes <code>REAL</code> and <code>DOUBLE PRECISION</code> unsuitable for financial amounts, where a result like $9.99999999 instead of $10.00 is a real problem. Use <code>NUMERIC</code> for any values that require exact decimal arithmetic.</p>
+<p>Floating-point arithmetic can introduce tiny rounding errors that accumulate with repeated calculations. <code>0.1::real + 0.2::real</code> does not always equal <code>0.3</code> exactly. Use <code>NUMERIC</code> for any values that require exact decimal arithmetic.</p>
 </div>
 </div>
 </div>
@@ -790,171 +936,278 @@ div.csl-indent {
 </section>
 <section id="boolean" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="boolean"><span class="header-section-number">4.4</span> Boolean</h2>
-<p>The <code>BOOLEAN</code> type stores a truth value: <code>TRUE</code>, <code>FALSE</code>, or <code>NULL</code>. Boolean columns are used to record yes/no or on/off attributes, such as whether a row has been processed or whether a flag is active.</p>
-<p>While the <code>countries</code> table has no boolean columns, you produce boolean values whenever you write a comparison expression in a query. The following query adds a computed column that evaluates to <code>TRUE</code> for countries with populations above 100 million and <code>FALSE</code> for all others.</p>
+<p>The <code>BOOLEAN</code> type stores a truth value: <code>TRUE</code>, <code>FALSE</code>, or <code>NULL</code>. The <code>has_honorary_oscar</code> column in the <code>actors</code> table is a boolean — each actor either has received an honorary Oscar or has not.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    country,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    population,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    population <span class="op">&gt;</span> <span class="dv">100000000</span> <span class="kw">AS</span> is_major_country</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> population <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, has_honorary_oscar, oscar_wins</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  has_honorary_oscar <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> last_name;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">country</th>
-<th style="text-align: right;">population</th>
-<th style="text-align: left;">is_major_country</th>
+<th style="text-align: left;">first_name</th>
+<th style="text-align: left;">last_name</th>
+<th style="text-align: left;">has_honorary_oscar</th>
+<th style="text-align: right;">oscar_wins</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">India</td>
-<td style="text-align: right;">1425423212</td>
+<td style="text-align: left;">Julie</td>
+<td style="text-align: left;">Andrews</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kirk</td>
+<td style="text-align: left;">Douglas</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clint</td>
+<td style="text-align: left;">Eastwood</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Whoopi</td>
+<td style="text-align: left;">Goldberg</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cary</td>
+<td style="text-align: left;">Grant</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Alec</td>
+<td style="text-align: left;">Guinness</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Audrey</td>
+<td style="text-align: left;">Hepburn</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Charlton</td>
+<td style="text-align: left;">Heston</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gene</td>
+<td style="text-align: left;">Kelly</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sophia</td>
+<td style="text-align: left;">Loren</td>
+<td style="text-align: left;">TRUE</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>PostgreSQL displays boolean values as <code>t</code> and <code>f</code> in the terminal, though it accepts several input forms: <code>TRUE</code>/<code>FALSE</code>, <code>'t'</code>/‘f’<code>,</code>‘yes’<code>/</code>‘no’<code>,</code>‘1’<code>/</code>‘0’<code>, and</code>‘on’<code>/</code>‘off’<code>. Applications and reporting tools typically render them as</code>true<code>/</code>false` or checkboxes depending on context.</p>
+<p>Boolean values also arise naturally whenever you write a comparison expression. The following query adds a computed boolean column that is <code>TRUE</code> for actors with more than one Oscar win:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name <span class="kw">AS</span> full_name,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    oscar_wins,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    oscar_wins <span class="op">&gt;</span> <span class="dv">1</span> <span class="kw">AS</span> multiple_wins</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> oscar_wins <span class="kw">DESC</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">full_name</th>
+<th style="text-align: right;">oscar_wins</th>
+<th style="text-align: left;">multiple_wins</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Katharine Hepburn</td>
+<td style="text-align: right;">4</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">China</td>
-<td style="text-align: right;">1412175000</td>
+<td style="text-align: left;">Jack Nicholson</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">United States</td>
-<td style="text-align: right;">333271411</td>
+<td style="text-align: left;">Daniel Day-Lewis</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Indonesia</td>
-<td style="text-align: right;">278830529</td>
+<td style="text-align: left;">Walter Brennan</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Pakistan</td>
-<td style="text-align: right;">243700667</td>
+<td style="text-align: left;">Meryl Streep</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Nigeria</td>
-<td style="text-align: right;">223150896</td>
+<td style="text-align: left;">Ingrid Bergman</td>
+<td style="text-align: right;">3</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Brazil</td>
-<td style="text-align: right;">210306415</td>
+<td style="text-align: left;">Cate Blanchett</td>
+<td style="text-align: right;">2</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Bangladesh</td>
-<td style="text-align: right;">169384897</td>
+<td style="text-align: left;">Bette Davis</td>
+<td style="text-align: right;">2</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Russian Federation</td>
-<td style="text-align: right;">144236933</td>
+<td style="text-align: left;">Marlon Brando</td>
+<td style="text-align: right;">2</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Mexico</td>
-<td style="text-align: right;">128613117</td>
+<td style="text-align: left;">Denzel Washington</td>
+<td style="text-align: right;">2</td>
 <td style="text-align: left;">TRUE</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>Notice that PostgreSQL displays boolean values as <code>t</code> and <code>f</code> in the terminal. Applications and reporting tools typically render them as <code>true</code>/<code>false</code> or checkboxes depending on context.</p>
+<p>The expression <code>oscar_wins &gt; 1</code> evaluates to a <code>BOOLEAN</code> for each row. This is the same kind of expression you write in a <code>WHERE</code> clause — the difference here is that we are selecting it as a column rather than using it to filter rows.</p>
 </section>
 <section id="date-and-time-types" class="level2" data-number="4.5">
 <h2 data-number="4.5" class="anchored" data-anchor-id="date-and-time-types"><span class="header-section-number">4.5</span> Date and Time Types</h2>
 <p>PostgreSQL provides dedicated types for dates, times, and durations. Using these types instead of plain text or integers allows the database to validate values, perform date arithmetic, and handle time zones correctly.</p>
 <section id="date" class="level3" data-number="4.5.1">
 <h3 data-number="4.5.1" class="anchored" data-anchor-id="date"><span class="header-section-number">4.5.1</span> DATE</h3>
-<p><code>DATE</code> stores a calendar date: year, month, and day, with no time component. The <code>lastupdated</code> column in the <code>countries</code> table is a <code>DATE</code>.</p>
+<p><code>DATE</code> stores a calendar date: year, month, and day, with no time component. The <code>birth_date</code> and <code>death_date</code> columns in the <code>actors</code> table are both <code>DATE</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country, lastupdated</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> lastupdated <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, birth_date, death_date</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  death_date <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> death_date <span class="kw">DESC</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span>  <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">country</th>
-<th style="text-align: left;">lastupdated</th>
+<th style="text-align: left;">first_name</th>
+<th style="text-align: left;">last_name</th>
+<th style="text-align: left;">birth_date</th>
+<th style="text-align: left;">death_date</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Afghanistan</td>
-<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Alain</td>
+<td style="text-align: left;">Delon</td>
+<td style="text-align: left;">1935-11-08</td>
+<td style="text-align: left;">2024-08-18</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Albania</td>
-<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Gina</td>
+<td style="text-align: left;">Lollobrigida</td>
+<td style="text-align: left;">1927-07-04</td>
+<td style="text-align: left;">2023-01-16</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Algeria</td>
-<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Sidney</td>
+<td style="text-align: left;">Poitier</td>
+<td style="text-align: left;">1927-02-20</td>
+<td style="text-align: left;">2022-01-06</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">American Samoa</td>
-<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Jean-Paul</td>
+<td style="text-align: left;">Belmondo</td>
+<td style="text-align: left;">1933-04-09</td>
+<td style="text-align: left;">2021-09-06</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Andorra</td>
-<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Sean</td>
+<td style="text-align: left;">Connery</td>
+<td style="text-align: left;">1930-08-25</td>
+<td style="text-align: left;">2020-10-31</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Angola</td>
-<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Max</td>
+<td style="text-align: left;">von Sydow</td>
+<td style="text-align: left;">1929-04-10</td>
+<td style="text-align: left;">2020-03-08</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Antigua and Barbuda</td>
-<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Kirk</td>
+<td style="text-align: left;">Douglas</td>
+<td style="text-align: left;">1916-12-09</td>
+<td style="text-align: left;">2020-02-05</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Argentina</td>
-<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Doris</td>
+<td style="text-align: left;">Day</td>
+<td style="text-align: left;">1922-04-03</td>
+<td style="text-align: left;">2019-05-13</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Armenia</td>
-<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Bibi</td>
+<td style="text-align: left;">Andersson</td>
+<td style="text-align: left;">1935-11-11</td>
+<td style="text-align: left;">2019-04-14</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Aruba</td>
-<td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">Albert</td>
+<td style="text-align: left;">Finney</td>
+<td style="text-align: left;">1936-05-09</td>
+<td style="text-align: left;">2019-02-07</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>Date literals in PostgreSQL are written as quoted strings in ISO 8601 format: <code>'2024-12-16'</code>. The database validates that the string represents a real date; <code>'2024-02-30'</code> would produce an error.</p>
+<p>Date literals in PostgreSQL are written as quoted strings in ISO 8601 format: <code>'2024-12-16'</code>. The database validates that the string represents a real date — <code>'2024-02-30'</code> would produce an error.</p>
 </section>
 <section id="time" class="level3" data-number="4.5.2">
 <h3 data-number="4.5.2" class="anchored" data-anchor-id="time"><span class="header-section-number">4.5.2</span> TIME</h3>
-<p><code>TIME</code> stores a time of day without an associated date. It comes in two variants: <code>TIME WITHOUT TIME ZONE</code> (also written as <code>TIME</code>) and <code>TIME WITH TIME ZONE</code> (also written as <code>TIMETZ</code>). In practice, <code>TIME WITH TIME ZONE</code> is rarely useful on its own, because a time of day without a date provides limited context for time-zone conversions. <code>TIMESTAMP</code> (below) is the more common choice when both date and time are needed.</p>
+<p><code>TIME</code> stores a time of day without an associated date. It comes in two variants: <code>TIME WITHOUT TIME ZONE</code> (also written as <code>TIME</code>) and <code>TIME WITH TIME ZONE</code> (<code>TIMETZ</code>). In practice, <code>TIME WITH TIME ZONE</code> is rarely useful on its own, because a time of day without a date provides limited context for time-zone conversions. <code>TIMESTAMP</code> is the more common choice when both date and time are needed.</p>
 </section>
 <section id="timestamp" class="level3" data-number="4.5.3">
 <h3 data-number="4.5.3" class="anchored" data-anchor-id="timestamp"><span class="header-section-number">4.5.3</span> TIMESTAMP</h3>
-<p><code>TIMESTAMP</code> stores both a date and a time down to the microsecond. It also has two variants: <code>TIMESTAMP WITHOUT TIME ZONE</code> and <code>TIMESTAMP WITH TIME ZONE</code> (also written as <code>TIMESTAMPTZ</code>).</p>
+<p><code>TIMESTAMP</code> stores both a date and a time down to the microsecond. It also has two variants: <code>TIMESTAMP WITHOUT TIME ZONE</code> and <code>TIMESTAMP WITH TIME ZONE</code> (<code>TIMESTAMPTZ</code>).</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>If you are coming from MySQL or SQL Server, you may be looking for a <code>DATETIME</code> type. PostgreSQL does not have one. <code>TIMESTAMP</code> covers the same use case. When you see <code>DATETIME</code> in SQL written for other databases, translate it to <code>TIMESTAMP</code> for PostgreSQL.</p>
+<p>If you are coming from MySQL or SQL Server, you may be looking for a <code>DATETIME</code> type. PostgreSQL does not have one — <code>TIMESTAMP</code> covers the same use case.</p>
 </div>
 </div>
 </div>
-<p>The function <code>NOW()</code> returns the current date and time as a <code>TIMESTAMP WITH TIME ZONE</code>, and <code>CURRENT_DATE</code> returns today’s date as a <code>DATE</code>.</p>
+<p>The function <code>NOW()</code> returns the current date and time as a <code>TIMESTAMPTZ</code>, and <code>CURRENT_DATE</code> returns today’s date as a <code>DATE</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    NOW()         <span class="kw">AS</span> <span class="fu">current_timestamp</span>,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CURRENT_DATE</span>  <span class="kw">AS</span> today,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    CURRENT_TIME  <span class="kw">AS</span> time_now;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    NOW()         <span class="kw">AS</span> <span class="fu">current_timestamp</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CURRENT_DATE</span>  <span class="kw">AS</span> today,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    CURRENT_TIME  <span class="kw">AS</span> time_now;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>1 records</caption>
@@ -967,9 +1220,9 @@ div.csl-indent {
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">2026-04-30 12:47:32</td>
-<td style="text-align: left;">2026-04-30</td>
-<td style="text-align: left;">12:47:32.209987</td>
+<td style="text-align: left;">2026-05-05 14:47:43</td>
+<td style="text-align: left;">2026-05-05</td>
+<td style="text-align: left;">14:47:43.148554</td>
 </tr>
 </tbody>
 </table>
@@ -978,7 +1231,95 @@ div.csl-indent {
 </section>
 <section id="interval" class="level3" data-number="4.5.4">
 <h3 data-number="4.5.4" class="anchored" data-anchor-id="interval"><span class="header-section-number">4.5.4</span> INTERVAL</h3>
-<p><code>INTERVAL</code> stores a span of time: a duration rather than a specific point on the calendar. Intervals are written as quoted strings with a unit, such as <code>INTERVAL '1 year'</code>, <code>INTERVAL '3 months'</code>, or <code>INTERVAL '45 days'</code>.</p>
+<p><code>INTERVAL</code> stores a span of time — a duration rather than a specific point on the calendar. Intervals are written as quoted strings with a unit: <code>INTERVAL '1 year'</code>, <code>INTERVAL '3 months'</code>, <code>INTERVAL '45 days'</code>.</p>
+<p>Intervals are most useful for date arithmetic. You can add an interval to a date to compute a future or past date, or subtract two dates to compute the duration between them.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name      <span class="kw">AS</span> full_name,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    birth_date,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    birth_date <span class="op">+</span> <span class="dt">INTERVAL</span> <span class="st">'50 years'</span>    <span class="kw">AS</span> fiftieth_birthday,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CURRENT_DATE</span> <span class="op">-</span> birth_date           <span class="kw">AS</span> days_since_birth</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> death_date <span class="kw">IS</span> <span class="kw">NULL</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_date</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">full_name</th>
+<th style="text-align: left;">birth_date</th>
+<th style="text-align: left;">fiftieth_birthday</th>
+<th style="text-align: right;">days_since_birth</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Eva Marie Saint</td>
+<td style="text-align: left;">1924-07-04</td>
+<td style="text-align: left;">1974-07-04</td>
+<td style="text-align: right;">37195</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gene Hackman</td>
+<td style="text-align: left;">1930-01-30</td>
+<td style="text-align: left;">1980-01-30</td>
+<td style="text-align: right;">35159</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clint Eastwood</td>
+<td style="text-align: left;">1930-05-31</td>
+<td style="text-align: left;">1980-05-31</td>
+<td style="text-align: right;">35038</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Harriet Andersson</td>
+<td style="text-align: left;">1932-02-14</td>
+<td style="text-align: left;">1982-02-14</td>
+<td style="text-align: right;">34414</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kim Novak</td>
+<td style="text-align: left;">1933-02-13</td>
+<td style="text-align: left;">1983-02-13</td>
+<td style="text-align: right;">34049</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Michael Caine</td>
+<td style="text-align: left;">1933-03-14</td>
+<td style="text-align: left;">1983-03-14</td>
+<td style="text-align: right;">34020</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Shirley MacLaine</td>
+<td style="text-align: left;">1934-04-24</td>
+<td style="text-align: left;">1984-04-24</td>
+<td style="text-align: right;">33614</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sophia Loren</td>
+<td style="text-align: left;">1934-09-20</td>
+<td style="text-align: left;">1984-09-20</td>
+<td style="text-align: right;">33465</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Brigitte Bardot</td>
+<td style="text-align: left;">1934-09-28</td>
+<td style="text-align: left;">1984-09-28</td>
+<td style="text-align: right;">33457</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Judi Dench</td>
+<td style="text-align: left;">1934-12-09</td>
+<td style="text-align: left;">1984-12-09</td>
+<td style="text-align: right;">33385</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Notice that subtracting two <code>DATE</code> values produces an <code>INTEGER</code> representing the number of days between them, while adding an <code>INTERVAL</code> to a <code>DATE</code> produces a <code>TIMESTAMP</code>. PostgreSQL promotes the result to a timestamp because an interval can include a time component.</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -989,156 +1330,277 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>Intervals are most useful for date arithmetic. Adding an interval to a date or timestamp shifts it forward by the specified amount.</p>
+</section>
+<section id="extract" class="level3" data-number="4.5.5">
+<h3 data-number="4.5.5" class="anchored" data-anchor-id="extract"><span class="header-section-number">4.5.5</span> EXTRACT</h3>
+<p><code>EXTRACT</code> pulls a single component — year, month, day, and others — out of a date or timestamp as a number. The syntax is:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">EXTRACT</span>(field <span class="kw">FROM</span> date_or_timestamp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Common fields include <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code>, <code>minute</code>, <code>second</code>, <code>quarter</code>, <code>week</code>, and <code>dow</code> (day of week, where 0 is Sunday).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    country,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    lastupdated,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    lastupdated <span class="op">+</span> <span class="dt">INTERVAL</span> <span class="st">'1 year'</span>  <span class="kw">AS</span> plus_one_year,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    lastupdated <span class="op">-</span> <span class="dt">INTERVAL</span> <span class="st">'6 months'</span> <span class="kw">AS</span> minus_six_months</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name  <span class="kw">AS</span> full_name,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    birth_date,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">EXTRACT</span>(<span class="dt">year</span>  <span class="kw">FROM</span> birth_date)  <span class="kw">AS</span> birth_year,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">EXTRACT</span>(<span class="dt">month</span> <span class="kw">FROM</span> birth_date)  <span class="kw">AS</span> birth_month,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">EXTRACT</span>(<span class="dt">day</span>   <span class="kw">FROM</span> birth_date)  <span class="kw">AS</span> birth_day</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_date</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">country</th>
-<th style="text-align: left;">lastupdated</th>
-<th style="text-align: left;">plus_one_year</th>
-<th style="text-align: left;">minus_six_months</th>
+<th style="text-align: left;">full_name</th>
+<th style="text-align: left;">birth_date</th>
+<th style="text-align: right;">birth_year</th>
+<th style="text-align: right;">birth_month</th>
+<th style="text-align: right;">birth_day</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Afghanistan</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">2025-12-16</td>
-<td style="text-align: left;">2024-06-16</td>
+<td style="text-align: left;">Edward Robinson</td>
+<td style="text-align: left;">1893-12-12</td>
+<td style="text-align: right;">1893</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">12</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Albania</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">2025-12-16</td>
-<td style="text-align: left;">2024-06-16</td>
+<td style="text-align: left;">Walter Brennan</td>
+<td style="text-align: left;">1894-07-25</td>
+<td style="text-align: right;">1894</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">25</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Algeria</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">2025-12-16</td>
-<td style="text-align: left;">2024-06-16</td>
+<td style="text-align: left;">Ruth Gordon</td>
+<td style="text-align: left;">1896-10-30</td>
+<td style="text-align: right;">1896</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">30</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">American Samoa</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">2025-12-16</td>
-<td style="text-align: left;">2024-06-16</td>
+<td style="text-align: left;">Fred Astaire</td>
+<td style="text-align: left;">1899-05-10</td>
+<td style="text-align: right;">1899</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">10</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Andorra</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">2025-12-16</td>
-<td style="text-align: left;">2024-06-16</td>
+<td style="text-align: left;">James Cagney</td>
+<td style="text-align: left;">1899-07-17</td>
+<td style="text-align: right;">1899</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">17</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Angola</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">2025-12-16</td>
-<td style="text-align: left;">2024-06-16</td>
+<td style="text-align: left;">Humphrey Bogart</td>
+<td style="text-align: left;">1899-12-25</td>
+<td style="text-align: right;">1899</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">25</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Antigua and Barbuda</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">2025-12-16</td>
-<td style="text-align: left;">2024-06-16</td>
+<td style="text-align: left;">Spencer Tracy</td>
+<td style="text-align: left;">1900-04-05</td>
+<td style="text-align: right;">1900</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Argentina</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">2025-12-16</td>
-<td style="text-align: left;">2024-06-16</td>
+<td style="text-align: left;">Alastair Sim</td>
+<td style="text-align: left;">1900-10-09</td>
+<td style="text-align: right;">1900</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">9</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Armenia</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">2025-12-16</td>
-<td style="text-align: left;">2024-06-16</td>
+<td style="text-align: left;">Thelma Ritter</td>
+<td style="text-align: left;">1902-02-14</td>
+<td style="text-align: right;">1902</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">14</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Aruba</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">2025-12-16</td>
-<td style="text-align: left;">2024-06-16</td>
+<td style="text-align: left;">Cary Grant</td>
+<td style="text-align: left;">1904-01-18</td>
+<td style="text-align: right;">1904</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">18</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>Notice that adding an interval to a <code>DATE</code> column produces a <code>TIMESTAMP</code> result rather than a <code>DATE</code>. PostgreSQL promotes the result to a timestamp because an interval can include a time component, so the database cannot guarantee the result will still be a pure date.</p>
-</section>
-</section>
-<section id="type-conversion" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="type-conversion"><span class="header-section-number">4.6</span> Type Conversion</h2>
-<p>Sometimes a value stored as one type needs to be treated as another. This is called <strong>casting</strong>. You saw an example in the previous chapter: dividing a <code>BIGINT</code> column by a <code>NUMERIC</code> column required a cast to prevent integer division from discarding the decimal portion of the result.</p>
-<p>PostgreSQL provides two syntaxes for casting, which are fully interchangeable.</p>
-<section id="the-cast-function" class="level3" data-number="4.6.1">
-<h3 data-number="4.6.1" class="anchored" data-anchor-id="the-cast-function"><span class="header-section-number">4.6.1</span> The CAST() Function</h3>
-<p><code>CAST(value AS type)</code> is the ANSI SQL standard form, supported by virtually every relational database.</p>
+<p>A practical use is computing an actor’s age in whole years. Subtracting birth years alone is imprecise because it ignores whether the birthday has occurred yet in the current year. The expression below accounts for that by comparing the month and day:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    country,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CAST</span>(population <span class="kw">AS</span> <span class="dt">numeric</span>) <span class="op">/</span> area <span class="kw">AS</span> pop_density</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> area <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> pop_density <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name                          <span class="kw">AS</span> full_name,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    birth_date,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">EXTRACT</span>(<span class="dt">year</span> <span class="kw">FROM</span> <span class="fu">CURRENT_DATE</span>) <span class="op">-</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">EXTRACT</span>(<span class="dt">year</span> <span class="kw">FROM</span> birth_date) <span class="op">-</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="cf">WHEN</span> (<span class="fu">EXTRACT</span>(<span class="dt">month</span> <span class="kw">FROM</span> <span class="fu">CURRENT_DATE</span>),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>               <span class="fu">EXTRACT</span>(<span class="dt">day</span>   <span class="kw">FROM</span> <span class="fu">CURRENT_DATE</span>)) <span class="op">&lt;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>              (<span class="fu">EXTRACT</span>(<span class="dt">month</span> <span class="kw">FROM</span> birth_date),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>               <span class="fu">EXTRACT</span>(<span class="dt">day</span>   <span class="kw">FROM</span> birth_date))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>         <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>                                  <span class="kw">AS</span> age</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> death_date <span class="kw">IS</span> <span class="kw">NULL</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_date</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">country</th>
-<th style="text-align: right;">pop_density</th>
+<th style="text-align: left;">full_name</th>
+<th style="text-align: left;">birth_date</th>
+<th style="text-align: right;">age</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Monaco</td>
-<td style="text-align: right;">18680.9021</td>
+<td style="text-align: left;">Eva Marie Saint</td>
+<td style="text-align: left;">1924-07-04</td>
+<td style="text-align: right;">101</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Singapore</td>
-<td style="text-align: right;">7851.0056</td>
+<td style="text-align: left;">Gene Hackman</td>
+<td style="text-align: left;">1930-01-30</td>
+<td style="text-align: right;">96</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Bahrain</td>
-<td style="text-align: right;">1929.9911</td>
+<td style="text-align: left;">Clint Eastwood</td>
+<td style="text-align: left;">1930-05-31</td>
+<td style="text-align: right;">95</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Maldives</td>
-<td style="text-align: right;">1747.0200</td>
+<td style="text-align: left;">Harriet Andersson</td>
+<td style="text-align: left;">1932-02-14</td>
+<td style="text-align: right;">94</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Malta</td>
-<td style="text-align: right;">1660.9719</td>
+<td style="text-align: left;">Kim Novak</td>
+<td style="text-align: left;">1933-02-13</td>
+<td style="text-align: right;">93</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Bangladesh</td>
-<td style="text-align: right;">1301.2591</td>
+<td style="text-align: left;">Michael Caine</td>
+<td style="text-align: left;">1933-03-14</td>
+<td style="text-align: right;">93</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Sint Maarten (Dutch part)</td>
-<td style="text-align: right;">1239.3824</td>
+<td style="text-align: left;">Shirley MacLaine</td>
+<td style="text-align: left;">1934-04-24</td>
+<td style="text-align: right;">92</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Bermuda</td>
-<td style="text-align: right;">1199.0556</td>
+<td style="text-align: left;">Sophia Loren</td>
+<td style="text-align: left;">1934-09-20</td>
+<td style="text-align: right;">91</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Barbados</td>
-<td style="text-align: right;">656.5535</td>
+<td style="text-align: left;">Brigitte Bardot</td>
+<td style="text-align: left;">1934-09-28</td>
+<td style="text-align: right;">91</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Mauritius</td>
-<td style="text-align: right;">632.2098</td>
+<td style="text-align: left;">Judi Dench</td>
+<td style="text-align: left;">1934-12-09</td>
+<td style="text-align: right;">91</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>PostgreSQL also provides <code>DATE_PART('field', value)</code>, which is an older function that does the same thing as <code>EXTRACT</code>. The two are interchangeable for dates and timestamps: <code>EXTRACT(year FROM birth_date)</code> and <code>DATE_PART('year', birth_date)</code> produce identical results. <code>EXTRACT</code> is the SQL standard form and is preferred in new code.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="type-conversion" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="type-conversion"><span class="header-section-number">4.6</span> Type Conversion</h2>
+<p>Sometimes a value stored as one type needs to be treated as another. This is called <strong>casting</strong>. You saw an example in the previous chapter: dividing <code>height_cm</code> (a <code>SMALLINT</code>) by <code>2.54</code> required a cast to <code>NUMERIC</code> to get a decimal result rather than integer division.</p>
+<p>PostgreSQL provides two syntaxes for casting, which are fully interchangeable.</p>
+<section id="the-cast-function" class="level3" data-number="4.6.1">
+<h3 data-number="4.6.1" class="anchored" data-anchor-id="the-cast-function"><span class="header-section-number">4.6.1</span> The CAST() Function</h3>
+<p><code>CAST(value AS type)</code> is the ANSI SQL standard form, supported by virtually every relational database.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name          <span class="kw">AS</span> full_name,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    height_cm,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(<span class="fu">CAST</span>(height_cm <span class="kw">AS</span> <span class="dt">numeric</span>) <span class="op">/</span> <span class="fl">2.54</span>, <span class="dv">1</span>) <span class="kw">AS</span> height_in</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> height_cm <span class="kw">DESC</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">full_name</th>
+<th style="text-align: right;">height_cm</th>
+<th style="text-align: right;">height_in</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Max von Sydow</td>
+<td style="text-align: right;">196</td>
+<td style="text-align: right;">77.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clint Eastwood</td>
+<td style="text-align: right;">193</td>
+<td style="text-align: right;">76.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gregory Peck</td>
+<td style="text-align: right;">191</td>
+<td style="text-align: right;">75.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Charlton Heston</td>
+<td style="text-align: right;">191</td>
+<td style="text-align: right;">75.2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chris Hemsworth</td>
+<td style="text-align: right;">190</td>
+<td style="text-align: right;">74.8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">James Stewart</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">74.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idris Elba</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">74.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sidney Poitier</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">74.0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hugh Jackman</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">74.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Henry Fonda</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">74.0</td>
 </tr>
 </tbody>
 </table>
@@ -1147,63 +1609,75 @@ div.csl-indent {
 </section>
 <section id="the-operator" class="level3" data-number="4.6.2">
 <h3 data-number="4.6.2" class="anchored" data-anchor-id="the-operator"><span class="header-section-number">4.6.2</span> The :: Operator</h3>
-<p>The <code>::</code> operator is PostgreSQL’s native shorthand for the same operation. The expression <code>value::type</code> is identical in behavior to <code>CAST(value AS type)</code>, but more compact.</p>
+<p>The <code>::</code> operator is PostgreSQL’s native shorthand for the same operation. <code>value::type</code> is identical in behavior to <code>CAST(value AS type)</code>, but more compact.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    country,</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    population:<span class="ch">:numeric</span> <span class="op">/</span> area <span class="kw">AS</span> pop_density</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> area <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> pop_density <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name          <span class="kw">AS</span> full_name,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    height_cm,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(height_cm:<span class="ch">:numeric</span> <span class="op">/</span> <span class="fl">2.54</span>, <span class="dv">1</span>)     <span class="kw">AS</span> height_in</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> height_cm <span class="kw">DESC</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">country</th>
-<th style="text-align: right;">pop_density</th>
+<th style="text-align: left;">full_name</th>
+<th style="text-align: right;">height_cm</th>
+<th style="text-align: right;">height_in</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Monaco</td>
-<td style="text-align: right;">18680.9021</td>
+<td style="text-align: left;">Max von Sydow</td>
+<td style="text-align: right;">196</td>
+<td style="text-align: right;">77.2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Singapore</td>
-<td style="text-align: right;">7851.0056</td>
+<td style="text-align: left;">Clint Eastwood</td>
+<td style="text-align: right;">193</td>
+<td style="text-align: right;">76.0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Bahrain</td>
-<td style="text-align: right;">1929.9911</td>
+<td style="text-align: left;">Gregory Peck</td>
+<td style="text-align: right;">191</td>
+<td style="text-align: right;">75.2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Maldives</td>
-<td style="text-align: right;">1747.0200</td>
+<td style="text-align: left;">Charlton Heston</td>
+<td style="text-align: right;">191</td>
+<td style="text-align: right;">75.2</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Malta</td>
-<td style="text-align: right;">1660.9719</td>
+<td style="text-align: left;">Chris Hemsworth</td>
+<td style="text-align: right;">190</td>
+<td style="text-align: right;">74.8</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Bangladesh</td>
-<td style="text-align: right;">1301.2591</td>
+<td style="text-align: left;">James Stewart</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">74.0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Sint Maarten (Dutch part)</td>
-<td style="text-align: right;">1239.3824</td>
+<td style="text-align: left;">Idris Elba</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">74.0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Bermuda</td>
-<td style="text-align: right;">1199.0556</td>
+<td style="text-align: left;">Sidney Poitier</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">74.0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Barbados</td>
-<td style="text-align: right;">656.5535</td>
+<td style="text-align: left;">Hugh Jackman</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">74.0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Mauritius</td>
-<td style="text-align: right;">632.2098</td>
+<td style="text-align: left;">Henry Fonda</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">74.0</td>
 </tr>
 </tbody>
 </table>
@@ -1216,58 +1690,62 @@ div.csl-indent {
 <p>A few casting patterns come up repeatedly in practice.</p>
 <p><strong>Numeric to text for string building.</strong> The <code>||</code> concatenation operator requires both operands to be text. Casting a number to text before concatenating is the standard solution.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country <span class="op">||</span> <span class="st">', population: '</span> <span class="op">||</span> population:<span class="ch">:text</span> <span class="kw">AS</span> <span class="kw">summary</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> population <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name <span class="op">||</span> <span class="st">' — $'</span> <span class="op">||</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    (total_box_office_usd <span class="op">/</span> <span class="dv">1000000</span>):<span class="ch">:text</span> <span class="op">||</span> <span class="st">'M'</span>  <span class="kw">AS</span> bio_label</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> total_box_office_usd <span class="kw">DESC</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
 <thead>
 <tr class="header">
-<th style="text-align: left;">summary</th>
+<th style="text-align: left;">bio_label</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">India, population: 1425423212</td>
+<td style="text-align: left;">Chris Hemsworth — $9200.0000000000000000M</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">China, population: 1412175000</td>
+<td style="text-align: left;">Cate Blanchett — $5100.0000000000000000M</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">United States, population: 333271411</td>
+<td style="text-align: left;">Tom Hanks — $4800.0000000000000000M</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Indonesia, population: 278830529</td>
+<td style="text-align: left;">Hugh Jackman — $4600.0000000000000000M</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Pakistan, population: 243700667</td>
+<td style="text-align: left;">Benedict Cumberbatch — $4500.0000000000000000M</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Nigeria, population: 223150896</td>
+<td style="text-align: left;">Jennifer Lawrence — $4200.0000000000000000M</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Brazil, population: 210306415</td>
+<td style="text-align: left;">Brad Pitt — $4100.0000000000000000M</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Bangladesh, population: 169384897</td>
+<td style="text-align: left;">Nicole Kidman — $3800.0000000000000000M</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Russian Federation, population: 144236933</td>
+<td style="text-align: left;">Robert De Niro — $3500.0000000000000000M</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Mexico, population: 128613117</td>
+<td style="text-align: left;">Julia Roberts — $3400.0000000000000000M</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p><strong>Text to numeric.</strong> SQL queries often receive values from external sources as text strings. Casting converts them to the appropriate type for arithmetic or comparison.</p>
+<p><strong>Text to a typed value.</strong> SQL queries often receive values from external sources as text strings. Casting converts them to the appropriate type for arithmetic or comparison.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2022'</span>:<span class="ch">:integer</span>       <span class="kw">AS</span> year_as_int,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'3.14159'</span>:<span class="ch">:numeric</span>    <span class="kw">AS</span> pi_as_numeric,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2024-12-16'</span>:<span class="ch">:date</span>    <span class="kw">AS</span> date_from_string;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'1956'</span>:<span class="ch">:integer</span>        <span class="kw">AS</span> year_as_int,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'3.14159'</span>:<span class="ch">:numeric</span>     <span class="kw">AS</span> pi_as_numeric,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2024-12-16'</span>:<span class="ch">:date</span>     <span class="kw">AS</span> date_from_string,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'true'</span>:<span class="ch">:boolean</span>        <span class="kw">AS</span> bool_from_string;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>1 records</caption>
@@ -1276,152 +1754,135 @@ div.csl-indent {
 <th style="text-align: right;">year_as_int</th>
 <th style="text-align: right;">pi_as_numeric</th>
 <th style="text-align: left;">date_from_string</th>
+<th style="text-align: left;">bool_from_string</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">2022</td>
+<td style="text-align: right;">1956</td>
 <td style="text-align: right;">3.14159</td>
 <td style="text-align: left;">2024-12-16</td>
+<td style="text-align: left;">TRUE</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p><strong>Rounding versus truncating.</strong> Casting a <code>NUMERIC</code> value to <code>INTEGER</code> <strong>rounds</strong> to the nearest integer, which produces the same result as <code>ROUND()</code>. If you want to discard the decimal component entirely and always round toward zero regardless of the fractional value, use <code>TRUNC()</code> to truncate the number.</p>
+<p><strong>Rounding versus truncating.</strong> Casting a <code>NUMERIC</code> value to <code>INTEGER</code> rounds to the nearest integer. If you want to discard the decimal component entirely and always round toward zero, use <code>TRUNC()</code> instead.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    country,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    area,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">TRUNC</span>(area):<span class="ch">:integer</span>   <span class="kw">AS</span> area_truncated,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    area:<span class="ch">:integer</span>          <span class="kw">AS</span> area_cast,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(area):<span class="ch">:integer</span>   <span class="kw">AS</span> area_rounded</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> area <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> area <span class="op">&lt;&gt;</span> <span class="fu">ROUND</span>(area, <span class="dv">0</span>)</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> area;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    total_box_office_usd,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    total_box_office_usd <span class="op">/</span> <span class="fl">1000000.0</span>                     <span class="kw">AS</span> exact_millions,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">TRUNC</span>(total_box_office_usd <span class="op">/</span> <span class="fl">1000000.0</span>):<span class="ch">:integer</span>     <span class="kw">AS</span> truncated_millions,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(total_box_office_usd <span class="op">/</span> <span class="fl">1000000.0</span>):<span class="ch">:integer</span>     <span class="kw">AS</span> rounded_millions</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> total_box_office_usd <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> total_box_office_usd <span class="kw">DESC</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
 <colgroup>
-<col style="width: 30%">
-<col style="width: 15%">
-<col style="width: 21%">
-<col style="width: 14%">
-<col style="width: 18%">
+<col style="width: 29%">
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 23%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">country</th>
-<th style="text-align: right;">area</th>
-<th style="text-align: right;">area_truncated</th>
-<th style="text-align: right;">area_cast</th>
-<th style="text-align: right;">area_rounded</th>
+<th style="text-align: right;">total_box_office_usd</th>
+<th style="text-align: right;">exact_millions</th>
+<th style="text-align: right;">truncated_millions</th>
+<th style="text-align: right;">rounded_millions</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Monaco</td>
-<td style="text-align: right;">2.084</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
+<td style="text-align: right;">9.2e+09</td>
+<td style="text-align: right;">9200</td>
+<td style="text-align: right;">9200</td>
+<td style="text-align: right;">9200</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Luxembourg</td>
-<td style="text-align: right;">2574.460</td>
-<td style="text-align: right;">2574</td>
-<td style="text-align: right;">2574</td>
-<td style="text-align: right;">2574</td>
+<td style="text-align: right;">5.1e+09</td>
+<td style="text-align: right;">5100</td>
+<td style="text-align: right;">5100</td>
+<td style="text-align: right;">5100</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Slovenia</td>
-<td style="text-align: right;">20136.400</td>
-<td style="text-align: right;">20136</td>
-<td style="text-align: right;">20136</td>
-<td style="text-align: right;">20136</td>
+<td style="text-align: right;">4.8e+09</td>
+<td style="text-align: right;">4800</td>
+<td style="text-align: right;">4800</td>
+<td style="text-align: right;">4800</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Switzerland</td>
-<td style="text-align: right;">39509.630</td>
-<td style="text-align: right;">39509</td>
-<td style="text-align: right;">39510</td>
-<td style="text-align: right;">39510</td>
+<td style="text-align: right;">4.6e+09</td>
+<td style="text-align: right;">4600</td>
+<td style="text-align: right;">4600</td>
+<td style="text-align: right;">4600</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Dominican Republic</td>
-<td style="text-align: right;">48198.020</td>
-<td style="text-align: right;">48198</td>
-<td style="text-align: right;">48198</td>
-<td style="text-align: right;">48198</td>
+<td style="text-align: right;">4.5e+09</td>
+<td style="text-align: right;">4500</td>
+<td style="text-align: right;">4500</td>
+<td style="text-align: right;">4500</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Portugal</td>
-<td style="text-align: right;">91605.600</td>
-<td style="text-align: right;">91605</td>
-<td style="text-align: right;">91606</td>
-<td style="text-align: right;">91606</td>
+<td style="text-align: right;">4.2e+09</td>
+<td style="text-align: right;">4200</td>
+<td style="text-align: right;">4200</td>
+<td style="text-align: right;">4200</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Eritrea</td>
-<td style="text-align: right;">121040.829</td>
-<td style="text-align: right;">121040</td>
-<td style="text-align: right;">121041</td>
-<td style="text-align: right;">121041</td>
+<td style="text-align: right;">4.1e+09</td>
+<td style="text-align: right;">4100</td>
+<td style="text-align: right;">4100</td>
+<td style="text-align: right;">4100</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Suriname</td>
-<td style="text-align: right;">160507.610</td>
-<td style="text-align: right;">160507</td>
-<td style="text-align: right;">160508</td>
-<td style="text-align: right;">160508</td>
+<td style="text-align: right;">3.8e+09</td>
+<td style="text-align: right;">3800</td>
+<td style="text-align: right;">3800</td>
+<td style="text-align: right;">3800</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Syrian Arab Republic</td>
-<td style="text-align: right;">185179.709</td>
-<td style="text-align: right;">185179</td>
-<td style="text-align: right;">185180</td>
-<td style="text-align: right;">185180</td>
+<td style="text-align: right;">3.5e+09</td>
+<td style="text-align: right;">3500</td>
+<td style="text-align: right;">3500</td>
+<td style="text-align: right;">3500</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Finland</td>
-<td style="text-align: right;">303947.700</td>
-<td style="text-align: right;">303947</td>
-<td style="text-align: right;">303948</td>
-<td style="text-align: right;">303948</td>
+<td style="text-align: right;">3.4e+09</td>
+<td style="text-align: right;">3400</td>
+<td style="text-align: right;">3400</td>
+<td style="text-align: right;">3400</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>Switzerland’s area of 39509.63 illustrates the difference: <code>TRUNC()</code> gives 39509, while both the <code>::integer</code> cast and <code>ROUND()</code> give 39510. Use <code>TRUNC()</code> any time you need floor-toward-zero behavior; use <code>::integer</code> or <code>ROUND()</code> when you want standard rounding.</p>
 </section>
 <section id="implicit-casting" class="level3" data-number="4.6.4">
 <h3 data-number="4.6.4" class="anchored" data-anchor-id="implicit-casting"><span class="header-section-number">4.6.4</span> Implicit Casting</h3>
-<p>PostgreSQL can often cast automatically without you having to write it explicitly. When you compare a <code>DATE</code> column to a text literal like <code>'2024-12-16'</code>, the database recognizes that the literal can be interpreted as a date and converts it silently. This is called an <strong>implicit cast</strong>.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- PostgreSQL implicitly casts the string to a DATE for comparison</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> country <span class="kw">FROM</span> countries <span class="kw">WHERE</span> lastupdated <span class="op">=</span> <span class="st">'2024-12-16'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>PostgreSQL can often cast automatically without you having to write it explicitly. When you compare a <code>DATE</code> column to a text literal like <code>'1950-01-01'</code>, the database recognizes that the literal can be interpreted as a date and converts it silently. This is called an <strong>implicit cast</strong>.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- PostgreSQL implicitly casts the string to a DATE for comparison</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name <span class="kw">FROM</span> actors <span class="kw">WHERE</span> birth_date <span class="op">=</span> <span class="st">'1956-07-09'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Implicit casting is convenient, but it can occasionally produce surprising results or performance problems in complex queries. Being explicit with casts is always safe; being implicit is fine when the conversion is obvious.</p>
 </section>
 <section id="when-casts-fail" class="level3" data-number="4.6.5">
 <h3 data-number="4.6.5" class="anchored" data-anchor-id="when-casts-fail"><span class="header-section-number">4.6.5</span> When Casts Fail</h3>
-<p>A cast fails if the value cannot be converted to the target type. Attempting to cast a non-numeric string to an integer, for example, produces an error.</p>
+<p>A cast fails if the value cannot be converted to the target type. Attempting to cast a non-numeric string to an integer produces an error.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">CAST</span>(<span class="st">'not a number'</span> <span class="kw">AS</span> <span class="dt">integer</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">CAST</span>(<span class="st">'Forrest Gump'</span> <span class="kw">AS</span> <span class="dt">integer</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Error: Failed to prepare query : ERROR:  invalid input syntax for type integer: "not a number"
-LINE 1: SELECT CAST('not a number' AS integer);
+<pre><code>Error: Failed to prepare query : ERROR:  invalid input syntax for type integer: "Forrest Gump"
+LINE 1: SELECT CAST('Forrest Gump' AS integer);
                     ^</code></pre>
 </div>
 </div>
 <p>PostgreSQL does not provide a built-in “try cast” function that returns <code>NULL</code> on failure instead of raising an error. Handling potentially invalid input requires either cleaning the data before it enters the database or using more advanced techniques such as regular expression validation, which are covered in a later chapter.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
-<div id="ref-lambert2021" class="csl-entry" role="listitem">
-Lambert, Ryan. 2021. <span>“Use BIGINT in Postgres.”</span> <a href="https://blog.rustprooflabs.com/2021/06/postgres-bigint-by-default">https://blog.rustprooflabs.com/2021/06/postgres-bigint-by-default</a>.
-</div>
-</div>
 </section>
 </section>
 
@@ -1855,8 +2316,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./13-joins.html" class="pagination-link" aria-label="Joining Tables">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./13-aggregating.html" class="pagination-link" aria-label="Aggregating with GROUP BY">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aggregating with GROUP BY</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

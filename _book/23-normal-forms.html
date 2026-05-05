@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>9&nbsp; Database Normalization – SQL for Data Science</title>
+<title>10&nbsp; Database Normalization – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-design.html">Design</a></li><li class="breadcrumb-item"><a href="./23-normal-forms.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-design.html">Design</a></li><li class="breadcrumb-item"><a href="./23-normal-forms.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -168,14 +168,20 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./13-joins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  <a href="./13-aggregating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aggregating with GROUP BY</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./14-set-operations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
+  <a href="./14-joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-set-operations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
   </div>
 </li>
       </ul>
@@ -192,31 +198,31 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
       </ul>
@@ -233,19 +239,19 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
   </div>
 </li>
       </ul>
@@ -262,19 +268,19 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
@@ -291,25 +297,25 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -330,35 +336,35 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#why-normalization-matters" id="toc-why-normalization-matters" class="nav-link active" data-scroll-target="#why-normalization-matters"><span class="header-section-number">9.1</span> Why Normalization Matters</a></li>
-  <li><a href="#a-running-example" id="toc-a-running-example" class="nav-link" data-scroll-target="#a-running-example"><span class="header-section-number">9.2</span> A Running Example</a></li>
-  <li><a href="#functional-dependencies" id="toc-functional-dependencies" class="nav-link" data-scroll-target="#functional-dependencies"><span class="header-section-number">9.3</span> Functional Dependencies</a></li>
-  <li><a href="#first-normal-form-1nf" id="toc-first-normal-form-1nf" class="nav-link" data-scroll-target="#first-normal-form-1nf"><span class="header-section-number">9.4</span> First Normal Form (1NF)</a>
+  <li><a href="#why-normalization-matters" id="toc-why-normalization-matters" class="nav-link active" data-scroll-target="#why-normalization-matters"><span class="header-section-number">10.1</span> Why Normalization Matters</a></li>
+  <li><a href="#a-running-example" id="toc-a-running-example" class="nav-link" data-scroll-target="#a-running-example"><span class="header-section-number">10.2</span> A Running Example</a></li>
+  <li><a href="#functional-dependencies" id="toc-functional-dependencies" class="nav-link" data-scroll-target="#functional-dependencies"><span class="header-section-number">10.3</span> Functional Dependencies</a></li>
+  <li><a href="#first-normal-form-1nf" id="toc-first-normal-form-1nf" class="nav-link" data-scroll-target="#first-normal-form-1nf"><span class="header-section-number">10.4</span> First Normal Form (1NF)</a>
   <ul class="collapse">
-  <li><a href="#the-rule" id="toc-the-rule" class="nav-link" data-scroll-target="#the-rule"><span class="header-section-number">9.4.1</span> The Rule</a></li>
-  <li><a href="#the-violation" id="toc-the-violation" class="nav-link" data-scroll-target="#the-violation"><span class="header-section-number">9.4.2</span> The Violation</a></li>
-  <li><a href="#the-fix" id="toc-the-fix" class="nav-link" data-scroll-target="#the-fix"><span class="header-section-number">9.4.3</span> The Fix</a></li>
-  <li><a href="#the-remaining-problems" id="toc-the-remaining-problems" class="nav-link" data-scroll-target="#the-remaining-problems"><span class="header-section-number">9.4.4</span> The Remaining Problems</a></li>
+  <li><a href="#the-rule" id="toc-the-rule" class="nav-link" data-scroll-target="#the-rule"><span class="header-section-number">10.4.1</span> The Rule</a></li>
+  <li><a href="#the-violation" id="toc-the-violation" class="nav-link" data-scroll-target="#the-violation"><span class="header-section-number">10.4.2</span> The Violation</a></li>
+  <li><a href="#the-fix" id="toc-the-fix" class="nav-link" data-scroll-target="#the-fix"><span class="header-section-number">10.4.3</span> The Fix</a></li>
+  <li><a href="#the-remaining-problems" id="toc-the-remaining-problems" class="nav-link" data-scroll-target="#the-remaining-problems"><span class="header-section-number">10.4.4</span> The Remaining Problems</a></li>
   </ul></li>
-  <li><a href="#second-normal-form-2nf" id="toc-second-normal-form-2nf" class="nav-link" data-scroll-target="#second-normal-form-2nf"><span class="header-section-number">9.5</span> Second Normal Form (2NF)</a>
+  <li><a href="#second-normal-form-2nf" id="toc-second-normal-form-2nf" class="nav-link" data-scroll-target="#second-normal-form-2nf"><span class="header-section-number">10.5</span> Second Normal Form (2NF)</a>
   <ul class="collapse">
-  <li><a href="#the-rule-1" id="toc-the-rule-1" class="nav-link" data-scroll-target="#the-rule-1"><span class="header-section-number">9.5.1</span> The Rule</a></li>
-  <li><a href="#the-violation-1" id="toc-the-violation-1" class="nav-link" data-scroll-target="#the-violation-1"><span class="header-section-number">9.5.2</span> The Violation</a></li>
-  <li><a href="#the-fix-1" id="toc-the-fix-1" class="nav-link" data-scroll-target="#the-fix-1"><span class="header-section-number">9.5.3</span> The Fix</a></li>
-  <li><a href="#remaining-problems" id="toc-remaining-problems" class="nav-link" data-scroll-target="#remaining-problems"><span class="header-section-number">9.5.4</span> Remaining Problems</a></li>
+  <li><a href="#the-rule-1" id="toc-the-rule-1" class="nav-link" data-scroll-target="#the-rule-1"><span class="header-section-number">10.5.1</span> The Rule</a></li>
+  <li><a href="#the-violation-1" id="toc-the-violation-1" class="nav-link" data-scroll-target="#the-violation-1"><span class="header-section-number">10.5.2</span> The Violation</a></li>
+  <li><a href="#the-fix-1" id="toc-the-fix-1" class="nav-link" data-scroll-target="#the-fix-1"><span class="header-section-number">10.5.3</span> The Fix</a></li>
+  <li><a href="#remaining-problems" id="toc-remaining-problems" class="nav-link" data-scroll-target="#remaining-problems"><span class="header-section-number">10.5.4</span> Remaining Problems</a></li>
   </ul></li>
-  <li><a href="#third-normal-form-3nf" id="toc-third-normal-form-3nf" class="nav-link" data-scroll-target="#third-normal-form-3nf"><span class="header-section-number">9.6</span> Third Normal Form (3NF)</a>
+  <li><a href="#third-normal-form-3nf" id="toc-third-normal-form-3nf" class="nav-link" data-scroll-target="#third-normal-form-3nf"><span class="header-section-number">10.6</span> Third Normal Form (3NF)</a>
   <ul class="collapse">
-  <li><a href="#the-rule-2" id="toc-the-rule-2" class="nav-link" data-scroll-target="#the-rule-2"><span class="header-section-number">9.6.1</span> The Rule</a></li>
-  <li><a href="#the-violation-2" id="toc-the-violation-2" class="nav-link" data-scroll-target="#the-violation-2"><span class="header-section-number">9.6.2</span> The Violation</a></li>
-  <li><a href="#the-fix-2" id="toc-the-fix-2" class="nav-link" data-scroll-target="#the-fix-2"><span class="header-section-number">9.6.3</span> The Fix</a></li>
+  <li><a href="#the-rule-2" id="toc-the-rule-2" class="nav-link" data-scroll-target="#the-rule-2"><span class="header-section-number">10.6.1</span> The Rule</a></li>
+  <li><a href="#the-violation-2" id="toc-the-violation-2" class="nav-link" data-scroll-target="#the-violation-2"><span class="header-section-number">10.6.2</span> The Violation</a></li>
+  <li><a href="#the-fix-2" id="toc-the-fix-2" class="nav-link" data-scroll-target="#the-fix-2"><span class="header-section-number">10.6.3</span> The Fix</a></li>
   </ul></li>
-  <li><a href="#normalization-and-joins" id="toc-normalization-and-joins" class="nav-link" data-scroll-target="#normalization-and-joins"><span class="header-section-number">9.7</span> Normalization and Joins</a></li>
-  <li><a href="#beyond-3nf" id="toc-beyond-3nf" class="nav-link" data-scroll-target="#beyond-3nf"><span class="header-section-number">9.8</span> Beyond 3NF</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">9.9</span> Exercises</a>
+  <li><a href="#normalization-and-joins" id="toc-normalization-and-joins" class="nav-link" data-scroll-target="#normalization-and-joins"><span class="header-section-number">10.7</span> Normalization and Joins</a></li>
+  <li><a href="#beyond-3nf" id="toc-beyond-3nf" class="nav-link" data-scroll-target="#beyond-3nf"><span class="header-section-number">10.8</span> Beyond 3NF</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">10.9</span> Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">9.9.1</span> Reflection</a></li>
-  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis"><span class="header-section-number">9.9.2</span> Structural Analysis</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">10.9.1</span> Reflection</a></li>
+  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis"><span class="header-section-number">10.9.2</span> Structural Analysis</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/23-normal-forms.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -366,9 +372,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-design.html">Design</a></li><li class="breadcrumb-item"><a href="./23-normal-forms.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-design.html">Design</a></li><li class="breadcrumb-item"><a href="./23-normal-forms.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></h1>
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></h1>
 </div>
 
 
@@ -385,8 +391,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="why-normalization-matters" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="why-normalization-matters"><span class="header-section-number">9.1</span> Why Normalization Matters</h2>
+<section id="why-normalization-matters" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="why-normalization-matters"><span class="header-section-number">10.1</span> Why Normalization Matters</h2>
 <p>Consider how most people first encounter data: in a spreadsheet. A spreadsheet is a single flat table, and the natural instinct is to put everything in one place. For small, simple datasets, that works fine. But as data grows in complexity, the flat-table approach creates problems that become increasingly costly to fix.</p>
 <p>Edgar Codd, who introduced the relational model in 1970, also developed the theory of <em>normalization</em>: a systematic approach to organizing data that reduces redundancy and prevents certain categories of errors. Normalization is not about following rules for their own sake. It is about making your database reliable and maintainable over time.</p>
 <p>The problems that normalization prevents fall into three categories:</p>
@@ -397,8 +403,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>This chapter covers the three most commonly applied normal forms: First Normal Form (1NF), Second Normal Form (2NF), and Third Normal Form (3NF). Each builds on the previous, and a table in 3NF is free of the anomalies described above for the vast majority of practical cases.</p>
 </section>
-<section id="a-running-example" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="a-running-example"><span class="header-section-number">9.2</span> A Running Example</h2>
+<section id="a-running-example" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="a-running-example"><span class="header-section-number">10.2</span> A Running Example</h2>
 <p>To ground each normal form in something concrete, this chapter uses a single scenario: a small business tracking customer orders. Suppose you inherit a spreadsheet that looks like this:</p>
 <table class="caption-top table">
 <colgroup>
@@ -448,8 +454,8 @@ ul.task-list li input[type="checkbox"] {
 </table>
 <p>This table has several structural problems, each addressed by a different normal form. You will work through each one in turn.</p>
 </section>
-<section id="functional-dependencies" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="functional-dependencies"><span class="header-section-number">9.3</span> Functional Dependencies</h2>
+<section id="functional-dependencies" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="functional-dependencies"><span class="header-section-number">10.3</span> Functional Dependencies</h2>
 <p>Before defining the normal forms, it helps to understand what a <em>functional dependency</em> is. Column B is functionally dependent on column A if knowing the value of A always determines the value of B.</p>
 <p>For example, in the orders table above:</p>
 <ul>
@@ -458,14 +464,14 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>Functional dependencies describe what a column is “about.” They are the mechanism through which the normal forms identify and eliminate redundancy.</p>
 </section>
-<section id="first-normal-form-1nf" class="level2" data-number="9.4">
-<h2 data-number="9.4" class="anchored" data-anchor-id="first-normal-form-1nf"><span class="header-section-number">9.4</span> First Normal Form (1NF)</h2>
-<section id="the-rule" class="level3" data-number="9.4.1">
-<h3 data-number="9.4.1" class="anchored" data-anchor-id="the-rule"><span class="header-section-number">9.4.1</span> The Rule</h3>
+<section id="first-normal-form-1nf" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="first-normal-form-1nf"><span class="header-section-number">10.4</span> First Normal Form (1NF)</h2>
+<section id="the-rule" class="level3" data-number="10.4.1">
+<h3 data-number="10.4.1" class="anchored" data-anchor-id="the-rule"><span class="header-section-number">10.4.1</span> The Rule</h3>
 <p>A table is in First Normal Form if every column contains only atomic, indivisible values. No column should hold a list, a set, or any multi-valued structure. Each cell should contain exactly one value, and each row should contain exactly one “record” of whatever the table represents.</p>
 </section>
-<section id="the-violation" class="level3" data-number="9.4.2">
-<h3 data-number="9.4.2" class="anchored" data-anchor-id="the-violation"><span class="header-section-number">9.4.2</span> The Violation</h3>
+<section id="the-violation" class="level3" data-number="10.4.2">
+<h3 data-number="10.4.2" class="anchored" data-anchor-id="the-violation"><span class="header-section-number">10.4.2</span> The Violation</h3>
 <p>The <code>products</code> and <code>quantities</code> columns each contain comma-separated lists:</p>
 <table class="caption-top table">
 <thead>
@@ -500,8 +506,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-<section id="the-fix" class="level3" data-number="9.4.3">
-<h3 data-number="9.4.3" class="anchored" data-anchor-id="the-fix"><span class="header-section-number">9.4.3</span> The Fix</h3>
+<section id="the-fix" class="level3" data-number="10.4.3">
+<h3 data-number="10.4.3" class="anchored" data-anchor-id="the-fix"><span class="header-section-number">10.4.3</span> The Fix</h3>
 <p>Apply 1NF by giving each product its own row:</p>
 <table class="caption-top table">
 <colgroup>
@@ -567,20 +573,20 @@ ul.task-list li input[type="checkbox"] {
 </table>
 <p>Every cell now holds exactly one value. The primary key for this table is the combination of <code>(order_id, product)</code>, since each row uniquely identifies one product on one order.</p>
 </section>
-<section id="the-remaining-problems" class="level3" data-number="9.4.4">
-<h3 data-number="9.4.4" class="anchored" data-anchor-id="the-remaining-problems"><span class="header-section-number">9.4.4</span> The Remaining Problems</h3>
+<section id="the-remaining-problems" class="level3" data-number="10.4.4">
+<h3 data-number="10.4.4" class="anchored" data-anchor-id="the-remaining-problems"><span class="header-section-number">10.4.4</span> The Remaining Problems</h3>
 <p>The 1NF table is cleaner, but it still stores redundant information. Notice that <code>customer</code>, <code>email</code>, and <code>order_date</code> appear twice for orders 1 and 3. If Alice Smith changes her email address, you must update every row for every order she has ever placed. If you update some rows but miss others, the database now contains two different email addresses for the same customer. This is an update anomaly, and it signals a deeper structural problem.</p>
 </section>
 </section>
-<section id="second-normal-form-2nf" class="level2" data-number="9.5">
-<h2 data-number="9.5" class="anchored" data-anchor-id="second-normal-form-2nf"><span class="header-section-number">9.5</span> Second Normal Form (2NF)</h2>
-<section id="the-rule-1" class="level3" data-number="9.5.1">
-<h3 data-number="9.5.1" class="anchored" data-anchor-id="the-rule-1"><span class="header-section-number">9.5.1</span> The Rule</h3>
+<section id="second-normal-form-2nf" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="second-normal-form-2nf"><span class="header-section-number">10.5</span> Second Normal Form (2NF)</h2>
+<section id="the-rule-1" class="level3" data-number="10.5.1">
+<h3 data-number="10.5.1" class="anchored" data-anchor-id="the-rule-1"><span class="header-section-number">10.5.1</span> The Rule</h3>
 <p>A table is in Second Normal Form if it is in 1NF and every non-key column is fully functionally dependent on the <em>entire</em> primary key. A violation occurs when a non-key column depends on only <em>part</em> of a composite primary key. This is called a <em>partial dependency</em>.</p>
 <p>Recall from the previous chapter that a composite primary key is a primary key made up of two or more columns. 2NF is only relevant for tables with composite primary keys. If a table’s primary key is a single column, there is no “part of the key” to partially depend on, and 1NF already implies 2NF for those tables.</p>
 </section>
-<section id="the-violation-1" class="level3" data-number="9.5.2">
-<h3 data-number="9.5.2" class="anchored" data-anchor-id="the-violation-1"><span class="header-section-number">9.5.2</span> The Violation</h3>
+<section id="the-violation-1" class="level3" data-number="10.5.2">
+<h3 data-number="10.5.2" class="anchored" data-anchor-id="the-violation-1"><span class="header-section-number">10.5.2</span> The Violation</h3>
 <p>In the 1NF table, the primary key is <code>(order_id, product)</code>. Consider each non-key column:</p>
 <ul>
 <li><code>quantity</code> depends on both <code>order_id</code> and <code>product</code>: the quantity of a given product on a given order requires knowing both values. This is a full dependency.</li>
@@ -588,8 +594,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>Because customer and order information is stored once per order line rather than once per order, the table violates 2NF.</p>
 </section>
-<section id="the-fix-1" class="level3" data-number="9.5.3">
-<h3 data-number="9.5.3" class="anchored" data-anchor-id="the-fix-1"><span class="header-section-number">9.5.3</span> The Fix</h3>
+<section id="the-fix-1" class="level3" data-number="10.5.3">
+<h3 data-number="10.5.3" class="anchored" data-anchor-id="the-fix-1"><span class="header-section-number">10.5.3</span> The Fix</h3>
 <p>Remove the partial dependencies by splitting the table. Columns that depend on the whole key stay together. Columns that depend on only part of the key move to a separate table, where that part of the key becomes the primary key.</p>
 <p><strong>orders</strong></p>
 <table class="caption-top table">
@@ -662,20 +668,20 @@ ul.task-list li input[type="checkbox"] {
 <p>The <code>orders</code> table has <code>order_id</code> as its primary key. The <code>order_items</code> table has <code>(order_id, product)</code> as its composite primary key, and <code>order_id</code> serves as a foreign key back to <code>orders</code>. To assemble a complete picture of an order, you join these two tables. This is precisely the connection between normalization and the join operations covered in the previous chapter: a well-normalized database is inherently a database of related tables, and joins are the tool for querying across them.</p>
 <p>The redundancy <em>within</em> each order is now gone. In the 1NF version, Alice’s email appeared once per order line: twice for order 1 (Laptop and Mouse) and twice for order 3 (Monitor and Keyboard). After applying 2NF, it appears once per order, regardless of how many items that order contains. If order 1 had ten products, the previous schema would have stored her email ten times across those ten rows; the 2NF schema stores it once, in the single <code>orders</code> row for order 1.</p>
 </section>
-<section id="remaining-problems" class="level3" data-number="9.5.4">
-<h3 data-number="9.5.4" class="anchored" data-anchor-id="remaining-problems"><span class="header-section-number">9.5.4</span> Remaining Problems</h3>
+<section id="remaining-problems" class="level3" data-number="10.5.4">
+<h3 data-number="10.5.4" class="anchored" data-anchor-id="remaining-problems"><span class="header-section-number">10.5.4</span> Remaining Problems</h3>
 <p>The <code>orders</code> table itself still has a subtle redundancy. Alice appears in rows for orders 1 and 3, with the same email address both times. If her customer name changes, you must update multiple rows. You cannot record Alice’s contact information without creating an order for her first. And if all of her orders are deleted, her contact information is lost. The anomalies have been reduced, but not eliminated.</p>
 </section>
 </section>
-<section id="third-normal-form-3nf" class="level2" data-number="9.6">
-<h2 data-number="9.6" class="anchored" data-anchor-id="third-normal-form-3nf"><span class="header-section-number">9.6</span> Third Normal Form (3NF)</h2>
-<section id="the-rule-2" class="level3" data-number="9.6.1">
-<h3 data-number="9.6.1" class="anchored" data-anchor-id="the-rule-2"><span class="header-section-number">9.6.1</span> The Rule</h3>
+<section id="third-normal-form-3nf" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="third-normal-form-3nf"><span class="header-section-number">10.6</span> Third Normal Form (3NF)</h2>
+<section id="the-rule-2" class="level3" data-number="10.6.1">
+<h3 data-number="10.6.1" class="anchored" data-anchor-id="the-rule-2"><span class="header-section-number">10.6.1</span> The Rule</h3>
 <p>A table is in Third Normal Form if it is in 2NF and every non-key column depends directly on the primary key, not on another non-key column. A violation occurs when one non-key column determines another non-key column. This is called a <em>transitive dependency</em>.</p>
 <p>The informal summary often quoted is: every non-key column must depend on <strong>the key, the whole key, and nothing but the key</strong> (so help me Codd).</p>
 </section>
-<section id="the-violation-2" class="level3" data-number="9.6.2">
-<h3 data-number="9.6.2" class="anchored" data-anchor-id="the-violation-2"><span class="header-section-number">9.6.2</span> The Violation</h3>
+<section id="the-violation-2" class="level3" data-number="10.6.2">
+<h3 data-number="10.6.2" class="anchored" data-anchor-id="the-violation-2"><span class="header-section-number">10.6.2</span> The Violation</h3>
 <p>In the <code>orders</code> table, consider the relationship between <code>email</code> and <code>customer</code>:</p>
 <ul>
 <li><code>order_id</code> determines <code>email</code>: each order is placed by one customer, who has one email address.</li>
@@ -683,8 +689,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>Therefore, <code>customer</code> is transitively dependent on <code>order_id</code> through <code>email</code>: <code>order_id → email → customer</code>. The customer name does not depend directly on the order ID; it depends on the email address, which depends on the order ID. This is the source of the remaining redundancy. Alice’s name is stored once per order rather than once per customer.</p>
 </section>
-<section id="the-fix-2" class="level3" data-number="9.6.3">
-<h3 data-number="9.6.3" class="anchored" data-anchor-id="the-fix-2"><span class="header-section-number">9.6.3</span> The Fix</h3>
+<section id="the-fix-2" class="level3" data-number="10.6.3">
+<h3 data-number="10.6.3" class="anchored" data-anchor-id="the-fix-2"><span class="header-section-number">10.6.3</span> The Fix</h3>
 <p>Move the transitively dependent columns to their own table. The non-key column that drives the dependency becomes the natural key (or a surrogate key is introduced, as shown below):</p>
 <p><strong>customers</strong></p>
 <table class="caption-top table">
@@ -781,23 +787,23 @@ ul.task-list li input[type="checkbox"] {
 <p>To retrieve a full picture of order 1, you join all three tables. The normalized structure requires more sophisticated queries, but those queries are precise and work against a schema that cannot drift into self-contradiction.</p>
 </section>
 </section>
-<section id="normalization-and-joins" class="level2" data-number="9.7">
-<h2 data-number="9.7" class="anchored" data-anchor-id="normalization-and-joins"><span class="header-section-number">9.7</span> Normalization and Joins</h2>
+<section id="normalization-and-joins" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="normalization-and-joins"><span class="header-section-number">10.7</span> Normalization and Joins</h2>
 <p>A normalized database is a database of relationships. When data is spread across multiple tables, joins are the mechanism that brings it back together for analysis. This is not a limitation of normalization; it is the intended design.</p>
 <p>Each table in a normalized schema stores facts about exactly one concept. The <code>customers</code> table knows about customers. The <code>orders</code> table knows about orders and which customer placed them. The <code>order_items</code> table knows about which products were on each order. Joins let you assemble whatever combination of facts a given query requires, without duplicating any of the underlying data.</p>
 <p>If you approach this chapter before reading the chapter on joins, that is a natural next step. Conversely, if the join examples felt abstract when you first encountered them, the normalization context here clarifies <em>why</em> data is structured across multiple tables in the first place: to eliminate redundancy, to enforce integrity, and to keep each individual table as focused and consistent as possible.</p>
 </section>
-<section id="beyond-3nf" class="level2" data-number="9.8">
-<h2 data-number="9.8" class="anchored" data-anchor-id="beyond-3nf"><span class="header-section-number">9.8</span> Beyond 3NF</h2>
+<section id="beyond-3nf" class="level2" data-number="10.8">
+<h2 data-number="10.8" class="anchored" data-anchor-id="beyond-3nf"><span class="header-section-number">10.8</span> Beyond 3NF</h2>
 <p>Higher normal forms exist. Boyce-Codd Normal Form (BCNF) is a slightly stricter variant of 3NF that handles certain edge cases involving overlapping candidate keys. Fourth Normal Form (4NF) and Fifth Normal Form (5NF) address progressively more subtle patterns involving multi-valued dependencies and join dependencies.</p>
 <p>In practice, 3NF is the appropriate target for most transactional databases. Violations of the higher forms appear infrequently in well-designed schemas and rarely cause significant problems.</p>
 <p>There are also situations where <em>denormalization</em> (deliberately reintroducing redundancy) is appropriate. Data warehouses and analytical systems sometimes store pre-computed aggregates or flattened “wide” tables to support fast reporting queries. When you denormalize, you are making a deliberate trade: faster reads at the cost of more complex write logic and more disciplined maintenance. That trade is reasonable in specific contexts. The key is to make it deliberately, with a clear understanding of what you are giving up and why.</p>
 <p>The next chapter translates these design decisions into working SQL. You will implement the normalized orders schema from this chapter as <code>CREATE TABLE</code> statements in a PostgreSQL database running on your local Docker container, adding primary keys, foreign keys, and constraints that enforce the rules discussed here at the database level.</p>
 </section>
-<section id="exercises" class="level2" data-number="9.9">
-<h2 data-number="9.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">9.9</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="9.9.1">
-<h3 data-number="9.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">9.9.1</span> Reflection</h3>
+<section id="exercises" class="level2" data-number="10.9">
+<h2 data-number="10.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">10.9</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="10.9.1">
+<h3 data-number="10.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">10.9.1</span> Reflection</h3>
 <p><strong>1.</strong> Describe the three types of data anomalies that normalization is designed to prevent. For each type, give a concrete example using any scenario you can imagine (a school, a library, a retail store, etc.).</p>
 <hr>
 <p><strong>2.</strong> What is a functional dependency? Using a university registrar context (students, courses, instructors, grades, rooms), give two examples of functional dependencies and two examples of columns that are <em>not</em> functionally dependent on each other.</p>
@@ -812,8 +818,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <hr>
 </section>
-<section id="structural-analysis" class="level3" data-number="9.9.2">
-<h3 data-number="9.9.2" class="anchored" data-anchor-id="structural-analysis"><span class="header-section-number">9.9.2</span> Structural Analysis</h3>
+<section id="structural-analysis" class="level3" data-number="10.9.2">
+<h3 data-number="10.9.2" class="anchored" data-anchor-id="structural-analysis"><span class="header-section-number">10.9.2</span> Structural Analysis</h3>
 <p><strong>5.</strong> Consider the following table, which tracks employee project assignments:</p>
 <table class="caption-top table">
 <colgroup>
@@ -1370,12 +1376,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./22-er-diagrams.html" class="pagination-link" aria-label="Entity-Relationship Diagrams">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./24-create-table.html" class="pagination-link" aria-label="Creating Tables">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

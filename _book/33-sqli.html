@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>14&nbsp; SQL Injection – SQL for Data Science</title>
+<title>15&nbsp; SQL Injection – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -83,7 +117,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-secure.html">Secure</a></li><li class="breadcrumb-item"><a href="./33-sqli.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQL Injection</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-secure.html">Secure</a></li><li class="breadcrumb-item"><a href="./33-sqli.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -168,14 +202,20 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./13-joins.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  <a href="./13-aggregating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aggregating with GROUP BY</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./14-set-operations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
+  <a href="./14-joins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-set-operations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
   </div>
 </li>
       </ul>
@@ -192,31 +232,31 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
       </ul>
@@ -233,19 +273,19 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./33-sqli.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
   </div>
 </li>
       </ul>
@@ -262,19 +302,19 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
@@ -291,25 +331,25 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -325,15 +365,36 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#how-sql-injection-works" id="toc-how-sql-injection-works" class="nav-link active" data-scroll-target="#how-sql-injection-works"><span class="header-section-number">15.1</span> How SQL Injection Works</a></li>
+  <li><a href="#setting-up-the-lab" id="toc-setting-up-the-lab" class="nav-link" data-scroll-target="#setting-up-the-lab"><span class="header-section-number">15.2</span> Setting Up the Lab</a></li>
+  <li><a href="#classic-authentication-bypass" id="toc-classic-authentication-bypass" class="nav-link" data-scroll-target="#classic-authentication-bypass"><span class="header-section-number">15.3</span> Classic Authentication Bypass</a></li>
+  <li><a href="#error-based-injection" id="toc-error-based-injection" class="nav-link" data-scroll-target="#error-based-injection"><span class="header-section-number">15.4</span> Error-Based Injection</a></li>
+  <li><a href="#union-based-injection" id="toc-union-based-injection" class="nav-link" data-scroll-target="#union-based-injection"><span class="header-section-number">15.5</span> UNION-Based Injection</a>
+  <ul class="collapse">
+  <li><a href="#column-count-discovery" id="toc-column-count-discovery" class="nav-link" data-scroll-target="#column-count-discovery"><span class="header-section-number">15.5.1</span> Column Count Discovery</a></li>
+  <li><a href="#extracting-data" id="toc-extracting-data" class="nav-link" data-scroll-target="#extracting-data"><span class="header-section-number">15.5.2</span> Extracting Data</a></li>
+  </ul></li>
+  <li><a href="#other-attack-types" id="toc-other-attack-types" class="nav-link" data-scroll-target="#other-attack-types"><span class="header-section-number">15.6</span> Other Attack Types</a></li>
+  <li><a href="#prevention-parameterized-queries" id="toc-prevention-parameterized-queries" class="nav-link" data-scroll-target="#prevention-parameterized-queries"><span class="header-section-number">15.7</span> Prevention: Parameterized Queries</a>
+  <ul class="collapse">
+  <li><a href="#input-validation-is-not-enough" id="toc-input-validation-is-not-enough" class="nav-link" data-scroll-target="#input-validation-is-not-enough"><span class="header-section-number">15.7.1</span> Input Validation Is Not Enough</a></li>
+  <li><a href="#additional-mitigations" id="toc-additional-mitigations" class="nav-link" data-scroll-target="#additional-mitigations"><span class="header-section-number">15.7.2</span> Additional Mitigations</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.8</span> Exercises</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/33-sqli.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-secure.html">Secure</a></li><li class="breadcrumb-item"><a href="./33-sqli.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQL Injection</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-secure.html">Secure</a></li><li class="breadcrumb-item"><a href="./33-sqli.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQL Injection</span></h1>
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></h1>
 </div>
 
 
@@ -350,8 +411,204 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>The previous two chapters covered the access control tools PostgreSQL provides: roles define identity, and privileges define what each identity can do. Together they form a coherent permission model. But there is a category of attack that bypasses this model entirely, not by guessing passwords or escalating privileges, but by hijacking the SQL statements your application constructs in the first place.</p>
+<p>SQL injection (SQLi) is consistently one of the top vulnerabilities in web applications, catalogued for decades in the OWASP Top 10. Understanding how it works is a prerequisite to defending against it. This chapter demonstrates the mechanics of SQL injection using your local Docker container, covers the most common attack patterns, and shows how parameterized queries eliminate the vulnerability at its root.</p>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The attacks demonstrated in this chapter are run against a database you control locally. Performing SQL injection against systems you do not own or have explicit permission to test is illegal and unethical. The goal here is defensive knowledge: you need to see how attacks work in order to write code that prevents them.</p>
+</div>
+</div>
+</div>
+<section id="how-sql-injection-works" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="how-sql-injection-works"><span class="header-section-number">15.1</span> How SQL Injection Works</h2>
+<p>SQL injection exploits applications that construct SQL queries by concatenating user-supplied input directly into the query string. When the application fails to validate or sanitize that input, an attacker can supply input that changes the <em>structure</em> of the query rather than just its <em>data</em>.</p>
+<p>Consider a hypothetical Python application that looks up a student by name:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> request.args.get(<span class="st">"name"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="ss">f"SELECT * FROM students WHERE last_name = '</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">'"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>db.execute(query)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If a user submits the name <code>Walsh</code>, the query becomes:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students <span class="kw">WHERE</span> last_name <span class="op">=</span> <span class="st">'Walsh'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That works as intended. But if a user submits <code>' OR '1'='1</code>, the query becomes:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students <span class="kw">WHERE</span> last_name <span class="op">=</span> <span class="st">''</span> <span class="kw">OR</span> <span class="st">'1'</span><span class="op">=</span><span class="st">'1'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Because <code>'1'='1'</code> is always true, this query returns every row in the table. The user-supplied input escaped the string literal and injected new SQL logic. The database executes it faithfully because it has no way to distinguish data from code at query time.</p>
+</section>
+<section id="setting-up-the-lab" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="setting-up-the-lab"><span class="header-section-number">15.2</span> Setting Up the Lab</h2>
+<p>This lab uses the <code>university</code> database and a simplified version of the <code>students</code> table. Connect to your local container and run the following setup:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">psql</span> <span class="at">-U</span> postgres <span class="at">-p</span> 5433 <span class="at">-d</span> university</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">EXISTS</span> students_lab;</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> students_lab (</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    student_id  SERIAL       <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    first_name  TEXT         <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    last_name   TEXT         <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    email       TEXT         <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">UNIQUE</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    gpa         <span class="dt">NUMERIC</span>(<span class="dv">3</span>,<span class="dv">2</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> students_lab (first_name, last_name, email, gpa)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Maria'</span>,  <span class="st">'Santos'</span>,  <span class="st">'msantos@university.edu'</span>,  <span class="fl">3.85</span>),</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'James'</span>,  <span class="st">'Okafor'</span>,  <span class="st">'jokafor@university.edu'</span>,  <span class="fl">3.41</span>),</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Priya'</span>,  <span class="st">'Nair'</span>,    <span class="st">'pnair@university.edu'</span>,    <span class="kw">NULL</span>),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Connor'</span>, <span class="st">'Walsh'</span>,   <span class="st">'cwalsh@university.edu'</span>,   <span class="fl">2.97</span>),</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'Admin'</span>,  <span class="st">'Account'</span>, <span class="st">'admin@university.edu'</span>,    <span class="kw">NULL</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="classic-authentication-bypass" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="classic-authentication-bypass"><span class="header-section-number">15.3</span> Classic Authentication Bypass</h2>
+<p>The most widely known SQL injection pattern targets login forms. Suppose an application checks credentials with:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> accounts <span class="kw">WHERE</span> username <span class="op">=</span> <span class="st">'&lt;input&gt;'</span> <span class="kw">AND</span> <span class="kw">password</span> <span class="op">=</span> <span class="st">'&lt;input&gt;'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>An attacker who submits the username <code>' OR 1=1 --</code> with any password turns this into:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> accounts <span class="kw">WHERE</span> username <span class="op">=</span> <span class="st">''</span> <span class="kw">OR</span> <span class="dv">1</span><span class="op">=</span><span class="dv">1</span> <span class="co">--' AND password = '...';</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>--</code> starts a SQL comment, which causes the database to ignore everything after it, including the password check. The <code>OR 1=1</code> condition makes the <code>WHERE</code> clause always true. The query returns a valid account row, and the application logs in the attacker.</p>
+<p>You can observe the pattern against <code>students_lab</code>. The following shows what the injected query looks like:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Normal query: last name is 'Walsh'</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab <span class="kw">WHERE</span> last_name <span class="op">=</span> <span class="st">'Walsh'</span>;</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- After injecting: last name is  ' OR 1=1 --</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab <span class="kw">WHERE</span> last_name <span class="op">=</span> <span class="st">''</span> <span class="kw">OR</span> <span class="dv">1</span><span class="op">=</span><span class="dv">1</span> <span class="co">--';</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Run both queries and compare the results. The first returns one row; the second returns all rows.</p>
+</section>
+<section id="error-based-injection" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="error-based-injection"><span class="header-section-number">15.4</span> Error-Based Injection</h2>
+<p>In error-based SQLi, the attacker deliberately causes the database to produce error messages that contain useful information: table names, column names, data types, or even data values. This works when an application reflects database error messages back to the user, which is a common misconfiguration in development environments.</p>
+<p>Type mismatches are a reliable way to extract data via error messages. If you know the application is passing a numeric ID to a query, you can inject a subquery that returns text into an integer context:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> student_id <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="dv">1</span> <span class="op">=</span> <span class="fu">CAST</span>((<span class="kw">SELECT</span> email <span class="kw">FROM</span> students_lab <span class="kw">LIMIT</span> <span class="dv">1</span>) <span class="kw">AS</span> <span class="dt">INTEGER</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Run this query in <code>psql</code>. The cast fails because an email address cannot be converted to an integer, and PostgreSQL returns an error that includes the value that caused the failure:</p>
+<pre><code>ERROR:  invalid input syntax for type integer: "msantos@university.edu"</code></pre>
+<p>The email address was extracted via the error message. By adjusting <code>OFFSET</code>, the attacker can iterate through every row:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- First email</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> student_id <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="dv">1</span> <span class="op">=</span> <span class="fu">CAST</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">SELECT</span> email <span class="kw">FROM</span> students_lab <span class="kw">ORDER</span> <span class="kw">BY</span> student_id <span class="kw">LIMIT</span> <span class="dv">1</span> OFFSET <span class="dv">0</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">AS</span> <span class="dt">INTEGER</span>);</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">-- Second email</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> student_id <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> <span class="dv">1</span> <span class="op">=</span> <span class="fu">CAST</span>(</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">SELECT</span> email <span class="kw">FROM</span> students_lab <span class="kw">ORDER</span> <span class="kw">BY</span> student_id <span class="kw">LIMIT</span> <span class="dv">1</span> OFFSET <span class="dv">1</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">AS</span> <span class="dt">INTEGER</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Each query reveals the next email address in the error message.</p>
+</section>
+<section id="union-based-injection" class="level2" data-number="15.5">
+<h2 data-number="15.5" class="anchored" data-anchor-id="union-based-injection"><span class="header-section-number">15.5</span> UNION-Based Injection</h2>
+<p>UNION-based injection appends a second <code>SELECT</code> to the original query using the <code>UNION</code> operator. The injected query’s results are returned alongside (or instead of) the legitimate results, often displayed directly in the application’s output.</p>
+<p>For <code>UNION</code> to work, the injected <code>SELECT</code> must return the same number of columns as the original query, with compatible data types. The attacker first determines the column count.</p>
+<section id="column-count-discovery" class="level3" data-number="15.5.1">
+<h3 data-number="15.5.1" class="anchored" data-anchor-id="column-count-discovery"><span class="header-section-number">15.5.1</span> Column Count Discovery</h3>
+<p>Inject incrementing <code>ORDER BY</code> column numbers until the query errors:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Succeeds: 5 columns exist</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab <span class="kw">WHERE</span> last_name <span class="op">=</span> <span class="st">'Walsh'</span> <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dv">5</span>;</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Errors: column 6 does not exist</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab <span class="kw">WHERE</span> last_name <span class="op">=</span> <span class="st">'Walsh'</span> <span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dv">6</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Alternatively, probe with <code>UNION SELECT NULL, NULL, ...</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Too few columns (errors)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab <span class="kw">WHERE</span> last_name <span class="op">=</span> <span class="st">'zzz'</span> <span class="kw">UNION</span> <span class="kw">SELECT</span> <span class="kw">NULL</span>, <span class="kw">NULL</span>, <span class="kw">NULL</span>;</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Correct column count (succeeds)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab <span class="kw">WHERE</span> last_name <span class="op">=</span> <span class="st">'zzz'</span> <span class="kw">UNION</span> <span class="kw">SELECT</span> <span class="kw">NULL</span>, <span class="kw">NULL</span>, <span class="kw">NULL</span>, <span class="kw">NULL</span>, <span class="kw">NULL</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Using a last name that matches no rows (<code>'zzz'</code>) ensures only the injected row appears in the result.</p>
+</section>
+<section id="extracting-data" class="level3" data-number="15.5.2">
+<h3 data-number="15.5.2" class="anchored" data-anchor-id="extracting-data"><span class="header-section-number">15.5.2</span> Extracting Data</h3>
+<p>Once the column count is known, the attacker can inject arbitrary queries:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="op">=</span> <span class="st">'zzz'</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">UNION</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dv">1</span>, <span class="st">'injected'</span>, <span class="st">'data'</span>, version(), <span class="kw">NULL</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Run this in <code>psql</code>. The result contains one row with the PostgreSQL version string in the fourth column, extracted without any prior knowledge.</p>
+<p>A real attack would pivot to enumerating tables from <code>information_schema.tables</code>:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="op">=</span> <span class="st">'zzz'</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">UNION</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="dv">1</span>, table_schema, table_name, table_type, <span class="kw">NULL</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   information_schema.<span class="kw">tables</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  table_schema <span class="kw">NOT</span> <span class="kw">IN</span> (<span class="st">'pg_catalog'</span>, <span class="st">'information_schema'</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This returns every user-created table in the database, giving the attacker a roadmap to extract data table by table.</p>
+</section>
+</section>
+<section id="other-attack-types" class="level2" data-number="15.6">
+<h2 data-number="15.6" class="anchored" data-anchor-id="other-attack-types"><span class="header-section-number">15.6</span> Other Attack Types</h2>
+<p>Error-based and UNION-based are two of the most common patterns, but the broader SQLi landscape includes several other techniques.</p>
+<p><strong>Boolean-based blind injection</strong> applies when the application gives no direct output, only behaving differently depending on whether a query returned rows. The attacker infers information one bit at a time by injecting conditions that are true or false (<code>AND 1=1</code> vs <code>AND 1=2</code>). By asking yes/no questions about the data — for example, <code>AND ASCII(SUBSTRING(email, 1, 1)) &gt; 64</code> — the attacker reconstructs values character by character.</p>
+<p><strong>Time-based blind injection</strong> is used when the application gives no behavioral feedback at all. The attacker injects a conditional delay and measures whether the response slows down:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> student_id <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> (<span class="kw">SELECT</span> <span class="cf">CASE</span> <span class="cf">WHEN</span> (<span class="dv">1</span><span class="op">=</span><span class="dv">1</span>) <span class="cf">THEN</span> pg_sleep(<span class="dv">5</span>) <span class="cf">ELSE</span> pg_sleep(<span class="dv">0</span>) <span class="cf">END</span>) <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A five-second delay confirms the condition was true. This works even when the application swallows all errors and returns identical responses regardless of query outcome.</p>
+<p><strong>Stacked queries</strong> allow the attacker to inject a semicolon and append entirely new SQL statements — <code>INSERT</code>, <code>UPDATE</code>, <code>DROP</code>, or anything else. Whether this is possible depends on the database driver; many drivers disable stacked queries explicitly.</p>
+<p><strong>Second-order injection</strong> (stored injection) occurs when malicious input is stored safely in the database by one operation, then later retrieved and used in query construction without being re-sanitized. The injection fires not on insert, but on a subsequent read.</p>
+<p><strong>Out-of-band injection</strong> extracts data via a side channel such as a DNS request or HTTP call triggered from within the database. This requires elevated privileges and the right server configuration, but it is effective when no in-band data channel is available to the attacker.</p>
+</section>
+<section id="prevention-parameterized-queries" class="level2" data-number="15.7">
+<h2 data-number="15.7" class="anchored" data-anchor-id="prevention-parameterized-queries"><span class="header-section-number">15.7</span> Prevention: Parameterized Queries</h2>
+<p>Every SQL injection vulnerability has the same root cause: user input is treated as SQL code rather than as data. The definitive fix is a <strong>parameterized query</strong> (also called a prepared statement), which separates the query structure from the data entirely.</p>
+<p>With a parameterized query, the SQL is compiled by the database first, and then the data values are supplied separately. The database never interprets the data as SQL. No matter what a user submits, it can only be a value, not part of the query’s logic.</p>
+<p>In Python with psycopg2:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vulnerable: string concatenation</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="ss">f"SELECT * FROM students WHERE last_name = '</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">'"</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>cur.execute(query)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Safe: parameterized query</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">"SELECT * FROM students WHERE last_name = </span><span class="sc">%s</span><span class="st">"</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>cur.execute(query, (name,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In Python with SQLAlchemy (the approach used in the ETL section of this book):</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> text</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>stmt <span class="op">=</span> text(<span class="st">"SELECT * FROM students WHERE last_name = :name"</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> conn.execute(stmt, {<span class="st">"name"</span>: name})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>%s</code> and <code>:name</code> placeholders are never filled by string operations in your code. The database driver handles substitution at the protocol level, after query compilation.</p>
+<p>You can observe the protection in <code>psql</code> using prepared statements directly:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">PREPARE</span> lookup_student (TEXT) <span class="kw">AS</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students_lab <span class="kw">WHERE</span> last_name <span class="op">=</span> $<span class="dv">1</span>;</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Legitimate use</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">EXECUTE</span> lookup_student(<span class="st">'Walsh'</span>);</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- Injection attempt: returns zero rows, not all rows</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="kw">EXECUTE</span> lookup_student(<span class="st">'</span><span class="ch">''</span><span class="st"> OR 1=1 --'</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The last <code>EXECUTE</code> returns zero rows. The single quote in the input is treated as a literal character in the string <code>' OR 1=1 --</code>, not as SQL syntax. The query finds no student whose last name is exactly <code>' OR 1=1 --</code>.</p>
+<section id="input-validation-is-not-enough" class="level3" data-number="15.7.1">
+<h3 data-number="15.7.1" class="anchored" data-anchor-id="input-validation-is-not-enough"><span class="header-section-number">15.7.1</span> Input Validation Is Not Enough</h3>
+<p>Filtering or escaping user input before building the query string is not an adequate substitute for parameterized queries. Escaping approaches can be bypassed when character encoding is involved, when the input appears in a context other than a quoted string (such as a column name or numeric value), or when the escaping logic itself contains a bug. Parameterized queries do not escape input — they eliminate the possibility of input affecting query structure.</p>
+<p>Validation (checking that a value is within expected bounds or format) is still worthwhile as defense in depth, but parameterization is the non-negotiable requirement.</p>
+</section>
+<section id="additional-mitigations" class="level3" data-number="15.7.2">
+<h3 data-number="15.7.2" class="anchored" data-anchor-id="additional-mitigations"><span class="header-section-number">15.7.2</span> Additional Mitigations</h3>
+<p>A layered approach reduces the impact if an injection does occur:</p>
+<ul>
+<li><strong>Least privilege</strong>: the database role used by the application should have only the privileges it needs. A role that can only <code>SELECT</code> from specific tables cannot modify data even if injection succeeds.</li>
+<li><strong>Error message suppression</strong>: applications should return generic error messages to users and log database errors server-side only. Error-based injection relies on the application reflecting database internals to the caller.</li>
+<li><strong>Web Application Firewalls (WAFs)</strong>: can detect and block common injection patterns at the network layer, but should be considered a supplementary control rather than a primary defense.</li>
+<li><strong>Stored procedures</strong>: encapsulating business logic in stored procedures can reduce the SQL surface area the application constructs, though stored procedures can themselves contain injection vulnerabilities if written without parameterization.</li>
+</ul>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="15.8">
+<h2 data-number="15.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.8</span> Exercises</h2>
+<p><strong>1.</strong> Run the authentication bypass pattern against <code>students_lab</code> using a last name of <code>' OR 1=1 --</code>. Confirm that all rows are returned. Then explain in your own words what structural change the injected input made to the original query.</p>
+<hr>
+<p><strong>2.</strong> Use the error-based technique to extract the email addresses of all five rows in <code>students_lab</code>. Write one query per row by adjusting the <code>OFFSET</code> value. Record the email address revealed in each error message.</p>
+<hr>
+<p><strong>3.</strong> Determine the column count of <code>students_lab</code> using <code>ORDER BY</code> probing. Then construct a UNION-based injection that returns the current database name (use <code>current_database()</code>) and the PostgreSQL version (use <code>version()</code>) in the result set. Use a last name that matches no real rows so only your injected row appears in the output.</p>
+<hr>
+<p><strong>4.</strong> Use a UNION-based injection to enumerate the user-created tables in the <code>university</code> database by querying <code>information_schema.tables</code>. Filter out the <code>pg_catalog</code> and <code>information_schema</code> schemas. What tables does your query reveal?</p>
+<hr>
+<p><strong>5.</strong> Construct a parameterized prepared statement in <code>psql</code> using <code>PREPARE</code> and <code>EXECUTE</code> that looks up a student by last name. Test it with a legitimate name, then test it with the injection string <code>' OR 1=1 --</code>. Explain why the injection attempt returns zero rows instead of all rows.</p>
+<hr>
+<p><strong>6.</strong> A developer argues that their application is safe because it strips all single quotes from user input before building the query. Describe two scenarios where this approach could still fail or be bypassed. What should the developer do instead?</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -779,7 +1036,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./32-privileges.html" class="pagination-link" aria-label="Privileges">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Privileges</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -796,7 +1053,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/33-sqli.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/33-sqli.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

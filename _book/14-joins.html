@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>5&nbsp; Joining Tables – SQL for Data Science</title>
+<title>6&nbsp; Joining Tables – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./14-set-operations.html" rel="next">
-<link href="./12-data-types.html" rel="prev">
+<link href="./15-set-operations.html" rel="next">
+<link href="./13-aggregating.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -149,7 +149,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-query.html">Query</a></li><li class="breadcrumb-item"><a href="./13-joins.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-query.html">Query</a></li><li class="breadcrumb-item"><a href="./14-joins.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Joining Tables</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -234,14 +234,20 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./13-joins.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  <a href="./13-aggregating.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aggregating with GROUP BY</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./14-set-operations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
+  <a href="./14-joins.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Joining Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-set-operations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Set Operations</span></span></a>
   </div>
 </li>
       </ul>
@@ -258,31 +264,31 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
       </ul>
@@ -299,19 +305,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
   </div>
 </li>
       </ul>
@@ -328,19 +334,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
@@ -357,25 +363,25 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -396,44 +402,44 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#keys-and-relationships" id="toc-keys-and-relationships" class="nav-link active" data-scroll-target="#keys-and-relationships"><span class="header-section-number">5.1</span> Keys and Relationships</a>
+  <li><a href="#keys-and-relationships" id="toc-keys-and-relationships" class="nav-link active" data-scroll-target="#keys-and-relationships"><span class="header-section-number">6.1</span> Keys and Relationships</a>
   <ul class="collapse">
-  <li><a href="#primary-keys" id="toc-primary-keys" class="nav-link" data-scroll-target="#primary-keys"><span class="header-section-number">5.1.1</span> Primary Keys</a></li>
-  <li><a href="#foreign-keys" id="toc-foreign-keys" class="nav-link" data-scroll-target="#foreign-keys"><span class="header-section-number">5.1.2</span> Foreign Keys</a></li>
-  <li><a href="#cardinality" id="toc-cardinality" class="nav-link" data-scroll-target="#cardinality"><span class="header-section-number">5.1.3</span> Cardinality</a></li>
+  <li><a href="#primary-keys" id="toc-primary-keys" class="nav-link" data-scroll-target="#primary-keys"><span class="header-section-number">6.1.1</span> Primary Keys</a></li>
+  <li><a href="#foreign-keys" id="toc-foreign-keys" class="nav-link" data-scroll-target="#foreign-keys"><span class="header-section-number">6.1.2</span> Foreign Keys</a></li>
+  <li><a href="#cardinality" id="toc-cardinality" class="nav-link" data-scroll-target="#cardinality"><span class="header-section-number">6.1.3</span> Cardinality</a></li>
   </ul></li>
-  <li><a href="#the-worldbank-database" id="toc-the-worldbank-database" class="nav-link" data-scroll-target="#the-worldbank-database"><span class="header-section-number">5.2</span> The worldbank Database</a></li>
-  <li><a href="#join-syntax" id="toc-join-syntax" class="nav-link" data-scroll-target="#join-syntax"><span class="header-section-number">5.3</span> JOIN Syntax</a></li>
-  <li><a href="#reading-the-diagrams" id="toc-reading-the-diagrams" class="nav-link" data-scroll-target="#reading-the-diagrams"><span class="header-section-number">5.4</span> Reading the Diagrams</a></li>
-  <li><a href="#inner-join" id="toc-inner-join" class="nav-link" data-scroll-target="#inner-join"><span class="header-section-number">5.5</span> INNER JOIN</a></li>
-  <li><a href="#left-join" id="toc-left-join" class="nav-link" data-scroll-target="#left-join"><span class="header-section-number">5.6</span> LEFT JOIN</a>
+  <li><a href="#the-worldbank-database" id="toc-the-worldbank-database" class="nav-link" data-scroll-target="#the-worldbank-database"><span class="header-section-number">6.2</span> The worldbank Database</a></li>
+  <li><a href="#join-syntax" id="toc-join-syntax" class="nav-link" data-scroll-target="#join-syntax"><span class="header-section-number">6.3</span> JOIN Syntax</a></li>
+  <li><a href="#reading-the-diagrams" id="toc-reading-the-diagrams" class="nav-link" data-scroll-target="#reading-the-diagrams"><span class="header-section-number">6.4</span> Reading the Diagrams</a></li>
+  <li><a href="#inner-join" id="toc-inner-join" class="nav-link" data-scroll-target="#inner-join"><span class="header-section-number">6.5</span> INNER JOIN</a></li>
+  <li><a href="#left-join" id="toc-left-join" class="nav-link" data-scroll-target="#left-join"><span class="header-section-number">6.6</span> LEFT JOIN</a>
   <ul class="collapse">
-  <li><a href="#on-vs.-where-when-filter-placement-matters" id="toc-on-vs.-where-when-filter-placement-matters" class="nav-link" data-scroll-target="#on-vs.-where-when-filter-placement-matters"><span class="header-section-number">5.6.1</span> ON vs.&nbsp;WHERE: When Filter Placement Matters</a></li>
-  <li><a href="#right-join" id="toc-right-join" class="nav-link" data-scroll-target="#right-join"><span class="header-section-number">5.6.2</span> RIGHT JOIN</a></li>
+  <li><a href="#on-vs.-where-when-filter-placement-matters" id="toc-on-vs.-where-when-filter-placement-matters" class="nav-link" data-scroll-target="#on-vs.-where-when-filter-placement-matters"><span class="header-section-number">6.6.1</span> ON vs.&nbsp;WHERE: When Filter Placement Matters</a></li>
+  <li><a href="#right-join" id="toc-right-join" class="nav-link" data-scroll-target="#right-join"><span class="header-section-number">6.6.2</span> RIGHT JOIN</a></li>
   </ul></li>
-  <li><a href="#full-outer-join" id="toc-full-outer-join" class="nav-link" data-scroll-target="#full-outer-join"><span class="header-section-number">5.7</span> FULL OUTER JOIN</a></li>
-  <li><a href="#cross-join" id="toc-cross-join" class="nav-link" data-scroll-target="#cross-join"><span class="header-section-number">5.8</span> CROSS JOIN</a></li>
-  <li><a href="#anti-joins" id="toc-anti-joins" class="nav-link" data-scroll-target="#anti-joins"><span class="header-section-number">5.9</span> Anti-Joins</a>
+  <li><a href="#full-outer-join" id="toc-full-outer-join" class="nav-link" data-scroll-target="#full-outer-join"><span class="header-section-number">6.7</span> FULL OUTER JOIN</a></li>
+  <li><a href="#cross-join" id="toc-cross-join" class="nav-link" data-scroll-target="#cross-join"><span class="header-section-number">6.8</span> CROSS JOIN</a></li>
+  <li><a href="#anti-joins" id="toc-anti-joins" class="nav-link" data-scroll-target="#anti-joins"><span class="header-section-number">6.9</span> Anti-Joins</a>
   <ul class="collapse">
-  <li><a href="#using-left-join-and-is-null" id="toc-using-left-join-and-is-null" class="nav-link" data-scroll-target="#using-left-join-and-is-null"><span class="header-section-number">5.9.1</span> Using LEFT JOIN and IS NULL</a></li>
-  <li><a href="#using-not-exists" id="toc-using-not-exists" class="nav-link" data-scroll-target="#using-not-exists"><span class="header-section-number">5.9.2</span> Using NOT EXISTS</a></li>
+  <li><a href="#using-left-join-and-is-null" id="toc-using-left-join-and-is-null" class="nav-link" data-scroll-target="#using-left-join-and-is-null"><span class="header-section-number">6.9.1</span> Using LEFT JOIN and IS NULL</a></li>
+  <li><a href="#using-not-exists" id="toc-using-not-exists" class="nav-link" data-scroll-target="#using-not-exists"><span class="header-section-number">6.9.2</span> Using NOT EXISTS</a></li>
   </ul></li>
-  <li><a href="#joining-more-than-two-tables" id="toc-joining-more-than-two-tables" class="nav-link" data-scroll-target="#joining-more-than-two-tables"><span class="header-section-number">5.10</span> Joining More Than Two Tables</a></li>
-  <li><a href="#implicit-vs.-explicit-join-syntax" id="toc-implicit-vs.-explicit-join-syntax" class="nav-link" data-scroll-target="#implicit-vs.-explicit-join-syntax"><span class="header-section-number">5.11</span> Implicit vs.&nbsp;Explicit Join Syntax</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">5.12</span> Exercises</a>
+  <li><a href="#joining-more-than-two-tables" id="toc-joining-more-than-two-tables" class="nav-link" data-scroll-target="#joining-more-than-two-tables"><span class="header-section-number">6.10</span> Joining More Than Two Tables</a></li>
+  <li><a href="#implicit-vs.-explicit-join-syntax" id="toc-implicit-vs.-explicit-join-syntax" class="nav-link" data-scroll-target="#implicit-vs.-explicit-join-syntax"><span class="header-section-number">6.11</span> Implicit vs.&nbsp;Explicit Join Syntax</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.12</span> Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">5.12.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">5.12.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">6.12.1</span> Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">6.12.2</span> Coding</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/13-joins.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/14-joins.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-query.html">Query</a></li><li class="breadcrumb-item"><a href="./13-joins.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-query.html">Query</a></li><li class="breadcrumb-item"><a href="./14-joins.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Joining Tables</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Joining Tables</span></h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Joining Tables</span></h1>
 </div>
 
 
@@ -452,11 +458,11 @@ window.Quarto = {
 
 <p>Every query you have written so far has drawn from a single table. That is useful, but it is not the whole story. Real databases almost always store related information across multiple tables, and one of SQL’s most powerful capabilities is the ability to combine those tables into a single result. That operation is called a <strong>join</strong>.</p>
 <p>This chapter explains why data is structured across multiple tables in the first place, introduces the key concepts of primary keys, foreign keys, and cardinality, and then walks through every major join type with diagrams and examples. By the end, you will be able to assemble information from several related tables into exactly the view you need.</p>
-<section id="keys-and-relationships" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="keys-and-relationships"><span class="header-section-number">5.1</span> Keys and Relationships</h2>
+<section id="keys-and-relationships" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="keys-and-relationships"><span class="header-section-number">6.1</span> Keys and Relationships</h2>
 <p>To understand joins, you first need to understand how tables are related to each other. Relational databases are built around the idea that data should be stored once and referenced many times, rather than repeated in every table that needs it. The mechanism that makes this possible is the relationship between tables, expressed through keys.</p>
-<section id="primary-keys" class="level3" data-number="5.1.1">
-<h3 data-number="5.1.1" class="anchored" data-anchor-id="primary-keys"><span class="header-section-number">5.1.1</span> Primary Keys</h3>
+<section id="primary-keys" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="primary-keys"><span class="header-section-number">6.1.1</span> Primary Keys</h3>
 <p>A <strong>primary key</strong> is a column, or combination of columns, whose values uniquely identify each row in a table. No two rows in a table can share the same primary key value, and the primary key column cannot be NULL.</p>
 <p>Primary keys come in two common forms:</p>
 <ul>
@@ -466,14 +472,14 @@ window.Quarto = {
 <p>Natural keys are intuitive but can cause problems if the “unique” real-world value turns out to change or repeat. Surrogate keys are more stable, which is why they appear so frequently in production databases.</p>
 <p>When no single column is sufficient to uniquely identify every row, two or more columns together can serve as the primary key. This is called a <strong>composite primary key</strong>. The <code>indicators</code> table in this chapter is a good example: neither <code>country_id</code> nor <code>year</code> is unique on its own, but the combination of the two identifies exactly one row, the measurements recorded for that country in that year.</p>
 </section>
-<section id="foreign-keys" class="level3" data-number="5.1.2">
-<h3 data-number="5.1.2" class="anchored" data-anchor-id="foreign-keys"><span class="header-section-number">5.1.2</span> Foreign Keys</h3>
+<section id="foreign-keys" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="foreign-keys"><span class="header-section-number">6.1.2</span> Foreign Keys</h3>
 <p>A <strong>foreign key</strong> is a column in one table that holds values matching the primary key of another table. It is the bridge between two tables and the foundation of every join.</p>
 <p>For example, the <code>indicators</code> table has a column called <code>country_id</code>, and the <code>countries</code> table has <code>id</code> as its primary key. The column <code>indicators.country_id</code> is a foreign key pointing to <code>countries.id</code>. Every value in <code>indicators.country_id</code> should correspond to a row that actually exists in <code>countries</code>. This guarantee is called <strong>referential integrity</strong>, and the database can enforce it automatically once the foreign key relationship is declared.</p>
 <p>The table that holds the foreign key is called the <strong>child</strong> table. The table being referenced is the <strong>parent</strong> table. In this example, <code>indicators</code> is the child and <code>countries</code> is the parent.</p>
 </section>
-<section id="cardinality" class="level3" data-number="5.1.3">
-<h3 data-number="5.1.3" class="anchored" data-anchor-id="cardinality"><span class="header-section-number">5.1.3</span> Cardinality</h3>
+<section id="cardinality" class="level3" data-number="6.1.3">
+<h3 data-number="6.1.3" class="anchored" data-anchor-id="cardinality"><span class="header-section-number">6.1.3</span> Cardinality</h3>
 <p><strong>Cardinality</strong> describes how many rows in one table can relate to how many rows in another. There are three fundamental patterns.</p>
 <p><strong>One-to-one.</strong> Each row in Table A corresponds to at most one row in Table B, and vice versa. This pattern is relatively rare. It sometimes appears when a large table is split in two for organizational or access-control reasons.</p>
 <p><strong>One-to-many.</strong> Each row in Table A can relate to many rows in Table B, but each row in Table B relates to exactly one row in Table A. This is the most common cardinality in relational databases. One country can have many rows in <code>indicators</code>, one for each year that data was recorded. Each indicator row, in turn, belongs to exactly one country.</p>
@@ -482,8 +488,8 @@ window.Quarto = {
 <p>This chapter introduces primary keys, foreign keys, and cardinality as the practical foundation for writing joins. The database design section later in this book covers all three in greater depth, including how to declare and enforce them in SQL using <code>CREATE TABLE</code> statements and column constraints, and how normalization principles guide decisions about table structure.</p>
 </section>
 </section>
-<section id="the-worldbank-database" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="the-worldbank-database"><span class="header-section-number">5.2</span> The worldbank Database</h2>
+<section id="the-worldbank-database" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="the-worldbank-database"><span class="header-section-number">6.2</span> The worldbank Database</h2>
 <p>The examples in this chapter use the <code>worldbank</code> database, which contains three tables drawn from World Bank development data.</p>
 <table class="caption-top table">
 <colgroup>
@@ -524,8 +530,8 @@ window.Quarto = {
 <p>The <code>indicators</code> table stores measurements as columns rather than rows. Each row captures one country in one year, and columns like <code>gdp_per_capita_usd</code>, <code>population</code>, <code>pct_forest_area</code>, and <code>land_area_km2</code> hold the values for that combination. Data spans from 1960 through 2023.</p>
 <p>The <code>series</code> table describes what each measurement type means, including indicator codes, names, and source descriptions. It is not linked to <code>indicators</code> by a foreign key, but it is a useful reference when you want to understand what a particular column represents.</p>
 </section>
-<section id="join-syntax" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="join-syntax"><span class="header-section-number">5.3</span> JOIN Syntax</h2>
+<section id="join-syntax" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="join-syntax"><span class="header-section-number">6.3</span> JOIN Syntax</h2>
 <p>Before looking at specific join types, it helps to see the general shape of a join query.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
@@ -550,8 +556,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="reading-the-diagrams" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="reading-the-diagrams"><span class="header-section-number">5.4</span> Reading the Diagrams</h2>
+<section id="reading-the-diagrams" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="reading-the-diagrams"><span class="header-section-number">6.4</span> Reading the Diagrams</h2>
 <p>The diagrams in this chapter use the <strong>checkered flag</strong> method to illustrate joins. Each diagram shows two tables arranged as rotated grids facing each other. Color-coded cells identify which rows from each table contribute to the result, and a result table on the right shows the output.</p>
 <p>This approach is deliberately different from the Venn diagrams you may have seen elsewhere. Venn diagrams are not entirely wrong — Codd’s relational model defines a relation as an unordered set of tuples, so the set-based intuition has a legitimate foundation. The problem is more subtle. A Venn diagram implies that the “intersection” consists of rows that are identical members of both tables, the way the number 3 might belong to both Set A and Set B. A SQL join does not work that way. The two tables being joined typically contain different things entirely, and the join matches rows across them based on a condition you specify, usually a foreign key relationship. There is no literal overlap of identical elements. Venn diagrams also fail to convey cardinality: when one country joins to many yearly measurements, the result has one row per measurement, but the overlapping-circles picture gives no indication of that. The checkered flag diagrams make the row-matching process explicit, showing which rows from each table appear in the result and how NULLs fill in for unmatched rows in outer joins.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -561,8 +567,8 @@ window.Quarto = {
 </figure>
 </div>
 </section>
-<section id="inner-join" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="inner-join"><span class="header-section-number">5.5</span> INNER JOIN</h2>
+<section id="inner-join" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="inner-join"><span class="header-section-number">6.5</span> INNER JOIN</h2>
 <p>An <code>INNER JOIN</code> returns only the rows where the join condition is satisfied in <strong>both</strong> tables. Rows that have no match on the other side are excluded from the result entirely.</p>
 <p>This is the default join type. Writing <code>JOIN</code> without a qualifier is equivalent to writing <code>INNER JOIN</code>.</p>
 <div class="cell">
@@ -670,8 +676,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="left-join" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="left-join"><span class="header-section-number">5.6</span> LEFT JOIN</h2>
+<section id="left-join" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="left-join"><span class="header-section-number">6.6</span> LEFT JOIN</h2>
 <p>A <code>LEFT JOIN</code> (also written <code>LEFT OUTER JOIN</code>) returns <strong>all rows from the left table</strong> and the matching rows from the right table. Where no match exists in the right table, the right-side columns are filled with NULL.</p>
 <p>The “left” table is the one named in the <code>FROM</code> clause. The “right” table is the one named in the <code>JOIN</code> clause.</p>
 <div class="cell">
@@ -762,8 +768,8 @@ window.Quarto = {
 </div>
 <p>The first rows in this result belong to regional aggregates such as “Africa” and “Africa Eastern and Southern”. They appear with NULL in both <code>year</code> and <code>population</code> because they have no rows in <code>indicators</code>. Further down, individual countries appear once per year of recorded data. The left join preserves every row from <code>countries</code>, whether or not a match exists on the right side.</p>
 <p>Left joins are extremely common in analytical queries because they let you start with a complete reference list (all countries) and attach available data without discarding entries that happen to have gaps.</p>
-<section id="on-vs.-where-when-filter-placement-matters" class="level3" data-number="5.6.1">
-<h3 data-number="5.6.1" class="anchored" data-anchor-id="on-vs.-where-when-filter-placement-matters"><span class="header-section-number">5.6.1</span> ON vs.&nbsp;WHERE: When Filter Placement Matters</h3>
+<section id="on-vs.-where-when-filter-placement-matters" class="level3" data-number="6.6.1">
+<h3 data-number="6.6.1" class="anchored" data-anchor-id="on-vs.-where-when-filter-placement-matters"><span class="header-section-number">6.6.1</span> ON vs.&nbsp;WHERE: When Filter Placement Matters</h3>
 <p>Every join query can have two places where you restrict rows: inside the <code>ON</code> clause and inside the <code>WHERE</code> clause. Understanding the difference is one of the most important skills in SQL, because the two clauses run at different stages of query execution and produce different results with outer joins.</p>
 <p>The <strong><code>ON</code> clause</strong> runs during the join itself. It controls which rows from the right table are even considered as candidates for matching against each left-table row. Rows that fail the <code>ON</code> condition are not matched, but in an outer join, the left-table row still appears in the result with NULLs on the right side.</p>
 <p>The <strong><code>WHERE</code> clause</strong> runs after the join is complete. It filters the already-assembled result set. Any row that does not satisfy <code>WHERE</code> is discarded, NULLs and all.</p>
@@ -1003,8 +1009,8 @@ window.Quarto = {
 <tr class="even">
 <td style="text-align: left;">Africa</td>
 <td style="text-align: left;">Aggregates</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NULL</td>
+<td style="text-align: right;">NULL</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Africa Eastern and Southern</td>
@@ -1061,8 +1067,8 @@ window.Quarto = {
 <p>Now the database evaluates <code>i.year = 2022</code> during the join. For each country row, it looks for a matching indicator row where both <code>country_id</code> matches and <code>year</code> equals 2022. If no such row exists, the country still appears in the result, with NULLs on the right side. All 299 rows from <code>countries</code> come through.</p>
 <p>The practical rule: <strong>conditions that restrict which right-table rows qualify as a match belong in <code>ON</code>; conditions that should discard rows from the final result regardless of match status belong in <code>WHERE</code>.</strong> For inner joins the distinction is academic. For any outer join it is not.</p>
 </section>
-<section id="right-join" class="level3" data-number="5.6.2">
-<h3 data-number="5.6.2" class="anchored" data-anchor-id="right-join"><span class="header-section-number">5.6.2</span> RIGHT JOIN</h3>
+<section id="right-join" class="level3" data-number="6.6.2">
+<h3 data-number="6.6.2" class="anchored" data-anchor-id="right-join"><span class="header-section-number">6.6.2</span> RIGHT JOIN</h3>
 <p>A <code>RIGHT JOIN</code> is the mirror image of a <code>LEFT JOIN</code>. It returns all rows from the right table and the matching rows from the left, filling unmatched left-side columns with NULL.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
@@ -1147,8 +1153,8 @@ window.Quarto = {
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> countries <span class="kw">AS</span> c <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> i.country_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="full-outer-join" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="full-outer-join"><span class="header-section-number">5.7</span> FULL OUTER JOIN</h2>
+<section id="full-outer-join" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="full-outer-join"><span class="header-section-number">6.7</span> FULL OUTER JOIN</h2>
 <p>A <code>FULL OUTER JOIN</code> returns <strong>all rows from both tables</strong>. Rows that have a match are joined together. Rows from the left table with no right-side match appear with NULLs on the right. Rows from the right table with no left-side match appear with NULLs on the left.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
@@ -1185,7 +1191,7 @@ window.Quarto = {
 <tr class="even">
 <td style="text-align: left;">Africa</td>
 <td style="text-align: left;">Aggregates</td>
-<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NULL</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Africa Eastern and Southern</td>
@@ -1233,8 +1239,8 @@ window.Quarto = {
 </div>
 <p>Because <code>indicators.country_id</code> is enforced as a foreign key, every indicator row already has a matching country. The only unmatched rows come from the left side: the 38 aggregates in <code>countries</code> with no indicator data. The result is therefore the same as a left join with the year in the <code>ON</code> clause. Full outer joins show their full value when comparing two datasets that are not constrained to reference each other, such as two independent snapshots of the same data where either side could contain records the other does not.</p>
 </section>
-<section id="cross-join" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="cross-join"><span class="header-section-number">5.8</span> CROSS JOIN</h2>
+<section id="cross-join" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="cross-join"><span class="header-section-number">6.8</span> CROSS JOIN</h2>
 <p>A <code>CROSS JOIN</code> produces the <strong>Cartesian product</strong> of two tables: every row from the left table is paired with every row from the right table. If the left table has M rows and the right table has N rows, the result has M × N rows. No join condition is specified.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1310,12 +1316,12 @@ window.Quarto = {
 <p>Accidental cross joins are one of the most common sources of runaway queries in SQL. They happen when a join condition is missing or typo’d, causing the database to pair every row with every other row. Always verify that a <code>JOIN</code> clause has an <code>ON</code> condition unless you genuinely intend a cross join.</p>
 <p>Intentional cross joins do have legitimate uses. Generating all possible combinations of two dimensions, such as every country paired with every indicator type to build a complete reporting grid with no gaps, is a situation where a cross join is exactly the right tool.</p>
 </section>
-<section id="anti-joins" class="level2" data-number="5.9">
-<h2 data-number="5.9" class="anchored" data-anchor-id="anti-joins"><span class="header-section-number">5.9</span> Anti-Joins</h2>
+<section id="anti-joins" class="level2" data-number="6.9">
+<h2 data-number="6.9" class="anchored" data-anchor-id="anti-joins"><span class="header-section-number">6.9</span> Anti-Joins</h2>
 <p>An <strong>anti-join</strong> returns rows from one table that have <strong>no matching row</strong> in the other table. It is the complement of an inner join.</p>
 <p>Anti-joins do not have a dedicated keyword in SQL. They are expressed using one of two patterns.</p>
-<section id="using-left-join-and-is-null" class="level3" data-number="5.9.1">
-<h3 data-number="5.9.1" class="anchored" data-anchor-id="using-left-join-and-is-null"><span class="header-section-number">5.9.1</span> Using LEFT JOIN and IS NULL</h3>
+<section id="using-left-join-and-is-null" class="level3" data-number="6.9.1">
+<h3 data-number="6.9.1" class="anchored" data-anchor-id="using-left-join-and-is-null"><span class="header-section-number">6.9.1</span> Using LEFT JOIN and IS NULL</h3>
 <p>The most common pattern extends a left join with a <code>WHERE</code> clause that keeps only the rows where the right side produced a NULL, meaning no match was found.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
@@ -1390,8 +1396,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="using-not-exists" class="level3" data-number="5.9.2">
-<h3 data-number="5.9.2" class="anchored" data-anchor-id="using-not-exists"><span class="header-section-number">5.9.2</span> Using NOT EXISTS</h3>
+<section id="using-not-exists" class="level3" data-number="6.9.2">
+<h3 data-number="6.9.2" class="anchored" data-anchor-id="using-not-exists"><span class="header-section-number">6.9.2</span> Using NOT EXISTS</h3>
 <p>The second pattern uses <code>NOT EXISTS</code> with a correlated subquery. This is the approach mentioned in the WHERE clause chapter as the preferred alternative to <code>NOT IN</code> when NULL values may be present.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
@@ -1461,8 +1467,8 @@ window.Quarto = {
 <p>Both patterns produce the same rows. The <code>LEFT JOIN / IS NULL</code> form is often more familiar to beginners. The <code>NOT EXISTS</code> form can be faster on large tables and handles NULL values in the join key more predictably, which is why many experienced SQL writers prefer it.</p>
 </section>
 </section>
-<section id="joining-more-than-two-tables" class="level2" data-number="5.10">
-<h2 data-number="5.10" class="anchored" data-anchor-id="joining-more-than-two-tables"><span class="header-section-number">5.10</span> Joining More Than Two Tables</h2>
+<section id="joining-more-than-two-tables" class="level2" data-number="6.10">
+<h2 data-number="6.10" class="anchored" data-anchor-id="joining-more-than-two-tables"><span class="header-section-number">6.10</span> Joining More Than Two Tables</h2>
 <p>Nothing limits a query to two tables. You can chain as many joins as the data requires, adding one table at a time. One particularly useful pattern is joining the same table twice under different aliases to compare values across two points in time. Here, the <code>indicators</code> table is joined twice to place 2000 and 2022 GDP figures side by side.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
@@ -1511,7 +1517,7 @@ window.Quarto = {
 <tr class="even">
 <td style="text-align: left;">American Samoa</td>
 <td style="text-align: left;">East Asia &amp; Pacific</td>
-<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NULL</td>
 <td style="text-align: right;">18017.46</td>
 </tr>
 <tr class="odd">
@@ -1561,8 +1567,8 @@ window.Quarto = {
 <p><strong>Each join adds columns, not necessarily rows.</strong> A join to a parent table in a many-to-one relationship (indicators to countries) does not change the number of rows. A join to a child table in a one-to-many relationship (countries to indicators) multiplies rows. Understanding this keeps the result size predictable.</p>
 <p><strong>Order joins for readability.</strong> SQL does not require joins in any particular sequence, but organizing them so that each new table connects to something already in the query makes the logic easier to follow.</p>
 </section>
-<section id="implicit-vs.-explicit-join-syntax" class="level2" data-number="5.11">
-<h2 data-number="5.11" class="anchored" data-anchor-id="implicit-vs.-explicit-join-syntax"><span class="header-section-number">5.11</span> Implicit vs.&nbsp;Explicit Join Syntax</h2>
+<section id="implicit-vs.-explicit-join-syntax" class="level2" data-number="6.11">
+<h2 data-number="6.11" class="anchored" data-anchor-id="implicit-vs.-explicit-join-syntax"><span class="header-section-number">6.11</span> Implicit vs.&nbsp;Explicit Join Syntax</h2>
 <p>SQL has two ways to join tables. The style used throughout this book is the <strong>explicit</strong> syntax, introduced in the ANSI SQL-92 standard, where the join type and condition are stated directly:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> indicators <span class="kw">AS</span> i <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> i.country_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1668,10 +1674,10 @@ window.Quarto = {
 <p>With explicit syntax, omitting the <code>ON</code> clause is a syntax error that fails immediately rather than quietly returning millions of rows.</p>
 <p><strong>Outer joins require explicit syntax.</strong> There is no comma-table equivalent of <code>LEFT JOIN</code> or <code>FULL OUTER JOIN</code>. Some databases offered proprietary workarounds (Oracle’s <code>(+)</code> operator, for example), but they were not portable and are now deprecated. Any query that needs to preserve unmatched rows must use explicit syntax.</p>
 </section>
-<section id="exercises" class="level2" data-number="5.12">
-<h2 data-number="5.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">5.12</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="5.12.1">
-<h3 data-number="5.12.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">5.12.1</span> Reflection</h3>
+<section id="exercises" class="level2" data-number="6.12">
+<h2 data-number="6.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.12</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="6.12.1">
+<h3 data-number="6.12.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">6.12.1</span> Reflection</h3>
 <ol type="1">
 <li><p>Explain the difference between a primary key and a foreign key. Why does a database need both?</p></li>
 <li><p>A data analyst runs an inner join between <code>countries</code> (299 rows) and <code>indicators</code> without filtering by year and gets back over 16,000 rows. They suspect something went wrong. Is this necessarily a problem? Explain what produces a result with many more rows than the starting table.</p></li>
@@ -1680,8 +1686,8 @@ window.Quarto = {
 <li><p>You find the following query in a legacy codebase: <code>SELECT c.short_name, i.population FROM countries c, indicators i WHERE c.id = i.country_id AND i.year = 2010</code>. Rewrite it using explicit join syntax. Does the rewrite change the result?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="5.12.2">
-<h3 data-number="5.12.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">5.12.2</span> Coding</h3>
+<section id="coding" class="level3" data-number="6.12.2">
+<h3 data-number="6.12.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">6.12.2</span> Coding</h3>
 <ol start="5" type="1">
 <li><p>Write a query that returns the <code>short_name</code>, <code>region</code>, and 2022 <code>gdp_per_capita_usd</code> for every country that has 2022 data in the <code>indicators</code> table. Exclude regional aggregates (where <code>region = 'Aggregates'</code>). Sort by <code>gdp_per_capita_usd</code> descending, with NULLs last. Limit to 20 rows.</p></li>
 <li><p>Write a query that returns every country along with its 2010 <code>gdp_per_capita_usd</code>. Countries that have no 2010 data should still appear in the result, with NULL in the GDP column. Sort by <code>short_name</code>.</p></li>
@@ -2119,13 +2125,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./12-data-types.html" class="pagination-link" aria-label="Data Types">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Types</span></span>
+      <a href="./13-aggregating.html" class="pagination-link" aria-label="Aggregating with GROUP BY">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Aggregating with GROUP BY</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./14-set-operations.html" class="pagination-link" aria-label="Set Operations">
-        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Set Operations</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./15-set-operations.html" class="pagination-link" aria-label="Set Operations">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Set Operations</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -2137,7 +2143,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/13-joins.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/14-joins.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
