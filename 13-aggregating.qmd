@@ -244,7 +244,7 @@ ORDER BY birth_country NULLS LAST, primary_genre NULLS LAST;
 
 Compared to `ROLLUP`, the result includes two additional rows: one per genre summing across both countries (where `birth_country` is NULL but `primary_genre` is not), and one grand total. `CUBE` is most useful when there is no natural hierarchy and you want to slice the data every possible way in a single query.
 
-### Labeling Subtotals with COALESCE
+### Labeling Subtotals with COALESCE and GROUPING
 
 The NULL values in ROLLUP and CUBE output are technically correct but can look awkward in a report. `COALESCE` addresses this: it takes two or more arguments and returns the first one that is not NULL.
 
@@ -252,7 +252,9 @@ The NULL values in ROLLUP and CUBE output are technically correct but can look a
 COALESCE(expression, fallback_value)
 ```
 
-Wrapping each grouping column in `COALESCE` replaces the NULL subtotal markers with a readable label without changing any of the counts:
+There is a catch, however. Once `COALESCE` replaces the NULLs in the `SELECT` list, `ORDER BY ... NULLS LAST` stops working — the alias now resolves to the COALESCE result, which contains no NULLs, so labels like `'Grand Total'` sort alphabetically among the real values rather than at the end.
+
+The solution is `GROUPING(column)`, a companion function designed specifically for ROLLUP and CUBE results. It returns `1` when a column's NULL is a rollup marker and `0` when it holds a real grouping value. Sorting by `GROUPING(column)` first places subtotal rows after the detail rows they summarize, with no dependence on NULLs:
 
 ```{sql}
 #| connection: con
@@ -264,10 +266,11 @@ SELECT
 FROM actors
 WHERE birth_country IN ('USA', 'UK', 'France')
 GROUP BY ROLLUP (birth_country, primary_genre)
-ORDER BY birth_country NULLS LAST, primary_genre NULLS LAST;
+ORDER BY GROUPING(birth_country), birth_country,
+         GROUPING(primary_genre), primary_genre;
 ```
 
-The per-country subtotal rows now show `All Genres` in the `primary_genre` column, and the grand total row shows `Grand Total` in `birth_country`. The data is unchanged; only the presentation differs.
+For each country, `GROUPING(primary_genre)` is `0` for the detail rows and `1` for the per-country subtotal row, so the subtotal always appears after the genres it summarizes. `GROUPING(birth_country)` is `1` only for the grand total row, pushing it to the very end. `COALESCE` then handles the display without interfering with the ordering.
 
 `COALESCE` is not limited to ROLLUP and CUBE output. It is useful anywhere a column may contain NULLs and a default value is preferable in the result: substituting `0` for a NULL box office figure, `'Living'` for a NULL death date, or a placeholder string for any optional text field.
 

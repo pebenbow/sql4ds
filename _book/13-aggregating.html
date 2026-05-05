@@ -384,7 +384,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#rollup" id="toc-rollup" class="nav-link" data-scroll-target="#rollup"><span class="header-section-number">5.4.1</span> ROLLUP</a></li>
   <li><a href="#cube" id="toc-cube" class="nav-link" data-scroll-target="#cube"><span class="header-section-number">5.4.2</span> CUBE</a></li>
-  <li><a href="#labeling-subtotals-with-coalesce" id="toc-labeling-subtotals-with-coalesce" class="nav-link" data-scroll-target="#labeling-subtotals-with-coalesce"><span class="header-section-number">5.4.3</span> Labeling Subtotals with COALESCE</a></li>
+  <li><a href="#labeling-subtotals-with-coalesce-and-grouping" id="toc-labeling-subtotals-with-coalesce-and-grouping" class="nav-link" data-scroll-target="#labeling-subtotals-with-coalesce-and-grouping"><span class="header-section-number">5.4.3</span> Labeling Subtotals with COALESCE and GROUPING</a></li>
   <li><a href="#grouping-sets" id="toc-grouping-sets" class="nav-link" data-scroll-target="#grouping-sets"><span class="header-section-number">5.4.4</span> GROUPING SETS</a></li>
   </ul></li>
   <li><a href="#the-logical-order-of-execution" id="toc-the-logical-order-of-execution" class="nav-link" data-scroll-target="#the-logical-order-of-execution"><span class="header-section-number">5.5</span> The Logical Order of Execution</a></li>
@@ -1103,11 +1103,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Compared to <code>ROLLUP</code>, the result includes two additional rows: one per genre summing across both countries (where <code>birth_country</code> is NULL but <code>primary_genre</code> is not), and one grand total. <code>CUBE</code> is most useful when there is no natural hierarchy and you want to slice the data every possible way in a single query.</p>
 </section>
-<section id="labeling-subtotals-with-coalesce" class="level3" data-number="5.4.3">
-<h3 data-number="5.4.3" class="anchored" data-anchor-id="labeling-subtotals-with-coalesce"><span class="header-section-number">5.4.3</span> Labeling Subtotals with COALESCE</h3>
+<section id="labeling-subtotals-with-coalesce-and-grouping" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="labeling-subtotals-with-coalesce-and-grouping"><span class="header-section-number">5.4.3</span> Labeling Subtotals with COALESCE and GROUPING</h3>
 <p>The NULL values in ROLLUP and CUBE output are technically correct but can look awkward in a report. <code>COALESCE</code> addresses this: it takes two or more arguments and returns the first one that is not NULL.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">COALESCE</span>(expression, fallback_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Wrapping each grouping column in <code>COALESCE</code> replaces the NULL subtotal markers with a readable label without changing any of the counts:</p>
+<p>There is a catch, however. Once <code>COALESCE</code> replaces the NULLs in the <code>SELECT</code> list, <code>ORDER BY ... NULLS LAST</code> stops working — the alias now resolves to the COALESCE result, which contains no NULLs, so labels like <code>'Grand Total'</code> sort alphabetically among the real values rather than at the end.</p>
+<p>The solution is <code>GROUPING(column)</code>, a companion function designed specifically for ROLLUP and CUBE results. It returns <code>1</code> when a column’s NULL is a rollup marker and <code>0</code> when it holds a real grouping value. Sorting by <code>GROUPING(column)</code> first places subtotal rows after the detail rows they summarize, with no dependence on NULLs:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(birth_country, <span class="st">'Grand Total'</span>)  <span class="kw">AS</span> birth_country,</span>
@@ -1116,7 +1117,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth_country <span class="kw">IN</span> (<span class="st">'USA'</span>, <span class="st">'UK'</span>, <span class="st">'France'</span>)</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">ROLLUP</span> (birth_country, primary_genre)</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_country <span class="kw">NULLS</span> <span class="fu">LAST</span>, primary_genre <span class="kw">NULLS</span> <span class="fu">LAST</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">GROUPING</span>(birth_country), birth_country,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>         <span class="fu">GROUPING</span>(primary_genre), primary_genre;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Displaying records 1 - 10</caption>
@@ -1135,54 +1137,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td style="text-align: left;">France</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">France</td>
 <td style="text-align: left;">Comedy</td>
 <td style="text-align: right;">1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">France</td>
 <td style="text-align: left;">Drama</td>
 <td style="text-align: right;">7</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">France</td>
 <td style="text-align: left;">Romance</td>
 <td style="text-align: right;">2</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">France</td>
 <td style="text-align: left;">Thriller</td>
 <td style="text-align: right;">1</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">Grand Total</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">149</td>
-</tr>
 <tr class="even">
+<td style="text-align: left;">France</td>
+<td style="text-align: left;">All Genres</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">UK</td>
 <td style="text-align: left;">Action</td>
 <td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">35</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">UK</td>
 <td style="text-align: left;">Comedy</td>
 <td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">UK</td>
+<td style="text-align: left;">Drama</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">UK</td>
+<td style="text-align: left;">Musical</td>
+<td style="text-align: right;">2</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>The per-country subtotal rows now show <code>All Genres</code> in the <code>primary_genre</code> column, and the grand total row shows <code>Grand Total</code> in <code>birth_country</code>. The data is unchanged; only the presentation differs.</p>
+<p>For each country, <code>GROUPING(primary_genre)</code> is <code>0</code> for the detail rows and <code>1</code> for the per-country subtotal row, so the subtotal always appears after the genres it summarizes. <code>GROUPING(birth_country)</code> is <code>1</code> only for the grand total row, pushing it to the very end. <code>COALESCE</code> then handles the display without interfering with the ordering.</p>
 <p><code>COALESCE</code> is not limited to ROLLUP and CUBE output. It is useful anywhere a column may contain NULLs and a default value is preferable in the result: substituting <code>0</code> for a NULL box office figure, <code>'Living'</code> for a NULL death date, or a placeholder string for any optional text field.</p>
 </section>
 <section id="grouping-sets" class="level3" data-number="5.4.4">
