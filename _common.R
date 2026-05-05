@@ -11,6 +11,8 @@
 library(DBI)
 library(RPostgres)
 
+options(knitr.kable.NA = "NULL")
+
 # Adjust PGPORT if you mapped the container to an alternate host port (e.g., 5433).
 PGPORT <- Sys.getenv("PGPORT", unset = "5432")
 PGPASS <- Sys.getenv("PGPASS", unset = "postgres")

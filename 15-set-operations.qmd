@@ -6,6 +6,9 @@ title: "Set Operations"
 #| include: false
 library(DBI)
 library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+
 con <- dbConnect(
   Postgres(),
   host     = "localhost",

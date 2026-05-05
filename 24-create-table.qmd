@@ -7,6 +7,8 @@ title: "Creating Tables"
 library(DBI)
 library(RPostgres)
 
+options(knitr.kable.NA = "NULL")
+
 PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
 PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
 
