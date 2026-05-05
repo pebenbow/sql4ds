@@ -10,7 +10,7 @@ book:
   cover-image: cover.png
   favicon: cover.png
   site-url: https://sql4ds.com/
-  repo-url: https://github.com/pebenbow/open-sql
+  repo-url: https://github.com/pebenbow/sql4ds
   repo-branch: main
   repo-actions: [edit, issue]
 
