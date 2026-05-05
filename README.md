@@ -1,1 +1,1 @@
-# open-sql
+# SQL for Data Science

@@ -38,10 +38,12 @@ Chapters and the parts they belong to have a numbering convention that should be
 - All chapters under a given section header should use an incremental numbering pattern. For example, with chapters underneath `30-secure.qmd`, they should be numbered as `31-roles.qmd`, `32-privileges.qmd`, etc.
 - 0x chapters are introductory in nature.
 - 1x chapters are about how to query data from databases, primarily focused on SELECT statements.
-- 2x chapters are about database design, including DDL statements, normalization, etc.
-- 3x chapters are about database security, including roles and privileges.
-- 4x chapters are about deployment and migrations with Supabase.
-- 5x chapters are about ETL with Python (Polars).
+- 2x chapters are about analytical query techniques like subqueries, window functions, statistics, etc.
+- 3x chapters are about database design, including DDL statements, normalization, etc.
+- 4x chapters are about database optimization, including query plans, indexes, and optimization patterns.
+- 5x chapters are about database security, including roles and privileges.
+- 6x chapters are about ETL with Python (Polars).
+- 7x chapters are about deployment and migrations with Supabase.
 - 9x chapters are the tail end of the book, where we would include appendices, references, etc.
 
 The numbering convention I just described for the files within this repo is decoupled from the chapter numbering of the final product. That numbering is handled by Quarto itself at the time of rendering. This numbering convention is designed to make the repo easier to navigate when viewing it in GitHub or an IDE like Zed or VS Code.

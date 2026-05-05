@@ -134,7 +134,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="./">SQL for Data Science</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/pebenbow/open-sql" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/pebenbow/sql4ds" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -470,10 +470,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">30.10</span> Summary</a></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">30.11</span> Exercises</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/64-etl-pipeline.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/64-etl-pipeline.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
+<div class="alert alert-warning border-start border-warning border-4" role="alert">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <div>
+            <strong>In Development:</strong> This textbook is currently
+            undergoing development and should not be used as an authoritative
+            source of... well, ANYTHING.
+        </div>
+    </div>
+</div>
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./60-load.html">Load</a></li><li class="breadcrumb-item"><a href="./64-etl-pipeline.html"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -522,7 +532,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>log.info(<span class="st">"Pipeline initialized"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>11:36:57  INFO      Pipeline initialized</code></pre>
+<pre><code>12:41:22  INFO      Pipeline initialized</code></pre>
 </div>
 </div>
 </section>
@@ -695,16 +705,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>11:36:57  INFO      Extracting data/countries.csv
-11:36:57  INFO      Extracting data/indicators.parquet
-11:36:57  INFO      Extracted 218 country rows, 4991 indicator rows
-11:36:57  INFO      Transforming countries
-11:36:57  INFO      Transforming indicators
-11:36:57  INFO      Transformed: 218 countries, 4991 indicator rows
-11:36:57  INFO      Ensuring target tables exist
-11:36:57  INFO      Loading countries
-11:36:57  INFO      Loading indicators
-11:37:00  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
+<pre><code>12:41:23  INFO      Extracting data/countries.csv
+12:41:23  INFO      Extracting data/indicators.parquet
+12:41:23  INFO      Extracted 218 country rows, 4991 indicator rows
+12:41:23  INFO      Transforming countries
+12:41:23  INFO      Transforming indicators
+12:41:23  INFO      Transformed: 218 countries, 4991 indicator rows
+12:41:23  INFO      Ensuring target tables exist
+12:41:23  INFO      Loading countries
+12:41:23  INFO      Loading indicators
+12:41:26  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'countries': 218, 'indicators': 4991}</code></pre>
@@ -720,16 +730,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(stats2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>11:37:00  INFO      Extracting data/countries.csv
-11:37:00  INFO      Extracting data/indicators.parquet
-11:37:00  INFO      Extracted 218 country rows, 4991 indicator rows
-11:37:00  INFO      Transforming countries
-11:37:00  INFO      Transforming indicators
-11:37:00  INFO      Transformed: 218 countries, 4991 indicator rows
-11:37:00  INFO      Ensuring target tables exist
-11:37:00  INFO      Loading countries
-11:37:00  INFO      Loading indicators
-11:37:03  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
+<pre><code>12:41:26  INFO      Extracting data/countries.csv
+12:41:26  INFO      Extracting data/indicators.parquet
+12:41:26  INFO      Extracted 218 country rows, 4991 indicator rows
+12:41:26  INFO      Transforming countries
+12:41:26  INFO      Transforming indicators
+12:41:26  INFO      Transformed: 218 countries, 4991 indicator rows
+12:41:26  INFO      Ensuring target tables exist
+12:41:26  INFO      Loading countries
+12:41:26  INFO      Loading indicators
+12:41:29  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'countries': 218, 'indicators': 4991}</code></pre>
@@ -828,17 +838,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    log.warning(<span class="st">"Pipeline did not complete"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>11:37:03  INFO      Extracting data/countries.csv
-11:37:03  INFO      Extracting data/indicators.parquet
-11:37:03  INFO      Extracted 218 country rows, 4991 indicator rows
-11:37:03  INFO      Transforming countries
-11:37:03  INFO      Transforming indicators
-11:37:03  INFO      Transformed: 218 countries, 4991 indicator rows
-11:37:03  INFO      Ensuring target tables exist
-11:37:03  INFO      Loading countries
-11:37:03  INFO      Loading indicators
-11:37:06  INFO      Load complete: 218 countries, 4991 indicators
-11:37:06  INFO      Pipeline succeeded: {'countries': 218, 'indicators': 4991}</code></pre>
+<pre><code>12:41:29  INFO      Extracting data/countries.csv
+12:41:29  INFO      Extracting data/indicators.parquet
+12:41:29  INFO      Extracted 218 country rows, 4991 indicator rows
+12:41:29  INFO      Transforming countries
+12:41:29  INFO      Transforming indicators
+12:41:29  INFO      Transformed: 218 countries, 4991 indicator rows
+12:41:29  INFO      Ensuring target tables exist
+12:41:29  INFO      Loading countries
+12:41:29  INFO      Loading indicators
+12:41:32  INFO      Load complete: 218 countries, 4991 indicators
+12:41:32  INFO      Pipeline succeeded: {'countries': 218, 'indicators': 4991}</code></pre>
 </div>
 </div>
 <p><code>exc_info=True</code> tells the logger to include the full stack trace in the error message, which is essential for diagnosing failures in production.</p>
@@ -1352,7 +1362,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/64-etl-pipeline.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/64-etl-pipeline.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

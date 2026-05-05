@@ -98,5 +98,6 @@ format:
     callout-appearance: simple
     link-external-newwindow: true
     theme: cosmo
+    include-before-body: _devbanner.html
     syntax-definitions:
       - _extensions/quarto-dbml/dbml.xml

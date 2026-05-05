@@ -24,9 +24,30 @@
     "href": "index.html#acknowledgments",
     "title": "SQL for Data Science",
     "section": "Acknowledgments",
-    "text": "Acknowledgments\nSignificant portions of this textbook were written with agentic AI assistance, specifically Anthrophic’s Claude Code platform. This obviously helps tremendously not only with the generation of content, but a bigger reason I chose this path is how it streamlines some of the more tedious parts of writing a technical textbook. For example, the entire book centers on a Docker image I created which has all of the databases we use pre-installed on it, and agentic AI was able to automatically run the Docker image and execute SQL queries against these databases to validate all the code in the book. This helps ensure consistency and accuracy in a matter of minutes, and at a level that would take many hours for a human reviewer to match.\nThat being said, this book has undergone thorough and painstaking human review by myself and my team. On that note, I want to give a profound THANK YOU to my technical reviewers, Taehee Kim and Patrick Grimes, two of my Data Science advisees here at Davidson. I have been incredibly fortunate to have their help on this undertaking which, without their acumen and insight, would have been monumentally more difficult.\nI also need to thank the Duke Endowment, whose generosity funds my work and creates opportunities for my students to gain meaningful experience in data science and data engineering.\nLastly, I must thank my wife and partner, Megan. I was already an established data engineering professional when I answered Davidson’s call to teach, and becoming a professor was a major change in the nature of my work and the stress levels it generates. The first few semesters were especially brutal, and she was very skeptical of my idea to write a textbook because of the amount of work it would require of me. I’ve been able to pull this off in large part thanks to her steadfast love and patience. Indeed, she is my better half.",
+    "text": "Acknowledgments\nSignificant portions of this textbook were written with agentic AI assistance, specifically Anthrophic’s Claude Code platform. This obviously helps tremendously with efficient content generation, but a bigger reason I chose this path is how it streamlines some of the more tedious parts of writing a technical textbook. For example, the entire book centers on a Docker image I created which has all of the databases we use pre-installed on it, and agentic AI was able to automatically run the Docker image and execute SQL queries against these databases to validate all the code in the book. This helps ensure consistency and accuracy in a matter of minutes, and at a level that would take many hours for a human reviewer to match.\nThat being said, this book has undergone thorough and painstaking human review by myself and my team. On that note, I want to give a profound THANK YOU to my technical reviewers, Taehee Kim and Patrick Grimes, two of my Data Science advisees here at Davidson. I have been incredibly fortunate to have their help on this undertaking which, without their acumen and insight, would have been monumentally more difficult.\nI also need to thank the Duke Endowment, whose generosity funds my work and creates opportunities for my students to gain meaningful experience in data science and data engineering.\nLastly, I must thank my wife and partner, Megan. I was already an established data engineering professional when I answered Davidson’s call to teach, and becoming a professor was a major change in the nature of my work and the stress levels it generates. The first few semesters were especially brutal, and she was very skeptical of my idea to write a textbook because of the amount of work it would require of me. I’ve been able to pull this off in large part thanks to her steadfast love and patience. Indeed, she is my better half.",
     "crumbs": [
       "Welcome"
+    ]
+  },
+  {
+    "objectID": "00-intro.html",
+    "href": "00-intro.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "01-why-learn-sql.html",
+    "href": "01-why-learn-sql.html",
+    "title": "1  Why Learn SQL?",
+    "section": "",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.",
+    "crumbs": [
+      "Introduction",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Why Learn SQL?</span>"
     ]
   },
   {
@@ -93,6 +114,16 @@
     "crumbs": [
       "Introduction",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Setup</span>"
+    ]
+  },
+  {
+    "objectID": "10-query.html",
+    "href": "10-query.html",
+    "title": "Query",
+    "section": "",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.",
+    "crumbs": [
+      "Query"
     ]
   },
   {
@@ -254,7 +285,7 @@
     "href": "12-data-types.html#date-and-time-types",
     "title": "4  Data Types",
     "section": "4.5 Date and Time Types",
-    "text": "4.5 Date and Time Types\nPostgreSQL provides dedicated types for dates, times, and durations. Using these types instead of plain text or integers allows the database to validate values, perform date arithmetic, and handle time zones correctly.\n\n4.5.1 DATE\nDATE stores a calendar date: year, month, and day, with no time component. The birth_date and death_date columns in the actors table are both DATE.\n\nSELECT first_name, last_name, birth_date, death_date\nFROM   actors\nWHERE  death_date IS NOT NULL\nORDER  BY death_date DESC\nLIMIT  10;\n\n\nDisplaying records 1 - 10\n\n\nfirst_name\nlast_name\nbirth_date\ndeath_date\n\n\n\n\nAlain\nDelon\n1935-11-08\n2024-08-18\n\n\nGina\nLollobrigida\n1927-07-04\n2023-01-16\n\n\nSidney\nPoitier\n1927-02-20\n2022-01-06\n\n\nJean-Paul\nBelmondo\n1933-04-09\n2021-09-06\n\n\nSean\nConnery\n1930-08-25\n2020-10-31\n\n\nMax\nvon Sydow\n1929-04-10\n2020-03-08\n\n\nKirk\nDouglas\n1916-12-09\n2020-02-05\n\n\nDoris\nDay\n1922-04-03\n2019-05-13\n\n\nBibi\nAndersson\n1935-11-11\n2019-04-14\n\n\nAlbert\nFinney\n1936-05-09\n2019-02-07\n\n\n\n\n\nDate literals in PostgreSQL are written as quoted strings in ISO 8601 format: '2024-12-16'. The database validates that the string represents a real date — '2024-02-30' would produce an error.\n\n\n4.5.2 TIME\nTIME stores a time of day without an associated date. It comes in two variants: TIME WITHOUT TIME ZONE (also written as TIME) and TIME WITH TIME ZONE (TIMETZ). In practice, TIME WITH TIME ZONE is rarely useful on its own, because a time of day without a date provides limited context for time-zone conversions. TIMESTAMP is the more common choice when both date and time are needed.\n\n\n4.5.3 TIMESTAMP\nTIMESTAMP stores both a date and a time down to the microsecond. It also has two variants: TIMESTAMP WITHOUT TIME ZONE and TIMESTAMP WITH TIME ZONE (TIMESTAMPTZ).\n\n\n\n\n\n\nIf you are coming from MySQL or SQL Server, you may be looking for a DATETIME type. PostgreSQL does not have one — TIMESTAMP covers the same use case.\n\n\n\nThe function NOW() returns the current date and time as a TIMESTAMPTZ, and CURRENT_DATE returns today’s date as a DATE.\n\nSELECT\n    NOW()         AS current_timestamp,\n    CURRENT_DATE  AS today,\n    CURRENT_TIME  AS time_now;\n\n\n1 records\n\n\ncurrent_timestamp\ntoday\ntime_now\n\n\n\n\n2026-05-05 15:35:40\n2026-05-05\n15:35:40.897047\n\n\n\n\n\n\n\n4.5.4 INTERVAL\nINTERVAL stores a span of time — a duration rather than a specific point on the calendar. Intervals are written as quoted strings with a unit: INTERVAL '1 year', INTERVAL '3 months', INTERVAL '45 days'.\nIntervals are most useful for date arithmetic. You can add an interval to a date to compute a future or past date, or subtract two dates to compute the duration between them.\n\nSELECT\n    first_name || ' ' || last_name      AS full_name,\n    birth_date,\n    birth_date + INTERVAL '50 years'    AS fiftieth_birthday,\n    CURRENT_DATE - birth_date           AS days_since_birth\nFROM actors\nWHERE death_date IS NULL\nORDER BY birth_date\nLIMIT 10;\n\n\nDisplaying records 1 - 10\n\n\nfull_name\nbirth_date\nfiftieth_birthday\ndays_since_birth\n\n\n\n\nEva Marie Saint\n1924-07-04\n1974-07-04\n37195\n\n\nGene Hackman\n1930-01-30\n1980-01-30\n35159\n\n\nClint Eastwood\n1930-05-31\n1980-05-31\n35038\n\n\nHarriet Andersson\n1932-02-14\n1982-02-14\n34414\n\n\nKim Novak\n1933-02-13\n1983-02-13\n34049\n\n\nMichael Caine\n1933-03-14\n1983-03-14\n34020\n\n\nShirley MacLaine\n1934-04-24\n1984-04-24\n33614\n\n\nSophia Loren\n1934-09-20\n1984-09-20\n33465\n\n\nBrigitte Bardot\n1934-09-28\n1984-09-28\n33457\n\n\nJudi Dench\n1934-12-09\n1984-12-09\n33385\n\n\n\n\n\nNotice that subtracting two DATE values produces an INTEGER representing the number of days between them, while adding an INTERVAL to a DATE produces a TIMESTAMP. PostgreSQL promotes the result to a timestamp because an interval can include a time component.\n\n\n\n\n\n\nSome database systems and documentation use the term DURATION for this concept. In PostgreSQL, the type is always called INTERVAL.\n\n\n\n\n\n4.5.5 EXTRACT\nEXTRACT pulls a single component — year, month, day, and others — out of a date or timestamp as a number. The syntax is:\nEXTRACT(field FROM date_or_timestamp)\nCommon fields include year, month, day, hour, minute, second, quarter, week, and dow (day of week, where 0 is Sunday).\n\nSELECT\n    first_name || ' ' || last_name  AS full_name,\n    birth_date,\n    EXTRACT(year  FROM birth_date)  AS birth_year,\n    EXTRACT(month FROM birth_date)  AS birth_month,\n    EXTRACT(day   FROM birth_date)  AS birth_day\nFROM actors\nORDER BY birth_date\nLIMIT 10;\n\n\nDisplaying records 1 - 10\n\n\nfull_name\nbirth_date\nbirth_year\nbirth_month\nbirth_day\n\n\n\n\nEdward Robinson\n1893-12-12\n1893\n12\n12\n\n\nWalter Brennan\n1894-07-25\n1894\n7\n25\n\n\nRuth Gordon\n1896-10-30\n1896\n10\n30\n\n\nFred Astaire\n1899-05-10\n1899\n5\n10\n\n\nJames Cagney\n1899-07-17\n1899\n7\n17\n\n\nHumphrey Bogart\n1899-12-25\n1899\n12\n25\n\n\nSpencer Tracy\n1900-04-05\n1900\n4\n5\n\n\nAlastair Sim\n1900-10-09\n1900\n10\n9\n\n\nThelma Ritter\n1902-02-14\n1902\n2\n14\n\n\nCary Grant\n1904-01-18\n1904\n1\n18\n\n\n\n\n\nA practical use is computing an actor’s age in whole years. Subtracting birth years alone is imprecise because it ignores whether the birthday has occurred yet in the current year. The expression below accounts for that by comparing the month and day:\n\nSELECT\n    first_name || ' ' || last_name                          AS full_name,\n    birth_date,\n    EXTRACT(year FROM CURRENT_DATE) -\n    EXTRACT(year FROM birth_date) -\n    CASE WHEN (EXTRACT(month FROM CURRENT_DATE),\n               EXTRACT(day   FROM CURRENT_DATE)) &lt;\n              (EXTRACT(month FROM birth_date),\n               EXTRACT(day   FROM birth_date))\n         THEN 1 ELSE 0 END                                  AS age\nFROM actors\nWHERE death_date IS NULL\nORDER BY birth_date\nLIMIT 10;\n\n\nDisplaying records 1 - 10\n\n\nfull_name\nbirth_date\nage\n\n\n\n\nEva Marie Saint\n1924-07-04\n101\n\n\nGene Hackman\n1930-01-30\n96\n\n\nClint Eastwood\n1930-05-31\n95\n\n\nHarriet Andersson\n1932-02-14\n94\n\n\nKim Novak\n1933-02-13\n93\n\n\nMichael Caine\n1933-03-14\n93\n\n\nShirley MacLaine\n1934-04-24\n92\n\n\nSophia Loren\n1934-09-20\n91\n\n\nBrigitte Bardot\n1934-09-28\n91\n\n\nJudi Dench\n1934-12-09\n91\n\n\n\n\n\n\n\n\n\n\n\nPostgreSQL also provides DATE_PART('field', value), which is an older function that does the same thing as EXTRACT. The two are interchangeable for dates and timestamps: EXTRACT(year FROM birth_date) and DATE_PART('year', birth_date) produce identical results. EXTRACT is the SQL standard form and is preferred in new code.",
+    "text": "4.5 Date and Time Types\nPostgreSQL provides dedicated types for dates, times, and durations. Using these types instead of plain text or integers allows the database to validate values, perform date arithmetic, and handle time zones correctly.\n\n4.5.1 DATE\nDATE stores a calendar date: year, month, and day, with no time component. The birth_date and death_date columns in the actors table are both DATE.\n\nSELECT first_name, last_name, birth_date, death_date\nFROM   actors\nWHERE  death_date IS NOT NULL\nORDER  BY death_date DESC\nLIMIT  10;\n\n\nDisplaying records 1 - 10\n\n\nfirst_name\nlast_name\nbirth_date\ndeath_date\n\n\n\n\nAlain\nDelon\n1935-11-08\n2024-08-18\n\n\nGina\nLollobrigida\n1927-07-04\n2023-01-16\n\n\nSidney\nPoitier\n1927-02-20\n2022-01-06\n\n\nJean-Paul\nBelmondo\n1933-04-09\n2021-09-06\n\n\nSean\nConnery\n1930-08-25\n2020-10-31\n\n\nMax\nvon Sydow\n1929-04-10\n2020-03-08\n\n\nKirk\nDouglas\n1916-12-09\n2020-02-05\n\n\nDoris\nDay\n1922-04-03\n2019-05-13\n\n\nBibi\nAndersson\n1935-11-11\n2019-04-14\n\n\nAlbert\nFinney\n1936-05-09\n2019-02-07\n\n\n\n\n\nDate literals in PostgreSQL are written as quoted strings in ISO 8601 format: '2024-12-16'. The database validates that the string represents a real date — '2024-02-30' would produce an error.\n\n\n4.5.2 TIME\nTIME stores a time of day without an associated date. It comes in two variants: TIME WITHOUT TIME ZONE (also written as TIME) and TIME WITH TIME ZONE (TIMETZ). In practice, TIME WITH TIME ZONE is rarely useful on its own, because a time of day without a date provides limited context for time-zone conversions. TIMESTAMP is the more common choice when both date and time are needed.\n\n\n4.5.3 TIMESTAMP\nTIMESTAMP stores both a date and a time down to the microsecond. It also has two variants: TIMESTAMP WITHOUT TIME ZONE and TIMESTAMP WITH TIME ZONE (TIMESTAMPTZ).\n\n\n\n\n\n\nIf you are coming from MySQL or SQL Server, you may be looking for a DATETIME type. PostgreSQL does not have one — TIMESTAMP covers the same use case.\n\n\n\nThe function NOW() returns the current date and time as a TIMESTAMPTZ, and CURRENT_DATE returns today’s date as a DATE.\n\nSELECT\n    NOW()         AS current_timestamp,\n    CURRENT_DATE  AS today,\n    CURRENT_TIME  AS time_now;\n\n\n1 records\n\n\ncurrent_timestamp\ntoday\ntime_now\n\n\n\n\n2026-05-05 16:40:02\n2026-05-05\n16:40:02.513362\n\n\n\n\n\n\n\n4.5.4 INTERVAL\nINTERVAL stores a span of time — a duration rather than a specific point on the calendar. Intervals are written as quoted strings with a unit: INTERVAL '1 year', INTERVAL '3 months', INTERVAL '45 days'.\nIntervals are most useful for date arithmetic. You can add an interval to a date to compute a future or past date, or subtract two dates to compute the duration between them.\n\nSELECT\n    first_name || ' ' || last_name      AS full_name,\n    birth_date,\n    birth_date + INTERVAL '50 years'    AS fiftieth_birthday,\n    CURRENT_DATE - birth_date           AS days_since_birth\nFROM actors\nWHERE death_date IS NULL\nORDER BY birth_date\nLIMIT 10;\n\n\nDisplaying records 1 - 10\n\n\nfull_name\nbirth_date\nfiftieth_birthday\ndays_since_birth\n\n\n\n\nEva Marie Saint\n1924-07-04\n1974-07-04\n37195\n\n\nGene Hackman\n1930-01-30\n1980-01-30\n35159\n\n\nClint Eastwood\n1930-05-31\n1980-05-31\n35038\n\n\nHarriet Andersson\n1932-02-14\n1982-02-14\n34414\n\n\nKim Novak\n1933-02-13\n1983-02-13\n34049\n\n\nMichael Caine\n1933-03-14\n1983-03-14\n34020\n\n\nShirley MacLaine\n1934-04-24\n1984-04-24\n33614\n\n\nSophia Loren\n1934-09-20\n1984-09-20\n33465\n\n\nBrigitte Bardot\n1934-09-28\n1984-09-28\n33457\n\n\nJudi Dench\n1934-12-09\n1984-12-09\n33385\n\n\n\n\n\nNotice that subtracting two DATE values produces an INTEGER representing the number of days between them, while adding an INTERVAL to a DATE produces a TIMESTAMP. PostgreSQL promotes the result to a timestamp because an interval can include a time component.\n\n\n\n\n\n\nSome database systems and documentation use the term DURATION for this concept. In PostgreSQL, the type is always called INTERVAL.\n\n\n\n\n\n4.5.5 EXTRACT\nEXTRACT pulls a single component — year, month, day, and others — out of a date or timestamp as a number. The syntax is:\nEXTRACT(field FROM date_or_timestamp)\nCommon fields include year, month, day, hour, minute, second, quarter, week, and dow (day of week, where 0 is Sunday).\n\nSELECT\n    first_name || ' ' || last_name  AS full_name,\n    birth_date,\n    EXTRACT(year  FROM birth_date)  AS birth_year,\n    EXTRACT(month FROM birth_date)  AS birth_month,\n    EXTRACT(day   FROM birth_date)  AS birth_day\nFROM actors\nORDER BY birth_date\nLIMIT 10;\n\n\nDisplaying records 1 - 10\n\n\nfull_name\nbirth_date\nbirth_year\nbirth_month\nbirth_day\n\n\n\n\nEdward Robinson\n1893-12-12\n1893\n12\n12\n\n\nWalter Brennan\n1894-07-25\n1894\n7\n25\n\n\nRuth Gordon\n1896-10-30\n1896\n10\n30\n\n\nFred Astaire\n1899-05-10\n1899\n5\n10\n\n\nJames Cagney\n1899-07-17\n1899\n7\n17\n\n\nHumphrey Bogart\n1899-12-25\n1899\n12\n25\n\n\nSpencer Tracy\n1900-04-05\n1900\n4\n5\n\n\nAlastair Sim\n1900-10-09\n1900\n10\n9\n\n\nThelma Ritter\n1902-02-14\n1902\n2\n14\n\n\nCary Grant\n1904-01-18\n1904\n1\n18\n\n\n\n\n\nA practical use is computing an actor’s age in whole years. Subtracting birth years alone is imprecise because it ignores whether the birthday has occurred yet in the current year. The expression below accounts for that by comparing the month and day:\n\nSELECT\n    first_name || ' ' || last_name                          AS full_name,\n    birth_date,\n    EXTRACT(year FROM CURRENT_DATE) -\n    EXTRACT(year FROM birth_date) -\n    CASE WHEN (EXTRACT(month FROM CURRENT_DATE),\n               EXTRACT(day   FROM CURRENT_DATE)) &lt;\n              (EXTRACT(month FROM birth_date),\n               EXTRACT(day   FROM birth_date))\n         THEN 1 ELSE 0 END                                  AS age\nFROM actors\nWHERE death_date IS NULL\nORDER BY birth_date\nLIMIT 10;\n\n\nDisplaying records 1 - 10\n\n\nfull_name\nbirth_date\nage\n\n\n\n\nEva Marie Saint\n1924-07-04\n101\n\n\nGene Hackman\n1930-01-30\n96\n\n\nClint Eastwood\n1930-05-31\n95\n\n\nHarriet Andersson\n1932-02-14\n94\n\n\nKim Novak\n1933-02-13\n93\n\n\nMichael Caine\n1933-03-14\n93\n\n\nShirley MacLaine\n1934-04-24\n92\n\n\nSophia Loren\n1934-09-20\n91\n\n\nBrigitte Bardot\n1934-09-28\n91\n\n\nJudi Dench\n1934-12-09\n91\n\n\n\n\n\n\n\n\n\n\n\nPostgreSQL also provides DATE_PART('field', value), which is an older function that does the same thing as EXTRACT. The two are interchangeable for dates and timestamps: EXTRACT(year FROM birth_date) and DATE_PART('year', birth_date) produce identical results. EXTRACT is the SQL standard form and is preferred in new code.",
     "crumbs": [
       "Query",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Data Types</span>"
@@ -617,7 +648,7 @@
     "href": "20-analyze.html",
     "title": "Analyze",
     "section": "",
-    "text": "The previous section covered the mechanics of querying: how to retrieve rows, filter them, sort them, and combine data from multiple tables. Those tools answer questions about individual rows and sets of rows as they exist in the database. This section is about something different: using SQL to compute, summarize, and draw insight from data at scale.\nData scientists spend most of their SQL time doing analysis rather than retrieval. The chapters here introduce the analytical layer of the language: expressions that branch on conditions, queries that reference their own results, functions that compute across ordered sequences of rows, and statistical aggregates that quantify relationships in the data. Together they move SQL from a data access tool to a data analysis environment.\nEach chapter in this section builds on the querying foundation from the previous one. You will find that the concepts connect: conditional expressions appear inside window functions, CTEs make complex window queries readable, and statistical functions often rely on the same grouping patterns introduced in the aggregation chapter.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nThe previous section covered the mechanics of querying: how to retrieve rows, filter them, sort them, and combine data from multiple tables. Those tools answer questions about individual rows and sets of rows as they exist in the database. This section is about something different: using SQL to compute, summarize, and draw insight from data at scale.\nData scientists spend most of their SQL time doing analysis rather than retrieval. The chapters here introduce the analytical layer of the language: expressions that branch on conditions, queries that reference their own results, functions that compute across ordered sequences of rows, and statistical aggregates that quantify relationships in the data. Together they move SQL from a data access tool to a data analysis environment.\nEach chapter in this section builds on the querying foundation from the previous one. You will find that the concepts connect: conditional expressions appear inside window functions, CTEs make complex window queries readable, and statistical functions often rely on the same grouping patterns introduced in the aggregation chapter.",
     "crumbs": [
       "Analyze"
     ]
@@ -627,7 +658,7 @@
     "href": "21-conditional.html",
     "title": "8  Conditional Expressions",
     "section": "",
-    "text": "Stub: CASE WHEN, NULLIF, and COALESCE as conditional tools.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: CASE WHEN, NULLIF, and COALESCE as conditional tools.",
     "crumbs": [
       "Analyze",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Conditional Expressions</span>"
@@ -638,7 +669,7 @@
     "href": "22-subqueries.html",
     "title": "9  Subqueries and CTEs",
     "section": "",
-    "text": "Stub: scalar subqueries, correlated subqueries, derived tables, WITH clause (CTEs), recursive CTEs.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: scalar subqueries, correlated subqueries, derived tables, WITH clause (CTEs), recursive CTEs.",
     "crumbs": [
       "Analyze",
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>Subqueries and CTEs</span>"
@@ -649,7 +680,7 @@
     "href": "23-window-functions.html",
     "title": "10  Window Functions",
     "section": "",
-    "text": "Stub: OVER, PARTITION BY, ORDER BY in window context, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, running totals.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: OVER, PARTITION BY, ORDER BY in window context, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, running totals.",
     "crumbs": [
       "Analyze",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Window Functions</span>"
@@ -660,10 +691,20 @@
     "href": "24-stats-functions.html",
     "title": "11  Statistical Functions",
     "section": "",
-    "text": "Stub: STDDEV, VARIANCE, PERCENTILE_CONT (median), CORR, COVAR_POP, REGR_SLOPE, REGR_INTERCEPT.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: STDDEV, VARIANCE, PERCENTILE_CONT (median), CORR, COVAR_POP, REGR_SLOPE, REGR_INTERCEPT.",
     "crumbs": [
       "Analyze",
       "<span class='chapter-number'>11</span>  <span class='chapter-title'>Statistical Functions</span>"
+    ]
+  },
+  {
+    "objectID": "30-design.html",
+    "href": "30-design.html",
+    "title": "Design",
+    "section": "",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.",
+    "crumbs": [
+      "Design"
     ]
   },
   {
@@ -1100,10 +1141,21 @@
     "href": "35-views.html",
     "title": "16  Views and Materialized Views",
     "section": "",
-    "text": "Stub: CREATE VIEW, replacing and dropping views, updatable views, security views; CREATE MATERIALIZED VIEW, REFRESH MATERIALIZED VIEW CONCURRENTLY, indexing materialized views, regular vs materialized tradeoffs.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: CREATE VIEW, replacing and dropping views, updatable views, security views; CREATE MATERIALIZED VIEW, REFRESH MATERIALIZED VIEW CONCURRENTLY, indexing materialized views, regular vs materialized tradeoffs.",
     "crumbs": [
       "Design",
       "<span class='chapter-number'>16</span>  <span class='chapter-title'>Views and Materialized Views</span>"
+    ]
+  },
+  {
+    "objectID": "36-building-schema.html",
+    "href": "36-building-schema.html",
+    "title": "17  Building a Schema",
+    "section": "",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.",
+    "crumbs": [
+      "Design",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>Building a Schema</span>"
     ]
   },
   {
@@ -1111,7 +1163,7 @@
     "href": "37-functions.html",
     "title": "18  User-Defined Functions",
     "section": "",
-    "text": "Stub: CREATE FUNCTION, PL/pgSQL basics, RETURNS, LANGUAGE, IMMUTABLE/STABLE/VOLATILE, SQL-language functions, using functions in queries.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: CREATE FUNCTION, PL/pgSQL basics, RETURNS, LANGUAGE, IMMUTABLE/STABLE/VOLATILE, SQL-language functions, using functions in queries.",
     "crumbs": [
       "Design",
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>User-Defined Functions</span>"
@@ -1122,7 +1174,7 @@
     "href": "38-procedures.html",
     "title": "19  Stored Procedures",
     "section": "",
-    "text": "Stub: CREATE PROCEDURE, CALL, difference between functions and procedures, transaction control inside procedures, when to use procedures vs functions.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: CREATE PROCEDURE, CALL, difference between functions and procedures, transaction control inside procedures, when to use procedures vs functions.",
     "crumbs": [
       "Design",
       "<span class='chapter-number'>19</span>  <span class='chapter-title'>Stored Procedures</span>"
@@ -1133,7 +1185,7 @@
     "href": "39-triggers.html",
     "title": "20  Triggers",
     "section": "",
-    "text": "Stub: CREATE TRIGGER, BEFORE/AFTER/INSTEAD OF, ROW vs STATEMENT level, trigger functions, common use cases (audit logs, derived columns, enforcing complex constraints).",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: CREATE TRIGGER, BEFORE/AFTER/INSTEAD OF, ROW vs STATEMENT level, trigger functions, common use cases (audit logs, derived columns, enforcing complex constraints).",
     "crumbs": [
       "Design",
       "<span class='chapter-number'>20</span>  <span class='chapter-title'>Triggers</span>"
@@ -1144,7 +1196,7 @@
     "href": "40-optimize.html",
     "title": "Optimize",
     "section": "",
-    "text": "The previous sections covered how to design a schema and how to query it. A query that returns the right answer is necessary but not sufficient: at small data volumes correctness is all that matters, but as tables grow into the millions or billions of rows the same correct query can take seconds or minutes depending on how the database executes it.\nThis section is about understanding and influencing that execution. PostgreSQL does not run queries the way you write them. It compiles each query into a physical execution plan, chooses join strategies, decides whether to scan a table sequentially or use an index, and estimates the cost of each option using statistics it maintains about the data. Reading those plans, shaping the data structures the planner works with, and avoiding patterns that force expensive operations are the skills this section develops.\nThe material here is relevant to anyone who writes SQL against non-trivial datasets, not just database administrators. A data scientist who can read an execution plan and recognize when a missing index or a non-sargable predicate is causing a slow query is far more self-sufficient than one who can only write the query and wait.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nThe previous sections covered how to design a schema and how to query it. A query that returns the right answer is necessary but not sufficient: at small data volumes correctness is all that matters, but as tables grow into the millions or billions of rows the same correct query can take seconds or minutes depending on how the database executes it.\nThis section is about understanding and influencing that execution. PostgreSQL does not run queries the way you write them. It compiles each query into a physical execution plan, chooses join strategies, decides whether to scan a table sequentially or use an index, and estimates the cost of each option using statistics it maintains about the data. Reading those plans, shaping the data structures the planner works with, and avoiding patterns that force expensive operations are the skills this section develops.\nThe material here is relevant to anyone who writes SQL against non-trivial datasets, not just database administrators. A data scientist who can read an execution plan and recognize when a missing index or a non-sargable predicate is causing a slow query is far more self-sufficient than one who can only write the query and wait.",
     "crumbs": [
       "Optimize"
     ]
@@ -1154,7 +1206,7 @@
     "href": "41-explain.html",
     "title": "21  Reading Query Plans",
     "section": "",
-    "text": "Stub: EXPLAIN, EXPLAIN ANALYZE, EXPLAIN (ANALYZE, BUFFERS), sequential scan vs index scan, cost estimates, actual vs estimated rows.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: EXPLAIN, EXPLAIN ANALYZE, EXPLAIN (ANALYZE, BUFFERS), sequential scan vs index scan, cost estimates, actual vs estimated rows.",
     "crumbs": [
       "Optimize",
       "<span class='chapter-number'>21</span>  <span class='chapter-title'>Reading Query Plans</span>"
@@ -1165,7 +1217,7 @@
     "href": "42-indexes.html",
     "title": "22  Indexes",
     "section": "",
-    "text": "Stub: B-tree indexes, partial indexes, covering indexes, multi-column indexes, when indexes help vs hurt, CREATE INDEX, EXPLAIN to verify index use.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: B-tree indexes, partial indexes, covering indexes, multi-column indexes, when indexes help vs hurt, CREATE INDEX, EXPLAIN to verify index use.",
     "crumbs": [
       "Optimize",
       "<span class='chapter-number'>22</span>  <span class='chapter-title'>Indexes</span>"
@@ -1176,10 +1228,20 @@
     "href": "43-optimization-patterns.html",
     "title": "23  Query Optimization Patterns",
     "section": "",
-    "text": "Stub: sargable vs non-sargable predicates, avoiding functions on indexed columns in WHERE, EXISTS vs IN, implicit type casts, SELECT * vs explicit columns, pg_stat_statements.",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.\n        \n    \n\n\n\n\n\nStub: sargable vs non-sargable predicates, avoiding functions on indexed columns in WHERE, EXISTS vs IN, implicit type casts, SELECT * vs explicit columns, pg_stat_statements.",
     "crumbs": [
       "Optimize",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>Query Optimization Patterns</span>"
+    ]
+  },
+  {
+    "objectID": "50-secure.html",
+    "href": "50-secure.html",
+    "title": "Secure",
+    "section": "",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.",
+    "crumbs": [
+      "Secure"
     ]
   },
   {
@@ -1488,6 +1550,16 @@
     "crumbs": [
       "Secure",
       "<span class='chapter-number'>26</span>  <span class='chapter-title'>SQL Injection</span>"
+    ]
+  },
+  {
+    "objectID": "60-load.html",
+    "href": "60-load.html",
+    "title": "Load",
+    "section": "",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.",
+    "crumbs": [
+      "Load"
     ]
   },
   {
@@ -1869,7 +1941,7 @@
     "href": "64-etl-pipeline.html#setting-up-logging",
     "title": "30  A Complete ETL Pipeline",
     "section": "30.2 Setting Up Logging",
-    "text": "30.2 Setting Up Logging\nRather than sprinkling print() calls throughout, use Python’s standard logging module. It adds timestamps and severity levels to every message, and you can redirect output to a file without changing any pipeline code:\n\nimport logging\n\nlogging.basicConfig(\n    level=logging.INFO,\n    format=\"%(asctime)s  %(levelname)-8s  %(message)s\",\n    datefmt=\"%H:%M:%S\"\n)\nlog = logging.getLogger(__name__)\n\nlog.info(\"Pipeline initialized\")\n\n11:36:57  INFO      Pipeline initialized",
+    "text": "30.2 Setting Up Logging\nRather than sprinkling print() calls throughout, use Python’s standard logging module. It adds timestamps and severity levels to every message, and you can redirect output to a file without changing any pipeline code:\n\nimport logging\n\nlogging.basicConfig(\n    level=logging.INFO,\n    format=\"%(asctime)s  %(levelname)-8s  %(message)s\",\n    datefmt=\"%H:%M:%S\"\n)\nlog = logging.getLogger(__name__)\n\nlog.info(\"Pipeline initialized\")\n\n12:41:22  INFO      Pipeline initialized",
     "crumbs": [
       "Load",
       "<span class='chapter-number'>30</span>  <span class='chapter-title'>A Complete ETL Pipeline</span>"
@@ -1913,7 +1985,7 @@
     "href": "64-etl-pipeline.html#running-the-pipeline",
     "title": "30  A Complete ETL Pipeline",
     "section": "30.6 Running the Pipeline",
-    "text": "30.6 Running the Pipeline\nWith the three stages defined, the pipeline is a straightforward composition:\n\ndef run_pipeline(\n    countries_path: str,\n    indicators_path: str,\n    db_url: str\n) -&gt; dict:\n    engine = create_engine(db_url)\n\n    countries_raw, indicators_raw = extract(countries_path, indicators_path)\n    countries, indicators = transform(countries_raw, indicators_raw)\n    stats = load(countries, indicators, engine)\n\n    return stats\n\nstats = run_pipeline(\n    countries_path=\"data/countries.csv\",\n    indicators_path=\"data/indicators.parquet\",\n    db_url=\"postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank\"\n)\n\nprint(stats)\n\n11:36:57  INFO      Extracting data/countries.csv\n11:36:57  INFO      Extracting data/indicators.parquet\n11:36:57  INFO      Extracted 218 country rows, 4991 indicator rows\n11:36:57  INFO      Transforming countries\n11:36:57  INFO      Transforming indicators\n11:36:57  INFO      Transformed: 218 countries, 4991 indicator rows\n11:36:57  INFO      Ensuring target tables exist\n11:36:57  INFO      Loading countries\n11:36:57  INFO      Loading indicators\n11:37:00  INFO      Load complete: 218 countries, 4991 indicators\n\n\n{'countries': 218, 'indicators': 4991}\n\n\nRun it a second time to confirm idempotency:\n\nstats2 = run_pipeline(\n    countries_path=\"data/countries.csv\",\n    indicators_path=\"data/indicators.parquet\",\n    db_url=\"postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank\"\n)\n\nprint(stats2)\n\n11:37:00  INFO      Extracting data/countries.csv\n11:37:00  INFO      Extracting data/indicators.parquet\n11:37:00  INFO      Extracted 218 country rows, 4991 indicator rows\n11:37:00  INFO      Transforming countries\n11:37:00  INFO      Transforming indicators\n11:37:00  INFO      Transformed: 218 countries, 4991 indicator rows\n11:37:00  INFO      Ensuring target tables exist\n11:37:00  INFO      Loading countries\n11:37:00  INFO      Loading indicators\n11:37:03  INFO      Load complete: 218 countries, 4991 indicators\n\n\n{'countries': 218, 'indicators': 4991}\n\n\nThe row counts should be identical. The upsert logic ensures that running the pipeline twice produces the same database state as running it once.",
+    "text": "30.6 Running the Pipeline\nWith the three stages defined, the pipeline is a straightforward composition:\n\ndef run_pipeline(\n    countries_path: str,\n    indicators_path: str,\n    db_url: str\n) -&gt; dict:\n    engine = create_engine(db_url)\n\n    countries_raw, indicators_raw = extract(countries_path, indicators_path)\n    countries, indicators = transform(countries_raw, indicators_raw)\n    stats = load(countries, indicators, engine)\n\n    return stats\n\nstats = run_pipeline(\n    countries_path=\"data/countries.csv\",\n    indicators_path=\"data/indicators.parquet\",\n    db_url=\"postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank\"\n)\n\nprint(stats)\n\n12:41:23  INFO      Extracting data/countries.csv\n12:41:23  INFO      Extracting data/indicators.parquet\n12:41:23  INFO      Extracted 218 country rows, 4991 indicator rows\n12:41:23  INFO      Transforming countries\n12:41:23  INFO      Transforming indicators\n12:41:23  INFO      Transformed: 218 countries, 4991 indicator rows\n12:41:23  INFO      Ensuring target tables exist\n12:41:23  INFO      Loading countries\n12:41:23  INFO      Loading indicators\n12:41:26  INFO      Load complete: 218 countries, 4991 indicators\n\n\n{'countries': 218, 'indicators': 4991}\n\n\nRun it a second time to confirm idempotency:\n\nstats2 = run_pipeline(\n    countries_path=\"data/countries.csv\",\n    indicators_path=\"data/indicators.parquet\",\n    db_url=\"postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank\"\n)\n\nprint(stats2)\n\n12:41:26  INFO      Extracting data/countries.csv\n12:41:26  INFO      Extracting data/indicators.parquet\n12:41:26  INFO      Extracted 218 country rows, 4991 indicator rows\n12:41:26  INFO      Transforming countries\n12:41:26  INFO      Transforming indicators\n12:41:26  INFO      Transformed: 218 countries, 4991 indicator rows\n12:41:26  INFO      Ensuring target tables exist\n12:41:26  INFO      Loading countries\n12:41:26  INFO      Loading indicators\n12:41:29  INFO      Load complete: 218 countries, 4991 indicators\n\n\n{'countries': 218, 'indicators': 4991}\n\n\nThe row counts should be identical. The upsert logic ensures that running the pipeline twice produces the same database state as running it once.",
     "crumbs": [
       "Load",
       "<span class='chapter-number'>30</span>  <span class='chapter-title'>A Complete ETL Pipeline</span>"
@@ -1935,7 +2007,7 @@
     "href": "64-etl-pipeline.html#error-handling",
     "title": "30  A Complete ETL Pipeline",
     "section": "30.8 Error Handling",
-    "text": "30.8 Error Handling\nThe pipeline as written will raise an exception and stop if anything goes wrong. For a pipeline that runs unattended on a schedule, you want to catch errors, log them, and decide whether to retry or abort.\nA minimal error-handling wrapper:\n\ndef run_pipeline_safe(countries_path, indicators_path, db_url) -&gt; dict | None:\n    try:\n        return run_pipeline(countries_path, indicators_path, db_url)\n    except FileNotFoundError as exc:\n        log.error(\"Source file not found: %s\", exc)\n    except Exception as exc:\n        log.error(\"Pipeline failed: %s\", exc, exc_info=True)\n    return None\n\nresult = run_pipeline_safe(\n    countries_path=\"data/countries.csv\",\n    indicators_path=\"data/indicators.parquet\",\n    db_url=\"postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank\"\n)\n\nif result:\n    log.info(\"Pipeline succeeded: %s\", result)\nelse:\n    log.warning(\"Pipeline did not complete\")\n\n11:37:03  INFO      Extracting data/countries.csv\n11:37:03  INFO      Extracting data/indicators.parquet\n11:37:03  INFO      Extracted 218 country rows, 4991 indicator rows\n11:37:03  INFO      Transforming countries\n11:37:03  INFO      Transforming indicators\n11:37:03  INFO      Transformed: 218 countries, 4991 indicator rows\n11:37:03  INFO      Ensuring target tables exist\n11:37:03  INFO      Loading countries\n11:37:03  INFO      Loading indicators\n11:37:06  INFO      Load complete: 218 countries, 4991 indicators\n11:37:06  INFO      Pipeline succeeded: {'countries': 218, 'indicators': 4991}\n\n\nexc_info=True tells the logger to include the full stack trace in the error message, which is essential for diagnosing failures in production.",
+    "text": "30.8 Error Handling\nThe pipeline as written will raise an exception and stop if anything goes wrong. For a pipeline that runs unattended on a schedule, you want to catch errors, log them, and decide whether to retry or abort.\nA minimal error-handling wrapper:\n\ndef run_pipeline_safe(countries_path, indicators_path, db_url) -&gt; dict | None:\n    try:\n        return run_pipeline(countries_path, indicators_path, db_url)\n    except FileNotFoundError as exc:\n        log.error(\"Source file not found: %s\", exc)\n    except Exception as exc:\n        log.error(\"Pipeline failed: %s\", exc, exc_info=True)\n    return None\n\nresult = run_pipeline_safe(\n    countries_path=\"data/countries.csv\",\n    indicators_path=\"data/indicators.parquet\",\n    db_url=\"postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank\"\n)\n\nif result:\n    log.info(\"Pipeline succeeded: %s\", result)\nelse:\n    log.warning(\"Pipeline did not complete\")\n\n12:41:29  INFO      Extracting data/countries.csv\n12:41:29  INFO      Extracting data/indicators.parquet\n12:41:29  INFO      Extracted 218 country rows, 4991 indicator rows\n12:41:29  INFO      Transforming countries\n12:41:29  INFO      Transforming indicators\n12:41:29  INFO      Transformed: 218 countries, 4991 indicator rows\n12:41:29  INFO      Ensuring target tables exist\n12:41:29  INFO      Loading countries\n12:41:29  INFO      Loading indicators\n12:41:32  INFO      Load complete: 218 countries, 4991 indicators\n12:41:32  INFO      Pipeline succeeded: {'countries': 218, 'indicators': 4991}\n\n\nexc_info=True tells the logger to include the full stack trace in the error message, which is essential for diagnosing failures in production.",
     "crumbs": [
       "Load",
       "<span class='chapter-number'>30</span>  <span class='chapter-title'>A Complete ETL Pipeline</span>"
@@ -1972,6 +2044,16 @@
     "crumbs": [
       "Load",
       "<span class='chapter-number'>30</span>  <span class='chapter-title'>A Complete ETL Pipeline</span>"
+    ]
+  },
+  {
+    "objectID": "70-deploy.html",
+    "href": "70-deploy.html",
+    "title": "Deploy",
+    "section": "",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.",
+    "crumbs": [
+      "Deploy"
     ]
   },
   {
@@ -2247,6 +2329,16 @@
     "crumbs": [
       "Deploy",
       "<span class='chapter-number'>33</span>  <span class='chapter-title'>Database Migrations</span>"
+    ]
+  },
+  {
+    "objectID": "99-references.html",
+    "href": "99-references.html",
+    "title": "References",
+    "section": "",
+    "text": "In Development: This textbook is currently\n            undergoing development and should not be used as an authoritative\n            source of... well, ANYTHING.",
+    "crumbs": [
+      "References"
     ]
   }
 ]
