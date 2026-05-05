@@ -97,11 +97,11 @@ format:
     code-overflow: wrap
     code-block-bg: true
     code-block-border-left: "#0165fc"
-    df-print: paged
     author-meta: "Pete Benbow"
     callout-appearance: simple
     link-external-newwindow: true
     theme: cosmo
+    css: custom.css
     include-before-body: _devbanner.html
     syntax-definitions:
       - _extensions/quarto-dbml/dbml.xml

@@ -1,0 +1,28 @@
+/* Left-align table captions */
+caption,
+.table-caption {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    text-align: left;
+}
+
+/* Remove alternating row shading from result tables */
+.cell-output-display table tbody tr {
+    --bs-table-striped-bg: transparent;
+    background-color: transparent !important;
+}
+
+/* SQL result table styling: vertical gridlines and outer border */
+
+.pagedtable-wrapper .table,
+.cell-output-display table {
+    border: 1px solid #c8cdd2;
+    border-collapse: collapse;
+}
+
+.pagedtable-wrapper .table th,
+.pagedtable-wrapper .table td,
+.cell-output-display table th,
+.cell-output-display table td {
+    border: 1px solid #c8cdd2;
+}

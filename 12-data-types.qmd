@@ -8,6 +8,7 @@ library(DBI)
 library(RPostgres)
 
 options(knitr.kable.NA = "NULL")
+options(max.print = 25)
 
 PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
 PGPASS <- Sys.getenv("PGPASS", unset = "postgres")

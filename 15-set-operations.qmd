@@ -8,6 +8,7 @@ library(DBI)
 library(RPostgres)
 
 options(knitr.kable.NA = "NULL")
+options(max.print = 25)
 
 con <- dbConnect(
   Postgres(),
