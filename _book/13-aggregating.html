@@ -384,7 +384,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#rollup" id="toc-rollup" class="nav-link" data-scroll-target="#rollup"><span class="header-section-number">5.4.1</span> ROLLUP</a></li>
   <li><a href="#cube" id="toc-cube" class="nav-link" data-scroll-target="#cube"><span class="header-section-number">5.4.2</span> CUBE</a></li>
-  <li><a href="#grouping-sets" id="toc-grouping-sets" class="nav-link" data-scroll-target="#grouping-sets"><span class="header-section-number">5.4.3</span> GROUPING SETS</a></li>
+  <li><a href="#labeling-subtotals-with-coalesce" id="toc-labeling-subtotals-with-coalesce" class="nav-link" data-scroll-target="#labeling-subtotals-with-coalesce"><span class="header-section-number">5.4.3</span> Labeling Subtotals with COALESCE</a></li>
+  <li><a href="#grouping-sets" id="toc-grouping-sets" class="nav-link" data-scroll-target="#grouping-sets"><span class="header-section-number">5.4.4</span> GROUPING SETS</a></li>
   </ul></li>
   <li><a href="#the-logical-order-of-execution" id="toc-the-logical-order-of-execution" class="nav-link" data-scroll-target="#the-logical-order-of-execution"><span class="header-section-number">5.5</span> The Logical Order of Execution</a></li>
   <li><a href="#null-values-in-aggregation" id="toc-null-values-in-aggregation" class="nav-link" data-scroll-target="#null-values-in-aggregation"><span class="header-section-number">5.6</span> NULL Values in Aggregation</a></li>
@@ -1102,31 +1103,113 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Compared to <code>ROLLUP</code>, the result includes two additional rows: one per genre summing across both countries (where <code>birth_country</code> is NULL but <code>primary_genre</code> is not), and one grand total. <code>CUBE</code> is most useful when there is no natural hierarchy and you want to slice the data every possible way in a single query.</p>
 </section>
-<section id="grouping-sets" class="level3" data-number="5.4.3">
-<h3 data-number="5.4.3" class="anchored" data-anchor-id="grouping-sets"><span class="header-section-number">5.4.3</span> GROUPING SETS</h3>
+<section id="labeling-subtotals-with-coalesce" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="labeling-subtotals-with-coalesce"><span class="header-section-number">5.4.3</span> Labeling Subtotals with COALESCE</h3>
+<p>The NULL values in ROLLUP and CUBE output are technically correct but can look awkward in a report. <code>COALESCE</code> addresses this: it takes two or more arguments and returns the first one that is not NULL.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">COALESCE</span>(expression, fallback_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Wrapping each grouping column in <code>COALESCE</code> replaces the NULL subtotal markers with a readable label without changing any of the counts:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(birth_country, <span class="st">'Grand Total'</span>)  <span class="kw">AS</span> birth_country,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(primary_genre, <span class="st">'All Genres'</span>)   <span class="kw">AS</span> primary_genre,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> actors</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth_country <span class="kw">IN</span> (<span class="st">'USA'</span>, <span class="st">'UK'</span>, <span class="st">'France'</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">ROLLUP</span> (birth_country, primary_genre)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_country <span class="kw">NULLS</span> <span class="fu">LAST</span>, primary_genre <span class="kw">NULLS</span> <span class="fu">LAST</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Displaying records 1 - 10</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">birth_country</th>
+<th style="text-align: left;">primary_genre</th>
+<th style="text-align: right;">actors</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">France</td>
+<td style="text-align: left;">Action</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">France</td>
+<td style="text-align: left;">All Genres</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">France</td>
+<td style="text-align: left;">Comedy</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">France</td>
+<td style="text-align: left;">Drama</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">France</td>
+<td style="text-align: left;">Romance</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">France</td>
+<td style="text-align: left;">Thriller</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Grand Total</td>
+<td style="text-align: left;">All Genres</td>
+<td style="text-align: right;">149</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">UK</td>
+<td style="text-align: left;">Action</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">UK</td>
+<td style="text-align: left;">All Genres</td>
+<td style="text-align: right;">35</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">UK</td>
+<td style="text-align: left;">Comedy</td>
+<td style="text-align: right;">3</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The per-country subtotal rows now show <code>All Genres</code> in the <code>primary_genre</code> column, and the grand total row shows <code>Grand Total</code> in <code>birth_country</code>. The data is unchanged; only the presentation differs.</p>
+<p><code>COALESCE</code> is not limited to ROLLUP and CUBE output. It is useful anywhere a column may contain NULLs and a default value is preferable in the result: substituting <code>0</code> for a NULL box office figure, <code>'Living'</code> for a NULL death date, or a placeholder string for any optional text field.</p>
+</section>
+<section id="grouping-sets" class="level3" data-number="5.4.4">
+<h3 data-number="5.4.4" class="anchored" data-anchor-id="grouping-sets"><span class="header-section-number">5.4.4</span> GROUPING SETS</h3>
 <p><code>ROLLUP</code> and <code>CUBE</code> are both shortcuts for <code>GROUPING SETS</code>, which is the underlying primitive. <code>GROUPING SETS</code> lets you specify exactly which combinations of grouping columns should produce rows in the output. Each set in the list is one combination; every other combination is omitted.</p>
 <p>The two shortcuts expand to their GROUPING SETS equivalents like this:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- These are identical:</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">ROLLUP</span> (a, b)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="fu">GROUPING</span> SETS ((a, b), (a), ())</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- These are identical:</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">CUBE</span> (a, b)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="fu">GROUPING</span> SETS ((a, b), (a), (b), ())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- These are identical:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">ROLLUP</span> (a, b)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="fu">GROUPING</span> SETS ((a, b), (a), ())</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- These are identical:</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">CUBE</span> (a, b)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="fu">GROUPING</span> SETS ((a, b), (a), (b), ())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>ROLLUP</code> always gives you the full hierarchy from most-specific to grand total. <code>CUBE</code> always gives you every possible combination. <code>GROUPING SETS</code> lets you pick exactly the combinations you want, which matters when neither shortcut fits.</p>
 <p>The following query returns actor counts at two levels: the <code>(primary_genre, sex)</code> detail level and the grand total, skipping the intermediate per-genre and per-sex subtotals that CUBE would add:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    sex,</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> actors</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> primary_genre <span class="kw">IN</span> (<span class="st">'Drama'</span>, <span class="st">'Action'</span>, <span class="st">'Comedy'</span>)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="fu">GROUPING</span> SETS (</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    (primary_genre, sex),</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    ()</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> primary_genre <span class="kw">NULLS</span> <span class="fu">LAST</span>, sex <span class="kw">NULLS</span> <span class="fu">LAST</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    sex,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> actors</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> primary_genre <span class="kw">IN</span> (<span class="st">'Drama'</span>, <span class="st">'Action'</span>, <span class="st">'Comedy'</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="fu">GROUPING</span> SETS (</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    (primary_genre, sex),</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    ()</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> primary_genre <span class="kw">NULLS</span> <span class="fu">LAST</span>, sex <span class="kw">NULLS</span> <span class="fu">LAST</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>7 records</caption>
@@ -1194,17 +1277,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>LIMIT</code> — trim to the requested row count</li>
 </ol>
 <p>This order has a practical consequence: aggregate functions and column aliases defined in <code>SELECT</code> cannot be referenced in <code>HAVING</code>, because <code>HAVING</code> runs before <code>SELECT</code>. You must repeat the aggregate expression:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- This fails: 'avg_noms' is not defined when HAVING runs</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> primary_genre, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>) <span class="kw">AS</span> avg_noms</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> avg_noms <span class="op">&gt;</span> <span class="dv">2</span>;</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- This works: repeat the expression</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> primary_genre, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>) <span class="kw">AS</span> avg_noms</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">AVG</span>(oscar_nominations) <span class="op">&gt;</span> <span class="dv">2</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- This fails: 'avg_noms' is not defined when HAVING runs</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> primary_genre, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>) <span class="kw">AS</span> avg_noms</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> avg_noms <span class="op">&gt;</span> <span class="dv">2</span>;</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- This works: repeat the expression</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> primary_genre, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>) <span class="kw">AS</span> avg_noms</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">AVG</span>(oscar_nominations) <span class="op">&gt;</span> <span class="dv">2</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="null-values-in-aggregation" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="null-values-in-aggregation"><span class="header-section-number">5.6</span> NULL Values in Aggregation</h2>
@@ -1215,16 +1298,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="5.7" class="anchored" data-anchor-id="putting-it-all-together"><span class="header-section-number">5.7</span> Putting It All Together</h2>
 <p>The following query combines all the clauses covered in this chapter to answer a specific question: for each primary genre with more than two actors born outside the USA, what are the actor count, total Oscar wins, and average box office in millions?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)                                         <span class="kw">AS</span> actor_count,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(oscar_wins)                                  <span class="kw">AS</span> total_wins,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(total_box_office_usd) <span class="op">/</span> <span class="dv">1000000</span>, <span class="dv">0</span>)    <span class="kw">AS</span> avg_box_office_millions</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth_country <span class="op">&lt;&gt;</span> <span class="st">'USA'</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">2</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> actor_count <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)                                         <span class="kw">AS</span> actor_count,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(oscar_wins)                                  <span class="kw">AS</span> total_wins,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(total_box_office_usd) <span class="op">/</span> <span class="dv">1000000</span>, <span class="dv">0</span>)    <span class="kw">AS</span> avg_box_office_millions</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth_country <span class="op">&lt;&gt;</span> <span class="st">'USA'</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">2</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> actor_count <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>5 records</caption>
@@ -1279,10 +1362,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>1.</strong> Explain the difference between <code>WHERE</code> and <code>HAVING</code>. Write an example of a condition that must go in <code>WHERE</code> and one that must go in <code>HAVING</code>, and explain why each belongs where it does.</p>
 <hr>
 <p><strong>2.</strong> A student writes the following query intending to find genres where the average number of Oscar nominations exceeds 2, but PostgreSQL returns an error. Identify the problem and fix it.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> primary_genre, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>) <span class="kw">AS</span> avg_noms</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> avg_noms <span class="op">&gt;</span> <span class="dv">2</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> primary_genre, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>) <span class="kw">AS</span> avg_noms</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> avg_noms <span class="op">&gt;</span> <span class="dv">2</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 <p><strong>3.</strong> Explain why <code>COUNT(*)</code> and <code>COUNT(birth_name)</code> would return different values when used inside a <code>GROUP BY</code> query. In what situation would they return the same value for every group?</p>
 <hr>
