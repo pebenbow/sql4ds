@@ -97,6 +97,7 @@ format:
     code-overflow: wrap
     code-block-bg: true
     code-block-border-left: "#0165fc"
+    df-print: paged
     author-meta: "Pete Benbow"
     callout-appearance: simple
     link-external-newwindow: true
