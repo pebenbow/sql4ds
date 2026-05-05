@@ -94,6 +94,7 @@ bibliography: references.bib
 format:
   html:
     lightbox: true
+    code-block-border-left: "#0165fc"
     author-meta: "Pete Benbow"
     callout-appearance: simple
     link-external-newwindow: true
