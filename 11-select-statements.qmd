@@ -1,5 +1,8 @@
 ---
 title: "SELECT Statements"
+knitr:
+  opts_chunk:
+    max.print: 25
 ---
 
 ```{r}
