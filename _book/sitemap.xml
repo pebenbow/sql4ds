@@ -81,8 +81,24 @@
     <lastmod>2026-05-05T14:38:47.754Z</lastmod>
   </url>
   <url>
+    <loc>https://sql4ds.com/35-views.html</loc>
+    <lastmod>2026-05-05T15:25:54.560Z</lastmod>
+  </url>
+  <url>
     <loc>https://sql4ds.com/36-building-schema.html</loc>
     <lastmod>2026-04-30T12:34:53.999Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sql4ds.com/37-functions.html</loc>
+    <lastmod>2026-05-05T15:26:05.828Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sql4ds.com/38-procedures.html</loc>
+    <lastmod>2026-05-05T15:26:06.694Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sql4ds.com/39-triggers.html</loc>
+    <lastmod>2026-05-05T15:26:08.257Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/40-optimize.html</loc>
@@ -97,11 +113,7 @@
     <lastmod>2026-05-05T15:20:50.099Z</lastmod>
   </url>
   <url>
-    <loc>https://sql4ds.com/43-materialized-views.html</loc>
-    <lastmod>2026-05-05T15:20:51.482Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sql4ds.com/44-optimization-patterns.html</loc>
+    <loc>https://sql4ds.com/43-optimization-patterns.html</loc>
     <lastmod>2026-05-05T15:20:53.193Z</lastmod>
   </url>
   <url>

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>Optimizing Queries – SQL for Data Science</title>
+<title>20&nbsp; Triggers – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,8 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./41-explain.html" rel="next">
-<link href="./39-triggers.html" rel="prev">
+<link href="./40-optimize.html" rel="next">
+<link href="./38-procedures.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40-optimize.html">Optimizing Queries</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./39-triggers.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Triggers</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -280,7 +280,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./39-triggers.html" class="sidebar-item-text sidebar-link">
+  <a href="./39-triggers.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Triggers</span></span></a>
   </div>
 </li>
@@ -288,7 +288,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./40-optimize.html" class="sidebar-item-text sidebar-link active">
+            <a href="./40-optimize.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Optimizing Queries</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -425,9 +425,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./39-triggers.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Triggers</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Optimizing Queries</h1>
+<h1 class="title"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Triggers</span></h1>
 </div>
 
 
@@ -444,9 +444,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>The previous sections covered how to design a schema and how to query it. A query that returns the right answer is necessary but not sufficient: at small data volumes correctness is all that matters, but as tables grow into the millions or billions of rows the same correct query can take seconds or minutes depending on how the database executes it.</p>
-<p>This section is about understanding and influencing that execution. PostgreSQL does not run queries the way you write them. It compiles each query into a physical execution plan, chooses join strategies, decides whether to scan a table sequentially or use an index, and estimates the cost of each option using statistics it maintains about the data. Reading those plans, shaping the data structures the planner works with, and avoiding patterns that force expensive operations are the skills this section develops.</p>
-<p>The material here is relevant to anyone who writes SQL against non-trivial datasets, not just database administrators. A data scientist who can read an execution plan and recognize when a missing index or a non-sargable predicate is causing a slow query is far more self-sufficient than one who can only write the query and wait.</p>
+<p>Stub: CREATE TRIGGER, BEFORE/AFTER/INSTEAD OF, ROW vs STATEMENT level, trigger functions, common use cases (audit logs, derived columns, enforcing complex constraints).</p>
 
 
 
@@ -875,13 +873,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./39-triggers.html" class="pagination-link" aria-label="Triggers">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Triggers</span></span>
+      <a href="./38-procedures.html" class="pagination-link" aria-label="Stored Procedures">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Stored Procedures</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./41-explain.html" class="pagination-link" aria-label="Reading Query Plans">
-        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Reading Query Plans</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./40-optimize.html" class="pagination-link" aria-label="Optimizing Queries">
+        <span class="nav-page-text">Optimizing Queries</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -893,7 +891,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/40-optimize.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/39-triggers.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

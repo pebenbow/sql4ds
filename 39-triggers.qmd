@@ -1,0 +1,5 @@
+---
+title: "Triggers"
+---
+
+Stub: CREATE TRIGGER, BEFORE/AFTER/INSTEAD OF, ROW vs STATEMENT level, trigger functions, common use cases (audit logs, derived columns, enforcing complex constraints).

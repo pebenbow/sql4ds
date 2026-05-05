@@ -1,0 +1,5 @@
+---
+title: "Stored Procedures"
+---
+
+Stub: CREATE PROCEDURE, CALL, difference between functions and procedures, transaction control inside procedures, when to use procedures vs functions.

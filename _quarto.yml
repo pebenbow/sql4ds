@@ -48,14 +48,17 @@ book:
         - 32-er-diagrams.qmd
         - 33-normal-forms.qmd
         - 34-create-table.qmd
+        - 35-views.qmd
         - 36-building-schema.qmd
+        - 37-functions.qmd
+        - 38-procedures.qmd
+        - 39-triggers.qmd
 
     - part: 40-optimize.qmd
       chapters:
         - 41-explain.qmd
         - 42-indexes.qmd
-        - 43-materialized-views.qmd
-        - 44-optimization-patterns.qmd
+        - 43-optimization-patterns.qmd
 
     - part: 50-secure.qmd
       chapters:

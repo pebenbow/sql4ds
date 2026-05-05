@@ -1,0 +1,5 @@
+---
+title: "Views and Materialized Views"
+---
+
+Stub: CREATE VIEW, replacing and dropping views, updatable views, security views; CREATE MATERIALIZED VIEW, REFRESH MATERIALIZED VIEW CONCURRENTLY, indexing materialized views, regular vs materialized tradeoffs.
