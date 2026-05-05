@@ -240,6 +240,44 @@ ORDER BY birth_country NULLS LAST, primary_genre NULLS LAST;
 
 Compared to `ROLLUP`, the result includes two additional rows: one per genre summing across both countries (where `birth_country` is NULL but `primary_genre` is not), and one grand total. `CUBE` is most useful when there is no natural hierarchy and you want to slice the data every possible way in a single query.
 
+### GROUPING SETS
+
+`ROLLUP` and `CUBE` are both shortcuts for `GROUPING SETS`, which is the underlying primitive. `GROUPING SETS` lets you specify exactly which combinations of grouping columns should produce rows in the output. Each set in the list is one combination; every other combination is omitted.
+
+The two shortcuts expand to their GROUPING SETS equivalents like this:
+
+```sql
+-- These are identical:
+GROUP BY ROLLUP (a, b)
+GROUP BY GROUPING SETS ((a, b), (a), ())
+
+-- These are identical:
+GROUP BY CUBE (a, b)
+GROUP BY GROUPING SETS ((a, b), (a), (b), ())
+```
+
+`ROLLUP` always gives you the full hierarchy from most-specific to grand total. `CUBE` always gives you every possible combination. `GROUPING SETS` lets you pick exactly the combinations you want, which matters when neither shortcut fits.
+
+The following query returns actor counts at two levels: the `(primary_genre, sex)` detail level and the grand total, skipping the intermediate per-genre and per-sex subtotals that CUBE would add:
+
+```{sql}
+#| connection: con
+#| label: grouping-sets
+SELECT
+    primary_genre,
+    sex,
+    COUNT(*) AS actors
+FROM actors
+WHERE primary_genre IN ('Drama', 'Action', 'Comedy')
+GROUP BY GROUPING SETS (
+    (primary_genre, sex),
+    ()
+)
+ORDER BY primary_genre NULLS LAST, sex NULLS LAST;
+```
+
+The row where both columns are NULL is the grand total. Every other row is a specific genre-sex pairing. There are no per-genre or per-sex subtotals, because those sets were not listed. `CUBE` on these two columns would have produced eight additional rows; `GROUPING SETS` produces exactly what was requested.
+
 ## The Logical Order of Execution
 
 The full logical order of a query with aggregation is:
