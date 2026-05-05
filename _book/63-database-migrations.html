@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>18&nbsp; Database Migrations – SQL for Data Science</title>
+<title>26&nbsp; Database Migrations – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./50-load.html" rel="next">
-<link href="./42-supabase-vscode.html" rel="prev">
+<link href="./70-load.html" rel="next">
+<link href="./62-supabase-vscode.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40-deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./43-database-migrations.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./60-deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./63-database-migrations.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Database Migrations</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -222,8 +222,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./20-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Design</span></a>
+            <a href="./20-analyze.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyzing Data</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -231,40 +231,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+  <a href="./21-conditional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conditional Expressions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+  <a href="./22-subqueries.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Subqueries and CTEs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  <a href="./23-window-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Window Functions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+  <a href="./24-stats-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Statistical Functions</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./30-secure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Secure</span></a>
+            <a href="./30-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -272,28 +266,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+  <a href="./31-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+  <a href="./32-er-diagrams.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  <a href="./33-normal-forms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-create-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./36-building-schema.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./40-deploy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Deploy</span></a>
+            <a href="./40-optimize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optimizing Queries</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -301,28 +307,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  <a href="./41-explain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Reading Query Plans</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  <a href="./42-indexes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Indexes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  <a href="./43-materialized-views.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Materialized Views</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44-optimization-patterns.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Query Optimization Patterns</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./50-load.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Load</span></a>
+            <a href="./50-secure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Secure</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -330,26 +342,84 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  <a href="./51-roles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  <a href="./52-privileges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  <a href="./53-sqli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./60-deploy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploy</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./61-supabase-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  <a href="./62-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./63-database-migrations.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./70-load.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Load</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./71-extracting-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./72-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./73-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./74-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -370,40 +440,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#why-migrations-matter" id="toc-why-migrations-matter" class="nav-link active" data-scroll-target="#why-migrations-matter"><span class="header-section-number">18.1</span> Why Migrations Matter</a></li>
-  <li><a href="#the-structure-of-a-migration-file" id="toc-the-structure-of-a-migration-file" class="nav-link" data-scroll-target="#the-structure-of-a-migration-file"><span class="header-section-number">18.2</span> The Structure of a Migration File</a></li>
-  <li><a href="#naming-conventions" id="toc-naming-conventions" class="nav-link" data-scroll-target="#naming-conventions"><span class="header-section-number">18.3</span> Naming Conventions</a></li>
-  <li><a href="#creating-and-applying-migrations" id="toc-creating-and-applying-migrations" class="nav-link" data-scroll-target="#creating-and-applying-migrations"><span class="header-section-number">18.4</span> Creating and Applying Migrations</a>
+  <li><a href="#why-migrations-matter" id="toc-why-migrations-matter" class="nav-link active" data-scroll-target="#why-migrations-matter"><span class="header-section-number">26.1</span> Why Migrations Matter</a></li>
+  <li><a href="#the-structure-of-a-migration-file" id="toc-the-structure-of-a-migration-file" class="nav-link" data-scroll-target="#the-structure-of-a-migration-file"><span class="header-section-number">26.2</span> The Structure of a Migration File</a></li>
+  <li><a href="#naming-conventions" id="toc-naming-conventions" class="nav-link" data-scroll-target="#naming-conventions"><span class="header-section-number">26.3</span> Naming Conventions</a></li>
+  <li><a href="#creating-and-applying-migrations" id="toc-creating-and-applying-migrations" class="nav-link" data-scroll-target="#creating-and-applying-migrations"><span class="header-section-number">26.4</span> Creating and Applying Migrations</a>
   <ul class="collapse">
-  <li><a href="#creating-a-migration-file" id="toc-creating-a-migration-file" class="nav-link" data-scroll-target="#creating-a-migration-file"><span class="header-section-number">18.4.1</span> Creating a Migration File</a></li>
-  <li><a href="#listing-migration-status" id="toc-listing-migration-status" class="nav-link" data-scroll-target="#listing-migration-status"><span class="header-section-number">18.4.2</span> Listing Migration Status</a></li>
-  <li><a href="#applying-pending-migrations" id="toc-applying-pending-migrations" class="nav-link" data-scroll-target="#applying-pending-migrations"><span class="header-section-number">18.4.3</span> Applying Pending Migrations</a></li>
+  <li><a href="#creating-a-migration-file" id="toc-creating-a-migration-file" class="nav-link" data-scroll-target="#creating-a-migration-file"><span class="header-section-number">26.4.1</span> Creating a Migration File</a></li>
+  <li><a href="#listing-migration-status" id="toc-listing-migration-status" class="nav-link" data-scroll-target="#listing-migration-status"><span class="header-section-number">26.4.2</span> Listing Migration Status</a></li>
+  <li><a href="#applying-pending-migrations" id="toc-applying-pending-migrations" class="nav-link" data-scroll-target="#applying-pending-migrations"><span class="header-section-number">26.4.3</span> Applying Pending Migrations</a></li>
   </ul></li>
-  <li><a href="#rolling-back-a-migration" id="toc-rolling-back-a-migration" class="nav-link" data-scroll-target="#rolling-back-a-migration"><span class="header-section-number">18.5</span> Rolling Back a Migration</a></li>
-  <li><a href="#a-complete-workflow" id="toc-a-complete-workflow" class="nav-link" data-scroll-target="#a-complete-workflow"><span class="header-section-number">18.6</span> A Complete Workflow</a></li>
-  <li><a href="#best-practices" id="toc-best-practices" class="nav-link" data-scroll-target="#best-practices"><span class="header-section-number">18.7</span> Best Practices</a></li>
-  <li><a href="#migrations-beyond-supabase" id="toc-migrations-beyond-supabase" class="nav-link" data-scroll-target="#migrations-beyond-supabase"><span class="header-section-number">18.8</span> Migrations Beyond Supabase</a>
+  <li><a href="#rolling-back-a-migration" id="toc-rolling-back-a-migration" class="nav-link" data-scroll-target="#rolling-back-a-migration"><span class="header-section-number">26.5</span> Rolling Back a Migration</a></li>
+  <li><a href="#a-complete-workflow" id="toc-a-complete-workflow" class="nav-link" data-scroll-target="#a-complete-workflow"><span class="header-section-number">26.6</span> A Complete Workflow</a></li>
+  <li><a href="#best-practices" id="toc-best-practices" class="nav-link" data-scroll-target="#best-practices"><span class="header-section-number">26.7</span> Best Practices</a></li>
+  <li><a href="#migrations-beyond-supabase" id="toc-migrations-beyond-supabase" class="nav-link" data-scroll-target="#migrations-beyond-supabase"><span class="header-section-number">26.8</span> Migrations Beyond Supabase</a>
   <ul class="collapse">
-  <li><a href="#what-every-migration-tool-has-in-common" id="toc-what-every-migration-tool-has-in-common" class="nav-link" data-scroll-target="#what-every-migration-tool-has-in-common"><span class="header-section-number">18.8.1</span> What Every Migration Tool Has in Common</a></li>
-  <li><a href="#applying-migrations-with-psql" id="toc-applying-migrations-with-psql" class="nav-link" data-scroll-target="#applying-migrations-with-psql"><span class="header-section-number">18.8.2</span> Applying Migrations with psql</a></li>
-  <li><a href="#standalone-migration-tools" id="toc-standalone-migration-tools" class="nav-link" data-scroll-target="#standalone-migration-tools"><span class="header-section-number">18.8.3</span> Standalone Migration Tools</a></li>
-  <li><a href="#framework-integrated-migrations" id="toc-framework-integrated-migrations" class="nav-link" data-scroll-target="#framework-integrated-migrations"><span class="header-section-number">18.8.4</span> Framework-Integrated Migrations</a></li>
-  <li><a href="#your-migration-files-are-portable" id="toc-your-migration-files-are-portable" class="nav-link" data-scroll-target="#your-migration-files-are-portable"><span class="header-section-number">18.8.5</span> Your Migration Files Are Portable</a></li>
+  <li><a href="#what-every-migration-tool-has-in-common" id="toc-what-every-migration-tool-has-in-common" class="nav-link" data-scroll-target="#what-every-migration-tool-has-in-common"><span class="header-section-number">26.8.1</span> What Every Migration Tool Has in Common</a></li>
+  <li><a href="#applying-migrations-with-psql" id="toc-applying-migrations-with-psql" class="nav-link" data-scroll-target="#applying-migrations-with-psql"><span class="header-section-number">26.8.2</span> Applying Migrations with psql</a></li>
+  <li><a href="#standalone-migration-tools" id="toc-standalone-migration-tools" class="nav-link" data-scroll-target="#standalone-migration-tools"><span class="header-section-number">26.8.3</span> Standalone Migration Tools</a></li>
+  <li><a href="#framework-integrated-migrations" id="toc-framework-integrated-migrations" class="nav-link" data-scroll-target="#framework-integrated-migrations"><span class="header-section-number">26.8.4</span> Framework-Integrated Migrations</a></li>
+  <li><a href="#your-migration-files-are-portable" id="toc-your-migration-files-are-portable" class="nav-link" data-scroll-target="#your-migration-files-are-portable"><span class="header-section-number">26.8.5</span> Your Migration Files Are Portable</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">18.9</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">26.9</span> Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">18.9.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">18.9.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">26.9.1</span> Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">26.9.2</span> Coding</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/43-database-migrations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/63-database-migrations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40-deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./43-database-migrations.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./60-deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./63-database-migrations.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Database Migrations</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></h1>
+<h1 class="title"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Database Migrations</span></h1>
 </div>
 
 
@@ -422,15 +492,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>When a database is first created, its schema is in a clean, known state. As the work that depends on that database evolves, new tables are added, columns are renamed, indexes are created, constraints are tightened or relaxed. Each of those changes alters the schema. If the changes are made informally, by hand, through a GUI, without recording what was done, the schema becomes something that exists only on that one machine at that one moment. Nobody else can reproduce it, and the history of how it arrived at its current state is gone.</p>
 <p>A <strong>database migration</strong> is a recorded, versioned change to a database schema. It is a SQL file that transforms the database from one known state to another. Migrations are stored in version control alongside the rest of the project, so the schema’s complete history is preserved and any environment, a teammate’s laptop, a staging server, a cloud deployment, can be brought to the current schema by replaying the migration sequence in order.</p>
-<section id="why-migrations-matter" class="level2" data-number="18.1">
-<h2 data-number="18.1" class="anchored" data-anchor-id="why-migrations-matter"><span class="header-section-number">18.1</span> Why Migrations Matter</h2>
+<section id="why-migrations-matter" class="level2" data-number="26.1">
+<h2 data-number="26.1" class="anchored" data-anchor-id="why-migrations-matter"><span class="header-section-number">26.1</span> Why Migrations Matter</h2>
 <p><strong>Reproducibility.</strong> A fresh database can be brought to the current schema by running all migrations in sequence, from the first to the last. There is no need to export a dump or document changes manually. A new team member or a new server starts from nothing and arrives at exactly the correct state.</p>
 <p><strong>Team coordination.</strong> When multiple people work on the same schema, migrations give each change a clear author and a defined order. Version control handles the merging. Two developers working on separate features each write their own migration files, and the files are integrated by ordering them chronologically when both branches are merged.</p>
 <p><strong>Auditability.</strong> The migration history is a log of every schema decision ever made. It answers questions like “when was this column added?” or “why does this index exist?” in the same way that <code>git log</code> answers questions about code changes.</p>
 <p><strong>Controlled rollout.</strong> Because migrations are SQL files, they can be reviewed before being applied, tested in a staging environment before reaching production, and, when written carefully, reversed if something goes wrong.</p>
 </section>
-<section id="the-structure-of-a-migration-file" class="level2" data-number="18.2">
-<h2 data-number="18.2" class="anchored" data-anchor-id="the-structure-of-a-migration-file"><span class="header-section-number">18.2</span> The Structure of a Migration File</h2>
+<section id="the-structure-of-a-migration-file" class="level2" data-number="26.2">
+<h2 data-number="26.2" class="anchored" data-anchor-id="the-structure-of-a-migration-file"><span class="header-section-number">26.2</span> The Structure of a Migration File</h2>
 <p>A migration file is a plain SQL file. Its job is to implement one logical schema change. The file should be self-contained: reading it in isolation should make clear what it does, and running it against the appropriate database state should succeed without side effects.</p>
 <p>A migration that creates a new table:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> orders (</span>
@@ -455,8 +525,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DROP</span> <span class="kw">COLUMN</span> <span class="cf">IF</span> <span class="kw">EXISTS</span> internal_notes;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Each file should do one logical thing. A migration that creates a table, renames a column in a different table, and drops an index in a third is harder to review, harder to test, and harder to reverse than three separate files. The extra files cost almost nothing; the clarity they provide is worth it.</p>
 </section>
-<section id="naming-conventions" class="level2" data-number="18.3">
-<h2 data-number="18.3" class="anchored" data-anchor-id="naming-conventions"><span class="header-section-number">18.3</span> Naming Conventions</h2>
+<section id="naming-conventions" class="level2" data-number="26.3">
+<h2 data-number="26.3" class="anchored" data-anchor-id="naming-conventions"><span class="header-section-number">26.3</span> Naming Conventions</h2>
 <p>Migration files must be applied in a consistent order. The standard convention is a <strong>timestamp prefix</strong> followed by a short, lowercase description with words separated by underscores:</p>
 <pre><code>20250101120000_create_customers_table.sql
 20250115093000_create_orders_table.sql
@@ -466,10 +536,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The description that follows the timestamp should read as a brief, active-voice summary of what the migration does. Future readers will scan this list to understand the schema’s history, so the names carry real informational value.</p>
 <p>The Supabase CLI generates the timestamp automatically when you create a migration, so you only need to supply the description.</p>
 </section>
-<section id="creating-and-applying-migrations" class="level2" data-number="18.4">
-<h2 data-number="18.4" class="anchored" data-anchor-id="creating-and-applying-migrations"><span class="header-section-number">18.4</span> Creating and Applying Migrations</h2>
-<section id="creating-a-migration-file" class="level3" data-number="18.4.1">
-<h3 data-number="18.4.1" class="anchored" data-anchor-id="creating-a-migration-file"><span class="header-section-number">18.4.1</span> Creating a Migration File</h3>
+<section id="creating-and-applying-migrations" class="level2" data-number="26.4">
+<h2 data-number="26.4" class="anchored" data-anchor-id="creating-and-applying-migrations"><span class="header-section-number">26.4</span> Creating and Applying Migrations</h2>
+<section id="creating-a-migration-file" class="level3" data-number="26.4.1">
+<h3 data-number="26.4.1" class="anchored" data-anchor-id="creating-a-migration-file"><span class="header-section-number">26.4.1</span> Creating a Migration File</h3>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> migration new add_email_to_customers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The CLI creates a new, empty file in <code>supabase/migrations/</code> with a timestamp prefix:</p>
 <pre><code>supabase/migrations/20250203140000_add_email_to_customers.sql</code></pre>
@@ -478,8 +548,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ADD</span> <span class="kw">COLUMN</span> email TEXT;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Save the file and commit it to version control before pushing. A migration file that exists in the repository but has not yet been applied to any database is called a <strong>pending</strong> migration.</p>
 </section>
-<section id="listing-migration-status" class="level3" data-number="18.4.2">
-<h3 data-number="18.4.2" class="anchored" data-anchor-id="listing-migration-status"><span class="header-section-number">18.4.2</span> Listing Migration Status</h3>
+<section id="listing-migration-status" class="level3" data-number="26.4.2">
+<h3 data-number="26.4.2" class="anchored" data-anchor-id="listing-migration-status"><span class="header-section-number">26.4.2</span> Listing Migration Status</h3>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> migration list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This command shows every migration file in <code>supabase/migrations/</code>, indicating which have been applied to the remote database (linked with <code>supabase link</code>) and which are still pending. The output looks roughly like this:</p>
 <pre><code>        LOCAL      │     REMOTE     │     TIME (UTC)
@@ -489,15 +559,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   20250203140000   │                │</code></pre>
 <p>The third migration exists locally but has not been applied remotely. It is pending.</p>
 </section>
-<section id="applying-pending-migrations" class="level3" data-number="18.4.3">
-<h3 data-number="18.4.3" class="anchored" data-anchor-id="applying-pending-migrations"><span class="header-section-number">18.4.3</span> Applying Pending Migrations</h3>
+<section id="applying-pending-migrations" class="level3" data-number="26.4.3">
+<h3 data-number="26.4.3" class="anchored" data-anchor-id="applying-pending-migrations"><span class="header-section-number">26.4.3</span> Applying Pending Migrations</h3>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> db push</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The CLI identifies which migrations in <code>supabase/migrations/</code> have not yet been applied to the remote database, runs them in timestamp order, and reports the result. Only pending migrations are executed; already-applied migrations are skipped.</p>
 <p>Supabase tracks applied migrations in a table in the <code>supabase_migrations</code> schema on the remote database. You do not need to interact with this table directly, but knowing it exists explains how the CLI knows what has and has not been applied.</p>
 </section>
 </section>
-<section id="rolling-back-a-migration" class="level2" data-number="18.5">
-<h2 data-number="18.5" class="anchored" data-anchor-id="rolling-back-a-migration"><span class="header-section-number">18.5</span> Rolling Back a Migration</h2>
+<section id="rolling-back-a-migration" class="level2" data-number="26.5">
+<h2 data-number="26.5" class="anchored" data-anchor-id="rolling-back-a-migration"><span class="header-section-number">26.5</span> Rolling Back a Migration</h2>
 <p>Supabase migrations are forward-only by default: the CLI applies migrations but does not include a built-in mechanism for reverting them. Rolling back is instead handled by writing a new migration that undoes the previous one.</p>
 <p>To reverse the “add email to customers” migration:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
@@ -513,8 +583,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- ALTER TABLE customers DROP COLUMN IF EXISTS email;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The down block is commented out so it does not execute when the migration is applied. It serves as documentation for whoever needs to write the reversal.</p>
 </section>
-<section id="a-complete-workflow" class="level2" data-number="18.6">
-<h2 data-number="18.6" class="anchored" data-anchor-id="a-complete-workflow"><span class="header-section-number">18.6</span> A Complete Workflow</h2>
+<section id="a-complete-workflow" class="level2" data-number="26.6">
+<h2 data-number="26.6" class="anchored" data-anchor-id="a-complete-workflow"><span class="header-section-number">26.6</span> A Complete Workflow</h2>
 <p>The full cycle for a schema change under this system:</p>
 <ol type="1">
 <li><p><strong>Create the migration file.</strong></p>
@@ -528,8 +598,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>Verify.</strong> Check the Supabase dashboard or run a query to confirm the change took effect. Review <code>supabase migration list</code> to confirm the migration now shows as applied.</p></li>
 </ol>
 </section>
-<section id="best-practices" class="level2" data-number="18.7">
-<h2 data-number="18.7" class="anchored" data-anchor-id="best-practices"><span class="header-section-number">18.7</span> Best Practices</h2>
+<section id="best-practices" class="level2" data-number="26.7">
+<h2 data-number="26.7" class="anchored" data-anchor-id="best-practices"><span class="header-section-number">26.7</span> Best Practices</h2>
 <p><strong>Never edit a migration file after it has been applied.</strong> Once a migration has been applied to any database, it is part of the permanent record. Editing the file afterward breaks the tracking system: the applied state and the file on disk no longer match. If you made a mistake, write a new migration that corrects it.</p>
 <p><strong>Keep each migration focused on one logical change.</strong> Small, focused migrations are easier to review, easier to understand three months later, and easier to reverse if necessary.</p>
 <p><strong>Use <code>IF NOT EXISTS</code> and <code>IF EXISTS</code> defensively.</strong> <code>CREATE TABLE IF NOT EXISTS</code> and <code>DROP TABLE IF EXISTS</code> make individual statements safe to retry if a migration fails partway through. Without these guards, a partial failure followed by a retry attempt will produce errors on the already-completed statements.</p>
@@ -537,11 +607,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Write the rollback at the same time as the migration.</strong> The person who best understands how to reverse a migration is the person who just wrote it. Adding a commented-out rollback block to the migration file takes two minutes and may save hours later.</p>
 <p><strong>Coordinate with teammates before pushing.</strong> If multiple people are developing against the same remote database, establish a shared understanding of when migrations will be pushed. Applying a migration that a teammate has not yet pulled can cause their local environment to diverge.</p>
 </section>
-<section id="migrations-beyond-supabase" class="level2" data-number="18.8">
-<h2 data-number="18.8" class="anchored" data-anchor-id="migrations-beyond-supabase"><span class="header-section-number">18.8</span> Migrations Beyond Supabase</h2>
+<section id="migrations-beyond-supabase" class="level2" data-number="26.8">
+<h2 data-number="26.8" class="anchored" data-anchor-id="migrations-beyond-supabase"><span class="header-section-number">26.8</span> Migrations Beyond Supabase</h2>
 <p>The Supabase CLI is one tool for managing migrations, not the only one. When you deploy to a different platform — AWS RDS, Google Cloud SQL, Railway, Render, a bare Linux server running PostgreSQL — you need a different way to apply migration files. The concepts from this chapter transfer directly; only the tooling changes.</p>
-<section id="what-every-migration-tool-has-in-common" class="level3" data-number="18.8.1">
-<h3 data-number="18.8.1" class="anchored" data-anchor-id="what-every-migration-tool-has-in-common"><span class="header-section-number">18.8.1</span> What Every Migration Tool Has in Common</h3>
+<section id="what-every-migration-tool-has-in-common" class="level3" data-number="26.8.1">
+<h3 data-number="26.8.1" class="anchored" data-anchor-id="what-every-migration-tool-has-in-common"><span class="header-section-number">26.8.1</span> What Every Migration Tool Has in Common</h3>
 <p>At the core, every migration system does the same three things:</p>
 <ol type="1">
 <li>Maintains a directory of ordered SQL files.</li>
@@ -550,8 +620,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>Supabase stores its tracking data in the <code>supabase_migrations</code> schema. Other tools use their own table names and schemas, but the logic is identical. If you understand those three moving parts, you can reason about any migration system.</p>
 </section>
-<section id="applying-migrations-with-psql" class="level3" data-number="18.8.2">
-<h3 data-number="18.8.2" class="anchored" data-anchor-id="applying-migrations-with-psql"><span class="header-section-number">18.8.2</span> Applying Migrations with psql</h3>
+<section id="applying-migrations-with-psql" class="level3" data-number="26.8.2">
+<h3 data-number="26.8.2" class="anchored" data-anchor-id="applying-migrations-with-psql"><span class="header-section-number">26.8.2</span> Applying Migrations with psql</h3>
 <p>The most portable approach requires no additional tooling at all. <code>psql</code>, the standard PostgreSQL command-line client, can execute a SQL file against any PostgreSQL database given a connection string:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">psql</span> <span class="st">"postgresql://user:password@host:5432/dbname"</span> <span class="at">-f</span> supabase/migrations/20250101000000_create_products.sql</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The connection string has the same format as the one shown in the Supabase Project Settings page. Substitute the host, credentials, and database name for whichever provider you are deploying to, and <code>psql</code> will apply the migration.</p>
@@ -577,8 +647,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This is rougher than a dedicated tool, but it is understandable, it works on any system with <code>psql</code> installed, and it illustrates exactly what is happening under the hood of every migration framework.</p>
 </section>
-<section id="standalone-migration-tools" class="level3" data-number="18.8.3">
-<h3 data-number="18.8.3" class="anchored" data-anchor-id="standalone-migration-tools"><span class="header-section-number">18.8.3</span> Standalone Migration Tools</h3>
+<section id="standalone-migration-tools" class="level3" data-number="26.8.3">
+<h3 data-number="26.8.3" class="anchored" data-anchor-id="standalone-migration-tools"><span class="header-section-number">26.8.3</span> Standalone Migration Tools</h3>
 <p>Several dedicated tools handle this problem with more robustness than a shell script and without tying you to a specific application framework or language. All of them accept a database connection string and a directory of SQL files.</p>
 <p><strong>golang-migrate</strong> (often invoked as <code>migrate</code>) is a widely used CLI tool that applies numbered or timestamped SQL files to any PostgreSQL database. It supports both “up” and “down” migration files, stored as pairs: <code>000001_create_products.up.sql</code> and <code>000001_create_products.down.sql</code>. Running <code>migrate up</code> applies all pending up migrations; running <code>migrate down</code> runs the corresponding down files to reverse them. The naming convention differs from Supabase’s but the concept is the same.</p>
 <p><strong>Flyway</strong> is a more full-featured tool popular in Java environments but usable from any language. Its community edition is free and supports SQL migration files named with a <code>V</code> prefix and a version number: <code>V1__Create_products_table.sql</code>. Flyway tracks applied migrations in a table it creates in your database called <code>flyway_schema_history</code>.</p>
@@ -586,21 +656,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>sqitch</strong> is built around SQL from the start and has no abstraction layer. Each change consists of a deploy script, a revert script, and a verify script. It tracks changes in a set of tables it manages in the target database. sqitch is particularly popular in organizations where DBAs own the migration workflow directly.</p>
 <p>All four tools accept a <code>--url</code> or equivalent flag for the database connection string, making it straightforward to point them at a Supabase database, a local Docker container, or any other PostgreSQL instance.</p>
 </section>
-<section id="framework-integrated-migrations" class="level3" data-number="18.8.4">
-<h3 data-number="18.8.4" class="anchored" data-anchor-id="framework-integrated-migrations"><span class="header-section-number">18.8.4</span> Framework-Integrated Migrations</h3>
+<section id="framework-integrated-migrations" class="level3" data-number="26.8.4">
+<h3 data-number="26.8.4" class="anchored" data-anchor-id="framework-integrated-migrations"><span class="header-section-number">26.8.4</span> Framework-Integrated Migrations</h3>
 <p>If you are building an application with a web framework or ORM, that framework likely includes its own migration system. Django (Python) generates migration files automatically from changes to your model classes and applies them with <code>python manage.py migrate</code>. Ruby on Rails has <code>rails db:migrate</code>. Prisma (Node.js/TypeScript) has <code>prisma migrate deploy</code>. Laravel (PHP) has <code>php artisan migrate</code>.</p>
 <p>These tools generate the migration SQL for you based on schema declarations in application code, which reduces the amount of hand-written SQL. The tradeoff is that the migrations are tightly coupled to the framework: they are difficult to read or apply without the full application environment in place. For standalone database work, dedicated tools or plain <code>psql</code> are more flexible.</p>
 </section>
-<section id="your-migration-files-are-portable" class="level3" data-number="18.8.5">
-<h3 data-number="18.8.5" class="anchored" data-anchor-id="your-migration-files-are-portable"><span class="header-section-number">18.8.5</span> Your Migration Files Are Portable</h3>
+<section id="your-migration-files-are-portable" class="level3" data-number="26.8.5">
+<h3 data-number="26.8.5" class="anchored" data-anchor-id="your-migration-files-are-portable"><span class="header-section-number">26.8.5</span> Your Migration Files Are Portable</h3>
 <p>The most important thing to recognize is that the SQL files in <code>supabase/migrations/</code> are standard SQL. There is nothing Supabase-specific inside them. If you switch hosting providers tomorrow, you can point <code>psql</code>, Flyway, golang-migrate, or any other tool at the same directory of files. The migration history you have built up is not locked to Supabase.</p>
 <p>The Supabase CLI adds the convenience of <code>supabase migration new</code> and <code>supabase db push</code>, and it integrates with the rest of the Supabase platform. But it is a thin layer over the same idea: ordered SQL files, applied in sequence, with a tracking table keeping record of what has been done.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="18.9">
-<h2 data-number="18.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">18.9</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="18.9.1">
-<h3 data-number="18.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">18.9.1</span> Reflection</h3>
+<section id="exercises" class="level2" data-number="26.9">
+<h2 data-number="26.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">26.9</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="26.9.1">
+<h3 data-number="26.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">26.9.1</span> Reflection</h3>
 <ol type="1">
 <li><p>Explain the difference between running a <code>CREATE TABLE</code> statement directly in the Supabase SQL Editor versus creating a migration file and running <code>supabase db push</code>. What does the migration approach give you that the direct approach does not?</p></li>
 <li><p>Why is it important to commit migration files to version control before applying them to the remote database?</p></li>
@@ -608,8 +678,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Two developers, working on separate feature branches, both create migrations at roughly the same time. One creates <code>20250310120000_add_tags_table.sql</code> and the other creates <code>20250310130000_add_ratings_table.sql</code>. When both branches are merged, which migration will be applied first and why?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="18.9.2">
-<h3 data-number="18.9.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">18.9.2</span> Coding</h3>
+<section id="coding" class="level3" data-number="26.9.2">
+<h3 data-number="26.9.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">26.9.2</span> Coding</h3>
 <ol start="5" type="1">
 <li><p>Add a migration to your project from the previous chapter that adds an <code>instructor_id</code> column (integer, nullable) to the <code>courses</code> table. Push it to your Supabase project and verify with a query to <code>information_schema.columns</code>.</p></li>
 <li><p>Write a second migration that creates an <code>instructors</code> table with columns for a surrogate primary key, <code>last_name</code> (text, not null), <code>first_name</code> (text, not null), and <code>department</code> (text). After applying it, add a foreign key constraint on <code>courses.instructor_id</code> referencing <code>instructors.id</code> in a third migration.</p></li>
@@ -1046,12 +1116,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./42-supabase-vscode.html" class="pagination-link" aria-label="Deploying from VS Code">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span>
+      <a href="./62-supabase-vscode.html" class="pagination-link" aria-label="Deploying from VS Code">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./50-load.html" class="pagination-link" aria-label="Load">
+      <a href="./70-load.html" class="pagination-link" aria-label="Load">
         <span class="nav-page-text">Load</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -1064,7 +1134,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/43-database-migrations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/63-database-migrations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

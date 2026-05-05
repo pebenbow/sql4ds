@@ -1,0 +1,5 @@
+---
+title: "Indexes"
+---
+
+Stub: B-tree indexes, partial indexes, covering indexes, multi-column indexes, when indexes help vs hurt, CREATE INDEX, EXPLAIN to verify index use.

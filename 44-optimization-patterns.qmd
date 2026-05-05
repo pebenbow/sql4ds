@@ -1,0 +1,5 @@
+---
+title: "Query Optimization Patterns"
+---
+
+Stub: sargable vs non-sargable predicates, avoiding functions on indexed columns in WHERE, EXISTS vs IN, implicit type casts, SELECT * vs explicit columns, pg_stat_statements.

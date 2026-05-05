@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>21&nbsp; Loading Data into PostgreSQL with SQLAlchemy – SQL for Data Science</title>
+<title>29&nbsp; Loading Data into PostgreSQL with SQLAlchemy – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./54-etl-pipeline.html" rel="next">
-<link href="./52-transforming-with-polars.html" rel="prev">
+<link href="./74-etl-pipeline.html" rel="next">
+<link href="./72-transforming-with-polars.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./50-load.html">Load</a></li><li class="breadcrumb-item"><a href="./53-loading-with-sqlalchemy.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./70-load.html">Load</a></li><li class="breadcrumb-item"><a href="./73-loading-with-sqlalchemy.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -222,8 +222,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./20-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Design</span></a>
+            <a href="./20-analyze.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyzing Data</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -231,40 +231,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+  <a href="./21-conditional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conditional Expressions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+  <a href="./22-subqueries.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Subqueries and CTEs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  <a href="./23-window-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Window Functions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+  <a href="./24-stats-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Statistical Functions</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./30-secure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Secure</span></a>
+            <a href="./30-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -272,28 +266,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+  <a href="./31-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+  <a href="./32-er-diagrams.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  <a href="./33-normal-forms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-create-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./36-building-schema.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./40-deploy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Deploy</span></a>
+            <a href="./40-optimize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optimizing Queries</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -301,28 +307,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  <a href="./41-explain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Reading Query Plans</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  <a href="./42-indexes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Indexes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  <a href="./43-materialized-views.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Materialized Views</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44-optimization-patterns.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Query Optimization Patterns</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./50-load.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Load</span></a>
+            <a href="./50-secure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Secure</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -330,26 +342,84 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  <a href="./51-roles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  <a href="./52-privileges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  <a href="./53-sqli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./60-deploy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploy</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./61-supabase-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  <a href="./62-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./63-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./70-load.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Load</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./71-extracting-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./72-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./73-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./74-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -370,30 +440,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites"><span class="header-section-number">21.1</span> Prerequisites</a></li>
-  <li><a href="#connecting-to-postgresql" id="toc-connecting-to-postgresql" class="nav-link" data-scroll-target="#connecting-to-postgresql"><span class="header-section-number">21.2</span> Connecting to PostgreSQL</a></li>
-  <li><a href="#creating-the-target-tables" id="toc-creating-the-target-tables" class="nav-link" data-scroll-target="#creating-the-target-tables"><span class="header-section-number">21.3</span> Creating the Target Tables</a></li>
-  <li><a href="#loading-the-clean-dataframes" id="toc-loading-the-clean-dataframes" class="nav-link" data-scroll-target="#loading-the-clean-dataframes"><span class="header-section-number">21.4</span> Loading the Clean DataFrames</a></li>
-  <li><a href="#simple-bulk-load-with-write_database" id="toc-simple-bulk-load-with-write_database" class="nav-link" data-scroll-target="#simple-bulk-load-with-write_database"><span class="header-section-number">21.5</span> Simple Bulk Load with <code>write_database</code></a></li>
-  <li><a href="#upsert-handling-duplicate-rows" id="toc-upsert-handling-duplicate-rows" class="nav-link" data-scroll-target="#upsert-handling-duplicate-rows"><span class="header-section-number">21.6</span> Upsert: Handling Duplicate Rows</a>
+  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link active" data-scroll-target="#prerequisites"><span class="header-section-number">29.1</span> Prerequisites</a></li>
+  <li><a href="#connecting-to-postgresql" id="toc-connecting-to-postgresql" class="nav-link" data-scroll-target="#connecting-to-postgresql"><span class="header-section-number">29.2</span> Connecting to PostgreSQL</a></li>
+  <li><a href="#creating-the-target-tables" id="toc-creating-the-target-tables" class="nav-link" data-scroll-target="#creating-the-target-tables"><span class="header-section-number">29.3</span> Creating the Target Tables</a></li>
+  <li><a href="#loading-the-clean-dataframes" id="toc-loading-the-clean-dataframes" class="nav-link" data-scroll-target="#loading-the-clean-dataframes"><span class="header-section-number">29.4</span> Loading the Clean DataFrames</a></li>
+  <li><a href="#simple-bulk-load-with-write_database" id="toc-simple-bulk-load-with-write_database" class="nav-link" data-scroll-target="#simple-bulk-load-with-write_database"><span class="header-section-number">29.5</span> Simple Bulk Load with <code>write_database</code></a></li>
+  <li><a href="#upsert-handling-duplicate-rows" id="toc-upsert-handling-duplicate-rows" class="nav-link" data-scroll-target="#upsert-handling-duplicate-rows"><span class="header-section-number">29.6</span> Upsert: Handling Duplicate Rows</a>
   <ul class="collapse">
-  <li><a href="#upsert-for-the-countries-table" id="toc-upsert-for-the-countries-table" class="nav-link" data-scroll-target="#upsert-for-the-countries-table"><span class="header-section-number">21.6.1</span> Upsert for the Countries Table</a></li>
-  <li><a href="#upsert-for-the-indicators-table" id="toc-upsert-for-the-indicators-table" class="nav-link" data-scroll-target="#upsert-for-the-indicators-table"><span class="header-section-number">21.6.2</span> Upsert for the Indicators Table</a></li>
-  <li><a href="#batching-large-loads" id="toc-batching-large-loads" class="nav-link" data-scroll-target="#batching-large-loads"><span class="header-section-number">21.6.3</span> Batching Large Loads</a></li>
+  <li><a href="#upsert-for-the-countries-table" id="toc-upsert-for-the-countries-table" class="nav-link" data-scroll-target="#upsert-for-the-countries-table"><span class="header-section-number">29.6.1</span> Upsert for the Countries Table</a></li>
+  <li><a href="#upsert-for-the-indicators-table" id="toc-upsert-for-the-indicators-table" class="nav-link" data-scroll-target="#upsert-for-the-indicators-table"><span class="header-section-number">29.6.2</span> Upsert for the Indicators Table</a></li>
+  <li><a href="#batching-large-loads" id="toc-batching-large-loads" class="nav-link" data-scroll-target="#batching-large-loads"><span class="header-section-number">29.6.3</span> Batching Large Loads</a></li>
   </ul></li>
-  <li><a href="#conditional-updates-only-update-changed-rows" id="toc-conditional-updates-only-update-changed-rows" class="nav-link" data-scroll-target="#conditional-updates-only-update-changed-rows"><span class="header-section-number">21.7</span> Conditional Updates: Only Update Changed Rows</a></li>
-  <li><a href="#reading-data-back-into-polars" id="toc-reading-data-back-into-polars" class="nav-link" data-scroll-target="#reading-data-back-into-polars"><span class="header-section-number">21.8</span> Reading Data Back into Polars</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">21.9</span> Summary</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">21.10</span> Exercises</a></li>
+  <li><a href="#conditional-updates-only-update-changed-rows" id="toc-conditional-updates-only-update-changed-rows" class="nav-link" data-scroll-target="#conditional-updates-only-update-changed-rows"><span class="header-section-number">29.7</span> Conditional Updates: Only Update Changed Rows</a></li>
+  <li><a href="#reading-data-back-into-polars" id="toc-reading-data-back-into-polars" class="nav-link" data-scroll-target="#reading-data-back-into-polars"><span class="header-section-number">29.8</span> Reading Data Back into Polars</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">29.9</span> Summary</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">29.10</span> Exercises</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/53-loading-with-sqlalchemy.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/73-loading-with-sqlalchemy.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./50-load.html">Load</a></li><li class="breadcrumb-item"><a href="./53-loading-with-sqlalchemy.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./70-load.html">Load</a></li><li class="breadcrumb-item"><a href="./73-loading-with-sqlalchemy.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></h1>
+<h1 class="title"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></h1>
 </div>
 
 
@@ -412,13 +482,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>With clean DataFrames in hand, the final stage of the ETL pipeline is loading them into PostgreSQL. This chapter covers how to do that using SQLAlchemy, the standard Python library for database connectivity.</p>
 <p>You will learn to write DataFrames to database tables, and more importantly, how to write <em>upserts</em>: inserts that gracefully handle duplicate rows by updating existing records rather than failing or creating duplicates. This is critical for any pipeline that runs on a schedule, since subsequent runs will encounter rows that were already loaded on a previous run.</p>
-<section id="prerequisites" class="level2" data-number="21.1">
-<h2 data-number="21.1" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">21.1</span> Prerequisites</h2>
+<section id="prerequisites" class="level2" data-number="29.1">
+<h2 data-number="29.1" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">29.1</span> Prerequisites</h2>
 <p>Install SQLAlchemy and the psycopg2 adapter if you have not already:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install sqlalchemy psycopg2-binary pyarrow</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="connecting-to-postgresql" class="level2" data-number="21.2">
-<h2 data-number="21.2" class="anchored" data-anchor-id="connecting-to-postgresql"><span class="header-section-number">21.2</span> Connecting to PostgreSQL</h2>
+<section id="connecting-to-postgresql" class="level2" data-number="29.2">
+<h2 data-number="29.2" class="anchored" data-anchor-id="connecting-to-postgresql"><span class="header-section-number">29.2</span> Connecting to PostgreSQL</h2>
 <p>SQLAlchemy uses a <em>connection string</em> (also called a connection URL) that encodes the database type, credentials, host, port, and database name in a single string:</p>
 <pre><code>postgresql+psycopg2://user:password@host:port/database</code></pre>
 <p>Create an engine from the connection string. The engine manages a pool of connections to the database; you do not open a raw connection until you actually execute a query:</p>
@@ -445,8 +515,8 @@ PostgreSQL:   PostgreSQL 17.9 on x86_64-pc-linux-musl</code></pre>
 </div>
 <p>The <code>with</code> block guarantees the connection is returned to the pool when the block exits, even if an exception is raised.</p>
 </section>
-<section id="creating-the-target-tables" class="level2" data-number="21.3">
-<h2 data-number="21.3" class="anchored" data-anchor-id="creating-the-target-tables"><span class="header-section-number">21.3</span> Creating the Target Tables</h2>
+<section id="creating-the-target-tables" class="level2" data-number="29.3">
+<h2 data-number="29.3" class="anchored" data-anchor-id="creating-the-target-tables"><span class="header-section-number">29.3</span> Creating the Target Tables</h2>
 <p>The ETL pipeline loads into two tables: <code>countries_etl</code> and <code>indicators_etl</code>. These are separate from the read-only teaching tables used in earlier chapters. Using <code>country_code</code> as the primary key (rather than a surrogate integer) makes upsert straightforward because we always know the natural identifier for each row.</p>
 <div id="create-tables" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.begin() <span class="im">as</span> conn:</span>
@@ -522,8 +592,8 @@ indicators_etl
 </div>
 </div>
 </section>
-<section id="loading-the-clean-dataframes" class="level2" data-number="21.4">
-<h2 data-number="21.4" class="anchored" data-anchor-id="loading-the-clean-dataframes"><span class="header-section-number">21.4</span> Loading the Clean DataFrames</h2>
+<section id="loading-the-clean-dataframes" class="level2" data-number="29.4">
+<h2 data-number="29.4" class="anchored" data-anchor-id="loading-the-clean-dataframes"><span class="header-section-number">29.4</span> Loading the Clean DataFrames</h2>
 <p>Load the files produced at the end of Chapter 32:</p>
 <div id="load-clean" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
@@ -539,8 +609,8 @@ indicators: (4991, 7)</code></pre>
 </div>
 </div>
 </section>
-<section id="simple-bulk-load-with-write_database" class="level2" data-number="21.5">
-<h2 data-number="21.5" class="anchored" data-anchor-id="simple-bulk-load-with-write_database"><span class="header-section-number">21.5</span> Simple Bulk Load with <code>write_database</code></h2>
+<section id="simple-bulk-load-with-write_database" class="level2" data-number="29.5">
+<h2 data-number="29.5" class="anchored" data-anchor-id="simple-bulk-load-with-write_database"><span class="header-section-number">29.5</span> Simple Bulk Load with <code>write_database</code></h2>
 <p>Polars has a built-in <code>write_database()</code> method that writes a DataFrame directly to a database table. It is the fastest path when you are loading into an empty table or are comfortable replacing all existing data:</p>
 <div id="bulk-load" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>countries.write_database(</span>
@@ -555,8 +625,8 @@ indicators: (4991, 7)</code></pre>
 </div>
 <p>The <code>if_table_exists="replace"</code> option drops and recreates the table, inferring column types from the DataFrame schema. This is convenient for staging tables where you do not care about preserving existing data. For production tables with constraints and foreign keys, you want <code>"append"</code> or an explicit upsert.</p>
 </section>
-<section id="upsert-handling-duplicate-rows" class="level2" data-number="21.6">
-<h2 data-number="21.6" class="anchored" data-anchor-id="upsert-handling-duplicate-rows"><span class="header-section-number">21.6</span> Upsert: Handling Duplicate Rows</h2>
+<section id="upsert-handling-duplicate-rows" class="level2" data-number="29.6">
+<h2 data-number="29.6" class="anchored" data-anchor-id="upsert-handling-duplicate-rows"><span class="header-section-number">29.6</span> Upsert: Handling Duplicate Rows</h2>
 <p>A pipeline that runs repeatedly will encounter rows it has already loaded. A plain <code>INSERT</code> will fail on a duplicate primary key. Truncating the table and reloading from scratch works but is slow and briefly leaves the table empty. The right solution is an <em>upsert</em>: insert new rows and update existing ones in a single atomic statement.</p>
 <p>PostgreSQL implements upsert via the <code>INSERT ... ON CONFLICT</code> clause:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> countries_etl (country_code, short_name, <span class="op">..</span>.)</span>
@@ -565,8 +635,8 @@ indicators: (4991, 7)</code></pre>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    short_name <span class="op">=</span> EXCLUDED.short_name,</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>EXCLUDED</code> refers to the row that was <em>proposed</em> for insertion but conflicted. The <code>DO UPDATE SET</code> block copies the proposed values over the existing row.</p>
-<section id="upsert-for-the-countries-table" class="level3" data-number="21.6.1">
-<h3 data-number="21.6.1" class="anchored" data-anchor-id="upsert-for-the-countries-table"><span class="header-section-number">21.6.1</span> Upsert for the Countries Table</h3>
+<section id="upsert-for-the-countries-table" class="level3" data-number="29.6.1">
+<h3 data-number="29.6.1" class="anchored" data-anchor-id="upsert-for-the-countries-table"><span class="header-section-number">29.6.1</span> Upsert for the Countries Table</h3>
 <p>We will execute the upsert with parameterized queries using SQLAlchemy’s <code>text()</code> and bulk <code>executemany()</code>:</p>
 <div id="upsert-countries" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>upsert_countries_sql <span class="op">=</span> text(<span class="st">"""</span></span>
@@ -609,8 +679,8 @@ indicators: (4991, 7)</code></pre>
 </div>
 </div>
 </section>
-<section id="upsert-for-the-indicators-table" class="level3" data-number="21.6.2">
-<h3 data-number="21.6.2" class="anchored" data-anchor-id="upsert-for-the-indicators-table"><span class="header-section-number">21.6.2</span> Upsert for the Indicators Table</h3>
+<section id="upsert-for-the-indicators-table" class="level3" data-number="29.6.2">
+<h3 data-number="29.6.2" class="anchored" data-anchor-id="upsert-for-the-indicators-table"><span class="header-section-number">29.6.2</span> Upsert for the Indicators Table</h3>
 <p>The indicators table is larger (4,991 rows) and has a composite primary key: <code>(country_code, year)</code>. The upsert logic is the same; only the conflict target and column list change:</p>
 <div id="upsert-indicators" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>upsert_indicators_sql <span class="op">=</span> text(<span class="st">"""</span></span>
@@ -647,8 +717,8 @@ indicators: (4991, 7)</code></pre>
 </div>
 </div>
 </section>
-<section id="batching-large-loads" class="level3" data-number="21.6.3">
-<h3 data-number="21.6.3" class="anchored" data-anchor-id="batching-large-loads"><span class="header-section-number">21.6.3</span> Batching Large Loads</h3>
+<section id="batching-large-loads" class="level3" data-number="29.6.3">
+<h3 data-number="29.6.3" class="anchored" data-anchor-id="batching-large-loads"><span class="header-section-number">29.6.3</span> Batching Large Loads</h3>
 <p>For very large DataFrames (hundreds of thousands of rows), sending all rows in a single <code>executemany()</code> call can consume substantial memory because SQLAlchemy builds the entire parameter list in Python before sending it to the database. Batching limits peak memory use:</p>
 <div id="batch-upsert" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upsert_in_batches(conn, sql, rows, batch_size<span class="op">=</span><span class="dv">1000</span>):</span>
@@ -670,8 +740,8 @@ indicators: (4991, 7)</code></pre>
 <p>A batch size of 500 to 1000 rows is a reasonable default. Very small batches (10 to 50 rows) generate excessive round trips to the database; very large batches (10,000+ rows) increase memory pressure on both the client and the server.</p>
 </section>
 </section>
-<section id="conditional-updates-only-update-changed-rows" class="level2" data-number="21.7">
-<h2 data-number="21.7" class="anchored" data-anchor-id="conditional-updates-only-update-changed-rows"><span class="header-section-number">21.7</span> Conditional Updates: Only Update Changed Rows</h2>
+<section id="conditional-updates-only-update-changed-rows" class="level2" data-number="29.7">
+<h2 data-number="29.7" class="anchored" data-anchor-id="conditional-updates-only-update-changed-rows"><span class="header-section-number">29.7</span> Conditional Updates: Only Update Changed Rows</h2>
 <p>The upsert above updates every column on every conflict, even if nothing changed. For tables where updates trigger downstream processes (audit logs, cache invalidation, replication), you may want to skip rows that have not actually changed:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ON CONFLICT (country_code) DO UPDATE SET</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    short_name <span class="op">=</span> EXCLUDED.short_name,</span>
@@ -683,8 +753,8 @@ indicators: (4991, 7)</code></pre>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    countries_etl.capital    IS DISTINCT FROM EXCLUDED.capital</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>IS DISTINCT FROM</code> handles null comparisons correctly. Unlike <code>&lt;&gt;</code>, it treats <code>NULL &lt;&gt; NULL</code> as false, so a row is only updated when at least one value genuinely differs.</p>
 </section>
-<section id="reading-data-back-into-polars" class="level2" data-number="21.8">
-<h2 data-number="21.8" class="anchored" data-anchor-id="reading-data-back-into-polars"><span class="header-section-number">21.8</span> Reading Data Back into Polars</h2>
+<section id="reading-data-back-into-polars" class="level2" data-number="29.8">
+<h2 data-number="29.8" class="anchored" data-anchor-id="reading-data-back-into-polars"><span class="header-section-number">29.8</span> Reading Data Back into Polars</h2>
 <p>Once data is in PostgreSQL, you can read it back into a Polars DataFrame for further analysis using <code>pl.read_database()</code>:</p>
 <div id="read-back" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">"""</span></span>
@@ -722,8 +792,8 @@ indicators: (4991, 7)</code></pre>
 </div>
 <p>This round-trip pattern (transform in Polars, load to PostgreSQL, query back with SQL, analyze in Polars) is how many data science workflows operate in practice. PostgreSQL handles the storage, indexing, and multi-user access; Polars handles the in-memory computation.</p>
 </section>
-<section id="summary" class="level2" data-number="21.9">
-<h2 data-number="21.9" class="anchored" data-anchor-id="summary"><span class="header-section-number">21.9</span> Summary</h2>
+<section id="summary" class="level2" data-number="29.9">
+<h2 data-number="29.9" class="anchored" data-anchor-id="summary"><span class="header-section-number">29.9</span> Summary</h2>
 <p>The loading stage has three main scenarios:</p>
 <table class="caption-top table">
 <colgroup>
@@ -758,8 +828,8 @@ indicators: (4991, 7)</code></pre>
 <p>The <code>INSERT ... ON CONFLICT DO UPDATE</code> pattern is the workhorse of production ETL pipelines. It is atomic, efficient, and safe to run repeatedly without any cleanup step between runs.</p>
 <p>In the final chapter of this section, you will combine extraction, transformation, and loading into a single end-to-end pipeline function.</p>
 </section>
-<section id="exercises" class="level2" data-number="21.10">
-<h2 data-number="21.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">21.10</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="29.10">
+<h2 data-number="29.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">29.10</span> Exercises</h2>
 <ol type="1">
 <li><p>Run the countries upsert a second time without modifying any data. Verify that the row count in <code>countries_etl</code> does not change.</p></li>
 <li><p>Modify the countries upsert to use the conditional <code>WHERE IS DISTINCT FROM</code> clause so that only rows with changed values are updated. Test it by changing one country’s capital in the DataFrame and re-running.</p></li>
@@ -1196,13 +1266,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./52-transforming-with-polars.html" class="pagination-link" aria-label="Transforming Data with Polars">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span>
+      <a href="./72-transforming-with-polars.html" class="pagination-link" aria-label="Transforming Data with Polars">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./54-etl-pipeline.html" class="pagination-link" aria-label="A Complete ETL Pipeline">
-        <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./74-etl-pipeline.html" class="pagination-link" aria-label="A Complete ETL Pipeline">
+        <span class="nav-page-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1214,7 +1284,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/53-loading-with-sqlalchemy.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/73-loading-with-sqlalchemy.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

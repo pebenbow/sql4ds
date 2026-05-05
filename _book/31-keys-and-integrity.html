@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>8&nbsp; Keys and Referential Integrity – SQL for Data Science</title>
+<title>12&nbsp; Keys and Referential Integrity – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,8 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./22-er-diagrams.html" rel="next">
-<link href="./20-design.html" rel="prev">
+<link href="./32-er-diagrams.html" rel="next">
+<link href="./30-design.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -83,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-design.html">Design</a></li><li class="breadcrumb-item"><a href="./21-keys-and-integrity.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./31-keys-and-integrity.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -188,8 +188,8 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./20-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Design</span></a>
+            <a href="./20-analyze.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyzing Data</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -197,40 +197,34 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+  <a href="./21-conditional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conditional Expressions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+  <a href="./22-subqueries.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Subqueries and CTEs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  <a href="./23-window-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Window Functions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+  <a href="./24-stats-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Statistical Functions</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./30-secure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Secure</span></a>
+            <a href="./30-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -238,28 +232,40 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./31-roles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+  <a href="./31-keys-and-integrity.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+  <a href="./32-er-diagrams.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  <a href="./33-normal-forms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-create-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./36-building-schema.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./40-deploy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Deploy</span></a>
+            <a href="./40-optimize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optimizing Queries</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -267,28 +273,34 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  <a href="./41-explain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Reading Query Plans</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  <a href="./42-indexes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Indexes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  <a href="./43-materialized-views.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Materialized Views</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44-optimization-patterns.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Query Optimization Patterns</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./50-load.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Load</span></a>
+            <a href="./50-secure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Secure</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -296,26 +308,84 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  <a href="./51-roles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  <a href="./52-privileges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  <a href="./53-sqli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./60-deploy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploy</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./61-supabase-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  <a href="./62-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./63-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./70-load.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Load</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./71-extracting-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./72-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./73-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./74-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -336,35 +406,35 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#from-joins-to-design" id="toc-from-joins-to-design" class="nav-link active" data-scroll-target="#from-joins-to-design"><span class="header-section-number">8.1</span> From Joins to Design</a></li>
-  <li><a href="#what-makes-something-a-key" id="toc-what-makes-something-a-key" class="nav-link" data-scroll-target="#what-makes-something-a-key"><span class="header-section-number">8.2</span> What Makes Something a Key?</a>
+  <li><a href="#from-joins-to-design" id="toc-from-joins-to-design" class="nav-link active" data-scroll-target="#from-joins-to-design"><span class="header-section-number">12.1</span> From Joins to Design</a></li>
+  <li><a href="#what-makes-something-a-key" id="toc-what-makes-something-a-key" class="nav-link" data-scroll-target="#what-makes-something-a-key"><span class="header-section-number">12.2</span> What Makes Something a Key?</a>
   <ul class="collapse">
-  <li><a href="#superkeys-and-candidate-keys" id="toc-superkeys-and-candidate-keys" class="nav-link" data-scroll-target="#superkeys-and-candidate-keys"><span class="header-section-number">8.2.1</span> Superkeys and Candidate Keys</a></li>
-  <li><a href="#primary-keys-and-alternate-keys" id="toc-primary-keys-and-alternate-keys" class="nav-link" data-scroll-target="#primary-keys-and-alternate-keys"><span class="header-section-number">8.2.2</span> Primary Keys and Alternate Keys</a></li>
+  <li><a href="#superkeys-and-candidate-keys" id="toc-superkeys-and-candidate-keys" class="nav-link" data-scroll-target="#superkeys-and-candidate-keys"><span class="header-section-number">12.2.1</span> Superkeys and Candidate Keys</a></li>
+  <li><a href="#primary-keys-and-alternate-keys" id="toc-primary-keys-and-alternate-keys" class="nav-link" data-scroll-target="#primary-keys-and-alternate-keys"><span class="header-section-number">12.2.2</span> Primary Keys and Alternate Keys</a></li>
   </ul></li>
-  <li><a href="#surrogate-vs.-natural-keys" id="toc-surrogate-vs.-natural-keys" class="nav-link" data-scroll-target="#surrogate-vs.-natural-keys"><span class="header-section-number">8.3</span> Surrogate vs.&nbsp;Natural Keys</a></li>
-  <li><a href="#composite-keys" id="toc-composite-keys" class="nav-link" data-scroll-target="#composite-keys"><span class="header-section-number">8.4</span> Composite Keys</a></li>
-  <li><a href="#foreign-keys-in-depth" id="toc-foreign-keys-in-depth" class="nav-link" data-scroll-target="#foreign-keys-in-depth"><span class="header-section-number">8.5</span> Foreign Keys in Depth</a>
+  <li><a href="#surrogate-vs.-natural-keys" id="toc-surrogate-vs.-natural-keys" class="nav-link" data-scroll-target="#surrogate-vs.-natural-keys"><span class="header-section-number">12.3</span> Surrogate vs.&nbsp;Natural Keys</a></li>
+  <li><a href="#composite-keys" id="toc-composite-keys" class="nav-link" data-scroll-target="#composite-keys"><span class="header-section-number">12.4</span> Composite Keys</a></li>
+  <li><a href="#foreign-keys-in-depth" id="toc-foreign-keys-in-depth" class="nav-link" data-scroll-target="#foreign-keys-in-depth"><span class="header-section-number">12.5</span> Foreign Keys in Depth</a>
   <ul class="collapse">
-  <li><a href="#the-referential-integrity-guarantee" id="toc-the-referential-integrity-guarantee" class="nav-link" data-scroll-target="#the-referential-integrity-guarantee"><span class="header-section-number">8.5.1</span> The Referential Integrity Guarantee</a></li>
-  <li><a href="#null-in-foreign-key-columns" id="toc-null-in-foreign-key-columns" class="nav-link" data-scroll-target="#null-in-foreign-key-columns"><span class="header-section-number">8.5.2</span> NULL in Foreign Key Columns</a></li>
+  <li><a href="#the-referential-integrity-guarantee" id="toc-the-referential-integrity-guarantee" class="nav-link" data-scroll-target="#the-referential-integrity-guarantee"><span class="header-section-number">12.5.1</span> The Referential Integrity Guarantee</a></li>
+  <li><a href="#null-in-foreign-key-columns" id="toc-null-in-foreign-key-columns" class="nav-link" data-scroll-target="#null-in-foreign-key-columns"><span class="header-section-number">12.5.2</span> NULL in Foreign Key Columns</a></li>
   </ul></li>
-  <li><a href="#cascade-behavior" id="toc-cascade-behavior" class="nav-link" data-scroll-target="#cascade-behavior"><span class="header-section-number">8.6</span> Cascade Behavior</a></li>
-  <li><a href="#self-referencing-relationships" id="toc-self-referencing-relationships" class="nav-link" data-scroll-target="#self-referencing-relationships"><span class="header-section-number">8.7</span> Self-Referencing Relationships</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">8.8</span> Exercises</a>
+  <li><a href="#cascade-behavior" id="toc-cascade-behavior" class="nav-link" data-scroll-target="#cascade-behavior"><span class="header-section-number">12.6</span> Cascade Behavior</a></li>
+  <li><a href="#self-referencing-relationships" id="toc-self-referencing-relationships" class="nav-link" data-scroll-target="#self-referencing-relationships"><span class="header-section-number">12.7</span> Self-Referencing Relationships</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">12.8</span> Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">8.8.1</span> Reflection</a></li>
-  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis"><span class="header-section-number">8.8.2</span> Structural Analysis</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">12.8.1</span> Reflection</a></li>
+  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis"><span class="header-section-number">12.8.2</span> Structural Analysis</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/21-keys-and-integrity.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/31-keys-and-integrity.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-design.html">Design</a></li><li class="breadcrumb-item"><a href="./21-keys-and-integrity.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./31-keys-and-integrity.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></h1>
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></h1>
 </div>
 
 
@@ -381,20 +451,20 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="from-joins-to-design" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="from-joins-to-design"><span class="header-section-number">8.1</span> From Joins to Design</h2>
+<section id="from-joins-to-design" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="from-joins-to-design"><span class="header-section-number">12.1</span> From Joins to Design</h2>
 <p>The joins chapter introduced primary keys, foreign keys, and cardinality as the tools you need to write queries that span multiple tables. This chapter approaches the same concepts from a different angle: not as the machinery behind a query, but as design decisions you make when defining a table.</p>
 <p>Choosing the right key, understanding what referential integrity actually guarantees, and deciding what should happen when a parent row is deleted are decisions that determine whether a database stays reliable over months and years of use. The chapter that follows this one translates all of these concepts into SQL using <code>CREATE TABLE</code> statements.</p>
 </section>
-<section id="what-makes-something-a-key" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="what-makes-something-a-key"><span class="header-section-number">8.2</span> What Makes Something a Key?</h2>
+<section id="what-makes-something-a-key" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="what-makes-something-a-key"><span class="header-section-number">12.2</span> What Makes Something a Key?</h2>
 <p>A key is a column or combination of columns that uniquely identifies every row in a table. Two properties are required:</p>
 <ul>
 <li><strong>Uniqueness</strong>: no two rows share the same value (or combination of values) for the key columns.</li>
 <li><strong>Non-nullability</strong>: key columns cannot be NULL, because NULL represents an unknown value and no two unknowns can be compared to confirm uniqueness.</li>
 </ul>
-<section id="superkeys-and-candidate-keys" class="level3" data-number="8.2.1">
-<h3 data-number="8.2.1" class="anchored" data-anchor-id="superkeys-and-candidate-keys"><span class="header-section-number">8.2.1</span> Superkeys and Candidate Keys</h3>
+<section id="superkeys-and-candidate-keys" class="level3" data-number="12.2.1">
+<h3 data-number="12.2.1" class="anchored" data-anchor-id="superkeys-and-candidate-keys"><span class="header-section-number">12.2.1</span> Superkeys and Candidate Keys</h3>
 <p>Any set of columns that satisfies the uniqueness requirement is called a <strong>superkey</strong>. Most superkeys contain redundant columns. Consider a <code>students</code> table:</p>
 <table class="caption-top table">
 <thead>
@@ -436,15 +506,15 @@ ul.task-list li input[type="checkbox"] {
 <p>A <strong>candidate key</strong> is a minimal superkey: a superkey from which no column can be removed without losing uniqueness. In this table, <code>student_id</code> and <code>email</code> are both candidate keys. <code>(student_id, email)</code> is not, because removing either column still yields a unique identifier.</p>
 <p>Every table has at least one candidate key. A table always has the set of all its columns as a superkey, and among all superkeys there is always at least one minimal one.</p>
 </section>
-<section id="primary-keys-and-alternate-keys" class="level3" data-number="8.2.2">
-<h3 data-number="8.2.2" class="anchored" data-anchor-id="primary-keys-and-alternate-keys"><span class="header-section-number">8.2.2</span> Primary Keys and Alternate Keys</h3>
+<section id="primary-keys-and-alternate-keys" class="level3" data-number="12.2.2">
+<h3 data-number="12.2.2" class="anchored" data-anchor-id="primary-keys-and-alternate-keys"><span class="header-section-number">12.2.2</span> Primary Keys and Alternate Keys</h3>
 <p>When a table has multiple candidate keys, the designer chooses one as the <strong>primary key</strong>: the official row identifier, and the column that foreign keys in other tables will reference. The remaining candidate keys become <strong>alternate keys</strong>.</p>
 <p>In the <code>students</code> example, <code>student_id</code> is the natural choice for primary key: it is stable, compact, and has no meaning outside the database (meaning no external force can make it change). The <code>email</code> column is a legitimate alternate key and can be declared <code>UNIQUE</code> to enforce that no two students share an address.</p>
 <p>The distinction is practical: other tables that reference a student will use <code>student_id</code> as the foreign key column, not <code>email</code>. If a student later changes their email, only the <code>students</code> table needs updating. No other table is affected.</p>
 </section>
 </section>
-<section id="surrogate-vs.-natural-keys" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="surrogate-vs.-natural-keys"><span class="header-section-number">8.3</span> Surrogate vs.&nbsp;Natural Keys</h2>
+<section id="surrogate-vs.-natural-keys" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="surrogate-vs.-natural-keys"><span class="header-section-number">12.3</span> Surrogate vs.&nbsp;Natural Keys</h2>
 <p>The joins chapter introduced this distinction briefly. It is worth examining at greater depth because it is one of the more consequential decisions you make when designing a schema.</p>
 <p>A <strong>natural key</strong> is a value that already exists in the data and is inherently unique: an ISBN, a country’s ISO code, a social security number, an email address. Natural keys have the advantage of being human-readable and sometimes self-explanatory.</p>
 <p>A <strong>surrogate key</strong> is an artificial value with no meaning outside the database, typically an auto-incrementing integer assigned by the database when a row is inserted. It is stable precisely because nothing outside the database cares about its value.</p>
@@ -459,8 +529,8 @@ ul.task-list li input[type="checkbox"] {
 <p>When a natural key changes, every table that holds it as a foreign key must be updated simultaneously. With a surrogate key, a name or email change is a single-row update in one table.</p>
 <p>In practice, most production schemas use surrogate keys as primary keys and enforce natural uniqueness separately with a <code>UNIQUE</code> constraint on the natural identifier column. You get the stability of surrogates and retain the ability to query by natural identifier. The <code>CREATE TABLE</code> chapter shows how to express this pattern in SQL.</p>
 </section>
-<section id="composite-keys" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="composite-keys"><span class="header-section-number">8.4</span> Composite Keys</h2>
+<section id="composite-keys" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="composite-keys"><span class="header-section-number">12.4</span> Composite Keys</h2>
 <p>When no single column uniquely identifies every row, two or more columns together serve as the primary key. The joins chapter introduced this concept when describing the <code>observations</code> table (keyed on <code>country_code</code>, <code>indicator_code</code>, and <code>year</code>). The normalization chapter showed another example: the <code>order_items</code> table, where <code>(order_id, product)</code> together identify each line item.</p>
 <p>Composite keys arise most often in two situations:</p>
 <ul>
@@ -469,24 +539,24 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>A useful check: if you find yourself reaching for a surrogate key on a junction table, it may be a sign that the table is trying to represent something more than just the relationship. If the table records only the pairing, a composite key is the right choice.</p>
 </section>
-<section id="foreign-keys-in-depth" class="level2" data-number="8.5">
-<h2 data-number="8.5" class="anchored" data-anchor-id="foreign-keys-in-depth"><span class="header-section-number">8.5</span> Foreign Keys in Depth</h2>
+<section id="foreign-keys-in-depth" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="foreign-keys-in-depth"><span class="header-section-number">12.5</span> Foreign Keys in Depth</h2>
 <p>A foreign key column holds values that reference the primary key of another table. This section covers aspects that the joins chapter set aside.</p>
-<section id="the-referential-integrity-guarantee" class="level3" data-number="8.5.1">
-<h3 data-number="8.5.1" class="anchored" data-anchor-id="the-referential-integrity-guarantee"><span class="header-section-number">8.5.1</span> The Referential Integrity Guarantee</h3>
+<section id="the-referential-integrity-guarantee" class="level3" data-number="12.5.1">
+<h3 data-number="12.5.1" class="anchored" data-anchor-id="the-referential-integrity-guarantee"><span class="header-section-number">12.5.1</span> The Referential Integrity Guarantee</h3>
 <p>Referential integrity is the guarantee that every value in a foreign key column either exists as a primary key value in the referenced table, or is NULL. When the database enforces this constraint, it is impossible to create an orphaned row: a row whose foreign key points to something that does not exist.</p>
 <p>Without this enforcement, the gap between what the data says and what it means grows over time. Suppose an application deletes a customer without first handling their orders. The <code>orders</code> table now contains rows with a <code>customer_id</code> that does not exist in <code>customers</code>. Queries that join the two tables will silently lose those orders. Any report that depends on the customer-order relationship produces wrong answers that are difficult to detect.</p>
 <p>With referential integrity enforced, the database simply rejects the deletion until the relationship is resolved.</p>
 </section>
-<section id="null-in-foreign-key-columns" class="level3" data-number="8.5.2">
-<h3 data-number="8.5.2" class="anchored" data-anchor-id="null-in-foreign-key-columns"><span class="header-section-number">8.5.2</span> NULL in Foreign Key Columns</h3>
+<section id="null-in-foreign-key-columns" class="level3" data-number="12.5.2">
+<h3 data-number="12.5.2" class="anchored" data-anchor-id="null-in-foreign-key-columns"><span class="header-section-number">12.5.2</span> NULL in Foreign Key Columns</h3>
 <p>A foreign key column can allow NULL. A NULL in a foreign key column does not violate referential integrity; it means the row has no parent, or the relationship is unknown.</p>
 <p>Whether this is appropriate depends on business rules. In an <code>orders</code> table, a NULL in <code>customer_id</code> might represent a guest order placed by someone without an account. That may be intentional, or it may be a data quality problem. Declaring the foreign key column <code>NOT NULL</code> says “every order must belong to a known customer.” Allowing NULL says “orders without a customer are a permitted state.”</p>
 <p>This choice should be deliberate, not accidental. The default in most databases is to allow NULL in foreign key columns unless <code>NOT NULL</code> is explicitly declared.</p>
 </section>
 </section>
-<section id="cascade-behavior" class="level2" data-number="8.6">
-<h2 data-number="8.6" class="anchored" data-anchor-id="cascade-behavior"><span class="header-section-number">8.6</span> Cascade Behavior</h2>
+<section id="cascade-behavior" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="cascade-behavior"><span class="header-section-number">12.6</span> Cascade Behavior</h2>
 <p>When a row in a parent table is deleted or its primary key is updated, the database must decide what to do with child rows that reference it. SQL provides four options, specified in the foreign key constraint declaration.</p>
 <p><strong>RESTRICT (the default in PostgreSQL):</strong> The operation is rejected if any child rows reference the parent row. It prevents orphaned rows by preventing the deletion in the first place. The calling application must resolve the dependent rows before the parent can be removed.</p>
 <p><strong>CASCADE:</strong> The operation propagates automatically. Deleting a parent row also deletes all child rows that reference it. Updating a primary key value updates the matching foreign key values in child rows. This is convenient but can silently delete large amounts of data if used carelessly.</p>
@@ -526,8 +596,8 @@ ul.task-list li input[type="checkbox"] {
 <p>The right choice is a business logic decision. CASCADE suits situations where child data has no meaning independent of the parent (a line item on a deleted order is meaningless). RESTRICT suits situations where the application should be forced to handle the relationship explicitly. SET NULL suits situations where the child records should survive the parent’s deletion but no longer need to point to it.</p>
 <p><code>ON UPDATE CASCADE</code> is less frequently needed than <code>ON DELETE CASCADE</code>, but it matters when a natural key is used as a primary key. If the natural key value changes (an ISO code is reassigned, a product SKU is reformatted), CASCADE propagates the new value to all foreign key columns that reference it automatically.</p>
 </section>
-<section id="self-referencing-relationships" class="level2" data-number="8.7">
-<h2 data-number="8.7" class="anchored" data-anchor-id="self-referencing-relationships"><span class="header-section-number">8.7</span> Self-Referencing Relationships</h2>
+<section id="self-referencing-relationships" class="level2" data-number="12.7">
+<h2 data-number="12.7" class="anchored" data-anchor-id="self-referencing-relationships"><span class="header-section-number">12.7</span> Self-Referencing Relationships</h2>
 <p>A foreign key does not have to reference a different table. A table can contain a foreign key that references its own primary key. This is called a <strong>self-referencing relationship</strong>, and it represents a hierarchy within a single entity type.</p>
 <p>The classic example is an employee reporting structure:</p>
 <table class="caption-top table">
@@ -564,10 +634,10 @@ ul.task-list li input[type="checkbox"] {
 <p><code>manager_id</code> is a foreign key referencing <code>employee_id</code> in the same table. Sandra has no manager, so her <code>manager_id</code> is NULL. Marcus and Priya report to Sandra. Tom reports to Marcus. This single table represents an arbitrarily deep hierarchy. Querying it across levels requires a self-join: joining the <code>employees</code> table to itself under two different aliases.</p>
 <p>Self-referencing foreign keys use the same cascade options as any other foreign key. <code>ON DELETE SET NULL</code> is a common choice: if a manager leaves, their reports become unmanaged (NULL) rather than being deleted.</p>
 </section>
-<section id="exercises" class="level2" data-number="8.8">
-<h2 data-number="8.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">8.8</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="8.8.1">
-<h3 data-number="8.8.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">8.8.1</span> Reflection</h3>
+<section id="exercises" class="level2" data-number="12.8">
+<h2 data-number="12.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">12.8</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="12.8.1">
+<h3 data-number="12.8.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">12.8.1</span> Reflection</h3>
 <p><strong>1.</strong> What is the difference between a superkey and a candidate key? Give an example of a superkey that is not a candidate key, using a table of your own design.</p>
 <hr>
 <p><strong>2.</strong> A database designer is modeling a table for university courses with the columns: <code>course_id</code> (auto-generated integer), <code>course_code</code> (like “CS101”), <code>title</code>, <code>department_code</code>, and <code>credit_hours</code>. Identify all candidate keys. Which would you choose as the primary key, and why? What would you do with the remaining candidate keys?</p>
@@ -579,8 +649,8 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>5.</strong> Explain the difference between <code>ON DELETE CASCADE</code> and <code>ON DELETE RESTRICT</code>. Describe a business scenario where each would be the appropriate choice.</p>
 <hr>
 </section>
-<section id="structural-analysis" class="level3" data-number="8.8.2">
-<h3 data-number="8.8.2" class="anchored" data-anchor-id="structural-analysis"><span class="header-section-number">8.8.2</span> Structural Analysis</h3>
+<section id="structural-analysis" class="level3" data-number="12.8.2">
+<h3 data-number="12.8.2" class="anchored" data-anchor-id="structural-analysis"><span class="header-section-number">12.8.2</span> Structural Analysis</h3>
 <p><strong>6.</strong> Consider a database for a hospital with the following tables:</p>
 <ul>
 <li><code>patients</code>: <code>patient_id</code>, <code>first_name</code>, <code>last_name</code>, <code>date_of_birth</code>, <code>national_health_id</code></li>
@@ -1021,13 +1091,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./20-design.html" class="pagination-link" aria-label="Design">
+      <a href="./30-design.html" class="pagination-link" aria-label="Design">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Design</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./22-er-diagrams.html" class="pagination-link" aria-label="Entity-Relationship Diagrams">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./32-er-diagrams.html" class="pagination-link" aria-label="Entity-Relationship Diagrams">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1039,7 +1109,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/21-keys-and-integrity.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/31-keys-and-integrity.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

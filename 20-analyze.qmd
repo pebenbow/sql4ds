@@ -1,0 +1,7 @@
+# Analyzing Data {.unnumbered}
+
+The previous section covered the mechanics of querying: how to retrieve rows, filter them, sort them, and combine data from multiple tables. Those tools answer questions about individual rows and sets of rows as they exist in the database. This section is about something different: using SQL to compute, summarize, and draw insight from data at scale.
+
+Data scientists spend most of their SQL time doing analysis rather than retrieval. The chapters here introduce the analytical layer of the language: expressions that branch on conditions, queries that reference their own results, functions that compute across ordered sequences of rows, and statistical aggregates that quantify relationships in the data. Together they move SQL from a data access tool to a data analysis environment.
+
+Each chapter in this section builds on the querying foundation from the previous one. You will find that the concepts connect: conditional expressions appear inside window functions, CTEs make complex window queries readable, and statistical functions often rely on the same grouping patterns introduced in the aggregation chapter.

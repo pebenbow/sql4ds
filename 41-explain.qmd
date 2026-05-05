@@ -1,0 +1,5 @@
+---
+title: "Reading Query Plans"
+---
+
+Stub: EXPLAIN, EXPLAIN ANALYZE, EXPLAIN (ANALYZE, BUFFERS), sequential scan vs index scan, cost estimates, actual vs estimated rows.

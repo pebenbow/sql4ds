@@ -35,32 +35,46 @@ book:
         - 14-joins.qmd
         - 15-set-operations.qmd
 
-    - part: 20-design.qmd
+    - part: 20-analyze.qmd
       chapters:
-        - 21-keys-and-integrity.qmd
-        - 22-er-diagrams.qmd
-        - 23-normal-forms.qmd
-        - 24-create-table.qmd
-        - 26-building-schema.qmd
+        - 21-conditional.qmd
+        - 22-subqueries.qmd
+        - 23-window-functions.qmd
+        - 24-stats-functions.qmd
 
-    - part: 30-secure.qmd
+    - part: 30-design.qmd
       chapters:
-        - 31-roles.qmd
-        - 32-privileges.qmd
-        - 33-sqli.qmd
+        - 31-keys-and-integrity.qmd
+        - 32-er-diagrams.qmd
+        - 33-normal-forms.qmd
+        - 34-create-table.qmd
+        - 36-building-schema.qmd
 
-    - part: 40-deploy.qmd
+    - part: 40-optimize.qmd
       chapters:
-        - 41-supabase-setup.qmd
-        - 42-supabase-vscode.qmd
-        - 43-database-migrations.qmd
+        - 41-explain.qmd
+        - 42-indexes.qmd
+        - 43-materialized-views.qmd
+        - 44-optimization-patterns.qmd
 
-    - part: 50-load.qmd
+    - part: 50-secure.qmd
       chapters:
-        - 51-extracting-data.qmd
-        - 52-transforming-with-polars.qmd
-        - 53-loading-with-sqlalchemy.qmd
-        - 54-etl-pipeline.qmd
+        - 51-roles.qmd
+        - 52-privileges.qmd
+        - 53-sqli.qmd
+
+    - part: 60-deploy.qmd
+      chapters:
+        - 61-supabase-setup.qmd
+        - 62-supabase-vscode.qmd
+        - 63-database-migrations.qmd
+
+    - part: 70-load.qmd
+      chapters:
+        - 71-extracting-data.qmd
+        - 72-transforming-with-polars.qmd
+        - 73-loading-with-sqlalchemy.qmd
+        - 74-etl-pipeline.qmd
 
     - 99-references.qmd
 

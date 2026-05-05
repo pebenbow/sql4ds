@@ -1,0 +1,5 @@
+---
+title: "Materialized Views"
+---
+
+Stub: CREATE MATERIALIZED VIEW, REFRESH MATERIALIZED VIEW, CONCURRENTLY, when to use vs regular views, indexing materialized views.

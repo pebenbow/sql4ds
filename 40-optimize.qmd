@@ -1,0 +1,7 @@
+# Optimizing Queries {.unnumbered}
+
+The previous sections covered how to design a schema and how to query it. A query that returns the right answer is necessary but not sufficient: at small data volumes correctness is all that matters, but as tables grow into the millions or billions of rows the same correct query can take seconds or minutes depending on how the database executes it.
+
+This section is about understanding and influencing that execution. PostgreSQL does not run queries the way you write them. It compiles each query into a physical execution plan, chooses join strategies, decides whether to scan a table sequentially or use an index, and estimates the cost of each option using statistics it maintains about the data. Reading those plans, shaping the data structures the planner works with, and avoiding patterns that force expensive operations are the skills this section develops.
+
+The material here is relevant to anyone who writes SQL against non-trivial datasets, not just database administrators. A data scientist who can read an execution plan and recognize when a missing index or a non-sargable predicate is causing a slow query is far more self-sufficient than one who can only write the query and wait.

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>13&nbsp; Roles and Users – SQL for Data Science</title>
+<title>24&nbsp; Getting Started with Supabase – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./32-privileges.html" rel="next">
-<link href="./30-secure.html" rel="prev">
+<link href="./62-supabase-vscode.html" rel="next">
+<link href="./60-deploy.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -117,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-secure.html">Secure</a></li><li class="breadcrumb-item"><a href="./31-roles.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./60-deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./61-supabase-setup.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -222,8 +222,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./20-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Design</span></a>
+            <a href="./20-analyze.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyzing Data</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -231,40 +231,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./21-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+  <a href="./21-conditional.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conditional Expressions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./22-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+  <a href="./22-subqueries.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Subqueries and CTEs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./23-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  <a href="./23-window-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Window Functions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./24-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./26-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+  <a href="./24-stats-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Statistical Functions</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./30-secure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Secure</span></a>
+            <a href="./30-design.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Design</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -272,28 +266,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./31-roles.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
+  <a href="./31-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./32-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
+  <a href="./32-er-diagrams.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./33-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  <a href="./33-normal-forms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./34-create-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./36-building-schema.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./40-deploy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Deploy</span></a>
+            <a href="./40-optimize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optimizing Queries</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -301,28 +307,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./41-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  <a href="./41-explain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Reading Query Plans</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  <a href="./42-indexes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Indexes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./43-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  <a href="./43-materialized-views.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Materialized Views</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44-optimization-patterns.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Query Optimization Patterns</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./50-load.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Load</span></a>
+            <a href="./50-secure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Secure</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -330,26 +342,84 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./51-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  <a href="./51-roles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./52-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  <a href="./52-privileges.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./53-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  <a href="./53-sqli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./60-deploy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deploy</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./61-supabase-setup.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./54-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+  <a href="./62-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./63-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./70-load.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Load</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./71-extracting-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./72-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./73-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./74-etl-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -370,27 +440,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#roles-vs.-users" id="toc-roles-vs.-users" class="nav-link active" data-scroll-target="#roles-vs.-users"><span class="header-section-number">13.1</span> Roles vs.&nbsp;Users</a></li>
-  <li><a href="#creating-roles" id="toc-creating-roles" class="nav-link" data-scroll-target="#creating-roles"><span class="header-section-number">13.2</span> Creating Roles</a></li>
-  <li><a href="#listing-roles" id="toc-listing-roles" class="nav-link" data-scroll-target="#listing-roles"><span class="header-section-number">13.3</span> Listing Roles</a></li>
-  <li><a href="#modifying-roles" id="toc-modifying-roles" class="nav-link" data-scroll-target="#modifying-roles"><span class="header-section-number">13.4</span> Modifying Roles</a></li>
-  <li><a href="#dropping-roles" id="toc-dropping-roles" class="nav-link" data-scroll-target="#dropping-roles"><span class="header-section-number">13.5</span> Dropping Roles</a></li>
-  <li><a href="#role-inheritance" id="toc-role-inheritance" class="nav-link" data-scroll-target="#role-inheritance"><span class="header-section-number">13.6</span> Role Inheritance</a>
-  <ul class="collapse">
-  <li><a href="#inherit-vs.-set-role" id="toc-inherit-vs.-set-role" class="nav-link" data-scroll-target="#inherit-vs.-set-role"><span class="header-section-number">13.6.1</span> INHERIT vs.&nbsp;SET ROLE</a></li>
-  </ul></li>
-  <li><a href="#the-superuser" id="toc-the-superuser" class="nav-link" data-scroll-target="#the-superuser"><span class="header-section-number">13.7</span> The Superuser</a></li>
-  <li><a href="#practical-role-design" id="toc-practical-role-design" class="nav-link" data-scroll-target="#practical-role-design"><span class="header-section-number">13.8</span> Practical Role Design</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">13.9</span> Exercises</a></li>
+  <li><a href="#what-is-supabase" id="toc-what-is-supabase" class="nav-link active" data-scroll-target="#what-is-supabase"><span class="header-section-number">24.1</span> What is Supabase?</a></li>
+  <li><a href="#creating-an-account" id="toc-creating-an-account" class="nav-link" data-scroll-target="#creating-an-account"><span class="header-section-number">24.2</span> Creating an Account</a></li>
+  <li><a href="#creating-an-organization-and-project" id="toc-creating-an-organization-and-project" class="nav-link" data-scroll-target="#creating-an-organization-and-project"><span class="header-section-number">24.3</span> Creating an Organization and Project</a></li>
+  <li><a href="#the-dashboard" id="toc-the-dashboard" class="nav-link" data-scroll-target="#the-dashboard"><span class="header-section-number">24.4</span> The Dashboard</a></li>
+  <li><a href="#the-sql-editor" id="toc-the-sql-editor" class="nav-link" data-scroll-target="#the-sql-editor"><span class="header-section-number">24.5</span> The SQL Editor</a></li>
+  <li><a href="#finding-your-connection-string" id="toc-finding-your-connection-string" class="nav-link" data-scroll-target="#finding-your-connection-string"><span class="header-section-number">24.6</span> Finding Your Connection String</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">24.7</span> Exercises</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/31-roles.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/61-supabase-setup.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-secure.html">Secure</a></li><li class="breadcrumb-item"><a href="./31-roles.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./60-deploy.html">Deploy</a></li><li class="breadcrumb-item"><a href="./61-supabase-setup.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Roles and Users</span></h1>
+<h1 class="title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></h1>
 </div>
 
 
@@ -407,168 +472,97 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Every database system needs a way to answer two questions about anyone who connects to it: <em>who are you</em>, and <em>what are you allowed to do?</em> In PostgreSQL, the answer to both questions runs through a single concept: the <strong>role</strong>.</p>
-<p>This chapter explains what roles are, how to create and configure them, and how to use role inheritance to build a clean permission hierarchy. The next chapter covers what roles can actually <em>do</em> — granting and revoking privileges on specific database objects.</p>
-<p>The examples in this section assume you are working on your local Docker container, where you have superuser access. Role management requires elevated privileges that are not available on shared or hosted databases, so this is the right environment to practice in. The <code>orders</code> database you created in the previous chapter will serve as the target for privilege grants in the next chapter.</p>
-<section id="roles-vs.-users" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="roles-vs.-users"><span class="header-section-number">13.1</span> Roles vs.&nbsp;Users</h2>
-<p>PostgreSQL makes no fundamental distinction between a role and a user. Both are created with <code>CREATE ROLE</code>. The only practical difference is that a role with the <code>LOGIN</code> attribute can open a database connection; one without it cannot. The <code>CREATE USER</code> command is simply shorthand for <code>CREATE ROLE ... WITH LOGIN</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- These two statements are equivalent</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="fu">USER</span> analyst <span class="kw">WITH</span> <span class="kw">PASSWORD</span> <span class="st">'secret'</span>;</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> analyst <span class="kw">WITH</span> LOGIN <span class="kw">PASSWORD</span> <span class="st">'secret'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The term <em>user</em> refers to a role that can log in. The term <em>role</em> is broader: it covers both login-capable accounts and pure permission groups that are never used to log in directly.</p>
+<p>The chapters in this section move beyond writing SQL against a local database and into the work of deploying and managing a database in the cloud. That shift introduces questions that local development does not: How do you create and configure a hosted database? How do you push schema changes from your development machine to a remote server without breaking existing data? How do you keep track of what changed, when, and why?</p>
+<p>This chapter covers the first step: setting up a Supabase account and learning your way around its interface. The following chapters introduce the Supabase CLI, which brings the deployment workflow into VS Code, and database migrations, which give schema changes a versioned, reproducible history.</p>
+<section id="what-is-supabase" class="level2" data-number="24.1">
+<h2 data-number="24.1" class="anchored" data-anchor-id="what-is-supabase"><span class="header-section-number">24.1</span> What is Supabase?</h2>
+<p>Supabase is an open-source backend platform built on PostgreSQL. It provides hosted PostgreSQL databases alongside a web interface, a SQL editor, auto-generated APIs, user authentication, and file storage. For this textbook, the focus is on the database layer: the managed PostgreSQL service, the browser-based SQL editor, and the migration tooling that makes schema changes trackable and reproducible.</p>
+<p>Supabase is a good choice for learning deployment because it runs standard PostgreSQL, its free tier is genuinely usable for coursework, and the tooling is designed to work well with local development environments. Everything you learn here transfers directly to other PostgreSQL hosting providers.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The Supabase free tier includes two active projects and 500 MB of database storage per project. Projects on the free plan pause automatically after one week of inactivity and resume when you visit them in the dashboard. For coursework, this means your database will occasionally need a moment to wake up before accepting connections.</p>
+</div>
+</div>
+</div>
 </section>
-<section id="creating-roles" class="level2" data-number="13.2">
-<h2 data-number="13.2" class="anchored" data-anchor-id="creating-roles"><span class="header-section-number">13.2</span> Creating Roles</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> role_name [<span class="kw">WITH</span> <span class="kw">option</span> [<span class="kw">option</span> <span class="op">..</span>.]];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The most important options:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 47%">
-<col style="width: 52%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Option</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>LOGIN</code></td>
-<td>Allows the role to connect to the database</td>
-</tr>
-<tr class="even">
-<td><code>PASSWORD 'pw'</code></td>
-<td>Sets the login password</td>
-</tr>
-<tr class="odd">
-<td><code>SUPERUSER</code></td>
-<td>Bypasses all permission checks</td>
-</tr>
-<tr class="even">
-<td><code>CREATEDB</code></td>
-<td>Allows the role to create new databases</td>
-</tr>
-<tr class="odd">
-<td><code>CREATEROLE</code></td>
-<td>Allows the role to create and manage other roles</td>
-</tr>
-<tr class="even">
-<td><code>INHERIT</code></td>
-<td>Automatically inherits privileges from parent roles (default)</td>
-</tr>
-<tr class="odd">
-<td><code>CONNECTION LIMIT n</code></td>
-<td>Caps concurrent connections; <code>-1</code> means unlimited</td>
-</tr>
-<tr class="even">
-<td><code>VALID UNTIL 'date'</code></td>
-<td>Expires the password (not the role) on a given date</td>
-</tr>
-</tbody>
-</table>
-<p>Create a read-only analyst account:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> analyst</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WITH</span> LOGIN</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>         <span class="kw">PASSWORD</span> <span class="st">'changeme'</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>         CONNECTION <span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Create a group role that will never log in directly but will hold shared privileges:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> reporting;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="creating-an-account" class="level2" data-number="24.2">
+<h2 data-number="24.2" class="anchored" data-anchor-id="creating-an-account"><span class="header-section-number">24.2</span> Creating an Account</h2>
+<p>Go to <a href="https://supabase.com">supabase.com</a> and click <strong>Start your project</strong>. You can sign up with a GitHub account, which avoids creating a separate password and is the recommended option if you already use GitHub. After signing in for the first time, Supabase will ask you to create an organization.</p>
 </section>
-<section id="listing-roles" class="level2" data-number="13.3">
-<h2 data-number="13.3" class="anchored" data-anchor-id="listing-roles"><span class="header-section-number">13.3</span> Listing Roles</h2>
-<p>Inspect existing roles in the <code>pg_roles</code> catalog view:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> rolname, rolsuper, rolcreaterole, rolcreatedb,</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       rolcanlogin, rolconnlimit, rolvaliduntil</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   pg_roles</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> rolname;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In <code>psql</code>, the <code>\du</code> meta-command shows a formatted role list with attributes and group memberships.</p>
-</section>
-<section id="modifying-roles" class="level2" data-number="13.4">
-<h2 data-number="13.4" class="anchored" data-anchor-id="modifying-roles"><span class="header-section-number">13.4</span> Modifying Roles</h2>
-<p><code>ALTER ROLE</code> changes any attribute after creation:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Extend a password expiry date</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">ROLE</span> analyst VALID <span class="kw">UNTIL</span> <span class="st">'2027-01-01'</span>;</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Revoke the ability to create databases</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">ROLE</span> analyst NOCREATEDB;</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- Change a password</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">ROLE</span> analyst <span class="kw">PASSWORD</span> <span class="st">'newpassword'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can also use <code>ALTER ROLE</code> to set session-level configuration parameters for a specific role. Every time that role logs in, the parameter is applied automatically:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Always search the reporting schema first for this role</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">ROLE</span> analyst <span class="kw">SET</span> search_path <span class="kw">TO</span> reporting, <span class="kw">public</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="dropping-roles" class="level2" data-number="13.5">
-<h2 data-number="13.5" class="anchored" data-anchor-id="dropping-roles"><span class="header-section-number">13.5</span> Dropping Roles</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">ROLE</span> analyst;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>A role cannot be dropped if it owns any database objects or has any privileges granted to it. You must either reassign its objects or drop them first:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>REASSIGN OWNED <span class="kw">BY</span> analyst <span class="kw">TO</span> postgres;</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> OWNED <span class="kw">BY</span> analyst;</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">ROLE</span> analyst;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>REASSIGN OWNED BY</code> transfers ownership of every object the role owns to another role. <code>DROP OWNED BY</code> then removes any remaining grants before <code>DROP ROLE</code> can succeed.</p>
-</section>
-<section id="role-inheritance" class="level2" data-number="13.6">
-<h2 data-number="13.6" class="anchored" data-anchor-id="role-inheritance"><span class="header-section-number">13.6</span> Role Inheritance</h2>
-<p>One of the most useful features of PostgreSQL roles is inheritance. A role can be a <em>member</em> of another role, and if the member role has <code>INHERIT</code> enabled (the default), it automatically acquires all privileges belonging to the parent.</p>
-<p>This lets you define permission groups once and assign them to many users:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Group role with no login</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> reporting;</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- Two login users added to the group</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> alice <span class="kw">WITH</span> LOGIN <span class="kw">PASSWORD</span> <span class="st">'pw1'</span>;</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> bob   <span class="kw">WITH</span> LOGIN <span class="kw">PASSWORD</span> <span class="st">'pw2'</span>;</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> reporting <span class="kw">TO</span> alice;</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> reporting <span class="kw">TO</span> bob;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Any privileges granted to <code>reporting</code> are automatically available to both <code>alice</code> and <code>bob</code>. When you need to give both users access to a new table, you grant it to <code>reporting</code> once rather than to each user individually.</p>
-<section id="inherit-vs.-set-role" class="level3" data-number="13.6.1">
-<h3 data-number="13.6.1" class="anchored" data-anchor-id="inherit-vs.-set-role"><span class="header-section-number">13.6.1</span> INHERIT vs.&nbsp;SET ROLE</h3>
-<p>Even with <code>INHERIT</code>, there is a distinction between <em>having</em> a privilege through inheritance and <em>acting as</em> a role. Some sensitive operations require a role to explicitly switch its active identity using <code>SET ROLE</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SET</span> <span class="kw">ROLE</span> reporting;</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> current_role;   <span class="co">-- returns 'reporting'</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">RESET</span> <span class="kw">ROLE</span>;            <span class="co">-- reverts to the original login role</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>SET ROLE</code> is useful when a user belongs to a powerful group role and you want those elevated privileges exercised intentionally rather than by default.</p>
-</section>
-</section>
-<section id="the-superuser" class="level2" data-number="13.7">
-<h2 data-number="13.7" class="anchored" data-anchor-id="the-superuser"><span class="header-section-number">13.7</span> The Superuser</h2>
-<p>A superuser bypasses every permission check except login restrictions. PostgreSQL installations include a built-in <code>postgres</code> superuser used for administration. Treat it like root on a Unix system: use it only when necessary, never for routine application queries.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> <span class="kw">dba</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WITH</span> LOGIN</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>         SUPERUSER</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>         <span class="kw">PASSWORD</span> <span class="st">'strongpassword'</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>         CONNECTION <span class="kw">LIMIT</span> <span class="dv">2</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Creating a named DBA role is preferable to sharing the <code>postgres</code> account, because individual actions can be attributed to a specific person in the logs.</p>
-</section>
-<section id="practical-role-design" class="level2" data-number="13.8">
-<h2 data-number="13.8" class="anchored" data-anchor-id="practical-role-design"><span class="header-section-number">13.8</span> Practical Role Design</h2>
-<p>A common pattern for a data platform with multiple consumer types:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Permission groups (no login)</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> db_reader;</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> db_writer;</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> db_admin;</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- Individual accounts assigned to groups</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> alice   <span class="kw">WITH</span> LOGIN <span class="kw">PASSWORD</span> <span class="st">'...'</span>;</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> bob     <span class="kw">WITH</span> LOGIN <span class="kw">PASSWORD</span> <span class="st">'...'</span>;</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> svc_etl <span class="kw">WITH</span> LOGIN <span class="kw">PASSWORD</span> <span class="st">'...'</span>;</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> db_reader <span class="kw">TO</span> alice;</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> db_writer <span class="kw">TO</span> svc_etl;</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> db_admin  <span class="kw">TO</span> bob;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Privileges are then granted to the three group roles, not to individuals. Adding a new team member is a single <code>GRANT</code> rather than a full permission audit.</p>
-</section>
-<section id="exercises" class="level2" data-number="13.9">
-<h2 data-number="13.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">13.9</span> Exercises</h2>
+<section id="creating-an-organization-and-project" class="level2" data-number="24.3">
+<h2 data-number="24.3" class="anchored" data-anchor-id="creating-an-organization-and-project"><span class="header-section-number">24.3</span> Creating an Organization and Project</h2>
+<p>Supabase organizes work into <strong>organizations</strong> and <strong>projects</strong>. An organization is the top-level container for your projects, billing, and team members. A project is a single PostgreSQL database instance with its own connection credentials, storage, and configuration.</p>
+<p>Give your organization a name (your name or course name works fine), then create your first project:</p>
 <ol type="1">
-<li><p>Create a role named <code>data_analyst</code> with login access, a password of your choice, and a connection limit of 3. Verify it appears in <code>pg_roles</code>.</p></li>
-<li><p>Create a group role named <code>read_only</code> with no login. Then create two login roles, <code>alice</code> and <code>bob</code>, and add both as members of <code>read_only</code>. Query <code>pg_auth_members</code> to confirm the memberships.</p></li>
-<li><p>Use <code>ALTER ROLE</code> to set the <code>statement_timeout</code> to <code>30000</code> (30 seconds) for the <code>data_analyst</code> role so that long-running queries are cancelled automatically. Verify the setting was recorded in <code>pg_roles</code>.</p></li>
-<li><p>Drop the <code>data_analyst</code> role cleanly using the three-step process: <code>REASSIGN OWNED BY</code>, <code>DROP OWNED BY</code>, then <code>DROP ROLE</code>.</p></li>
-<li><p>Why is it better practice to grant privileges to a group role like <code>read_only</code> than to grant them directly to individual user roles? What operational problem does it solve as a team grows?</p></li>
+<li>Click <strong>New project</strong> in the dashboard.</li>
+<li>Select your organization.</li>
+<li>Enter a project name.</li>
+<li>Set a strong database password and save it somewhere you can retrieve it later. You will need it to connect external tools.</li>
+<li>Choose a region geographically close to you.</li>
+<li>Click <strong>Create new project</strong>.</li>
+</ol>
+<p>Provisioning takes about a minute. During this time Supabase is allocating a PostgreSQL instance, configuring networking, and setting up the supporting services. When it finishes, you land on the project dashboard.</p>
+</section>
+<section id="the-dashboard" class="level2" data-number="24.4">
+<h2 data-number="24.4" class="anchored" data-anchor-id="the-dashboard"><span class="header-section-number">24.4</span> The Dashboard</h2>
+<p>The left-hand navigation of the Supabase dashboard groups functionality into several areas. You will not use all of them for database work, but it is worth knowing what is there.</p>
+<p><strong>Table Editor.</strong> A spreadsheet-style view of your tables. You can browse rows, insert data, and filter results without writing SQL. It is convenient for quick inspection but not a substitute for the SQL Editor when you need precision.</p>
+<p><strong>SQL Editor.</strong> A browser-based interface for writing and running SQL against your database. This is the main tool for schema work in this chapter. It supports full PostgreSQL syntax, saves query history, and lets you save frequently used queries.</p>
+<p><strong>Database.</strong> Sub-pages for tables, views, functions, triggers, extensions, indexes, and roles. The Tables page lists every table in your database with column details and row counts. The Extensions page lets you enable PostgreSQL extensions such as <code>uuid-ossp</code> or <code>pgcrypto</code> with a toggle rather than a SQL command.</p>
+<p><strong>Authentication, Storage, Edge Functions.</strong> These are parts of the Supabase platform beyond the database layer and are not covered in this textbook.</p>
+<p><strong>Project Settings.</strong> Configuration for the project, including API keys, connection strings, and general settings. The Database section under Settings is where you find the credentials needed to connect external tools.</p>
+</section>
+<section id="the-sql-editor" class="level2" data-number="24.5">
+<h2 data-number="24.5" class="anchored" data-anchor-id="the-sql-editor"><span class="header-section-number">24.5</span> The SQL Editor</h2>
+<p>Click <strong>SQL Editor</strong> in the left navigation to open the query interface. The editor supports the full PostgreSQL dialect. You can write multi-statement scripts, use <code>Ctrl+Enter</code> (or <code>Cmd+Enter</code> on macOS) to run a query, and save named snippets for later use.</p>
+<p>To create a table, write a <code>CREATE TABLE</code> statement and run it:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> students (</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">id</span>          SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    last_name   TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    first_name  TEXT <span class="kw">NOT</span> <span class="kw">NULL</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    enrolled_on <span class="dt">DATE</span> <span class="kw">DEFAULT</span> <span class="fu">CURRENT_DATE</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The result appears below the editor. Switch to the Table Editor to see the new table listed, or run a query to confirm:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> table_name</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> information_schema.<span class="kw">tables</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> table_schema <span class="op">=</span> <span class="st">'public'</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> table_name;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Error messages in the SQL Editor include the full PostgreSQL error text, so troubleshooting syntax problems works the same way it does with a local database.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>The SQL Editor in Supabase connects to the <code>public</code> schema by default. If you create objects in other schemas, you may need to qualify them with the schema name (for example, <code>analytics.events</code> rather than just <code>events</code>).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="finding-your-connection-string" class="level2" data-number="24.6">
+<h2 data-number="24.6" class="anchored" data-anchor-id="finding-your-connection-string"><span class="header-section-number">24.6</span> Finding Your Connection String</h2>
+<p>External tools such as psql, pgAdmin, DBeaver, or the VS Code extensions introduced in the next chapter connect to your Supabase database using a connection string. To find yours:</p>
+<ol type="1">
+<li>Click <strong>Project Settings</strong> in the left navigation.</li>
+<li>Click <strong>Database</strong> under the Settings section.</li>
+<li>Scroll to the <strong>Connection string</strong> section.</li>
+</ol>
+<p>Supabase provides the connection string in several formats. The URI format is the most portable:</p>
+<pre><code>postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres</code></pre>
+<p>Replace <code>[YOUR-PASSWORD]</code> with the database password you set during project creation. The <code>[PROJECT-REF]</code> portion is a short alphanumeric string unique to your project; Supabase fills it in automatically when you copy the string from the dashboard.</p>
+<p>Keep this connection string available. The next chapter uses it to link your local development environment to this remote database.</p>
+</section>
+<section id="exercises" class="level2" data-number="24.7">
+<h2 data-number="24.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">24.7</span> Exercises</h2>
+<ol type="1">
+<li><p>Create a Supabase account and project following the steps in this chapter. Note the region you selected and the project reference ID shown in Project Settings.</p></li>
+<li><p>In the SQL Editor, create a table called <code>courses</code> with columns for a surrogate primary key, a course code (text, not null), a course title (text, not null), and a credit hours value (integer, not null). Verify the table appears in the Table Editor.</p></li>
+<li><p>Insert two rows into the <code>courses</code> table using <code>INSERT INTO</code> in the SQL Editor. Use the Table Editor to confirm that the rows are visible.</p></li>
+<li><p>Drop the <code>courses</code> table using <code>DROP TABLE</code>. Confirm in the Table Editor that it no longer appears. Explain why being able to run DDL statements directly in the SQL Editor is both useful and something to be careful about.</p></li>
 </ol>
 
 
@@ -999,13 +993,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./30-secure.html" class="pagination-link" aria-label="Secure">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Secure</span>
+      <a href="./60-deploy.html" class="pagination-link" aria-label="Deploy">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Deploy</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./32-privileges.html" class="pagination-link" aria-label="Privileges">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Privileges</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./62-supabase-vscode.html" class="pagination-link" aria-label="Deploying from VS Code">
+        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1017,7 +1011,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/31-roles.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/open-sql/edit/main/61-supabase-setup.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/open-sql/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

@@ -48,7 +48,14 @@
       "PowerShell($env:PGPORT=5433; quarto render 2>&1)",
       "Bash(pip install *)",
       "Bash(git rm *)",
-      "Bash(git restore *)"
+      "Bash(git restore *)",
+      "Bash(git ls-files *)",
+      "Bash(docker run *)",
+      "PowerShell($env:PGPORT=5433; $env:PGPASS='postgres'; quarto render 11-select-statements.qmd 2>&1 | Select-Object -Last 20)",
+      "PowerShell($env:PGPORT=5433; $env:PGPASS='postgres'; quarto render 11-select-statements.qmd 2>&1 | Select-Object -Last 5)",
+      "Bash(docker cp *)",
+      "PowerShell(docker cp \"C:\\\\Users\\\\pebenbow\\\\Documents\\\\repos\\\\sql-textbook\\\\open-sql-docker\\\\databases\\\\actors\\\\__create_tables.sql\" open-sql:/tmp/create.sql)",
+      "PowerShell(docker cp \"C:\\\\Users\\\\pebenbow\\\\Documents\\\\repos\\\\sql-textbook\\\\open-sql-docker\\\\databases\\\\actors\\\\actors.csv\" open-sql:/tmp/actors.csv)"
     ]
   }
 }
