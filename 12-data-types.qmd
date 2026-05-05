@@ -297,6 +297,55 @@ Notice that subtracting two `DATE` values produces an `INTEGER` representing the
 Some database systems and documentation use the term `DURATION` for this concept. In PostgreSQL, the type is always called `INTERVAL`.
 :::
 
+### EXTRACT
+
+`EXTRACT` pulls a single component — year, month, day, and others — out of a date or timestamp as a number. The syntax is:
+
+```sql
+EXTRACT(field FROM date_or_timestamp)
+```
+
+Common fields include `year`, `month`, `day`, `hour`, `minute`, `second`, `quarter`, `week`, and `dow` (day of week, where 0 is Sunday).
+
+```{sql}
+#| connection: con
+#| label: extract-birth
+SELECT
+    first_name || ' ' || last_name  AS full_name,
+    birth_date,
+    EXTRACT(year  FROM birth_date)  AS birth_year,
+    EXTRACT(month FROM birth_date)  AS birth_month,
+    EXTRACT(day   FROM birth_date)  AS birth_day
+FROM actors
+ORDER BY birth_date
+LIMIT 10;
+```
+
+A practical use is computing an actor's age in whole years. Subtracting birth years alone is imprecise because it ignores whether the birthday has occurred yet in the current year. The expression below accounts for that by comparing the month and day:
+
+```{sql}
+#| connection: con
+#| label: extract-age
+SELECT
+    first_name || ' ' || last_name                          AS full_name,
+    birth_date,
+    EXTRACT(year FROM CURRENT_DATE) -
+    EXTRACT(year FROM birth_date) -
+    CASE WHEN (EXTRACT(month FROM CURRENT_DATE),
+               EXTRACT(day   FROM CURRENT_DATE)) <
+              (EXTRACT(month FROM birth_date),
+               EXTRACT(day   FROM birth_date))
+         THEN 1 ELSE 0 END                                  AS age
+FROM actors
+WHERE death_date IS NULL
+ORDER BY birth_date
+LIMIT 10;
+```
+
+::: {.callout-note}
+PostgreSQL also provides `DATE_PART('field', value)`, which is an older function that does the same thing as `EXTRACT`. The two are interchangeable for dates and timestamps: `EXTRACT(year FROM birth_date)` and `DATE_PART('year', birth_date)` produce identical results. `EXTRACT` is the SQL standard form and is preferred in new code.
+:::
+
 ## Type Conversion
 
 Sometimes a value stored as one type needs to be treated as another. This is called **casting**. You saw an example in the previous chapter: dividing `height_cm` (a `SMALLINT`) by `2.54` required a cast to `NUMERIC` to get a decimal result rather than integer division.
