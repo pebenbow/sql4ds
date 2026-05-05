@@ -272,6 +272,33 @@ ORDER BY birth_date;
 
 This query returns actors born in 1980 or later, representing the youngest generation in the dataset.
 
+### BETWEEN
+
+`BETWEEN` is shorthand for a range filter. The following two forms are exactly equivalent:
+
+```sql
+-- Using comparison operators
+WHERE birth_date >= '1950-01-01' AND birth_date <= '1969-12-31'
+
+-- Using BETWEEN
+WHERE birth_date BETWEEN '1950-01-01' AND '1969-12-31'
+```
+
+`BETWEEN` is **inclusive on both ends**: a row where `birth_date` equals either boundary date is included in the result. This makes it reliable for discrete types like integers and dates, where the boundaries are exact values.
+
+```{sql}
+#| connection: con
+#| label: where-between
+SELECT first_name, last_name, birth_date, oscar_nominations
+FROM actors
+WHERE birth_date BETWEEN '1950-01-01' AND '1969-12-31'
+ORDER BY birth_date;
+```
+
+::: {.callout-warning}
+Prefer explicit `>=` and `<=` comparisons over `BETWEEN` for most situations. The inclusive behavior is easy to forget, which makes off-by-one errors common, and `BETWEEN` cannot express half-open ranges (for example, "1950 up to but not including 1970"). Explicit operators are unambiguous. `BETWEEN` is fine when you encounter it in existing code or reach for it with simple integer or date ranges, but it is not the preferred form for new queries.
+:::
+
 ### NULL Values and IS NULL
 
 **NULL** is a special marker in SQL that represents the absence of a value. It is not the same as zero, an empty string, or a blank space. NULL means that no value was recorded for that column in that row at all.
