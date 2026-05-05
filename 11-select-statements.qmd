@@ -284,19 +284,32 @@ WHERE birth_date >= '1950-01-01' AND birth_date <= '1969-12-31'
 WHERE birth_date BETWEEN '1950-01-01' AND '1969-12-31'
 ```
 
-`BETWEEN` is **inclusive on both ends**: a row where `birth_date` equals either boundary date is included in the result. This makes it reliable for discrete types like integers and dates, where the boundaries are exact values.
+`BETWEEN` is **inclusive on both ends**: a row where the column value equals either boundary is included in the result. It works with dates, integers, and strings.
 
 ```{sql}
 #| connection: con
-#| label: where-between
+#| label: where-between-date
 SELECT first_name, last_name, birth_date, oscar_nominations
 FROM actors
 WHERE birth_date BETWEEN '1950-01-01' AND '1969-12-31'
 ORDER BY birth_date;
 ```
 
+The same syntax applies to integer columns:
+
+```{sql}
+#| connection: con
+#| label: where-between-int
+SELECT first_name, last_name, oscar_nominations, oscar_wins
+FROM actors
+WHERE oscar_nominations BETWEEN 3 AND 8
+ORDER BY oscar_nominations DESC;
+```
+
+With strings, `BETWEEN` uses alphabetical (lexicographic) order, so `last_name BETWEEN 'D' AND 'H'` returns names that sort between those two letters. The boundary behavior is the same — both ends are inclusive — but the alphabetical cutoffs can be unintuitive, since `'H'` matches only the single character `H`, not every name beginning with H.
+
 ::: {.callout-warning}
-Prefer explicit `>=` and `<=` comparisons over `BETWEEN` for most situations. The inclusive behavior is easy to forget, which makes off-by-one errors common, and `BETWEEN` cannot express half-open ranges (for example, "1950 up to but not including 1970"). Explicit operators are unambiguous. `BETWEEN` is fine when you encounter it in existing code or reach for it with simple integer or date ranges, but it is not the preferred form for new queries.
+Prefer explicit `>=` and `<=` comparisons over `BETWEEN` for most situations. The inclusive behavior is easy to forget, which makes off-by-one errors common, and `BETWEEN` cannot express half-open ranges (for example, "1950 up to but not including 1970"). The alphabetical edge cases with strings make it especially error-prone there. Explicit operators are unambiguous. `BETWEEN` is fine when you encounter it in existing code or reach for it with simple integer or date ranges, but it is not the preferred form for new queries.
 :::
 
 ### NULL Values and IS NULL
