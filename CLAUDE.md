@@ -84,6 +84,7 @@ If the container has not been created yet, see `02-setup.qmd` for the full `dock
 The `main` branch has push protection and requires pull requests. All work must be done on the `dev` branch (or a feature branch), never directly on `main`.
 
 - Always confirm you are on `dev` before making commits: `git branch`
+- **Always run `quarto render` (full book) before committing and pushing.** Never commit after only rendering a single chapter.
 - Push changes to `origin/dev`, not `origin/main`
 - When a batch of work is ready to ship, open a PR from `dev` → `main` and assign it to `pebenbow`: `gh pr create --assignee pebenbow ...`
 
