@@ -458,12 +458,11 @@ div.csl-indent {
   <li><a href="#mean-delay-by-carrier" id="toc-mean-delay-by-carrier" class="nav-link" data-scroll-target="#mean-delay-by-carrier"><span class="header-section-number">11.5.3</span> Mean Delay by Carrier</a></li>
   </ul></li>
   <li><a href="#parameterized-queries" id="toc-parameterized-queries" class="nav-link" data-scroll-target="#parameterized-queries"><span class="header-section-number">11.6</span> Parameterized Queries</a></li>
-  <li><a href="#non-returning-statements" id="toc-non-returning-statements" class="nav-link" data-scroll-target="#non-returning-statements"><span class="header-section-number">11.7</span> Non-Returning Statements</a></li>
-  <li><a href="#closing-the-connection" id="toc-closing-the-connection" class="nav-link" data-scroll-target="#closing-the-connection"><span class="header-section-number">11.8</span> Closing the Connection</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.9</span> Exercises</a>
+  <li><a href="#closing-the-connection" id="toc-closing-the-connection" class="nav-link" data-scroll-target="#closing-the-connection"><span class="header-section-number">11.7</span> Closing the Connection</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.8</span> Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">11.9.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">11.9.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">11.8.1</span> Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">11.8.2</span> Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/25-r-database.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -509,7 +508,6 @@ div.csl-indent {
 <li><strong>Retrieve</strong> query results as R data frames using <code>dbGetQuery</code> and <code>dbListTables</code>/<code>dbListFields</code> for schema exploration.</li>
 <li><strong>Visualize</strong> database query results using <code>ggplot2</code> within an R script or notebook.</li>
 <li><strong>Write</strong> parameterized queries using the <code>params</code> argument to prevent SQL injection.</li>
-<li><strong>Execute</strong> DDL and DML statements that return no rows using <code>dbExecute</code>.</li>
 </ul>
 <p>Throughout this book, SQL code blocks have been executing against a live PostgreSQL database without much explanation of how that connection actually works. The connection is established by R using the <code>DBI</code> package <span class="citation" data-cites="rpkg_dbi">(<a href="99-references.html#ref-rpkg_dbi" role="doc-biblioref">R Special Interest Group on Databases (R-SIG-DB), Wickham, and Müller 2026</a>)</span>, and every query result comes back to R as a data frame. This chapter makes that mechanism explicit, showing you how to connect to a database from R, retrieve query results, visualize them with <code>ggplot2</code> <span class="citation" data-cites="rpkg_ggplot2">(<a href="99-references.html#ref-rpkg_ggplot2" role="doc-biblioref">Wickham 2016</a>)</span>, and write queries safely using parameterization.</p>
 <p>These skills matter outside of Quarto documents. Most real data science work happens in R scripts and notebooks where you need to pull data from a database, analyze it in R, and produce outputs. Understanding how to drive that connection directly gives you full control over the process.</p>
@@ -873,52 +871,34 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="non-returning-statements" class="level2" data-number="11.7">
-<h2 data-number="11.7" class="anchored" data-anchor-id="non-returning-statements"><span class="header-section-number">11.7</span> Non-Returning Statements</h2>
-<p><code>dbGetQuery()</code> is for queries that return rows. For statements that modify data — <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>CREATE TABLE</code> — use <code>dbExecute()</code>. It sends the statement to the database and returns the number of rows affected rather than a result set.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, <span class="st">"</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="st">  CREATE TABLE IF NOT EXISTS carrier_summary AS</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="st">      carrier,</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="st">      COUNT(*)                            AS total_flights,</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="st">      ROUND(AVG(dep_delay)::numeric, 1)  AS avg_delay</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM flights</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE dep_delay IS NOT NULL</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="st">  GROUP BY carrier</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Like <code>dbGetQuery()</code>, <code>dbExecute()</code> accepts a <code>params</code> argument for safe value substitution.</p>
-</section>
-<section id="closing-the-connection" class="level2" data-number="11.8">
-<h2 data-number="11.8" class="anchored" data-anchor-id="closing-the-connection"><span class="header-section-number">11.8</span> Closing the Connection</h2>
+<section id="closing-the-connection" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="closing-the-connection"><span class="header-section-number">11.7</span> Closing the Connection</h2>
 <p>A database connection holds resources on both the R side and the database server side. Close it explicitly when you are done:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In a script that opens a connection at the top and closes it at the bottom, it is good practice to use <code>on.exit()</code> to ensure the connection closes even if an error occurs partway through:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">Postgres</span>(), <span class="at">host =</span> <span class="st">"localhost"</span>, <span class="at">port =</span> <span class="dv">5433</span>,</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dbname =</span> <span class="st">"nycflights"</span>, <span class="at">user =</span> <span class="st">"postgres"</span>, <span class="at">password =</span> <span class="st">"postgres"</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on.exit</span>(<span class="fu">dbDisconnect</span>(con), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ... rest of your analysis ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">Postgres</span>(), <span class="at">host =</span> <span class="st">"localhost"</span>, <span class="at">port =</span> <span class="dv">5433</span>,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dbname =</span> <span class="st">"nycflights"</span>, <span class="at">user =</span> <span class="st">"postgres"</span>, <span class="at">password =</span> <span class="st">"postgres"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on.exit</span>(<span class="fu">dbDisconnect</span>(con), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ... rest of your analysis ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>on.exit(..., add = TRUE)</code> schedules <code>dbDisconnect(con)</code> to run when the surrounding function or script exits, regardless of whether it exits normally or with an error.</p>
 </section>
-<section id="exercises" class="level2" data-number="11.9">
-<h2 data-number="11.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">11.9</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="11.9.1">
-<h3 data-number="11.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">11.9.1</span> Reflection</h3>
+<section id="exercises" class="level2" data-number="11.8">
+<h2 data-number="11.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">11.8</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="11.8.1">
+<h3 data-number="11.8.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">11.8.1</span> Reflection</h3>
 <ol type="1">
 <li><p>What is the relationship between the <code>DBI</code> package and driver packages like <code>RPostgres</code>? Why is this two-layer design useful?</p></li>
 <li><p>Explain what is wrong with building a query string using <code>paste0()</code> to insert a user-supplied value. What does a parameterized query do differently, and why does it prevent SQL injection?</p></li>
-<li><p>When would you use <code>dbExecute()</code> instead of <code>dbGetQuery()</code>? Give an example of a SQL statement appropriate for each.</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="11.9.2">
-<h3 data-number="11.9.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">11.9.2</span> Coding</h3>
-<ol start="4" type="1">
+<section id="coding" class="level3" data-number="11.8.2">
+<h3 data-number="11.8.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">11.8.2</span> Coding</h3>
+<ol start="3" type="1">
 <li><p>Connect to the <code>nycflights</code> database and use <code>dbListFields()</code> to inspect the columns of the <code>weather</code> table. Then write a <code>dbGetQuery()</code> call that retrieves the average temperature (<code>temp</code>) and average wind speed (<code>wind_speed</code>) for each month. Store the result in a data frame and print it.</p></li>
 <li><p>Using <code>dbGetQuery()</code>, retrieve the number of flights per destination (<code>dest</code>) from the <code>flights</code> table. Then use <code>ggplot2</code> to create a bar chart of the top 15 destinations by flight count.</p></li>
 <li><p>Write a parameterized query that accepts a minimum number of Oscar nominations as a parameter and returns matching actors from the <code>actors</code> database. (You will need to open a second connection to the <code>actors</code> database.) Test it with at least two different threshold values.</p></li>

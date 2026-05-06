@@ -11,7 +11,6 @@ By the end of this chapter, students will be able to:
 - **Retrieve** query results as R data frames using `dbGetQuery` and `dbListTables`/`dbListFields` for schema exploration.
 - **Visualize** database query results using `ggplot2` within an R script or notebook.
 - **Write** parameterized queries using the `params` argument to prevent SQL injection.
-- **Execute** DDL and DML statements that return no rows using `dbExecute`.
 
 ```{r}
 #| include: false
@@ -242,27 +241,6 @@ The value of `carrier_code` is sent to the database separately. No matter what s
 Always use parameterized queries whenever a query incorporates a value that originates from outside your own code, including user input, configuration files, or other data sources. The `params` argument is the right tool in DBI.
 :::
 
-## Non-Returning Statements
-
-`dbGetQuery()` is for queries that return rows. For statements that modify data — `INSERT`, `UPDATE`, `DELETE`, `CREATE TABLE` — use `dbExecute()`. It sends the statement to the database and returns the number of rows affected rather than a result set.
-
-```{r}
-#| label: db-execute
-#| eval: false
-dbExecute(con, "
-  CREATE TABLE IF NOT EXISTS carrier_summary AS
-  SELECT
-      carrier,
-      COUNT(*)                            AS total_flights,
-      ROUND(AVG(dep_delay)::numeric, 1)  AS avg_delay
-  FROM flights
-  WHERE dep_delay IS NOT NULL
-  GROUP BY carrier
-")
-```
-
-Like `dbGetQuery()`, `dbExecute()` accepts a `params` argument for safe value substitution.
-
 ## Closing the Connection
 
 A database connection holds resources on both the R side and the database server side. Close it explicitly when you are done:
@@ -295,14 +273,12 @@ on.exit(dbDisconnect(con), add = TRUE)
 
 2. Explain what is wrong with building a query string using `paste0()` to insert a user-supplied value. What does a parameterized query do differently, and why does it prevent SQL injection?
 
-3. When would you use `dbExecute()` instead of `dbGetQuery()`? Give an example of a SQL statement appropriate for each.
-
 ### Coding
 
-4. Connect to the `nycflights` database and use `dbListFields()` to inspect the columns of the `weather` table. Then write a `dbGetQuery()` call that retrieves the average temperature (`temp`) and average wind speed (`wind_speed`) for each month. Store the result in a data frame and print it.
+3. Connect to the `nycflights` database and use `dbListFields()` to inspect the columns of the `weather` table. Then write a `dbGetQuery()` call that retrieves the average temperature (`temp`) and average wind speed (`wind_speed`) for each month. Store the result in a data frame and print it.
 
-5. Using `dbGetQuery()`, retrieve the number of flights per destination (`dest`) from the `flights` table. Then use `ggplot2` to create a bar chart of the top 15 destinations by flight count.
+4. Using `dbGetQuery()`, retrieve the number of flights per destination (`dest`) from the `flights` table. Then use `ggplot2` to create a bar chart of the top 15 destinations by flight count.
 
-6. Write a parameterized query that accepts a minimum number of Oscar nominations as a parameter and returns matching actors from the `actors` database. (You will need to open a second connection to the `actors` database.) Test it with at least two different threshold values.
+5. Write a parameterized query that accepts a minimum number of Oscar nominations as a parameter and returns matching actors from the `actors` database. (You will need to open a second connection to the `actors` database.) Test it with at least two different threshold values.
 
-7. Retrieve daily average departure delay from `flights` (aggregate by `month` and `day`). Plot the result as a line chart with `ggplot2`, using `month` and `day` to construct a date on the x-axis. Describe the seasonal pattern you observe.
+6. Retrieve daily average departure delay from `flights` (aggregate by `month` and `day`). Plot the result as a line chart with `ggplot2`, using `month` and `day` to construct a date on the x-axis. Describe the seasonal pattern you observe.
