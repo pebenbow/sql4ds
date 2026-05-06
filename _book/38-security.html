@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>24&nbsp; Roles and Users – SQL for Data Science</title>
+<title>21&nbsp; Security – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./52-privileges.html" rel="next">
-<link href="./50-secure.html" rel="prev">
+<link href="./40-optimize.html" rel="next">
+<link href="./37-programmability.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -118,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./50-secure.html">Secure</a></li><li class="breadcrumb-item"><a href="./51-roles.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Roles and Users</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./38-security.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Security</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -254,6 +254,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Statistical Functions</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25-r-database.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Connecting R to a Database</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26-python-database.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Connecting Python to a Database</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -268,55 +280,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./31-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./32-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./33-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./34-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./35-views.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Views and Materialized Views</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Views and Materialized Views</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./36-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./37-functions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">User-Defined Functions</span></span></a>
+  <a href="./37-programmability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Programmability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./38-procedures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Stored Procedures</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./39-triggers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Triggers</span></span></a>
+  <a href="./38-security.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Security</span></span></a>
   </div>
 </li>
       </ul>
@@ -333,48 +339,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41-explain.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Reading Query Plans</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Reading Query Plans</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42-indexes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Indexes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Indexes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43-optimization-patterns.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Query Optimization Patterns</span></span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="./50-secure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Secure</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./51-roles.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Roles and Users</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./52-privileges.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Privileges</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./53-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Query Optimization Patterns</span></span></a>
   </div>
 </li>
       </ul>
@@ -383,33 +360,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="./60-load.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Load</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./61-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./62-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./63-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./64-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -418,6 +395,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="./70-deploy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Deploy</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./71-supabase-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./72-supabase-vscode.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./73-database-migrations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./80-labs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Labs</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -425,20 +431,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./71-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./72-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./73-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+  <a href="./85-sqli.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
   </div>
 </li>
       </ul>
@@ -459,20 +453,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#roles-vs.-users" id="toc-roles-vs.-users" class="nav-link active" data-scroll-target="#roles-vs.-users"><span class="header-section-number">24.1</span> Roles vs.&nbsp;Users</a></li>
-  <li><a href="#creating-roles" id="toc-creating-roles" class="nav-link" data-scroll-target="#creating-roles"><span class="header-section-number">24.2</span> Creating Roles</a></li>
-  <li><a href="#listing-roles" id="toc-listing-roles" class="nav-link" data-scroll-target="#listing-roles"><span class="header-section-number">24.3</span> Listing Roles</a></li>
-  <li><a href="#modifying-roles" id="toc-modifying-roles" class="nav-link" data-scroll-target="#modifying-roles"><span class="header-section-number">24.4</span> Modifying Roles</a></li>
-  <li><a href="#dropping-roles" id="toc-dropping-roles" class="nav-link" data-scroll-target="#dropping-roles"><span class="header-section-number">24.5</span> Dropping Roles</a></li>
-  <li><a href="#role-inheritance" id="toc-role-inheritance" class="nav-link" data-scroll-target="#role-inheritance"><span class="header-section-number">24.6</span> Role Inheritance</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">21.1</span> Learning Objectives</a></li>
+  <li><a href="#roles-and-users" id="toc-roles-and-users" class="nav-link" data-scroll-target="#roles-and-users"><span class="header-section-number">21.2</span> Roles and Users</a>
   <ul class="collapse">
-  <li><a href="#inherit-vs.-set-role" id="toc-inherit-vs.-set-role" class="nav-link" data-scroll-target="#inherit-vs.-set-role"><span class="header-section-number">24.6.1</span> INHERIT vs.&nbsp;SET ROLE</a></li>
+  <li><a href="#roles-vs.-users" id="toc-roles-vs.-users" class="nav-link" data-scroll-target="#roles-vs.-users"><span class="header-section-number">21.2.1</span> Roles vs.&nbsp;Users</a></li>
+  <li><a href="#creating-roles" id="toc-creating-roles" class="nav-link" data-scroll-target="#creating-roles"><span class="header-section-number">21.2.2</span> Creating Roles</a></li>
+  <li><a href="#listing-roles" id="toc-listing-roles" class="nav-link" data-scroll-target="#listing-roles"><span class="header-section-number">21.2.3</span> Listing Roles</a></li>
+  <li><a href="#modifying-roles" id="toc-modifying-roles" class="nav-link" data-scroll-target="#modifying-roles"><span class="header-section-number">21.2.4</span> Modifying Roles</a></li>
+  <li><a href="#dropping-roles" id="toc-dropping-roles" class="nav-link" data-scroll-target="#dropping-roles"><span class="header-section-number">21.2.5</span> Dropping Roles</a></li>
+  <li><a href="#role-inheritance" id="toc-role-inheritance" class="nav-link" data-scroll-target="#role-inheritance"><span class="header-section-number">21.2.6</span> Role Inheritance</a></li>
+  <li><a href="#the-superuser" id="toc-the-superuser" class="nav-link" data-scroll-target="#the-superuser"><span class="header-section-number">21.2.7</span> The Superuser</a></li>
+  <li><a href="#practical-role-design" id="toc-practical-role-design" class="nav-link" data-scroll-target="#practical-role-design"><span class="header-section-number">21.2.8</span> Practical Role Design</a></li>
   </ul></li>
-  <li><a href="#the-superuser" id="toc-the-superuser" class="nav-link" data-scroll-target="#the-superuser"><span class="header-section-number">24.7</span> The Superuser</a></li>
-  <li><a href="#practical-role-design" id="toc-practical-role-design" class="nav-link" data-scroll-target="#practical-role-design"><span class="header-section-number">24.8</span> Practical Role Design</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">24.9</span> Exercises</a></li>
+  <li><a href="#privileges" id="toc-privileges" class="nav-link" data-scroll-target="#privileges"><span class="header-section-number">21.3</span> Privileges</a>
+  <ul class="collapse">
+  <li><a href="#object-privileges" id="toc-object-privileges" class="nav-link" data-scroll-target="#object-privileges"><span class="header-section-number">21.3.1</span> Object Privileges</a></li>
+  <li><a href="#grant" id="toc-grant" class="nav-link" data-scroll-target="#grant"><span class="header-section-number">21.3.2</span> GRANT</a></li>
+  <li><a href="#revoke" id="toc-revoke" class="nav-link" data-scroll-target="#revoke"><span class="header-section-number">21.3.3</span> REVOKE</a></li>
+  <li><a href="#checking-privileges" id="toc-checking-privileges" class="nav-link" data-scroll-target="#checking-privileges"><span class="header-section-number">21.3.4</span> Checking Privileges</a></li>
+  <li><a href="#default-privileges" id="toc-default-privileges" class="nav-link" data-scroll-target="#default-privileges"><span class="header-section-number">21.3.5</span> DEFAULT PRIVILEGES</a></li>
+  <li><a href="#schema-level-access-control" id="toc-schema-level-access-control" class="nav-link" data-scroll-target="#schema-level-access-control"><span class="header-section-number">21.3.6</span> Schema-Level Access Control</a></li>
+  </ul></li>
+  <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together"><span class="header-section-number">21.4</span> Putting It All Together</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">21.5</span> Exercises</a>
+  <ul class="collapse">
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">21.5.1</span> Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">21.5.2</span> Coding</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/51-roles.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/38-security.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -487,9 +496,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./50-secure.html">Secure</a></li><li class="breadcrumb-item"><a href="./51-roles.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Roles and Users</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./38-security.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Security</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Roles and Users</span></h1>
+<h1 class="title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Security</span></h1>
 </div>
 
 
@@ -506,25 +515,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Every database system needs a way to answer two questions about anyone who connects to it: <em>who are you</em>, and <em>what are you allowed to do?</em> In PostgreSQL, the answer to both questions runs through a single concept: the <strong>role</strong>.</p>
-<p>This chapter explains what roles are, how to create and configure them, and how to use role inheritance to build a clean permission hierarchy. The next chapter covers what roles can actually <em>do</em> — granting and revoking privileges on specific database objects.</p>
-<p>The examples in this section assume you are working on your local Docker container, where you have superuser access. Role management requires elevated privileges that are not available on shared or hosted databases, so this is the right environment to practice in. The <code>orders</code> database you created in the previous chapter will serve as the target for privilege grants in the next chapter.</p>
-<section id="roles-vs.-users" class="level2" data-number="24.1">
-<h2 data-number="24.1" class="anchored" data-anchor-id="roles-vs.-users"><span class="header-section-number">24.1</span> Roles vs.&nbsp;Users</h2>
+<section id="learning-objectives" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">21.1</span> Learning Objectives</h2>
+<p>By the end of this chapter, students will be able to:</p>
+<ul>
+<li><strong>Explain</strong> the difference between a PostgreSQL role and a user and describe when each term applies.</li>
+<li><strong>Create</strong> login roles and group roles using <code>CREATE ROLE</code> with appropriate attributes (<code>LOGIN</code>, <code>PASSWORD</code>, <code>CONNECTION LIMIT</code>).</li>
+<li><strong>Modify</strong> role attributes using <code>ALTER ROLE</code>, including session-level configuration parameters.</li>
+<li><strong>Grant</strong> role membership using <code>GRANT role TO user</code> and explain how the <code>INHERIT</code> attribute propagates privileges automatically.</li>
+<li><strong>Drop</strong> a role safely using the <code>REASSIGN OWNED BY</code> / <code>DROP OWNED BY</code> / <code>DROP ROLE</code> sequence.</li>
+<li><strong>Explain</strong> the fail-closed principle of PostgreSQL privileges: nothing is permitted by default.</li>
+<li><strong>Grant</strong> and <strong>revoke</strong> object privileges (<code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>) using <code>GRANT</code> and <code>REVOKE</code>.</li>
+<li><strong>Configure</strong> <code>ALTER DEFAULT PRIVILEGES</code> to automatically grant access to objects created in the future.</li>
+<li><strong>Describe</strong> the two-layer access requirement: schema-level <code>USAGE</code> plus object-level privilege.</li>
+<li><strong>Design</strong> a privilege model for a multi-user database with distinct read-only, read-write, and administrative roles.</li>
+</ul>
+<p>Every database system needs to answer two questions about anyone who connects to it: <em>who are you</em>, and <em>what are you allowed to do?</em> PostgreSQL answers both questions through a single concept, the <strong>role</strong>, combined with an explicit privilege system that controls what each role can access.</p>
+<p>This chapter covers both halves of that model. The first half explains roles: how to create them, group them, and manage their lifecycle. The second half covers privileges: how to grant and revoke access to specific database objects, and how to structure a clean, maintainable permission model.</p>
+<p>The examples assume you are working on your local Docker container, where you have superuser access. Role management requires elevated privileges that are not available on shared or hosted databases, so this is the right environment to practice.</p>
+</section>
+<section id="roles-and-users" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="roles-and-users"><span class="header-section-number">21.2</span> Roles and Users</h2>
+<section id="roles-vs.-users" class="level3" data-number="21.2.1">
+<h3 data-number="21.2.1" class="anchored" data-anchor-id="roles-vs.-users"><span class="header-section-number">21.2.1</span> Roles vs.&nbsp;Users</h3>
 <p>PostgreSQL makes no fundamental distinction between a role and a user. Both are created with <code>CREATE ROLE</code>. The only practical difference is that a role with the <code>LOGIN</code> attribute can open a database connection; one without it cannot. The <code>CREATE USER</code> command is simply shorthand for <code>CREATE ROLE ... WITH LOGIN</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- These two statements are equivalent</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="fu">USER</span> analyst <span class="kw">WITH</span> <span class="kw">PASSWORD</span> <span class="st">'secret'</span>;</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> analyst <span class="kw">WITH</span> LOGIN <span class="kw">PASSWORD</span> <span class="st">'secret'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The term <em>user</em> refers to a role that can log in. The term <em>role</em> is broader: it covers both login-capable accounts and pure permission groups that are never used to log in directly.</p>
 </section>
-<section id="creating-roles" class="level2" data-number="24.2">
-<h2 data-number="24.2" class="anchored" data-anchor-id="creating-roles"><span class="header-section-number">24.2</span> Creating Roles</h2>
+<section id="creating-roles" class="level3" data-number="21.2.2">
+<h3 data-number="21.2.2" class="anchored" data-anchor-id="creating-roles"><span class="header-section-number">21.2.2</span> Creating Roles</h3>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> role_name [<span class="kw">WITH</span> <span class="kw">option</span> [<span class="kw">option</span> <span class="op">..</span>.]];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The most important options:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 47%">
-<col style="width: 52%">
+<col style="width: 50%">
+<col style="width: 50%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -575,8 +602,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a group role that will never log in directly but will hold shared privileges:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> reporting;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="listing-roles" class="level2" data-number="24.3">
-<h2 data-number="24.3" class="anchored" data-anchor-id="listing-roles"><span class="header-section-number">24.3</span> Listing Roles</h2>
+<section id="listing-roles" class="level3" data-number="21.2.3">
+<h3 data-number="21.2.3" class="anchored" data-anchor-id="listing-roles"><span class="header-section-number">21.2.3</span> Listing Roles</h3>
 <p>Inspect existing roles in the <code>pg_roles</code> catalog view:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> rolname, rolsuper, rolcreaterole, rolcreatedb,</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       rolcanlogin, rolconnlimit, rolvaliduntil</span>
@@ -584,8 +611,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> rolname;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In <code>psql</code>, the <code>\du</code> meta-command shows a formatted role list with attributes and group memberships.</p>
 </section>
-<section id="modifying-roles" class="level2" data-number="24.4">
-<h2 data-number="24.4" class="anchored" data-anchor-id="modifying-roles"><span class="header-section-number">24.4</span> Modifying Roles</h2>
+<section id="modifying-roles" class="level3" data-number="21.2.4">
+<h3 data-number="21.2.4" class="anchored" data-anchor-id="modifying-roles"><span class="header-section-number">21.2.4</span> Modifying Roles</h3>
 <p><code>ALTER ROLE</code> changes any attribute after creation:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Extend a password expiry date</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">ROLE</span> analyst VALID <span class="kw">UNTIL</span> <span class="st">'2027-01-01'</span>;</span>
@@ -595,12 +622,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- Change a password</span></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">ROLE</span> analyst <span class="kw">PASSWORD</span> <span class="st">'newpassword'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can also use <code>ALTER ROLE</code> to set session-level configuration parameters for a specific role. Every time that role logs in, the parameter is applied automatically:</p>
+<p><code>ALTER ROLE</code> also sets session-level configuration parameters for a specific role. Every time that role logs in, the parameter is applied automatically:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Always search the reporting schema first for this role</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">ROLE</span> analyst <span class="kw">SET</span> search_path <span class="kw">TO</span> reporting, <span class="kw">public</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="dropping-roles" class="level2" data-number="24.5">
-<h2 data-number="24.5" class="anchored" data-anchor-id="dropping-roles"><span class="header-section-number">24.5</span> Dropping Roles</h2>
+<section id="dropping-roles" class="level3" data-number="21.2.5">
+<h3 data-number="21.2.5" class="anchored" data-anchor-id="dropping-roles"><span class="header-section-number">21.2.5</span> Dropping Roles</h3>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">ROLE</span> analyst;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>A role cannot be dropped if it owns any database objects or has any privileges granted to it. You must either reassign its objects or drop them first:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>REASSIGN OWNED <span class="kw">BY</span> analyst <span class="kw">TO</span> postgres;</span>
@@ -608,10 +635,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">ROLE</span> analyst;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>REASSIGN OWNED BY</code> transfers ownership of every object the role owns to another role. <code>DROP OWNED BY</code> then removes any remaining grants before <code>DROP ROLE</code> can succeed.</p>
 </section>
-<section id="role-inheritance" class="level2" data-number="24.6">
-<h2 data-number="24.6" class="anchored" data-anchor-id="role-inheritance"><span class="header-section-number">24.6</span> Role Inheritance</h2>
-<p>One of the most useful features of PostgreSQL roles is inheritance. A role can be a <em>member</em> of another role, and if the member role has <code>INHERIT</code> enabled (the default), it automatically acquires all privileges belonging to the parent.</p>
-<p>This lets you define permission groups once and assign them to many users:</p>
+<section id="role-inheritance" class="level3" data-number="21.2.6">
+<h3 data-number="21.2.6" class="anchored" data-anchor-id="role-inheritance"><span class="header-section-number">21.2.6</span> Role Inheritance</h3>
+<p>A role can be a <em>member</em> of another role. If the member role has <code>INHERIT</code> enabled (the default), it automatically acquires all privileges belonging to the parent. This lets you define permission groups once and assign them to many users:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Group role with no login</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> reporting;</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -622,8 +648,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> reporting <span class="kw">TO</span> alice;</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> reporting <span class="kw">TO</span> bob;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Any privileges granted to <code>reporting</code> are automatically available to both <code>alice</code> and <code>bob</code>. When you need to give both users access to a new table, you grant it to <code>reporting</code> once rather than to each user individually.</p>
-<section id="inherit-vs.-set-role" class="level3" data-number="24.6.1">
-<h3 data-number="24.6.1" class="anchored" data-anchor-id="inherit-vs.-set-role"><span class="header-section-number">24.6.1</span> INHERIT vs.&nbsp;SET ROLE</h3>
+<section id="inherit-vs.-set-role" class="level4" data-number="21.2.6.1">
+<h4 data-number="21.2.6.1" class="anchored" data-anchor-id="inherit-vs.-set-role"><span class="header-section-number">21.2.6.1</span> INHERIT vs.&nbsp;SET ROLE</h4>
 <p>Even with <code>INHERIT</code>, there is a distinction between <em>having</em> a privilege through inheritance and <em>acting as</em> a role. Some sensitive operations require a role to explicitly switch its active identity using <code>SET ROLE</code>:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SET</span> <span class="kw">ROLE</span> reporting;</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> current_role;   <span class="co">-- returns 'reporting'</span></span>
@@ -632,8 +658,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>SET ROLE</code> is useful when a user belongs to a powerful group role and you want those elevated privileges exercised intentionally rather than by default.</p>
 </section>
 </section>
-<section id="the-superuser" class="level2" data-number="24.7">
-<h2 data-number="24.7" class="anchored" data-anchor-id="the-superuser"><span class="header-section-number">24.7</span> The Superuser</h2>
+<section id="the-superuser" class="level3" data-number="21.2.7">
+<h3 data-number="21.2.7" class="anchored" data-anchor-id="the-superuser"><span class="header-section-number">21.2.7</span> The Superuser</h3>
 <p>A superuser bypasses every permission check except login restrictions. PostgreSQL installations include a built-in <code>postgres</code> superuser used for administration. Treat it like root on a Unix system: use it only when necessary, never for routine application queries.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> <span class="kw">dba</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">WITH</span> LOGIN</span>
@@ -642,8 +668,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>         CONNECTION <span class="kw">LIMIT</span> <span class="dv">2</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Creating a named DBA role is preferable to sharing the <code>postgres</code> account, because individual actions can be attributed to a specific person in the logs.</p>
 </section>
-<section id="practical-role-design" class="level2" data-number="24.8">
-<h2 data-number="24.8" class="anchored" data-anchor-id="practical-role-design"><span class="header-section-number">24.8</span> Practical Role Design</h2>
+<section id="practical-role-design" class="level3" data-number="21.2.8">
+<h3 data-number="21.2.8" class="anchored" data-anchor-id="practical-role-design"><span class="header-section-number">21.2.8</span> Practical Role Design</h3>
 <p>A common pattern for a data platform with multiple consumer types:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Permission groups (no login)</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">ROLE</span> db_reader;</span>
@@ -660,17 +686,178 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> db_admin  <span class="kw">TO</span> bob;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Privileges are then granted to the three group roles, not to individuals. Adding a new team member is a single <code>GRANT</code> rather than a full permission audit.</p>
 </section>
-<section id="exercises" class="level2" data-number="24.9">
-<h2 data-number="24.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">24.9</span> Exercises</h2>
+</section>
+<section id="privileges" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="privileges"><span class="header-section-number">21.3</span> Privileges</h2>
+<p>A <strong>privilege</strong> is an explicit permission that grants a role the right to perform a specific action on a specific object. Nothing is permitted by default. A newly created role that logs in successfully cannot read any table, execute any function, or create any schema until a privilege is granted. This fail-closed design means security is opt-in rather than opt-out.</p>
+<section id="object-privileges" class="level3" data-number="21.3.1">
+<h3 data-number="21.3.1" class="anchored" data-anchor-id="object-privileges"><span class="header-section-number">21.3.1</span> Object Privileges</h3>
+<p>PostgreSQL assigns privileges at the level of individual database objects. The privileges available depend on the object type:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Object</th>
+<th>Available Privileges</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Table or view</td>
+<td><code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>TRUNCATE</code>, <code>REFERENCES</code>, <code>TRIGGER</code></td>
+</tr>
+<tr class="even">
+<td>Sequence</td>
+<td><code>USAGE</code>, <code>SELECT</code>, <code>UPDATE</code></td>
+</tr>
+<tr class="odd">
+<td>Schema</td>
+<td><code>USAGE</code>, <code>CREATE</code></td>
+</tr>
+<tr class="even">
+<td>Database</td>
+<td><code>CONNECT</code>, <code>CREATE</code>, <code>TEMP</code></td>
+</tr>
+<tr class="odd">
+<td>Function</td>
+<td><code>EXECUTE</code></td>
+</tr>
+</tbody>
+</table>
+<p>For most data work, the privileges you care about most are <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> on tables, <code>USAGE</code> on schemas, and <code>CONNECT</code> on databases.</p>
+</section>
+<section id="grant" class="level3" data-number="21.3.2">
+<h3 data-number="21.3.2" class="anchored" data-anchor-id="grant"><span class="header-section-number">21.3.2</span> GRANT</h3>
+<p>The <code>GRANT</code> statement gives one or more privileges to one or more roles:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">privilege</span> [, <span class="kw">privilege</span> <span class="op">..</span>.]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span>   object_type object_name</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">TO</span>   role_name [, role_name <span class="op">..</span>.];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Grant read access on the <code>students</code> table to the <code>reporting</code> group role:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> students <span class="kw">TO</span> reporting;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Because <code>alice</code> and <code>bob</code> are members of <code>reporting</code> and have <code>INHERIT</code> enabled, they immediately acquire <code>SELECT</code> on <code>students</code> without needing individual grants.</p>
+<p>Grant multiple privileges in a single statement:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">SELECT</span>, <span class="kw">INSERT</span>, <span class="kw">UPDATE</span> <span class="kw">ON</span> students <span class="kw">TO</span> reporting;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Grant on all tables in a schema at once using <code>ALL TABLES IN SCHEMA</code>:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> <span class="kw">ALL</span> <span class="kw">TABLES</span> <span class="kw">IN</span> <span class="kw">SCHEMA</span> <span class="kw">public</span> <span class="kw">TO</span> reporting;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="granting-to-public" class="level4" data-number="21.3.2.1">
+<h4 data-number="21.3.2.1" class="anchored" data-anchor-id="granting-to-public"><span class="header-section-number">21.3.2.1</span> Granting to PUBLIC</h4>
+<p>The special grantee <code>PUBLIC</code> represents every role in the database. PostgreSQL grants <code>CONNECT</code> on every new database and <code>USAGE</code> on the <code>public</code> schema to <code>PUBLIC</code> by default. You can revoke these defaults to tighten security:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">REVOKE</span> <span class="kw">CONNECT</span> <span class="kw">ON</span> <span class="kw">DATABASE</span> university <span class="kw">FROM</span> <span class="kw">PUBLIC</span>;</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">REVOKE</span> <span class="kw">CREATE</span>  <span class="kw">ON</span> <span class="kw">SCHEMA</span> <span class="kw">public</span> <span class="kw">FROM</span> <span class="kw">PUBLIC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After revoking the schema <code>CREATE</code> privilege from <code>PUBLIC</code>, users can still read existing tables but cannot create new objects in <code>public</code> without an explicit grant.</p>
+</section>
+<section id="with-grant-option" class="level4" data-number="21.3.2.2">
+<h4 data-number="21.3.2.2" class="anchored" data-anchor-id="with-grant-option"><span class="header-section-number">21.3.2.2</span> WITH GRANT OPTION</h4>
+<p>A role that receives a privilege with <code>WITH GRANT OPTION</code> can pass that privilege on to other roles:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> students <span class="kw">TO</span> alice <span class="kw">WITH</span> <span class="kw">GRANT</span> <span class="kw">OPTION</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Use this carefully. If <code>alice</code> later has her grant revoked, any grants she made downstream are also revoked automatically.</p>
+</section>
+</section>
+<section id="revoke" class="level3" data-number="21.3.3">
+<h3 data-number="21.3.3" class="anchored" data-anchor-id="revoke"><span class="header-section-number">21.3.3</span> REVOKE</h3>
+<p><code>REVOKE</code> removes a previously granted privilege:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">REVOKE</span> <span class="kw">privilege</span> [, <span class="kw">privilege</span> <span class="op">..</span>.]</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span>   object_type object_name</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> role_name [, role_name <span class="op">..</span>.];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Revoke write access from <code>reporting</code> while leaving read access intact:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">REVOKE</span> <span class="kw">INSERT</span>, <span class="kw">UPDATE</span> <span class="kw">ON</span> students <span class="kw">FROM</span> reporting;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To revoke all privileges on an object at once:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">REVOKE</span> <span class="kw">ALL</span> <span class="kw">ON</span> students <span class="kw">FROM</span> reporting;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If a role granted a privilege <code>WITH GRANT OPTION</code> and that role’s grant is now revoked, use <code>CASCADE</code> to also revoke any downstream grants that role made:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">REVOKE</span> <span class="kw">SELECT</span> <span class="kw">ON</span> students <span class="kw">FROM</span> alice <span class="kw">CASCADE</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Without <code>CASCADE</code>, the revoke statement will fail if downstream grants exist.</p>
+</section>
+<section id="checking-privileges" class="level3" data-number="21.3.4">
+<h3 data-number="21.3.4" class="anchored" data-anchor-id="checking-privileges"><span class="header-section-number">21.3.4</span> Checking Privileges</h3>
+<p>In <code>psql</code>, <code>\dp table_name</code> displays the access control list (ACL) for a table. The output uses a compact notation where each entry takes the form <code>grantee=privilege_letters/grantor</code>. The letters map to privileges: <code>r</code> = SELECT, <code>a</code> = INSERT, <code>w</code> = UPDATE, <code>d</code> = DELETE, <code>D</code> = TRUNCATE, <code>x</code> = REFERENCES, <code>t</code> = TRIGGER.</p>
+<p>For a more readable view, query <code>information_schema</code>:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> grantee, privilege_type, is_grantable</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   information_schema.role_table_grants</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  table_name <span class="op">=</span> <span class="st">'students'</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> grantee, privilege_type;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>has_table_privilege()</code> function tests whether a specific role has a specific privilege, which is useful for auditing before making changes:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> has_table_privilege(<span class="st">'alice'</span>, <span class="st">'students'</span>, <span class="st">'SELECT'</span>);</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> has_table_privilege(<span class="st">'bob'</span>,   <span class="st">'students'</span>, <span class="st">'INSERT'</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="default-privileges" class="level3" data-number="21.3.5">
+<h3 data-number="21.3.5" class="anchored" data-anchor-id="default-privileges"><span class="header-section-number">21.3.5</span> DEFAULT PRIVILEGES</h3>
+<p><code>GRANT SELECT ON ALL TABLES IN SCHEMA public TO reporting</code> covers only tables that already exist. New tables created later receive no grants automatically. <code>ALTER DEFAULT PRIVILEGES</code> solves this by specifying privileges that should be granted whenever a new object is created:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">DEFAULT</span> <span class="kw">PRIVILEGES</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">FOR</span> <span class="kw">ROLE</span> postgres</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">IN</span> <span class="kw">SCHEMA</span> <span class="kw">public</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> <span class="kw">TABLES</span> <span class="kw">TO</span> reporting;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This says: whenever the <code>postgres</code> role creates a new table in the <code>public</code> schema, automatically grant <code>SELECT</code> on that table to <code>reporting</code>. The <code>FOR ROLE</code> clause specifies whose future creates this applies to. If multiple roles create tables, you must set default privileges separately for each.</p>
+</section>
+<section id="schema-level-access-control" class="level3" data-number="21.3.6">
+<h3 data-number="21.3.6" class="anchored" data-anchor-id="schema-level-access-control"><span class="header-section-number">21.3.6</span> Schema-Level Access Control</h3>
+<p>The schema is an important but easily overlooked layer of the privilege system. A role needs both:</p>
 <ol type="1">
+<li><code>USAGE</code> on the schema to see objects inside it.</li>
+<li>The appropriate object privilege (<code>SELECT</code>, <code>INSERT</code>, etc.) on each object.</li>
+</ol>
+<p>Having <code>SELECT</code> on a table but not <code>USAGE</code> on its schema produces a “permission denied for schema” error. Having <code>USAGE</code> on the schema but not <code>SELECT</code> on a table produces a “permission denied for table” error. Both grants are required.</p>
+<p>When building a permission model for multiple user types, schemas serve as a useful organizing principle:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Create schemas</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SCHEMA</span> registrar;</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">SCHEMA</span> finance;</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- Grant access to appropriate groups</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">USAGE</span> <span class="kw">ON</span> <span class="kw">SCHEMA</span> registrar <span class="kw">TO</span> reporting;</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">USAGE</span> <span class="kw">ON</span> <span class="kw">SCHEMA</span> finance   <span class="kw">TO</span> db_admin;</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co">-- Grant default privileges within each schema</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">DEFAULT</span> <span class="kw">PRIVILEGES</span> <span class="kw">IN</span> <span class="kw">SCHEMA</span> registrar</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> <span class="kw">TABLES</span> <span class="kw">TO</span> reporting;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With this structure, the <code>reporting</code> group can read registrar data but has no visibility into finance tables.</p>
+</section>
+</section>
+<section id="putting-it-all-together" class="level2" data-number="21.4">
+<h2 data-number="21.4" class="anchored" data-anchor-id="putting-it-all-together"><span class="header-section-number">21.4</span> Putting It All Together</h2>
+<p>Here is a coherent permission model for a database with a read-only reporting group:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Step 1: Restrict public access</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="kw">REVOKE</span> <span class="kw">CONNECT</span> <span class="kw">ON</span> <span class="kw">DATABASE</span> university <span class="kw">FROM</span> <span class="kw">PUBLIC</span>;</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">REVOKE</span> <span class="kw">CREATE</span>  <span class="kw">ON</span> <span class="kw">SCHEMA</span> <span class="kw">public</span> <span class="kw">FROM</span> <span class="kw">PUBLIC</span>;</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- Step 2: Allow the reporting group to connect and see the schema</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">CONNECT</span> <span class="kw">ON</span> <span class="kw">DATABASE</span> university <span class="kw">TO</span> reporting;</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">USAGE</span>   <span class="kw">ON</span> <span class="kw">SCHEMA</span> <span class="kw">public</span>       <span class="kw">TO</span> reporting;</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="co">-- Step 3: Grant read access to existing tables</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> <span class="kw">ALL</span> <span class="kw">TABLES</span> <span class="kw">IN</span> <span class="kw">SCHEMA</span> <span class="kw">public</span> <span class="kw">TO</span> reporting;</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co">-- Step 4: Set default privileges for future tables</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">DEFAULT</span> <span class="kw">PRIVILEGES</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">FOR</span> <span class="kw">ROLE</span> postgres</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">IN</span> <span class="kw">SCHEMA</span> <span class="kw">public</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> <span class="kw">TABLES</span> <span class="kw">TO</span> reporting;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After these four steps, members of <code>reporting</code> can connect, see tables in <code>public</code>, and query any current or future table, without being able to write or create objects.</p>
+</section>
+<section id="exercises" class="level2" data-number="21.5">
+<h2 data-number="21.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">21.5</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="21.5.1">
+<h3 data-number="21.5.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">21.5.1</span> Reflection</h3>
+<ol type="1">
+<li><p>PostgreSQL has no separate concept of a “user” and a “group.” Explain how the <code>LOGIN</code> attribute is the only meaningful distinction, and describe when you would create a role without <code>LOGIN</code>.</p></li>
+<li><p>What is the difference between <code>GRANT reporting TO alice</code> and <code>SET ROLE reporting</code>? Under what circumstance would you use <code>SET ROLE</code>?</p></li>
+<li><p>Why does <code>GRANT SELECT ON ALL TABLES IN SCHEMA public TO reporting</code> not automatically cover tables created in the future? What command closes that gap?</p></li>
+<li><p>Explain the two-layer requirement for schema access: why must a role have both <code>USAGE</code> on the schema and <code>SELECT</code> on the table? What error does each missing grant produce?</p></li>
+</ol>
+</section>
+<section id="coding" class="level3" data-number="21.5.2">
+<h3 data-number="21.5.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">21.5.2</span> Coding</h3>
+<ol start="5" type="1">
 <li><p>Create a role named <code>data_analyst</code> with login access, a password of your choice, and a connection limit of 3. Verify it appears in <code>pg_roles</code>.</p></li>
 <li><p>Create a group role named <code>read_only</code> with no login. Then create two login roles, <code>alice</code> and <code>bob</code>, and add both as members of <code>read_only</code>. Query <code>pg_auth_members</code> to confirm the memberships.</p></li>
-<li><p>Use <code>ALTER ROLE</code> to set the <code>statement_timeout</code> to <code>30000</code> (30 seconds) for the <code>data_analyst</code> role so that long-running queries are cancelled automatically. Verify the setting was recorded in <code>pg_roles</code>.</p></li>
-<li><p>Drop the <code>data_analyst</code> role cleanly using the three-step process: <code>REASSIGN OWNED BY</code>, <code>DROP OWNED BY</code>, then <code>DROP ROLE</code>.</p></li>
-<li><p>Why is it better practice to grant privileges to a group role like <code>read_only</code> than to grant them directly to individual user roles? What operational problem does it solve as a team grows?</p></li>
+<li><p>Grant <code>SELECT</code> on the <code>students</code> table to <code>alice</code> directly. Run <code>\dp students</code> and confirm the grant appears. Then revoke it and grant to <code>reporting</code> instead. Connect as <code>alice</code> using <code>SET ROLE</code> and verify she can still query the table.</p></li>
+<li><p>Run <code>GRANT SELECT ON ALL TABLES IN SCHEMA public TO reporting</code>. Create a new table <code>courses</code>. Query it as <code>alice</code> using <code>SET ROLE</code>. Does it work? Set up <code>ALTER DEFAULT PRIVILEGES</code> so that future tables are covered automatically, then drop and recreate <code>courses</code> and verify.</p></li>
+<li><p>Implement the complete four-step privilege setup from this chapter against the <code>university</code> database. Verify that a member of <code>reporting</code> can connect and query tables but cannot create or modify objects.</p></li>
 </ol>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1098,13 +1285,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./50-secure.html" class="pagination-link" aria-label="Secure">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Secure</span>
+      <a href="./37-programmability.html" class="pagination-link" aria-label="Programmability">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Programmability</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./52-privileges.html" class="pagination-link" aria-label="Privileges">
-        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Privileges</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./40-optimize.html" class="pagination-link" aria-label="Optimize">
+        <span class="nav-page-text">Optimize</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1116,7 +1303,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/51-roles.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/38-security.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

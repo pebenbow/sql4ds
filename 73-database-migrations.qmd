@@ -2,6 +2,16 @@
 title: "Database Migrations"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Explain** what a database migration is and why versioned migrations are preferable to ad-hoc schema changes.
+- **Create** a new migration file using the Supabase CLI and write the SQL it contains.
+- **Apply** a migration to a remote database and verify the schema change took effect.
+- **Describe** how migrations enable reproducibility, team coordination, and auditability of schema history.
+- **Distinguish** between a forward migration (applying a change) and a rollback migration (reversing it).
+
 When a database is first created, its schema is in a clean, known state. As the work that depends on that database evolves, new tables are added, columns are renamed, indexes are created, constraints are tightened or relaxed. Each of those changes alters the schema. If the changes are made informally, by hand, through a GUI, without recording what was done, the schema becomes something that exists only on that one machine at that one moment. Nobody else can reproduce it, and the history of how it arrived at its current state is gone.
 
 A **database migration** is a recorded, versioned change to a database schema. It is a SQL file that transforms the database from one known state to another. Migrations are stored in version control alongside the rest of the project, so the schema's complete history is preserved and any environment, a teammate's laptop, a staging server, a cloud deployment, can be brought to the current schema by replaying the migration sequence in order.

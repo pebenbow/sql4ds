@@ -2,6 +2,17 @@
 title: "Transforming Data with Polars"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Filter** rows and **select** columns in a Polars DataFrame using `filter` and `select`.
+- **Rename** columns and **cast** data types to match a target database schema.
+- **Handle** missing values by dropping null rows or filling them with a replacement value.
+- **Join** two DataFrames on a common key using Polars join operations.
+- **Compute** derived columns using `with_columns` and Polars expressions.
+- **Produce** a clean DataFrame that is ready to load into a relational database table.
+
 Raw data is rarely ready to load. Column names may be inconsistent, values may be missing or malformed, types may need adjusting, and the shape of the data may not match the schema you are loading into. The transformation step handles all of this: filtering, reshaping, computing derived values, and joining sources together into a clean, coherent dataset.
 
 This chapter walks through the core Polars operations you will use most often in a data pipeline. By the end, you will have two clean DataFrames ready to load into PostgreSQL in the next chapter.

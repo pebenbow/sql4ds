@@ -2,4 +2,18 @@
 title: "Subqueries and CTEs"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Write** a scalar subquery in the `SELECT` list to compute a per-row derived value.
+- **Apply** an uncorrelated subquery in a `WHERE` clause to filter rows based on a value derived from another table.
+- **Distinguish** between correlated and uncorrelated subqueries and identify when each is appropriate.
+- **Construct** a derived table by placing a subquery in the `FROM` clause and joining or filtering against it.
+- **Write** a Common Table Expression (CTE) using the `WITH` clause to break a complex query into named, readable steps.
+- **Rewrite** a nested subquery as a CTE and explain the readability advantage.
+- **Write** a recursive CTE to traverse a hierarchical data structure such as an organizational chart or category tree.
+- **Evaluate** when to use a subquery, a CTE, or a temporary table based on readability, reuse, and performance considerations.
+- **Apply** `NOT EXISTS` as a safer alternative to `NOT IN` when the subquery may return `NULL` values.
+
 Stub: scalar subqueries, correlated subqueries, derived tables, WITH clause (CTEs), recursive CTEs.

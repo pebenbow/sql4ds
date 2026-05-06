@@ -2,4 +2,17 @@
 title: "Reading Query Plans"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Use** `EXPLAIN` to display the execution plan for a SQL statement without running it.
+- **Use** `EXPLAIN ANALYZE` to execute a query and compare estimated versus actual row counts and timing.
+- **Interpret** the cost notation `(cost=startup..total rows=N width=W)` in a query plan node.
+- **Identify** common plan node types including Sequential Scan, Index Scan, Bitmap Heap Scan, Hash Join, Merge Join, and Nested Loop.
+- **Explain** when the query planner chooses a sequential scan over an index scan and why that choice may be correct.
+- **Diagnose** a slow query by locating the highest-cost node or the largest discrepancy between estimated and actual rows in a plan.
+- **Use** `EXPLAIN (ANALYZE, BUFFERS)` to inspect cache hit rates and buffer usage alongside timing information.
+- **Apply** `EXPLAIN` output to justify the addition of a new index or the rewriting of a query.
+
 Stub: EXPLAIN, EXPLAIN ANALYZE, EXPLAIN (ANALYZE, BUFFERS), sequential scan vs index scan, cost estimates, actual vs estimated rows.

@@ -2,3 +2,13 @@
 title: "Building a Schema"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Create** a PostgreSQL schema using `CREATE SCHEMA` to organize related tables into a named namespace.
+- **Reference** database objects using schema-qualified names (e.g., `registrar.students`).
+- **Configure** the `search_path` for a session or role to control which schema is searched first for unqualified object names.
+- **Design** a multi-table schema from a written set of business requirements, applying normalization principles and referential integrity constraints.
+- **Write** a complete DDL script that creates schemas, tables, constraints, and indexes in correct dependency order.
+- **Evaluate** a schema design for common problems such as missing constraints, inappropriate data types, or unnormalized structures, and propose improvements.

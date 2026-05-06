@@ -2,4 +2,17 @@
 title: "Views and Materialized Views"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Create** a view using `CREATE VIEW` and query it like a table.
+- **Explain** what a view is and how it differs from a base table in terms of storage and execution.
+- **Use** `CREATE OR REPLACE VIEW` to update a view definition without dropping dependent objects.
+- **Identify** the conditions under which a view is updatable and explain what prevents a view from supporting `INSERT`, `UPDATE`, or `DELETE`.
+- **Create** a materialized view using `CREATE MATERIALIZED VIEW` and explain how it differs from a regular view.
+- **Refresh** a materialized view using `REFRESH MATERIALIZED VIEW` and `REFRESH MATERIALIZED VIEW CONCURRENTLY`.
+- **Design** an index on a materialized view to improve query performance against pre-computed results.
+- **Evaluate** whether a given use case calls for a regular view or a materialized view based on data freshness requirements and query frequency.
+
 Stub: CREATE VIEW, replacing and dropping views, updatable views, security views; CREATE MATERIALIZED VIEW, REFRESH MATERIALIZED VIEW CONCURRENTLY, indexing materialized views, regular vs materialized tradeoffs.

@@ -41,6 +41,8 @@ book:
         - 22-subqueries.qmd
         - 23-window-functions.qmd
         - 24-stats-functions.qmd
+        - 25-r-database.qmd
+        - 26-python-database.qmd
 
     - part: 30-design.qmd
       chapters:
@@ -50,21 +52,14 @@ book:
         - 34-create-table.qmd
         - 35-views.qmd
         - 36-building-schema.qmd
-        - 37-functions.qmd
-        - 38-procedures.qmd
-        - 39-triggers.qmd
+        - 37-programmability.qmd
+        - 38-security.qmd
 
     - part: 40-optimize.qmd
       chapters:
         - 41-explain.qmd
         - 42-indexes.qmd
         - 43-optimization-patterns.qmd
-
-    - part: 50-secure.qmd
-      chapters:
-        - 51-roles.qmd
-        - 52-privileges.qmd
-        - 53-sqli.qmd
 
     - part: 60-load.qmd
       chapters:
@@ -78,6 +73,10 @@ book:
         - 71-supabase-setup.qmd
         - 72-supabase-vscode.qmd
         - 73-database-migrations.qmd
+
+    - part: 80-labs.qmd
+      chapters:
+        - 85-sqli.qmd
 
     - 99-references.qmd
 

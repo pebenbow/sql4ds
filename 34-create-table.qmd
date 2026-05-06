@@ -2,13 +2,25 @@
 title: "Creating Tables"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Write** `CREATE TABLE` statements with appropriate column names, data types, and inline constraints.
+- **Apply** `NOT NULL`, `UNIQUE`, `DEFAULT`, and `CHECK` constraints when defining columns.
+- **Use** `ALTER TABLE` to add, drop, or modify columns and constraints on an existing table.
+- **Write** `DROP TABLE` and `TRUNCATE TABLE` and explain the difference in behavior and reversibility.
+- **Use** `CREATE TABLE AS SELECT` to persist query results as a new permanent table.
+- **Define** an auto-incrementing primary key column using `GENERATED ALWAYS AS IDENTITY`.
+- **Distinguish** between a temporary table and a permanent table and identify appropriate use cases for each.
+
 ```{r}
 #| include: false
 library(DBI)
 library(RPostgres)
 
 options(knitr.kable.NA = "NULL")
-options(max.print = 25)
+knitr::opts_chunk$set(max.print = 25)
 
 PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
 PGPASS <- Sys.getenv("PGPASS", unset = "postgres")

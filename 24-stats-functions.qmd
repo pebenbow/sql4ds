@@ -2,4 +2,332 @@
 title: "Statistical Functions"
 ---
 
-Stub: STDDEV, VARIANCE, PERCENTILE_CONT (median), CORR, COVAR_POP, REGR_SLOPE, REGR_INTERCEPT.
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Distinguish** between mean and median as measures of central tendency and explain when each gives a more accurate picture of the data.
+- **Apply** `STDDEV` and `VARIANCE` to quantify spread in a numeric column.
+- **Use** `PERCENTILE_CONT` and `PERCENTILE_DISC` to compute percentiles, including the median, within a dataset or groups.
+- **Compute** the most frequent value in a column using `MODE()`.
+- **Measure** the linear association between two numeric columns using `CORR`.
+- **Interpret** the output of `REGR_SLOPE`, `REGR_INTERCEPT`, and `REGR_R2` to describe a simple linear relationship.
+
+```{r}
+#| include: false
+source("_common.R")
+
+con <- dbConnect(
+  Postgres(),
+  host     = "localhost",
+  port     = as.integer(Sys.getenv("PGPORT", unset = "5432")),
+  dbname   = "nycflights",
+  user     = "postgres",
+  password = Sys.getenv("PGPASS", unset = "postgres")
+)
+```
+
+Consider a simple question about flight delays: on average, how late do departures leave New York City airports? The aggregate functions from earlier chapters can answer that in one line.
+
+```{sql}
+#| connection: con
+#| label: mean-delay
+SELECT ROUND(AVG(dep_delay)::numeric, 1) AS mean_delay
+FROM flights
+WHERE dep_delay IS NOT NULL;
+```
+
+The average departure delay is just over ten minutes. That sounds like a manageable inconvenience, but it is misleading. Compare it to the median:
+
+```{sql}
+#| connection: con
+#| label: mean-vs-median
+SELECT
+    ROUND(AVG(dep_delay)::numeric, 1) AS mean_delay,
+    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY dep_delay) AS median_delay,
+    MAX(dep_delay) AS max_delay
+FROM flights
+WHERE dep_delay IS NOT NULL;
+```
+
+The median is negative three minutes: more than half of all flights depart slightly ahead of schedule. The mean is dragged upward by a long right tail of severe delays, with the worst reaching over 900 minutes. This is a classic symptom of a right-skewed distribution, and it illustrates why a single summary statistic rarely tells the full story.
+
+The functions in this chapter let you describe distributions rather than just summarize them. They fall into three groups: measures of spread (`STDDEV`, `VARIANCE`), measures of position (`PERCENTILE_CONT`, `PERCENTILE_DISC`, `MODE`), and measures of association (`CORR`, and the `REGR_*` family for linear regression).
+
+The examples in this chapter use the `nycflights` database, which contains 104,662 flights departing from LaGuardia Airport (LGA) in 2013, along with hourly weather observations and information about airlines, airports, and aircraft.
+
+## Measuring Spread
+
+The mean tells you where the center of a distribution is. Standard deviation tells you how far values typically stray from that center. A distribution with a small standard deviation is tightly clustered; one with a large standard deviation is spread out.
+
+### STDDEV and VARIANCE
+
+`STDDEV(x)` computes the sample standard deviation of a column, using n − 1 in the denominator (Bessel's correction for sample data). `VARIANCE(x)` computes the sample variance, which is the square of the standard deviation. PostgreSQL also provides population variants, `STDDEV_POP` and `VAR_POP`, which use n in the denominator and are appropriate when you have the entire population, not a sample.
+
+For 100,000+ flights drawn from a year's worth of data, the sample and population variants produce nearly identical results. The distinction matters more for small datasets.
+
+The query below computes both the mean and standard deviation of departure delays for each carrier, revealing not just which airlines run late on average but also which are the most unpredictable:
+
+```{sql}
+#| connection: con
+#| label: stddev-by-carrier
+SELECT
+    f.carrier,
+    a.name,
+    COUNT(*) AS flights,
+    ROUND(AVG(f.dep_delay)::numeric, 1) AS mean_delay,
+    ROUND(STDDEV(f.dep_delay)::numeric, 1) AS stddev_delay
+FROM flights AS f
+JOIN airlines AS a ON f.carrier = a.carrier
+WHERE f.dep_delay IS NOT NULL
+GROUP BY f.carrier, a.name
+ORDER BY mean_delay DESC;
+```
+
+Frontier Airlines leads on average delay but also has the widest spread, meaning its delays are highly variable. US Airways, by contrast, has the lowest mean delay and the smallest standard deviation, making it the most consistently punctual carrier in the dataset.
+
+::: {.callout-note}
+The `ROUND` function cannot directly receive a `double precision` value in PostgreSQL when a scale argument is supplied. Casting the result to `numeric` with `::numeric` before rounding is the idiomatic fix, as shown throughout this chapter.
+:::
+
+### Combining Spread and Central Tendency
+
+A useful pattern is to report multiple summary statistics together to characterize a distribution more completely:
+
+```{sql}
+#| connection: con
+#| label: delay-distribution
+SELECT
+    ROUND(AVG(dep_delay)::numeric, 1) AS mean_delay,
+    ROUND(STDDEV(dep_delay)::numeric, 1) AS stddev_delay,
+    MIN(dep_delay) AS min_delay,
+    MAX(dep_delay) AS max_delay
+FROM flights
+WHERE dep_delay IS NOT NULL;
+```
+
+The minimum of −33 minutes means one flight departed 33 minutes early. The maximum of 911 minutes is roughly 15 hours late. A standard deviation of 40 minutes alongside a mean of 10 minutes signals heavy skew: the distribution has a short left tail and a very long right one.
+
+## Percentiles
+
+A percentile answers the question: what value falls at or below a given fraction of the data? The median is the 50th percentile. The 25th and 75th percentiles bracket the middle half of the distribution.
+
+### PERCENTILE_CONT
+
+`PERCENTILE_CONT(fraction)` computes a continuous percentile by interpolating between adjacent values when the requested fraction does not land exactly on a data point. Its syntax is different from ordinary aggregate functions: it takes the fraction as an argument inside the function call and the column to sort in a `WITHIN GROUP (ORDER BY ...)` clause.
+
+```{sql}
+#| connection: con
+#| label: percentile-cont
+SELECT
+    PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY dep_delay) AS p25,
+    PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY dep_delay) AS p50,
+    PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY dep_delay) AS p75,
+    PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY dep_delay) AS p90,
+    PERCENTILE_CONT(0.99) WITHIN GROUP (ORDER BY dep_delay) AS p99
+FROM flights
+WHERE dep_delay IS NOT NULL;
+```
+
+The interquartile range (P75 − P25) spans from −6 to 7 minutes, meaning the middle half of flights are within seven minutes of their scheduled departure in either direction. The 90th percentile sits at 43 minutes, and the 99th percentile jumps to 193 minutes, confirming that severe delays are rare but extreme when they occur.
+
+These percentiles can also be computed per group. The following query compares delay distributions across the twelve months of the year, revealing how delay patterns shift seasonally:
+
+```{sql}
+#| connection: con
+#| label: percentile-by-month
+SELECT
+    month,
+    PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY dep_delay) AS median_delay,
+    PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY dep_delay) AS p75_delay,
+    PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY dep_delay) AS p90_delay
+FROM flights
+WHERE dep_delay IS NOT NULL
+GROUP BY month
+ORDER BY month;
+```
+
+The median remains near zero throughout the year, but the upper tail grows substantially in summer. June and July show 90th-percentile delays of 74 minutes, compared to roughly 28 minutes in September through November. Holiday travel in December also produces elevated delays at the 75th and 90th percentiles.
+
+### PERCENTILE_DISC
+
+`PERCENTILE_DISC(fraction)` is the discrete variant: rather than interpolating, it returns the smallest actual value in the dataset that falls at or above the requested percentile. When the column contains only integers, the two functions often return the same result, but `PERCENTILE_DISC` is guaranteed to be a value that actually exists in the data.
+
+```{sql}
+#| connection: con
+#| label: percentile-disc
+SELECT
+    PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY dep_delay) AS p90_cont,
+    PERCENTILE_DISC(0.90) WITHIN GROUP (ORDER BY dep_delay) AS p90_disc
+FROM flights
+WHERE dep_delay IS NOT NULL;
+```
+
+For this column, both functions return 43 minutes at the 90th percentile. The difference becomes visible with floating-point data or smaller datasets where the percentile falls between two distinct values.
+
+### MODE
+
+`MODE() WITHIN GROUP (ORDER BY column)` returns the most frequently occurring value in a column. Like the percentile functions, it uses the `WITHIN GROUP` syntax.
+
+```{sql}
+#| connection: con
+#| label: mode-examples
+SELECT
+    MODE() WITHIN GROUP (ORDER BY hour) AS most_common_hour,
+    MODE() WITHIN GROUP (ORDER BY carrier) AS busiest_carrier,
+    MODE() WITHIN GROUP (ORDER BY dest) AS most_common_dest
+FROM flights;
+```
+
+The most common departure hour is 6 AM, Delta is the busiest carrier, and Atlanta (ATL) is the most frequent destination. When multiple values tie for the highest frequency, `MODE` returns one of them, but the choice is not guaranteed to be deterministic.
+
+## Correlation
+
+The `CORR(y, x)` function computes the Pearson correlation coefficient between two numeric columns. The result is always between −1 and 1: values near 1 indicate a strong positive relationship, values near −1 indicate a strong negative relationship, and values near 0 suggest little linear association.
+
+The most intuitive correlation in the flights dataset is between departure delay and arrival delay: a flight that leaves late is likely to arrive late.
+
+```{sql}
+#| connection: con
+#| label: corr-delays
+SELECT
+    ROUND(CORR(arr_delay, dep_delay)::numeric, 4) AS corr_dep_arr
+FROM flights
+WHERE dep_delay IS NOT NULL AND arr_delay IS NOT NULL;
+```
+
+A correlation of 0.91 is very strong. Airlines can recover some delay in-flight by flying faster or taking more direct routing, but they cannot fully overcome a late start.
+
+A second correlation, between flight distance and air time, is even stronger:
+
+```{sql}
+#| connection: con
+#| label: corr-dist-time
+SELECT
+    ROUND(CORR(air_time, distance)::numeric, 4) AS corr_dist_time
+FROM flights
+WHERE air_time IS NOT NULL AND distance IS NOT NULL;
+```
+
+A correlation of 0.98 between distance and air time is nearly perfect. Longer routes take more time in the air, with only modest variation due to wind and routing differences.
+
+::: {.callout-warning}
+Correlation measures the strength of a **linear** relationship. Two variables can be strongly related in a nonlinear way and still show a correlation near zero. Correlation also says nothing about causation: a high correlation between departure and arrival delays does not mean one causes the other directly, even though the mechanism is obvious in this case. Always pair correlation with domain knowledge.
+:::
+
+## Linear Regression
+
+When two variables are correlated, you can fit a linear model to quantify the relationship: for every one-unit increase in x, how much does y change on average? PostgreSQL provides a family of aggregate functions that compute the components of a simple linear regression directly in SQL.
+
+| Function | Returns |
+|---|---|
+| `REGR_SLOPE(y, x)` | Slope of the regression line |
+| `REGR_INTERCEPT(y, x)` | Y-intercept of the regression line |
+| `REGR_R2(y, x)` | Coefficient of determination (R²) |
+| `REGR_COUNT(y, x)` | Number of non-null pairs used |
+| `REGR_AVGX(y, x)` | Average of x across non-null pairs |
+| `REGR_AVGY(y, x)` | Average of y across non-null pairs |
+
+The notation `REGR_*(y, x)` follows the convention that `y` is the outcome you are trying to predict and `x` is the predictor.
+
+### Fitting a Model
+
+The following query fits a regression of arrival delay on departure delay across all flights:
+
+```{sql}
+#| connection: con
+#| label: regression-overall
+SELECT
+    ROUND(REGR_SLOPE(arr_delay, dep_delay)::numeric, 4)      AS slope,
+    ROUND(REGR_INTERCEPT(arr_delay, dep_delay)::numeric, 4)  AS intercept,
+    ROUND(REGR_R2(arr_delay, dep_delay)::numeric, 4)         AS r_squared,
+    REGR_COUNT(arr_delay, dep_delay)                         AS n
+FROM flights
+WHERE dep_delay IS NOT NULL AND arr_delay IS NOT NULL;
+```
+
+The slope of approximately 1.0 means that each additional minute of departure delay corresponds to roughly one additional minute of arrival delay. The intercept of −4.5 means that a flight departing exactly on time is predicted to arrive about 4.5 minutes early, reflecting the time airlines build back into schedules in-flight.
+
+The R² of 0.83 means that departure delay alone explains 83 percent of the variation in arrival delay. The model fits well, but 17 percent of the variance is due to other factors such as en-route weather, taxi times at the destination, and air traffic control.
+
+### Regression by Group
+
+Because `REGR_*` functions are aggregates, they can be grouped just like `AVG` or `STDDEV`. The following query fits a separate regression for each carrier:
+
+```{sql}
+#| connection: con
+#| label: regression-by-carrier
+SELECT
+    f.carrier,
+    a.name,
+    ROUND(REGR_SLOPE(f.arr_delay, f.dep_delay)::numeric, 3)     AS slope,
+    ROUND(REGR_INTERCEPT(f.arr_delay, f.dep_delay)::numeric, 2) AS intercept,
+    ROUND(REGR_R2(f.arr_delay, f.dep_delay)::numeric, 3)        AS r_squared,
+    REGR_COUNT(f.arr_delay, f.dep_delay)                        AS n
+FROM flights AS f
+JOIN airlines AS a ON f.carrier = a.carrier
+WHERE f.dep_delay IS NOT NULL AND f.arr_delay IS NOT NULL
+GROUP BY f.carrier, a.name
+ORDER BY r_squared DESC;
+```
+
+Every carrier shows a slope close to 1.0, confirming that the one-to-one relationship between departure and arrival delay is consistent across the industry. The intercepts vary more: carriers with negative intercepts tend to make up time in the air, while those with positive intercepts do not. R² ranges from around 0.77 to 0.91, indicating that departure delay is a stronger predictor of arrival delay for some carriers than others.
+
+### Using the Model
+
+Once you have slope and intercept, you can use them in a query to generate predictions. A CTE is a clean way to compute the coefficients once and then apply them across many rows:
+
+```{sql}
+#| connection: con
+#| label: regression-predict
+WITH model AS (
+    SELECT
+        REGR_SLOPE(arr_delay, dep_delay)     AS slope,
+        REGR_INTERCEPT(arr_delay, dep_delay) AS intercept
+    FROM flights
+    WHERE dep_delay IS NOT NULL AND arr_delay IS NOT NULL
+)
+SELECT
+    f.carrier,
+    f.flight,
+    f.dep_delay,
+    f.arr_delay,
+    ROUND((m.slope * f.dep_delay + m.intercept)::numeric, 1) AS predicted_arr_delay,
+    ROUND((f.arr_delay - (m.slope * f.dep_delay + m.intercept))::numeric, 1) AS residual
+FROM flights AS f
+CROSS JOIN model AS m
+WHERE f.dep_delay IS NOT NULL AND f.arr_delay IS NOT NULL
+  AND f.dep_delay > 60
+ORDER BY ABS(f.arr_delay - (m.slope * f.dep_delay + m.intercept)) DESC
+LIMIT 10;
+```
+
+The `residual` column is the difference between the actual arrival delay and the predicted one. Large positive residuals indicate flights that arrived much later than the model expected, given their departure delay. Large negative residuals indicate flights that recovered more time in the air than typical.
+
+::: {.callout-note}
+`CROSS JOIN model` joins every flight row to the single-row CTE that holds the model coefficients, making the slope and intercept available for the arithmetic in `SELECT`. This pattern is common when applying a scalar result from one subquery across many rows in another table.
+:::
+
+## Exercises
+
+### Reflection
+
+1. The mean departure delay in the `flights` dataset is roughly 10 minutes, but the median is −3 minutes. What does this gap tell you about the shape of the distribution? When would the mean be a better summary than the median, and when would the median be preferred?
+
+2. Explain the difference between `PERCENTILE_CONT` and `PERCENTILE_DISC`. Under what circumstances would the two functions return different results?
+
+3. A colleague runs `CORR(arr_delay, dep_delay)` and gets 0.91. They conclude that departure delays *cause* arrival delays. What is wrong with this reasoning, and how would you restate the finding more carefully?
+
+4. In the regression of arrival delay on departure delay, the intercept is approximately −4.5. What does this value represent in plain English, in the context of flight operations?
+
+### Coding
+
+5. Using `STDDEV` and `AVG`, compute the mean and standard deviation of `air_time` for each destination airport (`dest`). Return only airports with at least 100 flights. Sort by standard deviation descending to find the routes with the most variable flight times.
+
+6. For each month of the year, compute the 25th, 50th, and 75th percentiles of `dep_delay`. Sort by month. What pattern do you observe across the calendar year?
+
+7. Compute the Pearson correlation between `distance` and `air_time` separately for each origin airport. Do the three airports show the same correlation, or are there differences? What might explain any differences?
+
+8. Fit a linear regression of `arr_delay` on `dep_delay` for each origin airport using `REGR_SLOPE`, `REGR_INTERCEPT`, and `REGR_R2`. Compare the slopes and intercepts across the three airports. Which airport shows the strongest relationship between departure and arrival delay?
+
+9. Using the overall regression coefficients computed in a CTE, identify the ten flights with the largest positive residuals (actual arrival delay much worse than predicted). Return the carrier, flight number, origin, destination, departure delay, arrival delay, predicted arrival delay, and residual. What do these flights have in common, if anything?

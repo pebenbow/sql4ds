@@ -2,6 +2,16 @@
 title: "A Complete ETL Pipeline"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Assemble** extract, transform, and load functions into a single, callable pipeline function.
+- **Add** structured logging to a pipeline to record progress, row counts, and errors.
+- **Define** idempotency and verify that a pipeline produces consistent results when run multiple times.
+- **Design** a pipeline that separates concerns cleanly across extract, transform, and load stages.
+- **Test** a pipeline end-to-end by running it against a live database and inspecting the results.
+
 The previous three chapters covered each stage of the ETL process in isolation: extracting data from files and APIs, transforming it with Polars, and loading it into PostgreSQL with SQLAlchemy. In this chapter, you will tie those stages together into a single, repeatable pipeline function.
 
 A well-structured pipeline is not just a script that runs top to bottom. It handles errors gracefully, logs its progress, and is safe to run multiple times without corrupting the data it manages. By the end of this chapter, you will have a working pipeline that extracts World Bank data, applies transformations, and upserts the results into PostgreSQL.

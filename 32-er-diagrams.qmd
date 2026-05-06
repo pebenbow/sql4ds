@@ -7,6 +7,18 @@ dbml:
   echo: true
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Read** and interpret an entity-relationship (ER) diagram, identifying entities, attributes, and relationships.
+- **Identify** one-to-one, one-to-many, and many-to-many relationships in an ER diagram.
+- **Explain** how a many-to-many relationship is resolved using a junction (associative) table.
+- **Apply** crow's foot notation to represent cardinality and optionality in a diagram.
+- **Translate** an ER diagram into a set of `CREATE TABLE` statements with appropriate primary keys, foreign keys, and constraints.
+- **Construct** a basic ER diagram for a given set of business requirements before writing any SQL.
+- **Evaluate** an existing ER diagram for missing relationships, incorrect cardinality, or structural problems.
+
 ## Design Before You Build
 
 Writing SQL to create a database without first sketching its structure is like framing walls without a blueprint. The tables might hold together, but you will likely discover expensive problems later: a relationship missing, columns in the wrong place, a structure that forces the kind of redundancy the normalization chapter describes. Changes to a schema after data is loaded are slow and disruptive.

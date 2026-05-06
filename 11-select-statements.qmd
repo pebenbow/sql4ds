@@ -8,7 +8,7 @@ library(DBI)
 library(RPostgres)
 
 options(knitr.kable.NA = "NULL")
-options(max.print = 25)
+knitr::opts_chunk$set(max.print = 25)
 
 PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
 PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
@@ -22,6 +22,24 @@ con <- dbConnect(
   password = PGPASS
 )
 ```
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Write** a `SELECT` statement that retrieves specific columns from a table using `SELECT ... FROM`.
+- **Apply** column aliases using `AS` to rename columns in query output.
+- **Construct** text concatenation expressions using the `||` operator to combine column values and literal strings.
+- **Write** arithmetic expressions in `SELECT` to compute new values from existing numeric columns.
+- **Apply** `DISTINCT` to return only unique values from a column or combination of columns.
+- **Use** `COUNT(*)`, `COUNT(column)`, and `COUNT(DISTINCT column)` to count rows and measure data completeness.
+- **Apply** `WHERE` with comparison operators (`=`, `<>`, `<`, `>`, `BETWEEN`, `IN`, `LIKE`, `IS NULL`) to filter rows.
+- **Combine** filter conditions using `AND`, `OR`, and `NOT`, applying parentheses to control evaluation order.
+- **Explain** why `WHERE column = NULL` always returns zero rows and use `IS NULL` instead.
+- **Describe** the `NOT IN` / `NULL` trap and explain why a single `NULL` in the list causes no rows to be returned.
+- **Sort** query results using `ORDER BY` with `ASC` and `DESC` across one or more columns.
+- **Use** `LIMIT` to restrict the number of rows returned and explain its interaction with `ORDER BY`.
+- **Describe** the logical order in which SQL clauses are evaluated and explain why column aliases cannot be referenced in `WHERE`.
 
 Now that your database environment is up and running, it is time to write some SQL. The most fundamental operation in SQL is the **query**: a question you ask the database, written in a structured way that the database engine can understand and answer. In this chapter, you will write your first queries against the `actors` database that ships with the course Docker image.
 
@@ -84,8 +102,7 @@ SELECT
     birth_country     AS country,
     primary_genre     AS genre,
     oscar_nominations AS nominations
-FROM actors
-LIMIT 10;
+FROM actors;
 ```
 
 The `AS` keyword is optional in PostgreSQL; you can write the alias directly after the column name without it. Using `AS` explicitly is recommended, however, because it makes the intent of the query immediately clear to anyone reading it.
@@ -101,8 +118,7 @@ SELECT
     first_name || ' ' || last_name AS full_name,
     birth_country,
     primary_genre
-FROM actors
-LIMIT 10;
+FROM actors;
 ```
 
 You can add as many literal strings as you like. Here, a comma and space are inserted between the last name and the birth country to produce a compact bio label:
@@ -113,8 +129,7 @@ You can add as many literal strings as you like. Here, a comma and space are ins
 SELECT
     first_name || ' ' || last_name || ', ' || birth_country AS bio_label,
     primary_genre
-FROM actors
-LIMIT 10;
+FROM actors;
 ```
 
 ::: {.callout-note}
@@ -233,8 +248,7 @@ Use a single equals sign (`=`) to match a text value exactly. Text comparisons i
 SELECT first_name, last_name, birth_country, oscar_nominations
 FROM actors
 WHERE primary_genre = 'Drama'
-ORDER BY oscar_nominations DESC
-LIMIT 10;
+ORDER BY oscar_nominations DESC;
 ```
 
 To exclude a value instead of matching it, use `<>` (or the equivalent `!=`):
@@ -338,8 +352,7 @@ The `death_date` column is NULL for actors who are still living. You can find li
 SELECT first_name, last_name, birth_date, birth_country
 FROM actors
 WHERE death_date IS NULL
-ORDER BY birth_date
-LIMIT 10;
+ORDER BY birth_date;
 ```
 
 To find rows where a value *is* present, use `IS NOT NULL`. The following query returns only deceased actors by requiring that `death_date` has been recorded:
@@ -350,8 +363,7 @@ To find rows where a value *is* present, use `IS NOT NULL`. The following query 
 SELECT first_name, last_name, birth_date, death_date
 FROM actors
 WHERE death_date IS NOT NULL
-ORDER BY death_date DESC
-LIMIT 10;
+ORDER BY death_date DESC;
 ```
 
 ::: {.callout-warning}
@@ -457,8 +469,7 @@ WHERE last_name NOT LIKE 'A%'
   AND last_name NOT LIKE 'I%'
   AND last_name NOT LIKE 'O%'
   AND last_name NOT LIKE 'U%'
-ORDER BY last_name
-LIMIT 10;
+ORDER BY last_name;
 ```
 
 `NOT IN` excludes rows whose column value matches any entry in the list:

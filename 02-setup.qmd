@@ -2,6 +2,18 @@
 title: "Setup"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Install** Docker Desktop and verify that it is running on their local machine.
+- **Pull** and launch the course PostgreSQL container using the provided `docker run` command.
+- **Connect** to the running container using `psql` from the command line.
+- **Execute** a test query to verify that the database connection is working correctly.
+- **Configure** the `PGPORT` and `PGPASS` environment variables to customize connection settings.
+- **Start** and stop the container using `docker start` and `docker stop`.
+- **Explain** the role of Docker in creating a reproducible, consistent development environment across different operating systems.
+
 Before you can run your first SQL query, you need a database to query. Throughout this book, we will use **PostgreSQL**, one of the most widely used open-source relational database systems in the world, as our database engine.
 
 Rather than asking you to install and configure PostgreSQL directly on your machine, we are going to use **Docker**. Docker lets you run software inside a self-contained environment called a *container*. Think of a container as a lightweight, portable box that holds an application and everything it needs to run, regardless of what operating system or configuration your computer has.

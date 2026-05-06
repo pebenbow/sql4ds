@@ -2,4 +2,17 @@
 title: "Conditional Expressions"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Write** a searched `CASE WHEN` expression to produce a conditional column in query output.
+- **Write** a simple `CASE` expression that compares a single value against a list of alternatives.
+- **Apply** `CASE WHEN` inside aggregate functions to compute conditional counts and sums in a single query.
+- **Use** `COALESCE` to substitute a default value for `NULL` in query results.
+- **Apply** `NULLIF` to return `NULL` when two expressions are equal, preventing division-by-zero errors.
+- **Distinguish** between `COALESCE` (returns first non-null) and `NULLIF` (returns null on equality) and select the appropriate function for a given scenario.
+- **Combine** `CASE WHEN` with `GROUP BY` to create custom categorical groupings from continuous or multi-valued columns.
+- **Evaluate** whether a conditional expression problem is best solved with `CASE WHEN`, `COALESCE`, or `NULLIF`.
+
 Stub: CASE WHEN, NULLIF, and COALESCE as conditional tools.

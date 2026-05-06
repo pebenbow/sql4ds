@@ -2,13 +2,23 @@
 title: "Set Operations"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Distinguish** between joins, which combine tables horizontally, and set operations, which stack result sets vertically.
+- **Write** `UNION`, `UNION ALL`, `INTERSECT`, and `EXCEPT` queries to combine the results of two `SELECT` statements.
+- **Explain** why `UNION` removes duplicate rows while `UNION ALL` keeps them, and choose appropriately based on the task.
+- **Identify** the compatibility requirements for set operations: matching column count and compatible data types.
+- **Apply** set operations to answer questions about overlap, difference, and union across related datasets.
+
 ```{r}
 #| include: false
 library(DBI)
 library(RPostgres)
 
 options(knitr.kable.NA = "NULL")
-options(max.print = 25)
+knitr::opts_chunk$set(max.print = 25)
 
 con <- dbConnect(
   Postgres(),

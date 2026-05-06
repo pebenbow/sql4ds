@@ -2,13 +2,27 @@
 title: "Aggregating with GROUP BY"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Write** `GROUP BY` queries to compute aggregate summaries for each unique value in one or more columns.
+- **Apply** the five core aggregate functions (`COUNT`, `SUM`, `AVG`, `MIN`, `MAX`) to summarize data within groups.
+- **Distinguish** between `WHERE` (filters rows before grouping) and `HAVING` (filters groups after aggregation) and apply each correctly.
+- **Use** the `FILTER` clause to compute conditional aggregates without restructuring the query.
+- **Apply** `ROLLUP` to generate subtotals and a grand total in a single query pass.
+- **Apply** `CUBE` to generate all possible subtotal combinations for a set of grouping columns.
+- **Use** `COALESCE` and `GROUPING()` to label `NULL` subtotal rows in `ROLLUP` and `CUBE` output.
+- **Write** `GROUPING SETS` and explain its relationship to `ROLLUP` and `CUBE` as a generalization of both.
+- **Diagnose** errors caused by referencing non-aggregated, non-grouped columns in a `SELECT` with `GROUP BY`.
+
 ```{r}
 #| include: false
 library(DBI)
 library(RPostgres)
 
 options(knitr.kable.NA = "NULL")
-options(max.print = 25)
+knitr::opts_chunk$set(max.print = 25)
 
 PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
 PGPASS <- Sys.getenv("PGPASS", unset = "postgres")

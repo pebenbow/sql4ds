@@ -2,6 +2,16 @@
 title: "Getting Started with Supabase"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Create** a Supabase account and provision a new PostgreSQL project using the Supabase dashboard.
+- **Navigate** the Supabase interface to locate the SQL Editor, connection settings, and project credentials.
+- **Run** a query against a hosted database using the Supabase SQL Editor.
+- **Retrieve** the connection string for a Supabase project and use it to connect from an external client.
+- **Distinguish** between a local development database and a hosted cloud database, including the implications for schema changes and data persistence.
+
 The chapters in this section move beyond writing SQL against a local database and into the work of deploying and managing a database in the cloud. That shift introduces questions that local development does not: How do you create and configure a hosted database? How do you push schema changes from your development machine to a remote server without breaking existing data? How do you keep track of what changed, when, and why?
 
 This chapter covers the first step: setting up a Supabase account and learning your way around its interface. The following chapters introduce the Supabase CLI, which brings the deployment workflow into VS Code, and database migrations, which give schema changes a versioned, reproducible history.

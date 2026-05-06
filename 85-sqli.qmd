@@ -2,6 +2,19 @@
 title: "SQL Injection"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Explain** what SQL injection is and describe the mechanism by which it exploits string concatenation in query construction.
+- **Identify** SQL injection vulnerabilities in provided code samples written in SQL, R, or Python.
+- **Demonstrate** how a SQL injection payload manipulates query logic to bypass authentication or exfiltrate data.
+- **Explain** why parameterized queries prevent SQL injection at the driver level.
+- **Rewrite** a vulnerable query using parameterized query syntax in R (DBI `params` argument) and Python (psycopg2 `%s` placeholders).
+- **Describe** the principle of least privilege and explain how limiting database permissions reduces the impact of a successful injection.
+- **Distinguish** between first-order and second-order SQL injection and explain why stored input can be dangerous even if it was safely inserted.
+- **Evaluate** common defenses (input validation, ORMs, stored procedures, WAFs) and explain the limitations of each as a standalone control.
+
 The previous two chapters covered the access control tools PostgreSQL provides: roles define identity, and privileges define what each identity can do. Together they form a coherent permission model. But there is a category of attack that bypasses this model entirely, not by guessing passwords or escalating privileges, but by hijacking the SQL statements your application constructs in the first place.
 
 SQL injection (SQLi) is consistently one of the top vulnerabilities in web applications, catalogued for decades in the OWASP Top 10. Understanding how it works is a prerequisite to defending against it. This chapter demonstrates the mechanics of SQL injection using your local Docker container, covers the most common attack patterns, and shows how parameterized queries eliminate the vulnerability at its root.

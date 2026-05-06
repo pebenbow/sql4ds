@@ -1,0 +1,324 @@
+---
+title: "Connecting Python to a Database"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Explain** the DB-API 2.0 specification and describe how `psycopg2` implements it for PostgreSQL.
+- **Connect** to PostgreSQL using `psycopg2`, execute queries with a cursor, and fetch results as Python lists.
+- **Create** a SQLAlchemy engine and execute parameterized queries using `text()`.
+- **Load** query results directly into pandas DataFrames using `pd.read_sql`.
+- **Visualize** query results with `seaborn` and `matplotlib` inside a Python workflow.
+- **Write** parameterized queries using both `%s` positional placeholders (psycopg2) and `:name` named placeholders (SQLAlchemy) to prevent SQL injection.
+
+```{r}
+#| include: false
+source("_common.R")
+```
+
+Python is one of the most widely used languages for data analysis, and connecting it to a SQL database is a routine part of most data workflows. This chapter covers three layers of Python database connectivity: `psycopg2` for direct, low-level access to PostgreSQL; SQLAlchemy for a higher-level connection abstraction; and `pandas` for loading query results directly into DataFrames. It also shows how to visualize results with `seaborn` and covers parameterized queries for safe value substitution.
+
+The examples in this chapter use the same `nycflights` database from the previous two chapters, so the queries will be familiar.
+
+## The Python Database Ecosystem
+
+Python database connectivity follows a similar pattern to R's DBI ecosystem. The **DB-API 2.0** specification (PEP 249) defines a standard interface that database drivers implement. This means the connection and cursor pattern looks similar regardless of the database.
+
+| Package | Role |
+|---|---|
+| `psycopg2` | PostgreSQL driver implementing DB-API 2.0 |
+| `SQLAlchemy` | Connection abstraction layer; works with many databases |
+| `pandas` | `read_sql()` uses either of the above to return a DataFrame |
+
+In practice, most data analysis in Python goes through `pandas.read_sql()` backed by a SQLAlchemy engine, because the result is immediately a DataFrame. The `psycopg2` layer is worth understanding because it underlies everything else and is the right tool when you need fine-grained control, such as for transactions or bulk inserts.
+
+## Connecting with psycopg2
+
+`psycopg2.connect()` establishes a connection to a PostgreSQL database. The connection object manages a session with the database server.
+
+```{python}
+#| label: psycopg2-connect
+import psycopg2
+import os
+
+conn = psycopg2.connect(
+    host="localhost",
+    port=int(os.environ.get("PGPORT", 5432)),
+    dbname="nycflights",
+    user="postgres",
+    password=os.environ.get("PGPASS", "postgres")
+)
+```
+
+The connection object itself does not run queries. For that, you create a **cursor** from the connection. The cursor is what sends SQL to the database and retrieves results.
+
+```{python}
+#| label: psycopg2-cursor
+cur = conn.cursor()
+
+cur.execute("""
+    SELECT carrier, COUNT(*) AS flights
+    FROM flights
+    GROUP BY carrier
+    ORDER BY flights DESC
+""")
+
+rows = cur.fetchall()
+for row in rows:
+    print(row)
+```
+
+`cur.fetchall()` returns all result rows as a list of tuples. `cur.fetchone()` returns a single row, and `cur.fetchmany(n)` returns up to n rows — useful when results are too large to hold in memory at once.
+
+Column names are available through `cur.description`:
+
+```{python}
+#| label: psycopg2-columns
+columns = [desc[0] for desc in cur.description]
+print(columns)
+```
+
+### Parameterized Queries with psycopg2
+
+As with R, never interpolate Python values into a query string using f-strings or string concatenation. The `psycopg2` driver uses `%s` as the placeholder for parameterized values:
+
+```{python}
+#| label: psycopg2-params
+carrier_code = "AA"
+
+cur.execute(
+    "SELECT flight, dep_delay, dest FROM flights WHERE carrier = %s AND dep_delay > %s ORDER BY dep_delay DESC",
+    (carrier_code, 60)
+)
+
+rows = cur.fetchmany(10)
+for row in rows:
+    print(row)
+```
+
+The second argument to `cur.execute()` is a tuple of values, one for each `%s` placeholder. The driver handles quoting and escaping, so no injection is possible.
+
+::: {.callout-warning}
+Do not confuse psycopg2's `%s` placeholders with Python's `%` string formatting operator. They look similar but are completely different mechanisms. Psycopg2's `%s` goes through the driver's safe substitution path. Python's `%` operator does plain string substitution with no database safety guarantees — using it to build SQL strings is exactly the pattern you are trying to avoid.
+:::
+
+### Closing Connections
+
+Always close the cursor and connection when you are done. The `with` statement handles this automatically:
+
+```{python}
+#| label: psycopg2-context
+#| eval: false
+with psycopg2.connect(host="localhost", port=5433, dbname="nycflights",
+                      user="postgres", password="postgres") as conn:
+    with conn.cursor() as cur:
+        cur.execute("SELECT COUNT(*) FROM flights")
+        print(cur.fetchone())
+# connection and cursor are closed automatically here
+```
+
+```{python}
+#| label: psycopg2-close
+#| include: false
+cur.close()
+conn.close()
+```
+
+## Connecting with SQLAlchemy
+
+SQLAlchemy provides a higher-level connection abstraction. Its primary value in data analysis workflows is that it integrates directly with `pandas`, allowing query results to flow into DataFrames with a single function call.
+
+A SQLAlchemy **engine** is created from a connection string (called a URL):
+
+```{python}
+#| label: sqlalchemy-engine
+from sqlalchemy import create_engine, text
+import os
+
+port = os.environ.get("PGPORT", "5432")
+password = os.environ.get("PGPASS", "postgres")
+
+engine = create_engine(f"postgresql+psycopg2://postgres:{password}@localhost:{port}/nycflights")
+```
+
+The URL format is `dialect+driver://user:password@host:port/database`. SQLAlchemy uses psycopg2 as the underlying driver here, but the same engine interface works with MySQL, SQLite, and other databases by changing the URL prefix.
+
+Querying through SQLAlchemy uses `engine.connect()` as a context manager:
+
+```{python}
+#| label: sqlalchemy-query
+with engine.connect() as db_conn:
+    result = db_conn.execute(text("""
+        SELECT
+            f.carrier,
+            a.name,
+            COUNT(*) AS flights,
+            ROUND(AVG(f.dep_delay)::numeric, 1) AS mean_delay
+        FROM flights AS f
+        JOIN airlines AS a ON f.carrier = a.carrier
+        WHERE f.dep_delay IS NOT NULL
+        GROUP BY f.carrier, a.name
+        ORDER BY mean_delay DESC
+    """))
+    for row in result:
+        print(row)
+```
+
+The `text()` wrapper is required in SQLAlchemy 2.0 for raw SQL strings. It marks the string as literal SQL rather than a Python expression, and it also enables named parameter substitution.
+
+### Parameterized Queries with SQLAlchemy
+
+SQLAlchemy uses `:param_name` style placeholders with a dictionary of values:
+
+```{python}
+#| label: sqlalchemy-params
+with engine.connect() as db_conn:
+    result = db_conn.execute(
+        text("SELECT flight, dep_delay, dest FROM flights WHERE carrier = :carrier AND dep_delay > :min_delay ORDER BY dep_delay DESC LIMIT 5"),
+        {"carrier": "AA", "min_delay": 60}
+    )
+    for row in result:
+        print(row)
+```
+
+## pandas and read_sql
+
+For data analysis, the most convenient pattern is `pandas.read_sql()`, which runs a query and returns the result as a DataFrame in one step:
+
+```{python}
+#| label: pandas-read-sql
+import pandas as pd
+
+delays = pd.read_sql("""
+    SELECT
+        f.carrier,
+        a.name,
+        ROUND(AVG(f.dep_delay)::numeric, 1) AS mean_delay,
+        ROUND(STDDEV(f.dep_delay)::numeric, 1) AS stddev_delay,
+        COUNT(*) AS flights
+    FROM flights AS f
+    JOIN airlines AS a ON f.carrier = a.carrier
+    WHERE f.dep_delay IS NOT NULL
+    GROUP BY f.carrier, a.name
+    ORDER BY mean_delay DESC
+""", engine)
+
+delays
+```
+
+The second argument is the SQLAlchemy engine (or a psycopg2 connection). The result is a fully functional pandas DataFrame:
+
+```{python}
+#| label: pandas-dtypes
+print(delays.dtypes)
+```
+
+## Visualizing with seaborn
+
+With data in a DataFrame, `seaborn` and `matplotlib` are immediately available for visualization. The plots here parallel the ones built with `ggplot2` in the previous chapter.
+
+### Distribution of Departure Delays
+
+```{python}
+#| label: hist-delays
+#| warning: false
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+delay_data = pd.read_sql("""
+    SELECT dep_delay
+    FROM flights
+    WHERE dep_delay IS NOT NULL
+      AND dep_delay BETWEEN -30 AND 180
+""", engine)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.histplot(data=delay_data, x="dep_delay", binwidth=5, color="#0165fc", ax=ax)
+ax.set_title("Distribution of Departure Delays")
+ax.set_xlabel("Departure Delay (minutes)")
+ax.set_ylabel("Number of Flights")
+plt.tight_layout()
+plt.show()
+```
+
+### Departure Delay vs. Arrival Delay
+
+```{python}
+#| label: scatter-delays
+#| warning: false
+delay_pairs = pd.read_sql("""
+    SELECT dep_delay, arr_delay
+    FROM flights
+    WHERE dep_delay IS NOT NULL
+      AND arr_delay IS NOT NULL
+      AND dep_delay BETWEEN -30 AND 120
+      AND arr_delay BETWEEN -60 AND 120
+""", engine)
+
+fig, ax = plt.subplots(figsize=(6, 5))
+ax.scatter(delay_pairs["dep_delay"], delay_pairs["arr_delay"],
+           alpha=0.03, color="#0165fc", s=5)
+sns.regplot(data=delay_pairs, x="dep_delay", y="arr_delay",
+            scatter=False, color="firebrick", ax=ax)
+ax.set_title("Departure Delay vs. Arrival Delay")
+ax.set_xlabel("Departure Delay (minutes)")
+ax.set_ylabel("Arrival Delay (minutes)")
+plt.tight_layout()
+plt.show()
+```
+
+### Mean Delay by Carrier
+
+```{python}
+#| label: bar-carrier
+fig, ax = plt.subplots(figsize=(7, 5))
+delays_sorted = delays.sort_values("mean_delay")
+ax.barh(delays_sorted["name"], delays_sorted["mean_delay"], color="#0165fc")
+ax.set_title("Mean Departure Delay by Carrier")
+ax.set_xlabel("Mean Departure Delay (minutes)")
+ax.set_ylabel(None)
+plt.tight_layout()
+plt.show()
+```
+
+## Choosing the Right Layer
+
+The three layers serve different purposes:
+
+| Scenario | Tool |
+|---|---|
+| Analytical queries returning DataFrames | `pandas.read_sql()` + SQLAlchemy engine |
+| Transactions, multi-statement operations | psycopg2 connection + cursor |
+| Bulk inserts or COPY operations | psycopg2 with `execute_values` or `copy_expert` |
+| Non-PostgreSQL databases | SQLAlchemy with the appropriate driver |
+
+For most data science work, `pandas.read_sql()` is the right starting point. Drop down to psycopg2 when you need transaction control or performance-critical bulk operations.
+
+## Exercises
+
+### Reflection
+
+1. What is DB-API 2.0, and why does it matter that psycopg2 implements it?
+
+2. A colleague writes the following Python code to filter flights by carrier:
+   ```python
+   carrier = input("Enter carrier code: ")
+   cur.execute(f"SELECT * FROM flights WHERE carrier = '{carrier}'")
+   ```
+   What is wrong with this approach? Rewrite it using parameterized queries.
+
+3. Explain the roles of `psycopg2`, SQLAlchemy, and `pandas.read_sql()`. When would you reach for each one?
+
+4. What does the `text()` wrapper do in SQLAlchemy 2.0, and why is it required for raw SQL strings?
+
+### Coding
+
+5. Using `psycopg2`, connect to the `nycflights` database and retrieve the top 10 busiest destination airports by flight count. Print each row as a tuple.
+
+6. Using `pandas.read_sql()`, retrieve the monthly average departure delay and load it into a DataFrame. Then use `seaborn` or `matplotlib` to plot the result as a line chart. Describe the seasonal pattern.
+
+7. Write a parameterized query using SQLAlchemy that accepts a minimum departure delay and a destination airport code, and returns all matching flights with their carrier, flight number, and delay. Test it with at least two different parameter combinations.
+
+8. Connect to the `actors` database using either psycopg2 or SQLAlchemy (you will need a second engine or connection). Retrieve all actors born in the USA with at least three Oscar nominations, load the result into a pandas DataFrame, and produce a bar chart of Oscar nominations by actor sorted in descending order.

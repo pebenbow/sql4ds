@@ -2,6 +2,18 @@
 title: "Keys and Referential Integrity"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Define** primary key, foreign key, and unique constraint and explain the role each plays in a relational schema.
+- **Identify** candidate keys in a table and select an appropriate primary key.
+- **Write** `CREATE TABLE` statements that declare `PRIMARY KEY` and `FOREIGN KEY` constraints.
+- **Explain** referential integrity and describe what happens when a foreign key constraint is violated.
+- **Apply** `ON DELETE` and `ON UPDATE` referential actions (`CASCADE`, `SET NULL`, `RESTRICT`, `NO ACTION`) and predict their behavior.
+- **Distinguish** between natural keys and surrogate keys and evaluate the trade-offs of each for a given table.
+- **Diagnose** constraint violations from PostgreSQL error messages and identify the underlying data problem.
+
 ## From Joins to Design
 
 The joins chapter introduced primary keys, foreign keys, and cardinality as the tools you need to write queries that span multiple tables. This chapter approaches the same concepts from a different angle: not as the machinery behind a query, but as design decisions you make when defining a table.

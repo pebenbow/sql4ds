@@ -2,13 +2,26 @@
 title: "Data Types"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Identify** the most common PostgreSQL data types including text, integer, numeric, boolean, and date/time types.
+- **Distinguish** between fixed-length (`CHAR`) and variable-length (`VARCHAR`, `TEXT`) character types and select the appropriate one.
+- **Choose** an appropriate numeric type (`SMALLINT`, `INT`, `BIGINT`, `NUMERIC`, `REAL`, `DOUBLE PRECISION`) given the precision and range requirements of a value.
+- **Explain** the difference between exact numeric types (`NUMERIC`) and floating-point types (`REAL`, `DOUBLE PRECISION`) and the implications for precision-sensitive calculations.
+- **Write** SQL expressions using the `::` cast operator and `CAST()` function to convert values between data types.
+- **Apply** date and time literals in SQL queries and explain the `'YYYY-MM-DD'` format requirement.
+- **Explain** why `NULL` is distinct from zero, an empty string, or `false` and how it propagates through expressions.
+- **Use** `pg_typeof()` to inspect the inferred type of an expression in PostgreSQL.
+
 ```{r}
 #| include: false
 library(DBI)
 library(RPostgres)
 
 options(knitr.kable.NA = "NULL")
-options(max.print = 25)
+knitr::opts_chunk$set(max.print = 25)
 
 PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
 PGPASS <- Sys.getenv("PGPASS", unset = "postgres")

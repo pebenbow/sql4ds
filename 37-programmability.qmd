@@ -1,0 +1,20 @@
+---
+title: "Programmability"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Write** a SQL-language function using `CREATE FUNCTION` that accepts arguments and returns a value.
+- **Write** a PL/pgSQL function using procedural constructs including variables, conditionals (`IF/ELSIF/ELSE`), and loops.
+- **Classify** a function as `IMMUTABLE`, `STABLE`, or `VOLATILE` and explain how each classification affects query planning and caching.
+- **Call** a user-defined function within a `SELECT` statement or `WHERE` clause.
+- **Write** a stored procedure using `CREATE PROCEDURE` and invoke it with `CALL`.
+- **Distinguish** between a function and a stored procedure in PostgreSQL, particularly regarding return values and transaction control.
+- **Implement** `COMMIT` and `ROLLBACK` within a stored procedure to manage transactions across multiple statements.
+- **Create** a trigger function that returns `NEW` or `OLD` and attach it to a table using `CREATE TRIGGER`.
+- **Distinguish** between `BEFORE`, `AFTER`, and `INSTEAD OF` triggers, and between `ROW`-level and `STATEMENT`-level triggers.
+- **Design** a trigger to enforce a business rule or maintain a derived column that cannot be expressed as a simple constraint.
+
+Stub: User-defined functions (CREATE FUNCTION, PL/pgSQL basics, RETURNS, LANGUAGE, IMMUTABLE/STABLE/VOLATILE, SQL-language functions, using functions in queries), stored procedures (CREATE PROCEDURE, CALL, difference between functions and procedures, transaction control inside procedures, when to use procedures vs functions), and triggers (CREATE TRIGGER, BEFORE/AFTER/INSTEAD OF, ROW vs STATEMENT level, trigger functions, common use cases: audit logs, derived columns, enforcing complex constraints).

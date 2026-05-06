@@ -2,6 +2,19 @@
 title: "Database Normalization"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Explain** the purpose of normalization and identify the three anomalies (insertion, update, deletion) it is designed to prevent.
+- **Identify** functional dependencies between columns in a given table.
+- **Evaluate** whether a table satisfies First Normal Form (1NF) and modify a violating table to achieve it.
+- **Evaluate** whether a table satisfies Second Normal Form (2NF) and decompose a violating table by removing partial dependencies.
+- **Evaluate** whether a table satisfies Third Normal Form (3NF) and decompose a violating table by removing transitive dependencies.
+- **Apply** normalization to transform a flat, denormalized dataset into a properly structured relational schema.
+- **Distinguish** between normalized and denormalized schemas and articulate the trade-offs relevant to transactional versus analytical workloads.
+- **Justify** a deliberate denormalization decision given specific performance or simplicity requirements.
+
 ## Why Normalization Matters
 
 Consider how most people first encounter data: in a spreadsheet. A spreadsheet is a single flat table, and the natural instinct is to put everything in one place. For small, simple datasets, that works fine. But as data grows in complexity, the flat-table approach creates problems that become increasingly costly to fix.

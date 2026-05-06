@@ -2,6 +2,16 @@
 title: "Deploying from VS Code"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Install** the Supabase CLI and authenticate it against a Supabase account.
+- **Link** a local project directory to a remote Supabase project using `supabase link`.
+- **Push** a SQL schema file to a remote Supabase database from the VS Code integrated terminal.
+- **Query** a remote Supabase PostgreSQL database from inside VS Code without switching to the browser.
+- **Explain** why a local development workflow with version control is preferable to editing schema directly in the SQL Editor.
+
 The Supabase SQL Editor is a capable tool for one-off queries and quick schema experiments. For sustained development work, though, it has the same drawbacks as any browser-based editor: no version control, no local file history, and no way to coordinate changes across a team. Writing your schema in VS Code and deploying it to Supabase via the command line addresses all three.
 
 This chapter introduces the Supabase CLI and walks through connecting it to the project you created in the previous chapter. By the end, you will be able to write SQL in VS Code, push schema changes to your remote Supabase database from the integrated terminal, and query the remote database from inside VS Code without switching to the browser.

@@ -1,5 +1,0 @@
----
-title: "User-Defined Functions"
----
-
-Stub: CREATE FUNCTION, PL/pgSQL basics, RETURNS, LANGUAGE, IMMUTABLE/STABLE/VOLATILE, SQL-language functions, using functions in queries.

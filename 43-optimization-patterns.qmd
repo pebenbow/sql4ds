@@ -2,4 +2,17 @@
 title: "Query Optimization Patterns"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Define** sargability and explain why non-sargable predicates prevent index use.
+- **Identify** non-sargable patterns (functions on indexed columns, implicit type casts, leading wildcards) in provided query samples and rewrite them as sargable equivalents.
+- **Replace** a `NOT IN` subquery with `NOT EXISTS` and explain why `NOT EXISTS` handles `NULL` values correctly.
+- **Apply** `EXISTS` instead of `COUNT(*) > 0` for existence checks and explain the performance difference.
+- **Evaluate** the trade-offs between subqueries, CTEs, and temporary tables as strategies for materializing intermediate results.
+- **Rewrite** a correlated subquery as a join or window function and explain the performance rationale.
+- **Use** `pg_stat_statements` to identify the queries consuming the most total execution time in a database.
+- **Apply** `SELECT` with explicit column names rather than `SELECT *` and explain how this improves both performance and maintainability.
+
 Stub: sargable vs non-sargable predicates, avoiding functions on indexed columns in WHERE, EXISTS vs IN, implicit type casts, SELECT * vs explicit columns, pg_stat_statements.

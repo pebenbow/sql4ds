@@ -2,6 +2,16 @@
 title: "Loading Data into PostgreSQL with SQLAlchemy"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Connect** to PostgreSQL from Python using a SQLAlchemy engine and a connection URL.
+- **Write** a Polars or pandas DataFrame to a database table using SQLAlchemy.
+- **Write** an upsert using `INSERT ... ON CONFLICT` to handle rows that already exist in the target table.
+- **Explain** what idempotency means in the context of a data pipeline and why it matters for scheduled runs.
+- **Verify** a successful load by querying the target table after insertion.
+
 With clean DataFrames in hand, the final stage of the ETL pipeline is loading them into PostgreSQL. This chapter covers how to do that using SQLAlchemy, the standard Python library for database connectivity.
 
 You will learn to write DataFrames to database tables, and more importantly, how to write *upserts*: inserts that gracefully handle duplicate rows by updating existing records rather than failing or creating duplicates. This is critical for any pipeline that runs on a schedule, since subsequent runs will encounter rows that were already loaded on a previous run.

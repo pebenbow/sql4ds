@@ -2,4 +2,18 @@
 title: "Window Functions"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Explain** the difference between window functions and aggregate functions in terms of how output rows are produced.
+- **Write** a window function using the `OVER()` clause with `PARTITION BY` and `ORDER BY`.
+- **Apply** `ROW_NUMBER()`, `RANK()`, and `DENSE_RANK()` to assign row rankings within partitions.
+- **Compare** the behavior of `RANK()` and `DENSE_RANK()` when rows share the same value, predicting the output of each.
+- **Use** `LAG()` and `LEAD()` to access values from preceding and following rows within a result set.
+- **Compute** a running total or cumulative sum using `SUM()` with an `ORDER BY` inside `OVER()`.
+- **Define** a custom window frame using `ROWS BETWEEN` or `RANGE BETWEEN` to control which rows each calculation includes.
+- **Compute** a moving average by combining `AVG()` with a `ROWS BETWEEN N PRECEDING AND CURRENT ROW` frame.
+- **Apply** window functions within a CTE to perform multi-step analyses that reference ranked or lagged values in subsequent steps.
+
 Stub: OVER, PARTITION BY, ORDER BY in window context, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, running totals.

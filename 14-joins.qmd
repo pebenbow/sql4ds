@@ -2,13 +2,28 @@
 title: "Joining Tables"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Explain** what a join is and why it is necessary when data is spread across multiple related tables.
+- **Write** an `INNER JOIN` to combine rows from two tables based on a matching key column.
+- **Apply** a `LEFT JOIN` to preserve all rows from the left table, including those with no match on the right.
+- **Distinguish** between `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, and `FULL OUTER JOIN` and predict the row count each produces for a given pair of tables.
+- **Use** table aliases to write more concise and readable join queries.
+- **Write** a query that joins three or more tables in a single statement.
+- **Apply** a self-join to compare or relate rows within the same table.
+- **Use** `CROSS JOIN` to produce a Cartesian product and identify a practical scenario where this is the intended behavior.
+- **Diagnose** unexpected duplicate rows caused by one-to-many join relationships and correct the query.
+- **Select** the appropriate join type for a given analytical question.
+
 ```{r}
 #| include: false
 library(DBI)
 library(RPostgres)
 
 options(knitr.kable.NA = "NULL")
-options(max.print = 25)
+knitr::opts_chunk$set(max.print = 25)
 
 con <- dbConnect(
   Postgres(),

@@ -2,6 +2,16 @@
 title: "Extracting Data from Files and APIs"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Explain** the role of the extraction stage in an ETL pipeline and describe common data sources.
+- **Read** CSV, JSON, and Parquet files into Polars DataFrames using the appropriate `read_*` function.
+- **Fetch** data from a REST API using the `requests` library and parse the JSON response.
+- **Inspect** a freshly loaded DataFrame to verify its shape, schema, and the presence of missing values.
+- **Identify** practical differences between CSV, JSON, and Parquet as storage formats for tabular data.
+
 The first stage of any ETL pipeline is extraction: pulling raw data from wherever it lives into your working environment. In the real world, data arrives in many forms. A colleague sends a CSV. A vendor exposes a REST API. A data warehouse exports Parquet files to cloud storage. Each format has its own structure, its own quirks, and its own best practices.
 
 In this chapter, you will learn how to read the three most common formats using [Polars](https://pola.rs/), a fast DataFrame library for Python. You will also learn how to fetch data from a REST API using the `requests` library. By the end, you will have the extraction toolkit needed to ingest data from nearly any source you encounter as a data professional.

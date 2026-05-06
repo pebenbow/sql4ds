@@ -44,6 +44,7 @@ Chapters and the parts they belong to have a numbering convention that should be
 - 5x chapters are about database security, including roles and privileges.
 - 6x chapters are about ETL with Python (Polars).
 - 7x chapters are about deployment and migrations with Supabase.
+- 8x chapters are guided lab assignments that students can complete.
 - 9x chapters are the tail end of the book, where we would include appendices, references, etc.
 
 The numbering convention I just described for the files within this repo is decoupled from the chapter numbering of the final product. That numbering is handled by Quarto itself at the time of rendering. This numbering convention is designed to make the repo easier to navigate when viewing it in GitHub or an IDE like Zed or VS Code.

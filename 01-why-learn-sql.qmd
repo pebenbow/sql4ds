@@ -2,3 +2,13 @@
 title: "Why Learn SQL?"
 ---
 
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Articulate** at least three reasons why SQL is a foundational skill for data scientists and analysts.
+- **Distinguish** between SQL and general-purpose programming languages such as R and Python in terms of purpose and typical use cases.
+- **Describe** the role of relational databases in modern data infrastructure.
+- **Identify** common job roles and professional workflows where SQL proficiency is required.
+- **Compare** relational databases to spreadsheets and flat files, explaining the limitations of each for managing structured data at scale.
+- **Explain** why SQL has remained relevant for decades despite the emergence of newer data technologies.
