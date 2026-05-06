@@ -57,10 +57,6 @@
     <lastmod>2026-05-06T12:01:53.457Z</lastmod>
   </url>
   <url>
-    <loc>https://sql4ds.com/24-stats-functions.html</loc>
-    <lastmod>2026-05-06T12:06:43.664Z</lastmod>
-  </url>
-  <url>
     <loc>https://sql4ds.com/25-r-database.html</loc>
     <lastmod>2026-05-06T12:06:45.208Z</lastmod>
   </url>
@@ -105,20 +101,8 @@
     <lastmod>2026-05-06T12:03:03.257Z</lastmod>
   </url>
   <url>
-    <loc>https://sql4ds.com/40-optimize.html</loc>
-    <lastmod>2026-05-05T15:30:56.134Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sql4ds.com/41-explain.html</loc>
-    <lastmod>2026-05-06T12:02:17.995Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sql4ds.com/42-indexes.html</loc>
-    <lastmod>2026-05-06T12:02:29.777Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sql4ds.com/43-optimization-patterns.html</loc>
-    <lastmod>2026-05-06T12:02:35.883Z</lastmod>
+    <loc>https://sql4ds.com/39-indexes.html</loc>
+    <lastmod>2026-05-06T14:25:34.296Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/60-load.html</loc>

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>12&nbsp; Connecting R to a Database – SQL for Data Science</title>
+<title>11&nbsp; Connecting R to a Database – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./26-python-database.html" rel="next">
-<link href="./24-stats-functions.html" rel="prev">
+<link href="./23-window-functions.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-3c0a8f952bb3711ad42cb3f3d697265c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-e6a145422a7536efbb204f5a8d1c5774.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -121,7 +121,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-analyze.html">Analyze</a></li><li class="breadcrumb-item"><a href="./25-r-database.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Connecting R to a Database</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-analyze.html">Analyze</a></li><li class="breadcrumb-item"><a href="./25-r-database.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Connecting R to a Database</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -253,20 +253,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./24-stats-functions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Statistical Functions</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./25-r-database.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Connecting R to a Database</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Connecting R to a Database</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./26-python-database.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Connecting Python to a Database</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Connecting Python to a Database</span></span></a>
   </div>
 </li>
       </ul>
@@ -283,78 +277,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./31-keys-and-integrity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Keys and Referential Integrity</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./32-er-diagrams.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Entity-Relationship Diagrams</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./33-normal-forms.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Database Normalization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./34-create-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Creating Tables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./35-views.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Views and Materialized Views</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Views and Materialized Views</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./36-building-schema.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Building a Schema</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./37-programmability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Programmability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Programmability</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./38-security.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Security</span></span></a>
-  </div>
-</li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a href="./40-optimize.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Optimize</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./41-explain.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Reading Query Plans</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Security</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42-indexes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Indexes</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./43-optimization-patterns.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Query Optimization Patterns</span></span></a>
+  <a href="./39-indexes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Indexes</span></span></a>
   </div>
 </li>
       </ul>
@@ -363,33 +334,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="./60-load.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Load</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./61-extracting-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Extracting Data from Files and APIs</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./62-transforming-with-polars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Transforming Data with Polars</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./63-loading-with-sqlalchemy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Loading Data into PostgreSQL with SQLAlchemy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./64-etl-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">A Complete ETL Pipeline</span></span></a>
   </div>
 </li>
       </ul>
@@ -398,27 +369,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="./70-deploy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Deploy</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./71-supabase-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Getting Started with Supabase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./72-supabase-vscode.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Deploying from VS Code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./73-database-migrations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Database Migrations</span></span></a>
   </div>
 </li>
       </ul>
@@ -427,15 +398,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a href="./80-labs.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Labs</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./85-sqli.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">SQL Injection</span></span></a>
   </div>
 </li>
       </ul>
@@ -456,30 +427,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">12.1</span> Learning Objectives</a></li>
-  <li><a href="#the-dbi-ecosystem" id="toc-the-dbi-ecosystem" class="nav-link" data-scroll-target="#the-dbi-ecosystem"><span class="header-section-number">12.2</span> The DBI Ecosystem</a></li>
-  <li><a href="#establishing-a-connection" id="toc-establishing-a-connection" class="nav-link" data-scroll-target="#establishing-a-connection"><span class="header-section-number">12.3</span> Establishing a Connection</a></li>
-  <li><a href="#querying-data" id="toc-querying-data" class="nav-link" data-scroll-target="#querying-data"><span class="header-section-number">12.4</span> Querying Data</a></li>
-  <li><a href="#visualizing-query-results" id="toc-visualizing-query-results" class="nav-link" data-scroll-target="#visualizing-query-results"><span class="header-section-number">12.5</span> Visualizing Query Results</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">11.1</span> Learning Objectives</a></li>
+  <li><a href="#the-dbi-ecosystem" id="toc-the-dbi-ecosystem" class="nav-link" data-scroll-target="#the-dbi-ecosystem"><span class="header-section-number">11.2</span> The DBI Ecosystem</a></li>
+  <li><a href="#establishing-a-connection" id="toc-establishing-a-connection" class="nav-link" data-scroll-target="#establishing-a-connection"><span class="header-section-number">11.3</span> Establishing a Connection</a></li>
+  <li><a href="#querying-data" id="toc-querying-data" class="nav-link" data-scroll-target="#querying-data"><span class="header-section-number">11.4</span> Querying Data</a></li>
+  <li><a href="#visualizing-query-results" id="toc-visualizing-query-results" class="nav-link" data-scroll-target="#visualizing-query-results"><span class="header-section-number">11.5</span> Visualizing Query Results</a>
   <ul class="collapse">
-  <li><a href="#distribution-of-departure-delays" id="toc-distribution-of-departure-delays" class="nav-link" data-scroll-target="#distribution-of-departure-delays"><span class="header-section-number">12.5.1</span> Distribution of Departure Delays</a></li>
-  <li><a href="#departure-delay-vs.-arrival-delay" id="toc-departure-delay-vs.-arrival-delay" class="nav-link" data-scroll-target="#departure-delay-vs.-arrival-delay"><span class="header-section-number">12.5.2</span> Departure Delay vs.&nbsp;Arrival Delay</a></li>
-  <li><a href="#mean-delay-by-carrier" id="toc-mean-delay-by-carrier" class="nav-link" data-scroll-target="#mean-delay-by-carrier"><span class="header-section-number">12.5.3</span> Mean Delay by Carrier</a></li>
+  <li><a href="#distribution-of-departure-delays" id="toc-distribution-of-departure-delays" class="nav-link" data-scroll-target="#distribution-of-departure-delays"><span class="header-section-number">11.5.1</span> Distribution of Departure Delays</a></li>
+  <li><a href="#departure-delay-vs.-arrival-delay" id="toc-departure-delay-vs.-arrival-delay" class="nav-link" data-scroll-target="#departure-delay-vs.-arrival-delay"><span class="header-section-number">11.5.2</span> Departure Delay vs.&nbsp;Arrival Delay</a></li>
+  <li><a href="#mean-delay-by-carrier" id="toc-mean-delay-by-carrier" class="nav-link" data-scroll-target="#mean-delay-by-carrier"><span class="header-section-number">11.5.3</span> Mean Delay by Carrier</a></li>
   </ul></li>
-  <li><a href="#parameterized-queries" id="toc-parameterized-queries" class="nav-link" data-scroll-target="#parameterized-queries"><span class="header-section-number">12.6</span> Parameterized Queries</a></li>
-  <li><a href="#non-returning-statements" id="toc-non-returning-statements" class="nav-link" data-scroll-target="#non-returning-statements"><span class="header-section-number">12.7</span> Non-Returning Statements</a></li>
-  <li><a href="#closing-the-connection" id="toc-closing-the-connection" class="nav-link" data-scroll-target="#closing-the-connection"><span class="header-section-number">12.8</span> Closing the Connection</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">12.9</span> Exercises</a>
+  <li><a href="#parameterized-queries" id="toc-parameterized-queries" class="nav-link" data-scroll-target="#parameterized-queries"><span class="header-section-number">11.6</span> Parameterized Queries</a></li>
+  <li><a href="#non-returning-statements" id="toc-non-returning-statements" class="nav-link" data-scroll-target="#non-returning-statements"><span class="header-section-number">11.7</span> Non-Returning Statements</a></li>
+  <li><a href="#closing-the-connection" id="toc-closing-the-connection" class="nav-link" data-scroll-target="#closing-the-connection"><span class="header-section-number">11.8</span> Closing the Connection</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.9</span> Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">12.9.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">12.9.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">11.9.1</span> Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">11.9.2</span> Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/25-r-database.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<div class="alert alert-warning border-start border-warning border-4" role="alert">
+<div class="alert alert-warning border-start border-warning border-1" role="alert">
     <div class="d-flex align-items-center">
         <i class="bi bi-exclamation-triangle-fill me-2"></i>
         <div>
@@ -490,9 +461,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-analyze.html">Analyze</a></li><li class="breadcrumb-item"><a href="./25-r-database.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Connecting R to a Database</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-analyze.html">Analyze</a></li><li class="breadcrumb-item"><a href="./25-r-database.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Connecting R to a Database</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Connecting R to a Database</span></h1>
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Connecting R to a Database</span></h1>
 </div>
 
 
@@ -509,8 +480,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="learning-objectives" class="level2" data-number="12.1">
-<h2 data-number="12.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">12.1</span> Learning Objectives</h2>
+<section id="learning-objectives" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">11.1</span> Learning Objectives</h2>
 <p>By the end of this chapter, students will be able to:</p>
 <ul>
 <li><strong>Explain</strong> the two-layer DBI design: a standard interface package and database-specific driver packages.</li>
@@ -523,8 +494,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Throughout this book, SQL code blocks have been executing against a live PostgreSQL database without much explanation of how that connection actually works. The connection is established by R using the <code>DBI</code> package, and every query result comes back to R as a data frame. This chapter makes that mechanism explicit, showing you how to connect to a database from R, retrieve query results, visualize them with <code>ggplot2</code>, and write queries safely using parameterization.</p>
 <p>These skills matter outside of Quarto documents. Most real data science work happens in R scripts and notebooks where you need to pull data from a database, analyze it in R, and produce outputs. Understanding how to drive that connection directly gives you full control over the process.</p>
 </section>
-<section id="the-dbi-ecosystem" class="level2" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="the-dbi-ecosystem"><span class="header-section-number">12.2</span> The DBI Ecosystem</h2>
+<section id="the-dbi-ecosystem" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="the-dbi-ecosystem"><span class="header-section-number">11.2</span> The DBI Ecosystem</h2>
 <p>R’s database connectivity is organized around a two-layer design. The <code>DBI</code> package defines a standard interface: a set of functions with consistent names and behavior regardless of which database you are connecting to. Underneath DBI, <strong>driver packages</strong> implement that interface for specific databases.</p>
 <table class="caption-top table">
 <thead>
@@ -558,8 +529,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>Because DBI provides a uniform interface, the code for connecting to and querying a database looks almost identical regardless of which database you use. Swapping from SQLite to PostgreSQL means changing one line (the driver), not rewriting your analysis.</p>
 </section>
-<section id="establishing-a-connection" class="level2" data-number="12.3">
-<h2 data-number="12.3" class="anchored" data-anchor-id="establishing-a-connection"><span class="header-section-number">12.3</span> Establishing a Connection</h2>
+<section id="establishing-a-connection" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="establishing-a-connection"><span class="header-section-number">11.3</span> Establishing a Connection</h2>
 <p><code>dbConnect()</code> creates a connection to the database. It takes a driver object as its first argument, followed by connection parameters specific to that driver.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
@@ -594,8 +565,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><code>dbListTables()</code> returns the names of all tables in the connected database. <code>dbListFields()</code> returns the column names for a specific table.</p>
 </section>
-<section id="querying-data" class="level2" data-number="12.4">
-<h2 data-number="12.4" class="anchored" data-anchor-id="querying-data"><span class="header-section-number">12.4</span> Querying Data</h2>
+<section id="querying-data" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="querying-data"><span class="header-section-number">11.4</span> Querying Data</h2>
 <p><code>dbGetQuery()</code> sends a SQL query to the database and returns the result as a data frame. It is the most common function for analytical work: you write the SQL, and R gives you back a data frame you can work with immediately.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>delays_by_carrier <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
@@ -638,11 +609,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="visualizing-query-results" class="level2" data-number="12.5">
-<h2 data-number="12.5" class="anchored" data-anchor-id="visualizing-query-results"><span class="header-section-number">12.5</span> Visualizing Query Results</h2>
+<section id="visualizing-query-results" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="visualizing-query-results"><span class="header-section-number">11.5</span> Visualizing Query Results</h2>
 <p>Because <code>dbGetQuery()</code> returns a data frame, you can pipe the result directly into <code>ggplot2</code>. The following sections build three plots using the data retrieved in the previous section and a few additional queries.</p>
-<section id="distribution-of-departure-delays" class="level3" data-number="12.5.1">
-<h3 data-number="12.5.1" class="anchored" data-anchor-id="distribution-of-departure-delays"><span class="header-section-number">12.5.1</span> Distribution of Departure Delays</h3>
+<section id="distribution-of-departure-delays" class="level3" data-number="11.5.1">
+<h3 data-number="11.5.1" class="anchored" data-anchor-id="distribution-of-departure-delays"><span class="header-section-number">11.5.1</span> Distribution of Departure Delays</h3>
 <p>A histogram reveals the shape of the delay distribution discussed in the previous chapter:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -673,8 +644,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The right skew is unmistakable. The bulk of flights cluster just below zero, and a long tail of severe delays extends to the right — the same pattern the mean-vs-median comparison in the previous chapter quantified numerically.</p>
 </section>
-<section id="departure-delay-vs.-arrival-delay" class="level3" data-number="12.5.2">
-<h3 data-number="12.5.2" class="anchored" data-anchor-id="departure-delay-vs.-arrival-delay"><span class="header-section-number">12.5.2</span> Departure Delay vs.&nbsp;Arrival Delay</h3>
+<section id="departure-delay-vs.-arrival-delay" class="level3" data-number="11.5.2">
+<h3 data-number="11.5.2" class="anchored" data-anchor-id="departure-delay-vs.-arrival-delay"><span class="header-section-number">11.5.2</span> Departure Delay vs.&nbsp;Arrival Delay</h3>
 <p>The strong correlation between departure and arrival delay is easier to see as a scatterplot than as a single number:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>delay_pairs <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
@@ -706,8 +677,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The regression line runs nearly through the origin with a slope close to 1, consistent with the coefficients computed in SQL in the previous chapter. The transparency (<code>alpha = 0.05</code>) reveals where the mass of flights lies despite over 100,000 overlapping points.</p>
 </section>
-<section id="mean-delay-by-carrier" class="level3" data-number="12.5.3">
-<h3 data-number="12.5.3" class="anchored" data-anchor-id="mean-delay-by-carrier"><span class="header-section-number">12.5.3</span> Mean Delay by Carrier</h3>
+<section id="mean-delay-by-carrier" class="level3" data-number="11.5.3">
+<h3 data-number="11.5.3" class="anchored" data-anchor-id="mean-delay-by-carrier"><span class="header-section-number">11.5.3</span> Mean Delay by Carrier</h3>
 <p>A horizontal bar chart makes carrier comparisons easy to read:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delays_by_carrier, <span class="fu">aes</span>(<span class="at">x =</span> mean_delay, <span class="at">y =</span> <span class="fu">reorder</span>(name, mean_delay))) <span class="sc">+</span></span>
@@ -730,8 +701,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>reorder(name, mean_delay)</code> sorts the bars by delay value rather than alphabetically, making the ranking immediately visible.</p>
 </section>
 </section>
-<section id="parameterized-queries" class="level2" data-number="12.6">
-<h2 data-number="12.6" class="anchored" data-anchor-id="parameterized-queries"><span class="header-section-number">12.6</span> Parameterized Queries</h2>
+<section id="parameterized-queries" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="parameterized-queries"><span class="header-section-number">11.6</span> Parameterized Queries</h2>
 <p>When a query needs to incorporate a value from R, the instinct is to paste it directly into the query string:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Do not do this</span></span>
@@ -776,8 +747,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="non-returning-statements" class="level2" data-number="12.7">
-<h2 data-number="12.7" class="anchored" data-anchor-id="non-returning-statements"><span class="header-section-number">12.7</span> Non-Returning Statements</h2>
+<section id="non-returning-statements" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="non-returning-statements"><span class="header-section-number">11.7</span> Non-Returning Statements</h2>
 <p><code>dbGetQuery()</code> is for queries that return rows. For statements that modify data — <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>CREATE TABLE</code> — use <code>dbExecute()</code>. It sends the statement to the database and returns the number of rows affected rather than a result set.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, <span class="st">"</span></span>
@@ -793,8 +764,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Like <code>dbGetQuery()</code>, <code>dbExecute()</code> accepts a <code>params</code> argument for safe value substitution.</p>
 </section>
-<section id="closing-the-connection" class="level2" data-number="12.8">
-<h2 data-number="12.8" class="anchored" data-anchor-id="closing-the-connection"><span class="header-section-number">12.8</span> Closing the Connection</h2>
+<section id="closing-the-connection" class="level2" data-number="11.8">
+<h2 data-number="11.8" class="anchored" data-anchor-id="closing-the-connection"><span class="header-section-number">11.8</span> Closing the Connection</h2>
 <p>A database connection holds resources on both the R side and the database server side. Close it explicitly when you are done:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -809,18 +780,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><code>on.exit(..., add = TRUE)</code> schedules <code>dbDisconnect(con)</code> to run when the surrounding function or script exits, regardless of whether it exits normally or with an error.</p>
 </section>
-<section id="exercises" class="level2" data-number="12.9">
-<h2 data-number="12.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">12.9</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="12.9.1">
-<h3 data-number="12.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">12.9.1</span> Reflection</h3>
+<section id="exercises" class="level2" data-number="11.9">
+<h2 data-number="11.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">11.9</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="11.9.1">
+<h3 data-number="11.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">11.9.1</span> Reflection</h3>
 <ol type="1">
 <li><p>What is the relationship between the <code>DBI</code> package and driver packages like <code>RPostgres</code>? Why is this two-layer design useful?</p></li>
 <li><p>Explain what is wrong with building a query string using <code>paste0()</code> to insert a user-supplied value. What does a parameterized query do differently, and why does it prevent SQL injection?</p></li>
 <li><p>When would you use <code>dbExecute()</code> instead of <code>dbGetQuery()</code>? Give an example of a SQL statement appropriate for each.</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="12.9.2">
-<h3 data-number="12.9.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">12.9.2</span> Coding</h3>
+<section id="coding" class="level3" data-number="11.9.2">
+<h3 data-number="11.9.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">11.9.2</span> Coding</h3>
 <ol start="4" type="1">
 <li><p>Connect to the <code>nycflights</code> database and use <code>dbListFields()</code> to inspect the columns of the <code>weather</code> table. Then write a <code>dbGetQuery()</code> call that retrieves the average temperature (<code>temp</code>) and average wind speed (<code>wind_speed</code>) for each month. Store the result in a data frame and print it.</p></li>
 <li><p>Using <code>dbGetQuery()</code>, retrieve the number of flights per destination (<code>dest</code>) from the <code>flights</code> table. Then use <code>ggplot2</code> to create a bar chart of the top 15 destinations by flight count.</p></li>
@@ -1257,13 +1228,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./24-stats-functions.html" class="pagination-link" aria-label="Statistical Functions">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Statistical Functions</span></span>
+      <a href="./23-window-functions.html" class="pagination-link" aria-label="Window Functions">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Window Functions</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./26-python-database.html" class="pagination-link" aria-label="Connecting Python to a Database">
-        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Connecting Python to a Database</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Connecting Python to a Database</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

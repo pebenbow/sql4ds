@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>2&nbsp; Setup – SQL for Data Science</title>
+<title>21&nbsp; Indexes – SQL for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./10-query.html" rel="next">
-<link href="./01-why-learn-sql.html" rel="prev">
+<link href="./60-load.html" rel="next">
+<link href="./38-security.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -118,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00-intro.html">Introduction</a></li><li class="breadcrumb-item"><a href="./02-setup.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setup</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./39-indexes.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Indexes</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -174,7 +174,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-setup.html" class="sidebar-item-text sidebar-link active">
+  <a href="./02-setup.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setup</span></span></a>
   </div>
 </li>
@@ -321,7 +321,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./39-indexes.html" class="sidebar-item-text sidebar-link">
+  <a href="./39-indexes.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Indexes</span></span></a>
   </div>
 </li>
@@ -424,23 +424,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">2.1</span> Learning Objectives</a></li>
-  <li><a href="#installing-docker-desktop" id="toc-installing-docker-desktop" class="nav-link" data-scroll-target="#installing-docker-desktop"><span class="header-section-number">2.2</span> Installing Docker Desktop</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">21.1</span> Learning Objectives</a></li>
+  <li><a href="#what-an-index-is" id="toc-what-an-index-is" class="nav-link" data-scroll-target="#what-an-index-is"><span class="header-section-number">21.2</span> What an Index Is</a></li>
+  <li><a href="#reading-query-plans" id="toc-reading-query-plans" class="nav-link" data-scroll-target="#reading-query-plans"><span class="header-section-number">21.3</span> Reading Query Plans</a>
   <ul class="collapse">
-  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows"><span class="header-section-number">2.2.1</span> Windows</a></li>
-  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos"><span class="header-section-number">2.2.2</span> macOS</a></li>
-  <li><a href="#linux" id="toc-linux" class="nav-link" data-scroll-target="#linux"><span class="header-section-number">2.2.3</span> Linux</a></li>
+  <li><a href="#the-three-scan-strategies" id="toc-the-three-scan-strategies" class="nav-link" data-scroll-target="#the-three-scan-strategies"><span class="header-section-number">21.3.1</span> The Three Scan Strategies</a></li>
   </ul></li>
-  <li><a href="#pulling-the-course-image" id="toc-pulling-the-course-image" class="nav-link" data-scroll-target="#pulling-the-course-image"><span class="header-section-number">2.3</span> Pulling the Course Image</a></li>
-  <li><a href="#running-the-container" id="toc-running-the-container" class="nav-link" data-scroll-target="#running-the-container"><span class="header-section-number">2.4</span> Running the Container</a>
+  <li><a href="#creating-a-basic-index" id="toc-creating-a-basic-index" class="nav-link" data-scroll-target="#creating-a-basic-index"><span class="header-section-number">21.4</span> Creating a Basic Index</a></li>
+  <li><a href="#multi-column-indexes" id="toc-multi-column-indexes" class="nav-link" data-scroll-target="#multi-column-indexes"><span class="header-section-number">21.5</span> Multi-Column Indexes</a>
   <ul class="collapse">
-  <li><a href="#basic-setup-recommended" id="toc-basic-setup-recommended" class="nav-link" data-scroll-target="#basic-setup-recommended"><span class="header-section-number">2.4.1</span> Basic Setup (Recommended)</a></li>
-  <li><a href="#if-you-already-have-postgresql-installed" id="toc-if-you-already-have-postgresql-installed" class="nav-link" data-scroll-target="#if-you-already-have-postgresql-installed"><span class="header-section-number">2.4.2</span> If You Already Have PostgreSQL Installed</a></li>
+  <li><a href="#column-order-and-the-leading-column-rule" id="toc-column-order-and-the-leading-column-rule" class="nav-link" data-scroll-target="#column-order-and-the-leading-column-rule"><span class="header-section-number">21.5.1</span> Column Order and the Leading-Column Rule</a></li>
   </ul></li>
-  <li><a href="#starting-and-stopping-the-container" id="toc-starting-and-stopping-the-container" class="nav-link" data-scroll-target="#starting-and-stopping-the-container"><span class="header-section-number">2.5</span> Starting and Stopping the Container</a></li>
-  <li><a href="#connecting-to-the-database" id="toc-connecting-to-the-database" class="nav-link" data-scroll-target="#connecting-to-the-database"><span class="header-section-number">2.6</span> Connecting to the Database</a></li>
+  <li><a href="#partial-indexes" id="toc-partial-indexes" class="nav-link" data-scroll-target="#partial-indexes"><span class="header-section-number">21.6</span> Partial Indexes</a></li>
+  <li><a href="#covering-indexes" id="toc-covering-indexes" class="nav-link" data-scroll-target="#covering-indexes"><span class="header-section-number">21.7</span> Covering Indexes</a></li>
+  <li><a href="#expression-indexes" id="toc-expression-indexes" class="nav-link" data-scroll-target="#expression-indexes"><span class="header-section-number">21.8</span> Expression Indexes</a></li>
+  <li><a href="#create-index-concurrently" id="toc-create-index-concurrently" class="nav-link" data-scroll-target="#create-index-concurrently"><span class="header-section-number">21.9</span> CREATE INDEX CONCURRENTLY</a></li>
+  <li><a href="#when-indexes-are-not-used" id="toc-when-indexes-are-not-used" class="nav-link" data-scroll-target="#when-indexes-are-not-used"><span class="header-section-number">21.10</span> When Indexes Are Not Used</a></li>
+  <li><a href="#identifying-index-candidates" id="toc-identifying-index-candidates" class="nav-link" data-scroll-target="#identifying-index-candidates"><span class="header-section-number">21.11</span> Identifying Index Candidates</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/02-setup.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/39-indexes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -455,9 +457,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00-intro.html">Introduction</a></li><li class="breadcrumb-item"><a href="./02-setup.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setup</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./39-indexes.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Indexes</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setup</span></h1>
+<h1 class="title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Indexes</span></h1>
 </div>
 
 
@@ -474,209 +476,271 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="learning-objectives" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">2.1</span> Learning Objectives</h2>
+<section id="learning-objectives" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">21.1</span> Learning Objectives</h2>
 <p>By the end of this chapter, students will be able to:</p>
 <ul>
-<li><strong>Install</strong> Docker Desktop and verify that it is running on their local machine.</li>
-<li><strong>Pull</strong> and launch the course PostgreSQL container using the provided <code>docker run</code> command.</li>
-<li><strong>Connect</strong> to the running container using <code>psql</code> from the command line.</li>
-<li><strong>Execute</strong> a test query to verify that the database connection is working correctly.</li>
-<li><strong>Configure</strong> the <code>PGPORT</code> and <code>PGPASS</code> environment variables to customize connection settings.</li>
-<li><strong>Start</strong> and stop the container using <code>docker start</code> and <code>docker stop</code>.</li>
-<li><strong>Explain</strong> the role of Docker in creating a reproducible, consistent development environment across different operating systems.</li>
+<li><strong>Explain</strong> what a B-tree index is and describe the trade-off between read performance and write and storage overhead.</li>
+<li><strong>Read</strong> a query execution plan produced by <code>EXPLAIN ANALYZE</code> and interpret the cost, row, and timing annotations.</li>
+<li><strong>Identify</strong> the three main scan strategies (Sequential Scan, Bitmap Heap Scan, Index Scan) and explain when the planner chooses each.</li>
+<li><strong>Create</strong> a single-column index and verify with <code>EXPLAIN ANALYZE</code> that the planner uses it.</li>
+<li><strong>Create</strong> a multi-column index and explain how column order affects which queries benefit from it.</li>
+<li><strong>Write</strong> a partial index that covers only a subset of rows and identify when it is preferable to a full index.</li>
+<li><strong>Use</strong> the <code>INCLUDE</code> clause to create a covering index that satisfies a query entirely from the index without touching the heap.</li>
+<li><strong>Use</strong> <code>CREATE INDEX CONCURRENTLY</code> to build an index without locking the table for writes.</li>
+<li><strong>Diagnose</strong> cases where an index exists but the planner ignores it, and explain the common causes.</li>
 </ul>
-<p>Before you can run your first SQL query, you need a database to query. Throughout this book, we will use <strong>PostgreSQL</strong>, one of the most widely used open-source relational database systems in the world, as our database engine.</p>
-<p>Rather than asking you to install and configure PostgreSQL directly on your machine, we are going to use <strong>Docker</strong>. Docker lets you run software inside a self-contained environment called a <em>container</em>. Think of a container as a lightweight, portable box that holds an application and everything it needs to run, regardless of what operating system or configuration your computer has.</p>
-<p>For this book, a pre-configured PostgreSQL container has been built and published to Docker Hub at <code>pebenbow/open-sql-docker</code>. When you run this container, you get a PostgreSQL 17 server that is already set up with the sample databases used throughout this textbook. Everyone in the course works with an identical environment, which eliminates the “it works on my machine” problem entirely.</p>
+<p>Every query discussed in the design chapters so far has assumed tables small enough that performance was not a concern. In practice, tables grow. A <code>flights</code> table with 100,000 rows behaves quite differently from one with 100 million, and a query that returns in milliseconds today can take seconds or minutes as the data volume increases. Indexes are the primary tool for keeping read performance acceptable as tables scale.</p>
+<p>This chapter uses the <code>nycflights</code> database. The <code>flights</code> table has 104,662 rows and only one index out of the box: a composite primary key. That gives a clean baseline for observing exactly what each new index changes.</p>
 </section>
-<section id="installing-docker-desktop" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="installing-docker-desktop"><span class="header-section-number">2.2</span> Installing Docker Desktop</h2>
-<p>Docker Desktop is the application that manages containers on your computer. Follow the instructions for your operating system below.</p>
-<section id="windows" class="level3" data-number="2.2.1">
-<h3 data-number="2.2.1" class="anchored" data-anchor-id="windows"><span class="header-section-number">2.2.1</span> Windows</h3>
-<ol type="1">
-<li><p>Ensure your system meets the requirements: Windows 10 64-bit (version 21H2 or later) or Windows 11. Docker Desktop on Windows uses the <strong>Windows Subsystem for Linux 2 (WSL 2)</strong> backend.</p></li>
-<li><p>If you have not already enabled WSL 2, open PowerShell as Administrator and run:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>wsl <span class="op">--</span>install</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Restart your computer when prompted.</p></li>
-<li><p>Download Docker Desktop for Windows from <a href="https://docs.docker.com/desktop/install/windows-install/">https://docs.docker.com/desktop/install/windows-install/</a>.</p></li>
-<li><p>Run the installer (<code>Docker Desktop Installer.exe</code>). Accept the defaults, ensuring <strong>“Use WSL 2 instead of Hyper-V”</strong> is checked.</p></li>
-<li><p>Once installation completes, launch Docker Desktop from the Start menu. The Docker whale icon will appear in your system tray when it is running.</p></li>
-<li><p>Verify the installation by opening a terminal (PowerShell or Command Prompt) and running:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You should see output like <code>Docker version 27.x.x, build ...</code>.</p></li>
-</ol>
+<section id="what-an-index-is" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="what-an-index-is"><span class="header-section-number">21.2</span> What an Index Is</h2>
+<p>An index is a separate data structure that the database maintains alongside a table. It stores a copy of one or more columns in a sorted, searchable form, together with a pointer back to the full row in the table (called the <strong>heap</strong>). When a query filters on an indexed column, PostgreSQL can traverse the index to find the matching rows directly, rather than reading every row in the table.</p>
+<p>The trade-off is straightforward: indexes make reads faster and writes slower. Every <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code> that touches an indexed column must also update the index. Indexes also consume disk space. A thoughtfully chosen index speeds up the queries that matter most; an excessive number of indexes on a write-heavy table imposes overhead that outweighs any benefit.</p>
+<p>PostgreSQL supports several index types. By far the most common is the <strong>B-tree</strong> (balanced tree), which is the default when you write <code>CREATE INDEX</code> without specifying a type. A B-tree organizes values in sorted order, which makes it efficient for equality checks (<code>=</code>), range queries (<code>&lt;</code>, <code>&gt;</code>, <code>BETWEEN</code>), and sorting. Unless you have a specific reason to choose otherwise, B-tree is the right choice.</p>
 </section>
-<section id="macos" class="level3" data-number="2.2.2">
-<h3 data-number="2.2.2" class="anchored" data-anchor-id="macos"><span class="header-section-number">2.2.2</span> macOS</h3>
-<ol type="1">
-<li><p>Download Docker Desktop for Mac from <a href="https://docs.docker.com/desktop/install/mac-install/">https://docs.docker.com/desktop/install/mac-install/</a>.</p>
-<p>Choose the correct installer for your hardware:</p>
+<section id="reading-query-plans" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="reading-query-plans"><span class="header-section-number">21.3</span> Reading Query Plans</h2>
+<p>Before creating any index, it is worth understanding how to read the query plan that PostgreSQL produces. The <code>EXPLAIN</code> command shows the plan without executing the query; <code>EXPLAIN ANALYZE</code> executes it and adds actual timing and row counts alongside the estimates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Seq Scan on flights  (cost=0.00..3178.28 rows=2778 width=81) (actual time=0.030..8.409 rows=2791 loops=1)
+  Filter: (dep_delay &gt; 120)
+  Rows Removed by Filter: 101871
+Planning Time: 1.285 ms
+Execution Time: 8.558 ms</code></pre>
+</div>
+</div>
+<p>The plan output is a tree of <strong>nodes</strong>, each representing one operation. Reading the cost annotation on a node:</p>
+<pre><code>Seq Scan on flights  (cost=0.00..3178.28 rows=2778 width=81)
+                     (actual time=0.019..11.192 rows=2791 loops=1)</code></pre>
 <ul>
-<li><strong>Apple silicon (M1/M2/M3/M4):</strong> Download the <code>Apple Silicon</code> installer.</li>
-<li><strong>Intel chip:</strong> Download the <code>Intel Chip</code> installer.</li>
+<li><strong>cost=0.00..3178.28</strong> — estimated work to return the first row (startup) and all rows (total). These are relative units the planner uses to compare strategies, not milliseconds.</li>
+<li><strong>rows=2778</strong> — estimated row count. The actual count follows in the ANALYZE output.</li>
+<li><strong>width=81</strong> — average bytes per output row.</li>
+<li><strong>actual time=0.019..11.192</strong> — measured wall-clock milliseconds to first row and last row.</li>
+<li><strong>loops=1</strong> — how many times this node executed. Nodes inside a nested loop execute once per outer row.</li>
 </ul>
-<p>If you are unsure which chip your Mac has, click the Apple menu () → <strong>About This Mac</strong>.</p></li>
-<li><p>Open the downloaded <code>.dmg</code> file, drag <strong>Docker</strong> to your Applications folder, and launch it.</p></li>
-<li><p>macOS will prompt you for your password to allow Docker to install its networking components. This is expected.</p></li>
-<li><p>The Docker whale icon will appear in your menu bar when Docker Desktop is running.</p></li>
-<li><p>Verify the installation by opening <strong>Terminal</strong> and running:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ol>
-</section>
-<section id="linux" class="level3" data-number="2.2.3">
-<h3 data-number="2.2.3" class="anchored" data-anchor-id="linux"><span class="header-section-number">2.2.3</span> Linux</h3>
-<p>Docker Desktop is available for several Linux distributions. The installation steps vary by distribution, so follow the guide for your system on the Docker documentation site: <a href="https://docs.docker.com/desktop/install/linux/">https://docs.docker.com/desktop/install/linux/</a>.</p>
-<p>If you prefer not to install Docker Desktop on Linux, you can install the Docker Engine (CLI only) directly. See <a href="https://docs.docker.com/engine/install/">https://docs.docker.com/engine/install/</a> and choose your distribution from the list.</p>
-<p>After installation, verify Docker is running:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run hello-world</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The second command downloads a small test image and prints a confirmation message. If you see “Hello from Docker!”, the installation was successful.</p>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>On Linux, Docker commands typically require <code>sudo</code>. To run Docker without <code>sudo</code>, add your user to the <code>docker</code> group:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> usermod <span class="at">-aG</span> docker <span class="va">$USER</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Then log out and back in for the change to take effect.</p>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="pulling-the-course-image" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="pulling-the-course-image"><span class="header-section-number">2.3</span> Pulling the Course Image</h2>
-<p>With Docker Desktop installed and running, you can download the course image from Docker Hub. Open a terminal and run:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull pebenbow/open-sql-docker:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Docker will download the image in layers and display progress as it goes. This only needs to be done once (or when you want to update to a newer version of the image).</p>
-</section>
-<section id="running-the-container" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="running-the-container"><span class="header-section-number">2.4</span> Running the Container</h2>
-<section id="basic-setup-recommended" class="level3" data-number="2.4.1">
-<h3 data-number="2.4.1" class="anchored" data-anchor-id="basic-setup-recommended"><span class="header-section-number">2.4.1</span> Basic Setup (Recommended)</h3>
-<p>The following command starts the course container with a <strong>persistent data volume</strong> so that any changes you make to the database are saved even if you stop or restart the container:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--name</span> open-sql <span class="dt">\</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 5432:5432 <span class="dt">\</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-v</span> open-sql-data:/var/lib/postgresql/data <span class="dt">\</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-e</span> POSTGRES_PASSWORD=postgres <span class="dt">\</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  pebenbow/open-sql-docker:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Let’s break down each flag:</p>
+<p>The <code>Rows Removed by Filter: 101871</code> line shows how many rows the scan read and discarded. For this query, PostgreSQL examined all 104,662 rows to find 2,791 that matched, taking about 11 milliseconds.</p>
+<section id="the-three-scan-strategies" class="level3" data-number="21.3.1">
+<h3 data-number="21.3.1" class="anchored" data-anchor-id="the-three-scan-strategies"><span class="header-section-number">21.3.1</span> The Three Scan Strategies</h3>
+<p>PostgreSQL chooses among three scan strategies depending on how selective the filter is relative to the table size:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 40%">
-<col style="width: 60%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Flag</th>
-<th>Purpose</th>
+<th>Strategy</th>
+<th>When chosen</th>
+<th>Characteristic</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>--name open-sql</code></td>
-<td>Gives the container a memorable name so you can start/stop it by name</td>
+<td><strong>Sequential Scan</strong></td>
+<td>Large fraction of the table</td>
+<td>Reads all pages linearly</td>
 </tr>
 <tr class="even">
-<td><code>-p 5432:5432</code></td>
-<td>Maps port 5432 on your computer to port 5432 inside the container</td>
+<td><strong>Bitmap Heap Scan</strong></td>
+<td>Moderate fraction</td>
+<td>Builds a page bitmap, then fetches only those pages</td>
 </tr>
 <tr class="odd">
-<td><code>-v open-sql-data:/var/lib/postgresql/data</code></td>
-<td>Creates a named volume (<code>open-sql-data</code>) for persistent storage</td>
-</tr>
-<tr class="even">
-<td><code>-e POSTGRES_PASSWORD=postgres</code></td>
-<td>Sets the database password</td>
+<td><strong>Index Scan</strong></td>
+<td>Very few rows</td>
+<td>Traverses index leaf by leaf, fetching each heap row immediately</td>
 </tr>
 </tbody>
 </table>
-<p>The first time you run this command, Docker creates the volume and initializes the database. On subsequent runs, the existing volume (and all your data) will be used automatically.</p>
-<p>To run the container in the background (so it doesn’t occupy your terminal), add <code>-d</code> (detached mode):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">--name</span> open-sql <span class="dt">\</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 5432:5432 <span class="dt">\</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-v</span> open-sql-data:/var/lib/postgresql/data <span class="dt">\</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-e</span> POSTGRES_PASSWORD=postgres <span class="dt">\</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  pebenbow/open-sql-docker:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="if-you-already-have-postgresql-installed" class="level3" data-number="2.4.2">
-<h3 data-number="2.4.2" class="anchored" data-anchor-id="if-you-already-have-postgresql-installed"><span class="header-section-number">2.4.2</span> If You Already Have PostgreSQL Installed</h3>
-<p>If you already have PostgreSQL running on your machine, it is likely using port 5432, which would conflict with the container. In that case, map the container to a different host port. Port <strong>5433</strong> is a common choice:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">--name</span> open-sql <span class="dt">\</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 5433:5432 <span class="dt">\</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-v</span> open-sql-data:/var/lib/postgresql/data <span class="dt">\</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-e</span> POSTGRES_PASSWORD=postgres <span class="dt">\</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  pebenbow/open-sql-docker:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The format <code>-p HOST_PORT:CONTAINER_PORT</code> means “connect port <code>HOST_PORT</code> on my machine to port <code>CONTAINER_PORT</code> inside the container.” The database inside the container still listens on 5432; you just reach it from the outside via 5433.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p>Remember this port number. Any time this book shows a connection using port <code>5432</code>, substitute <code>5433</code> (or whichever port you chose) if you used an alternate port mapping.</p>
-</div>
-</div>
-</div>
+<p>A sequential scan is not always wrong. For filters that match a large percentage of a table, reading the table linearly is faster than the random I/O of an index lookup. The planner chooses based on estimated cost.</p>
 </section>
 </section>
-<section id="starting-and-stopping-the-container" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="starting-and-stopping-the-container"><span class="header-section-number">2.5</span> Starting and Stopping the Container</h2>
-<p>Once you have created the container with <code>docker run</code>, you manage it with <code>docker start</code> and <code>docker stop</code> rather than <code>docker run</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start the container</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> start open-sql</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Stop the container</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> stop open-sql</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check whether the container is running</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You do not need to keep the container running all the time. Start it when you sit down to work through the book, and stop it when you are done.</p>
+<section id="creating-a-basic-index" class="level2" data-number="21.4">
+<h2 data-number="21.4" class="anchored" data-anchor-id="creating-a-basic-index"><span class="header-section-number">21.4</span> Creating a Basic Index</h2>
+<p>The <code>dep_delay &gt; 120</code> query above identified severely delayed flights: 2,791 rows, or about 2.7 percent of the table. That selectivity is a good candidate for an index.</p>
+<p>With the index in place, the plan changes:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bitmap Heap Scan on flights  (cost=33.82..2029.37 rows=2778 width=81) (actual time=0.496..1.301 rows=2791 loops=1)
+  Recheck Cond: (dep_delay &gt; 120)
+  Heap Blocks: exact=890
+  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..33.13 rows=2778 width=0) (actual time=0.429..0.429 rows=2791 loops=1)
+        Index Cond: (dep_delay &gt; 120)
+Planning Time: 0.399 ms
+Execution Time: 1.446 ms</code></pre>
+</div>
+</div>
+<p>The planner switched to a <strong>Bitmap Heap Scan</strong>. It first ran a <code>Bitmap Index Scan</code> to traverse the new index and build an in-memory bitmap of pages containing matching rows, then fetched only those pages from the heap. Execution time dropped from about 11 milliseconds to about 2 — a roughly five-fold improvement.</p>
+<p>For a more selective filter — flights delayed over five hours — the same index is even more effective:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 300"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bitmap Heap Scan on flights  (cost=5.90..607.22 rows=208 width=81) (actual time=0.049..0.208 rows=228 loops=1)
+  Recheck Cond: (dep_delay &gt; 300)
+  Heap Blocks: exact=148
+  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..5.85 rows=208 width=0) (actual time=0.033..0.034 rows=228 loops=1)
+        Index Cond: (dep_delay &gt; 300)
+Planning Time: 0.080 ms
+Execution Time: 0.253 ms</code></pre>
+</div>
+</div>
+<p>Only 228 rows match. With so few results, PostgreSQL uses a pure <strong>Index Scan</strong> rather than the bitmap approach, fetching each matching heap row directly from the index. Execution time falls under a millisecond.</p>
+<p>The shift from Bitmap Heap Scan to Index Scan reflects the planner’s logic: when very few pages need to be fetched, the overhead of building a bitmap is not worth it. Random I/O directly from the index is faster.</p>
 </section>
-<section id="connecting-to-the-database" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="connecting-to-the-database"><span class="header-section-number">2.6</span> Connecting to the Database</h2>
-<p>Your connection credentials for the course container are:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 21%">
-<col style="width: 78%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Setting</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Host</td>
-<td><code>localhost</code></td>
-</tr>
-<tr class="even">
-<td>Port</td>
-<td><code>5432</code> (or <code>5433</code> if you used the alternate port)</td>
-</tr>
-<tr class="odd">
-<td>Database</td>
-<td>Depends on the lesson, but start with <code>postgres</code> whenever creating new databases</td>
-</tr>
-<tr class="even">
-<td>Username</td>
-<td><code>postgres</code></td>
-</tr>
-<tr class="odd">
-<td>Password</td>
-<td><code>postgres</code></td>
-</tr>
-</tbody>
-</table>
-<p>You can verify the connection is working from the terminal using <code>psql</code> (the PostgreSQL command-line client). If you do not have <code>psql</code> installed locally, you can run it from inside the container itself:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> open-sql psql <span class="at">-U</span> postgres</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If you see the <code>postgres=#</code> prompt, your container is running correctly and you are ready to start writing SQL.</p>
-<p>Type <code>\q</code> to exit the <code>psql</code> prompt.</p>
+<section id="multi-column-indexes" class="level2" data-number="21.5">
+<h2 data-number="21.5" class="anchored" data-anchor-id="multi-column-indexes"><span class="header-section-number">21.5</span> Multi-Column Indexes</h2>
+<p>When queries frequently filter on two or more columns together, a multi-column index can be more efficient than separate single-column indexes.</p>
+<p>Without any additional index, filtering on both month and carrier requires a full sequential scan:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE month = 7 AND carrier = 'UA'"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Seq Scan on flights  (cost=0.00..3439.93 rows=663 width=81) (actual time=2.365..4.968 rows=652 loops=1)
+  Filter: ((month = 7) AND ((carrier)::text = 'UA'::text))
+  Rows Removed by Filter: 104010
+Planning Time: 0.262 ms
+Execution Time: 4.998 ms</code></pre>
+</div>
+</div>
+<p>652 rows match. Creating a composite index on both columns eliminates the full scan:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE month = 7 AND carrier = 'UA'"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bitmap Heap Scan on flights  (cost=11.09..1347.81 rows=663 width=81) (actual time=0.045..0.186 rows=652 loops=1)
+  Recheck Cond: ((month = 7) AND ((carrier)::text = 'UA'::text))
+  Heap Blocks: exact=139
+  -&gt;  Bitmap Index Scan on idx_flights_month_carrier  (cost=0.00..10.92 rows=663 width=0) (actual time=0.030..0.031 rows=652 loops=1)
+        Index Cond: ((month = 7) AND ((carrier)::text = 'UA'::text))
+Planning Time: 0.238 ms
+Execution Time: 0.227 ms</code></pre>
+</div>
+</div>
+<p>Execution time drops from about 11 milliseconds to well under 1 millisecond.</p>
+<section id="column-order-and-the-leading-column-rule" class="level3" data-number="21.5.1">
+<h3 data-number="21.5.1" class="anchored" data-anchor-id="column-order-and-the-leading-column-rule"><span class="header-section-number">21.5.1</span> Column Order and the Leading-Column Rule</h3>
+<p>The order of columns in a multi-column index determines which queries can use it. An index on <code>(month, carrier)</code> is organized first by month, then by carrier within each month. A query that filters on <code>month</code> alone can use this index, because month is the leading column. A query that filters on <code>carrier</code> alone cannot use the index efficiently — carrier values are interleaved across all months, so the index provides no useful ordering.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE carrier = 'UA'"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bitmap Heap Scan on flights  (cost=1163.29..3134.94 rows=8132 width=81) (actual time=4.950..6.610 rows=8044 loops=1)
+  Recheck Cond: ((carrier)::text = 'UA'::text)
+  Heap Blocks: exact=1609
+  -&gt;  Bitmap Index Scan on idx_flights_month_carrier  (cost=0.00..1161.26 rows=8132 width=0) (actual time=4.728..4.729 rows=8044 loops=1)
+        Index Cond: ((carrier)::text = 'UA'::text)
+Planning Time: 0.088 ms
+Execution Time: 6.871 ms</code></pre>
+</div>
+</div>
+<p>PostgreSQL does use the index here, but the cost is much higher than the two-column query: it must scan nearly the entire index to collect all United Airlines entries scattered across all 12 months. A dedicated single-column index on <code>carrier</code> would outperform this. The general rule is to place the most selective column, or the one that appears in the most queries, first.</p>
+</section>
+</section>
+<section id="partial-indexes" class="level2" data-number="21.6">
+<h2 data-number="21.6" class="anchored" data-anchor-id="partial-indexes"><span class="header-section-number">21.6</span> Partial Indexes</h2>
+<p>A <strong>partial index</strong> covers only the rows that satisfy a <code>WHERE</code> clause specified at creation time. It is smaller than a full index, builds faster, and uses less memory.</p>
+<p>The <code>flights</code> table has 3,153 rows where <code>dep_delay IS NULL</code> — cancelled or diverted flights that never received a departure delay measurement. Queries about departure delays almost never want these rows. An index on <code>dep_delay</code> that includes them wastes space on values that will never be matched in a filter like <code>dep_delay &gt; 0</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_flights_delayed <span class="kw">ON</span> flights(dep_delay)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> dep_delay <span class="op">&gt;</span> <span class="dv">0</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This index covers only the 33,690 rows with a positive delay — about a third of the table. Queries that filter on positive delays use the partial index just as they would a full index, but the index itself is one-third the size.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bitmap Heap Scan on flights  (cost=33.82..2029.37 rows=2778 width=81) (actual time=0.285..1.107 rows=2791 loops=1)
+  Recheck Cond: (dep_delay &gt; 120)
+  Heap Blocks: exact=890
+  -&gt;  Bitmap Index Scan on idx_flights_delayed  (cost=0.00..33.12 rows=2778 width=0) (actual time=0.218..0.219 rows=2791 loops=1)
+        Index Cond: (dep_delay &gt; 120)
+Planning Time: 0.342 ms
+Execution Time: 1.196 ms</code></pre>
+</div>
+</div>
+<p>The plan shows the partial index in use. The planner recognizes that <code>dep_delay &gt; 120</code> is a subset of the partial index’s <code>dep_delay &gt; 0</code> condition and uses it accordingly. A query that does not satisfy the partial index predicate — such as <code>WHERE dep_delay IS NULL</code> — will not use it and will fall back to a sequential scan.</p>
+</section>
+<section id="covering-indexes" class="level2" data-number="21.7">
+<h2 data-number="21.7" class="anchored" data-anchor-id="covering-indexes"><span class="header-section-number">21.7</span> Covering Indexes</h2>
+<p>An <strong>index-only scan</strong> occurs when every column needed by a query is present in the index itself, meaning PostgreSQL never needs to touch the heap at all. The <code>INCLUDE</code> clause adds extra columns to the index specifically for this purpose, without making them part of the sort order.</p>
+<p>Consider a query that selects only <code>dep_delay</code>, <code>carrier</code>, and <code>dest</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay &gt; 120"</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Seq Scan on flights  (cost=0.00..3178.28 rows=2778 width=11) (actual time=0.015..4.283 rows=2791 loops=1)
+  Filter: (dep_delay &gt; 120)
+  Rows Removed by Filter: 101871
+Planning Time: 0.139 ms
+Execution Time: 4.361 ms</code></pre>
+</div>
+</div>
+<p>Without an index, this is a sequential scan. A standard index on <code>dep_delay</code> would enable a bitmap heap scan, but the heap fetch would still be necessary to retrieve <code>carrier</code> and <code>dest</code>. Adding those columns to the index via <code>INCLUDE</code> eliminates the heap fetch entirely:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay &gt; 120"</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Index Only Scan using idx_flights_dep_delay_covering on flights  (cost=0.42..93.03 rows=2778 width=11) (actual time=0.044..0.302 rows=2791 loops=1)
+  Index Cond: (dep_delay &gt; 120)
+  Heap Fetches: 0
+Planning Time: 0.372 ms
+Execution Time: 0.421 ms</code></pre>
+</div>
+</div>
+<p>The plan now shows <code>Index Only Scan</code> with <code>Heap Fetches: 0</code>. Every value the query needs is available directly from the index pages, without reading the heap. Execution time drops from about 11 milliseconds to under half a millisecond.</p>
+<p>Covering indexes are most valuable for queries that run very frequently on large tables and return only a few columns. The cost is a larger index on disk.</p>
+</section>
+<section id="expression-indexes" class="level2" data-number="21.8">
+<h2 data-number="21.8" class="anchored" data-anchor-id="expression-indexes"><span class="header-section-number">21.8</span> Expression Indexes</h2>
+<p>PostgreSQL can index the result of a function or expression rather than a raw column value. This is necessary when queries apply a function to a column in the <code>WHERE</code> clause.</p>
+<p>A common example is case-insensitive email lookup. A schema that stores email addresses as mixed case cannot use a plain index on <code>email</code> to satisfy <code>WHERE LOWER(email) = 'user@example.com'</code>, because the index stores the original case. An expression index on <code>LOWER(email)</code> solves the problem:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> idx_students_email_lower <span class="kw">ON</span> students(<span class="fu">LOWER</span>(email));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A query written as <code>WHERE LOWER(email) = 'user@example.com'</code> will now use this index. A query written as <code>WHERE email = 'User@Example.com'</code> will not, because the expressions do not match.</p>
+<p>The same principle applies to any function used in a filter: <code>EXTRACT(year FROM created_at)</code>, <code>date_trunc('month', created_at)</code>, <code>jsonb_extract_path_text(payload, 'event_type')</code>. If a function appears in your <code>WHERE</code> clause and the query is slow, an expression index on that function is likely the fix.</p>
+</section>
+<section id="create-index-concurrently" class="level2" data-number="21.9">
+<h2 data-number="21.9" class="anchored" data-anchor-id="create-index-concurrently"><span class="header-section-number">21.9</span> CREATE INDEX CONCURRENTLY</h2>
+<p>By default, <code>CREATE INDEX</code> acquires a lock that blocks all writes to the table for the duration of the build. On a small table this takes milliseconds. On a large production table it can block inserts and updates for minutes.</p>
+<p><code>CREATE INDEX CONCURRENTLY</code> builds the index in the background without blocking writes:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> CONCURRENTLY idx_flights_dep_delay <span class="kw">ON</span> flights(dep_delay);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The trade-off is that it takes longer to build, requires two passes over the table, and cannot be run inside a transaction block. If the build fails partway through, it leaves an invalid index behind that must be dropped manually before retrying.</p>
+<p>For any table that receives ongoing writes in a production environment, <code>CONCURRENTLY</code> is the safe default.</p>
+</section>
+<section id="when-indexes-are-not-used" class="level2" data-number="21.10">
+<h2 data-number="21.10" class="anchored" data-anchor-id="when-indexes-are-not-used"><span class="header-section-number">21.10</span> When Indexes Are Not Used</h2>
+<p>An index exists but the planner ignores it in several common situations.</p>
+<p><strong>Low selectivity.</strong> If a filter matches a large fraction of the table, the planner correctly prefers a sequential scan. An index on a boolean column in a table where 95 percent of rows have <code>is_active = true</code> will rarely be used for <code>WHERE is_active = true</code>, because fetching 95 percent of the table through random I/O is slower than a linear scan.</p>
+<p><strong>Function wrapping.</strong> Applying a function to an indexed column in the <code>WHERE</code> clause breaks the match between the query and the index. <code>WHERE EXTRACT(month FROM time_hour) = 7</code> cannot use an index on <code>time_hour</code>, because the index stores raw timestamps, not extracted months. Either write the filter as a range (<code>WHERE time_hour &gt;= '2013-07-01' AND time_hour &lt; '2013-08-01'</code>) or create an expression index.</p>
+<p><strong>Type mismatch.</strong> Comparing a column to a value of a different type forces an implicit cast that may prevent index use. <code>WHERE flight = '301'</code> (comparing an integer column to a text literal) can suppress the index, depending on how PostgreSQL resolves the cast. Always match the literal type to the column type.</p>
+<p><strong>Stale statistics.</strong> The planner estimates how many rows a filter will return using statistics collected by <code>ANALYZE</code>. If those statistics are far out of date, the planner may underestimate selectivity and choose a sequential scan when an index scan would be faster. Running <code>ANALYZE table_name</code> refreshes the statistics.</p>
+</section>
+<section id="identifying-index-candidates" class="level2" data-number="21.11">
+<h2 data-number="21.11" class="anchored" data-anchor-id="identifying-index-candidates"><span class="header-section-number">21.11</span> Identifying Index Candidates</h2>
+<p>Not every column deserves an index. A useful mental checklist:</p>
+<ul>
+<li><strong>Columns that appear in <code>WHERE</code> clauses frequently.</strong> The more often a column is filtered, the more benefit an index provides.</li>
+<li><strong>Join keys.</strong> PostgreSQL uses indexes on join columns to avoid full scans when building hash or nested-loop joins.</li>
+<li><strong>Foreign key columns.</strong> PostgreSQL does not automatically index foreign keys (unlike some other databases). A missing foreign key index can cause slow cascading deletes and slow joins.</li>
+<li><strong>High-selectivity columns.</strong> A column with many distinct values — a UUID, an email address, a timestamp — benefits more from an index than a column with few distinct values, like a status flag.</li>
+<li><strong>Columns used in <code>ORDER BY</code>.</strong> If a query both filters and sorts on the same column, the index may satisfy both operations, eliminating a sort step.</li>
+</ul>
+<p>Columns that are written to constantly, rarely queried, or very low selectivity are poor candidates. Monitor query performance over time and add indexes in response to observed slow queries rather than preemptively indexing every column.</p>
 
 
 </section>
@@ -1106,13 +1170,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./01-why-learn-sql.html" class="pagination-link" aria-label="Why Learn SQL?">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Why Learn SQL?</span></span>
+      <a href="./38-security.html" class="pagination-link" aria-label="Security">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Security</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./10-query.html" class="pagination-link" aria-label="Query">
-        <span class="nav-page-text">Query</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./60-load.html" class="pagination-link" aria-label="Load">
+        <span class="nav-page-text">Load</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1124,7 +1188,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/02-setup.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/39-indexes.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
