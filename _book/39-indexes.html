@@ -507,11 +507,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Seq Scan on flights  (cost=0.00..3178.28 rows=2778 width=81) (actual time=0.030..8.409 rows=2791 loops=1)
+<pre><code>Seq Scan on flights  (cost=0.00..3178.28 rows=2778 width=81) (actual time=0.028..13.518 rows=2791 loops=1)
   Filter: (dep_delay &gt; 120)
   Rows Removed by Filter: 101871
-Planning Time: 1.285 ms
-Execution Time: 8.558 ms</code></pre>
+Planning Time: 1.150 ms
+Execution Time: 13.711 ms</code></pre>
 </div>
 </div>
 <p>The plan output is a tree of <strong>nodes</strong>, each representing one operation. Reading the cost annotation on a node:</p>
@@ -571,13 +571,13 @@ Execution Time: 8.558 ms</code></pre>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Bitmap Heap Scan on flights  (cost=33.82..2029.37 rows=2778 width=81) (actual time=0.496..1.301 rows=2791 loops=1)
+<pre><code>Bitmap Heap Scan on flights  (cost=33.82..2029.37 rows=2778 width=81) (actual time=0.605..1.572 rows=2791 loops=1)
   Recheck Cond: (dep_delay &gt; 120)
   Heap Blocks: exact=890
-  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..33.13 rows=2778 width=0) (actual time=0.429..0.429 rows=2791 loops=1)
+  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..33.13 rows=2778 width=0) (actual time=0.507..0.508 rows=2791 loops=1)
         Index Cond: (dep_delay &gt; 120)
-Planning Time: 0.399 ms
-Execution Time: 1.446 ms</code></pre>
+Planning Time: 0.505 ms
+Execution Time: 1.799 ms</code></pre>
 </div>
 </div>
 <p>The planner switched to a <strong>Bitmap Heap Scan</strong>. It first ran a <code>Bitmap Index Scan</code> to traverse the new index and build an in-memory bitmap of pages containing matching rows, then fetched only those pages from the heap. Execution time dropped from about 11 milliseconds to about 2 — a roughly five-fold improvement.</p>
@@ -587,13 +587,13 @@ Execution Time: 1.446 ms</code></pre>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 300"</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Bitmap Heap Scan on flights  (cost=5.90..607.22 rows=208 width=81) (actual time=0.049..0.208 rows=228 loops=1)
+<pre><code>Bitmap Heap Scan on flights  (cost=5.90..607.22 rows=208 width=81) (actual time=0.058..0.234 rows=228 loops=1)
   Recheck Cond: (dep_delay &gt; 300)
   Heap Blocks: exact=148
-  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..5.85 rows=208 width=0) (actual time=0.033..0.034 rows=228 loops=1)
+  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..5.85 rows=208 width=0) (actual time=0.039..0.039 rows=228 loops=1)
         Index Cond: (dep_delay &gt; 300)
-Planning Time: 0.080 ms
-Execution Time: 0.253 ms</code></pre>
+Planning Time: 0.089 ms
+Execution Time: 0.292 ms</code></pre>
 </div>
 </div>
 <p>Only 228 rows match. With so few results, PostgreSQL uses a pure <strong>Index Scan</strong> rather than the bitmap approach, fetching each matching heap row directly from the index. Execution time falls under a millisecond.</p>
@@ -608,11 +608,11 @@ Execution Time: 0.253 ms</code></pre>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE month = 7 AND carrier = 'UA'"</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Seq Scan on flights  (cost=0.00..3439.93 rows=663 width=81) (actual time=2.365..4.968 rows=652 loops=1)
+<pre><code>Seq Scan on flights  (cost=0.00..3439.93 rows=663 width=81) (actual time=3.226..6.231 rows=652 loops=1)
   Filter: ((month = 7) AND ((carrier)::text = 'UA'::text))
   Rows Removed by Filter: 104010
-Planning Time: 0.262 ms
-Execution Time: 4.998 ms</code></pre>
+Planning Time: 0.352 ms
+Execution Time: 6.266 ms</code></pre>
 </div>
 </div>
 <p>652 rows match. Creating a composite index on both columns eliminates the full scan:</p>
@@ -621,13 +621,13 @@ Execution Time: 4.998 ms</code></pre>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE month = 7 AND carrier = 'UA'"</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Bitmap Heap Scan on flights  (cost=11.09..1347.81 rows=663 width=81) (actual time=0.045..0.186 rows=652 loops=1)
+<pre><code>Bitmap Heap Scan on flights  (cost=11.09..1347.81 rows=663 width=81) (actual time=0.099..0.351 rows=652 loops=1)
   Recheck Cond: ((month = 7) AND ((carrier)::text = 'UA'::text))
   Heap Blocks: exact=139
-  -&gt;  Bitmap Index Scan on idx_flights_month_carrier  (cost=0.00..10.92 rows=663 width=0) (actual time=0.030..0.031 rows=652 loops=1)
+  -&gt;  Bitmap Index Scan on idx_flights_month_carrier  (cost=0.00..10.92 rows=663 width=0) (actual time=0.074..0.074 rows=652 loops=1)
         Index Cond: ((month = 7) AND ((carrier)::text = 'UA'::text))
-Planning Time: 0.238 ms
-Execution Time: 0.227 ms</code></pre>
+Planning Time: 0.464 ms
+Execution Time: 0.416 ms</code></pre>
 </div>
 </div>
 <p>Execution time drops from about 11 milliseconds to well under 1 millisecond.</p>
@@ -639,13 +639,13 @@ Execution Time: 0.227 ms</code></pre>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE carrier = 'UA'"</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Bitmap Heap Scan on flights  (cost=1163.29..3134.94 rows=8132 width=81) (actual time=4.950..6.610 rows=8044 loops=1)
+<pre><code>Bitmap Heap Scan on flights  (cost=1163.29..3134.94 rows=8132 width=81) (actual time=4.678..6.736 rows=8044 loops=1)
   Recheck Cond: ((carrier)::text = 'UA'::text)
   Heap Blocks: exact=1609
-  -&gt;  Bitmap Index Scan on idx_flights_month_carrier  (cost=0.00..1161.26 rows=8132 width=0) (actual time=4.728..4.729 rows=8044 loops=1)
+  -&gt;  Bitmap Index Scan on idx_flights_month_carrier  (cost=0.00..1161.26 rows=8132 width=0) (actual time=4.491..4.492 rows=8044 loops=1)
         Index Cond: ((carrier)::text = 'UA'::text)
-Planning Time: 0.088 ms
-Execution Time: 6.871 ms</code></pre>
+Planning Time: 0.101 ms
+Execution Time: 7.037 ms</code></pre>
 </div>
 </div>
 <p>PostgreSQL does use the index here, but the cost is much higher than the two-column query: it must scan nearly the entire index to collect all United Airlines entries scattered across all 12 months. A dedicated single-column index on <code>carrier</code> would outperform this. The general rule is to place the most selective column, or the one that appears in the most queries, first.</p>
@@ -663,13 +663,13 @@ Execution Time: 6.871 ms</code></pre>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Bitmap Heap Scan on flights  (cost=33.82..2029.37 rows=2778 width=81) (actual time=0.285..1.107 rows=2791 loops=1)
+<pre><code>Bitmap Heap Scan on flights  (cost=33.82..2029.37 rows=2778 width=81) (actual time=0.287..1.198 rows=2791 loops=1)
   Recheck Cond: (dep_delay &gt; 120)
   Heap Blocks: exact=890
-  -&gt;  Bitmap Index Scan on idx_flights_delayed  (cost=0.00..33.12 rows=2778 width=0) (actual time=0.218..0.219 rows=2791 loops=1)
+  -&gt;  Bitmap Index Scan on idx_flights_delayed  (cost=0.00..33.12 rows=2778 width=0) (actual time=0.201..0.202 rows=2791 loops=1)
         Index Cond: (dep_delay &gt; 120)
-Planning Time: 0.342 ms
-Execution Time: 1.196 ms</code></pre>
+Planning Time: 0.416 ms
+Execution Time: 1.308 ms</code></pre>
 </div>
 </div>
 <p>The plan shows the partial index in use. The planner recognizes that <code>dep_delay &gt; 120</code> is a subset of the partial index’s <code>dep_delay &gt; 0</code> condition and uses it accordingly. A query that does not satisfy the partial index predicate — such as <code>WHERE dep_delay IS NULL</code> — will not use it and will fall back to a sequential scan.</p>
@@ -683,11 +683,11 @@ Execution Time: 1.196 ms</code></pre>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay &gt; 120"</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Seq Scan on flights  (cost=0.00..3178.28 rows=2778 width=11) (actual time=0.015..4.283 rows=2791 loops=1)
+<pre><code>Seq Scan on flights  (cost=0.00..3178.28 rows=2778 width=11) (actual time=0.017..5.128 rows=2791 loops=1)
   Filter: (dep_delay &gt; 120)
   Rows Removed by Filter: 101871
-Planning Time: 0.139 ms
-Execution Time: 4.361 ms</code></pre>
+Planning Time: 0.164 ms
+Execution Time: 5.222 ms</code></pre>
 </div>
 </div>
 <p>Without an index, this is a sequential scan. A standard index on <code>dep_delay</code> would enable a bitmap heap scan, but the heap fetch would still be necessary to retrieve <code>carrier</code> and <code>dest</code>. Adding those columns to the index via <code>INCLUDE</code> eliminates the heap fetch entirely:</p>
@@ -696,11 +696,11 @@ Execution Time: 4.361 ms</code></pre>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay &gt; 120"</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Index Only Scan using idx_flights_dep_delay_covering on flights  (cost=0.42..93.03 rows=2778 width=11) (actual time=0.044..0.302 rows=2791 loops=1)
+<pre><code>Index Only Scan using idx_flights_dep_delay_covering on flights  (cost=0.42..93.03 rows=2778 width=11) (actual time=0.107..0.375 rows=2791 loops=1)
   Index Cond: (dep_delay &gt; 120)
   Heap Fetches: 0
-Planning Time: 0.372 ms
-Execution Time: 0.421 ms</code></pre>
+Planning Time: 0.326 ms
+Execution Time: 0.487 ms</code></pre>
 </div>
 </div>
 <p>The plan now shows <code>Index Only Scan</code> with <code>Heap Fetches: 0</code>. Every value the query needs is available directly from the index pages, without reading the heap. Execution time drops from about 11 milliseconds to under half a millisecond.</p>
