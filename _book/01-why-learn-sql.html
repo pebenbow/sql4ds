@@ -391,6 +391,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">1.1</span> Learning Objectives</a></li>
+  <li><a href="#a" id="toc-a" class="nav-link" data-scroll-target="#a"><span class="header-section-number">1.2</span> A</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/01-why-learn-sql.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -437,6 +438,13 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Compare</strong> relational databases to spreadsheets and flat files, explaining the limitations of each for managing structured data at scale.</li>
 <li><strong>Explain</strong> why SQL has remained relevant for decades despite the emergence of newer data technologies.</li>
 </ul>
+</section>
+<section id="a" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="a"><span class="header-section-number">1.2</span> A</h2>
+<p>In some ways, this book’s title is a misnomer. I’m not exactly teaching how to use SQL to perform data science, at least not in a way you might expect. If you’re expecting to learn how to perform statistical analysis or machine learning with SQL, I’ll go ahead and tell you that’s not going to happen. SQL has only limited support for those kinds of workloads. For example, I can calculate Pearson correlation coefficients using the SQL <code>corr()</code> function, and I can figure R-squared values with <code>regr_r2()</code>, but beyond that there’s very little I can do in SQL without writing a lot of additional, bespoke code.</p>
+<p>Instead, my mantra (and indeed the mantra of most professional data engineers and data scientists) is to use each language for the things that it does best. SQL’s raison d’etre is data querying and manipulation. It does these things better than any other language out there, Python included. Meanwhile, R is a fantastic language for statistical analysis and data visualization, which is why it is so widely taught and used by data scientists, but it’s not ideal for data engineering workloads because of its imperative nature. Also, it’s not a database! While you can store data in R sessions as data frames, this imposes some pretty big performance limitations that can make a database system seem attractive by comparison when your datasets get big enough or complicated enough.</p>
+<p>Lastly, Python is a phenomenal language for, well, almost everything, but it’s also not a database, and it’s also imperative in nature. Python is famously one of the slowest programming languages in common use today, and is not the ideal way to transform large amounts of data at scale.</p>
+<p>SQL’s declarative nature not only makes it incredibly easier to learn, but it also makes it highly performant: you define the final output you desire, and the database engine determines the most efficient way to achieve that result. For data retrieval and manipulation, particularly in a well-designed database, it’s hard to beat SQL’s performance.</p>
 
 
 </section>
