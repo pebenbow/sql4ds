@@ -429,27 +429,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">12.1</span> Learning Objectives</a></li>
   <li><a href="#the-python-database-ecosystem" id="toc-the-python-database-ecosystem" class="nav-link" data-scroll-target="#the-python-database-ecosystem"><span class="header-section-number">12.2</span> The Python Database Ecosystem</a></li>
-  <li><a href="#connecting-with-psycopg2" id="toc-connecting-with-psycopg2" class="nav-link" data-scroll-target="#connecting-with-psycopg2"><span class="header-section-number">12.3</span> Connecting with psycopg2</a>
+  <li><a href="#establishing-a-connection" id="toc-establishing-a-connection" class="nav-link" data-scroll-target="#establishing-a-connection"><span class="header-section-number">12.3</span> Establishing a Connection</a></li>
+  <li><a href="#querying-data" id="toc-querying-data" class="nav-link" data-scroll-target="#querying-data"><span class="header-section-number">12.4</span> Querying Data</a></li>
+  <li><a href="#visualizing-query-results" id="toc-visualizing-query-results" class="nav-link" data-scroll-target="#visualizing-query-results"><span class="header-section-number">12.5</span> Visualizing Query Results</a>
   <ul class="collapse">
-  <li><a href="#parameterized-queries-with-psycopg2" id="toc-parameterized-queries-with-psycopg2" class="nav-link" data-scroll-target="#parameterized-queries-with-psycopg2"><span class="header-section-number">12.3.1</span> Parameterized Queries with psycopg2</a></li>
-  <li><a href="#closing-connections" id="toc-closing-connections" class="nav-link" data-scroll-target="#closing-connections"><span class="header-section-number">12.3.2</span> Closing Connections</a></li>
+  <li><a href="#distribution-of-departure-delays" id="toc-distribution-of-departure-delays" class="nav-link" data-scroll-target="#distribution-of-departure-delays"><span class="header-section-number">12.5.1</span> Distribution of Departure Delays</a></li>
+  <li><a href="#departure-delay-vs.-arrival-delay" id="toc-departure-delay-vs.-arrival-delay" class="nav-link" data-scroll-target="#departure-delay-vs.-arrival-delay"><span class="header-section-number">12.5.2</span> Departure Delay vs.&nbsp;Arrival Delay</a></li>
+  <li><a href="#mean-delay-by-carrier" id="toc-mean-delay-by-carrier" class="nav-link" data-scroll-target="#mean-delay-by-carrier"><span class="header-section-number">12.5.3</span> Mean Delay by Carrier</a></li>
   </ul></li>
-  <li><a href="#connecting-with-sqlalchemy" id="toc-connecting-with-sqlalchemy" class="nav-link" data-scroll-target="#connecting-with-sqlalchemy"><span class="header-section-number">12.4</span> Connecting with SQLAlchemy</a>
+  <li><a href="#parameterized-queries" id="toc-parameterized-queries" class="nav-link" data-scroll-target="#parameterized-queries"><span class="header-section-number">12.6</span> Parameterized Queries</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">12.7</span> Exercises</a>
   <ul class="collapse">
-  <li><a href="#parameterized-queries-with-sqlalchemy" id="toc-parameterized-queries-with-sqlalchemy" class="nav-link" data-scroll-target="#parameterized-queries-with-sqlalchemy"><span class="header-section-number">12.4.1</span> Parameterized Queries with SQLAlchemy</a></li>
-  </ul></li>
-  <li><a href="#pandas-and-read_sql" id="toc-pandas-and-read_sql" class="nav-link" data-scroll-target="#pandas-and-read_sql"><span class="header-section-number">12.5</span> pandas and read_sql</a></li>
-  <li><a href="#visualizing-with-seaborn" id="toc-visualizing-with-seaborn" class="nav-link" data-scroll-target="#visualizing-with-seaborn"><span class="header-section-number">12.6</span> Visualizing with seaborn</a>
-  <ul class="collapse">
-  <li><a href="#distribution-of-departure-delays" id="toc-distribution-of-departure-delays" class="nav-link" data-scroll-target="#distribution-of-departure-delays"><span class="header-section-number">12.6.1</span> Distribution of Departure Delays</a></li>
-  <li><a href="#departure-delay-vs.-arrival-delay" id="toc-departure-delay-vs.-arrival-delay" class="nav-link" data-scroll-target="#departure-delay-vs.-arrival-delay"><span class="header-section-number">12.6.2</span> Departure Delay vs.&nbsp;Arrival Delay</a></li>
-  <li><a href="#mean-delay-by-carrier" id="toc-mean-delay-by-carrier" class="nav-link" data-scroll-target="#mean-delay-by-carrier"><span class="header-section-number">12.6.3</span> Mean Delay by Carrier</a></li>
-  </ul></li>
-  <li><a href="#choosing-the-right-layer" id="toc-choosing-the-right-layer" class="nav-link" data-scroll-target="#choosing-the-right-layer"><span class="header-section-number">12.7</span> Choosing the Right Layer</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">12.8</span> Exercises</a>
-  <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">12.8.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">12.8.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">12.7.1</span> Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">12.7.2</span> Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/26-python-database.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -490,19 +482,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="12.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">12.1</span> Learning Objectives</h2>
 <p>By the end of this chapter, students will be able to:</p>
 <ul>
-<li><strong>Explain</strong> the DB-API 2.0 specification and describe how <code>psycopg2</code> implements it for PostgreSQL.</li>
-<li><strong>Connect</strong> to PostgreSQL using <code>psycopg2</code>, execute queries with a cursor, and fetch results as Python lists.</li>
-<li><strong>Create</strong> a SQLAlchemy engine and execute parameterized queries using <code>text()</code>.</li>
-<li><strong>Load</strong> query results directly into pandas DataFrames using <code>pd.read_sql</code>.</li>
-<li><strong>Visualize</strong> query results with <code>seaborn</code> and <code>matplotlib</code> inside a Python workflow.</li>
-<li><strong>Write</strong> parameterized queries using both <code>%s</code> positional placeholders (psycopg2) and <code>:name</code> named placeholders (SQLAlchemy) to prevent SQL injection.</li>
+<li><strong>Explain</strong> the role of SQLAlchemy as a database connection layer and how it enables both Polars and pandas to interact with a SQL database through the same interface.</li>
+<li><strong>Create</strong> a SQLAlchemy engine and connect to a PostgreSQL database.</li>
+<li><strong>Load</strong> query results into a Polars DataFrame using <code>pl.read_database()</code>.</li>
+<li><strong>Load</strong> query results into a pandas DataFrame using <code>pd.read_sql()</code>.</li>
+<li><strong>Visualize</strong> query results using <code>plotnine</code>, including histograms, scatterplots, and bar charts.</li>
+<li><strong>Write</strong> parameterized queries using SQLAlchemy’s <code>text()</code> and named placeholders to prevent SQL injection.</li>
 </ul>
-<p>Python is one of the most widely used languages for data analysis, and connecting it to a SQL database is a routine part of most data workflows. This chapter covers three layers of Python database connectivity: <code>psycopg2</code> for direct, low-level access to PostgreSQL; SQLAlchemy for a higher-level connection abstraction; and <code>pandas</code> for loading query results directly into DataFrames. It also shows how to visualize results with <code>seaborn</code> and covers parameterized queries for safe value substitution.</p>
-<p>The examples in this chapter use the same <code>nycflights</code> database from the previous two chapters, so the queries will be familiar.</p>
+<p>Python is one of the most widely used languages for data analysis, and connecting it to a SQL database is a routine part of most data workflows. This chapter covers two complementary approaches for loading query results: Polars for its speed and expressive API, and pandas as the long-standing standard. For visualization, the focus is on <code>plotnine</code>, whose grammar of graphics maps directly onto <code>ggplot2</code> syntax from the previous chapter, with <code>seaborn</code> shown as an alternative. All approaches share the same SQLAlchemy connection layer, so you write the connection logic once and choose your DataFrame library independently.</p>
+<p>The examples use the same <code>nycflights</code> database, so the queries will look familiar.</p>
 </section>
 <section id="the-python-database-ecosystem" class="level2" data-number="12.2">
 <h2 data-number="12.2" class="anchored" data-anchor-id="the-python-database-ecosystem"><span class="header-section-number">12.2</span> The Python Database Ecosystem</h2>
-<p>Python database connectivity follows a similar pattern to R’s DBI ecosystem. The <strong>DB-API 2.0</strong> specification (PEP 249) defines a standard interface that database drivers implement. This means the connection and cursor pattern looks similar regardless of the database.</p>
+<p>Python database connectivity follows a layered design. At the bottom, the <strong>DB-API 2.0</strong> specification (PEP 249) defines a standard interface that PostgreSQL drivers implement. <code>psycopg2</code> is the most widely used DB-API 2.0 driver for PostgreSQL. SQLAlchemy builds on top of that driver to provide a consistent connection interface that higher-level libraries, including both Polars and pandas, can consume.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -517,386 +509,507 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td><code>psycopg2</code></td>
-<td>PostgreSQL driver implementing DB-API 2.0</td>
+<td>PostgreSQL driver; DB-API 2.0 implementation</td>
 </tr>
 <tr class="even">
 <td><code>SQLAlchemy</code></td>
 <td>Connection abstraction layer; works with many databases</td>
 </tr>
 <tr class="odd">
+<td><code>polars</code></td>
+<td>Fast DataFrame library; <code>read_database()</code> accepts a SQLAlchemy engine</td>
+</tr>
+<tr class="even">
 <td><code>pandas</code></td>
-<td><code>read_sql()</code> uses either of the above to return a DataFrame</td>
+<td>Widely used DataFrame library; <code>read_sql()</code> accepts a SQLAlchemy engine</td>
+</tr>
+<tr class="odd">
+<td><code>plotnine</code></td>
+<td>Grammar of graphics library modeled on ggplot2</td>
+</tr>
+<tr class="even">
+<td><code>seaborn</code></td>
+<td>Statistical visualization library built on matplotlib</td>
 </tr>
 </tbody>
 </table>
-<p>In practice, most data analysis in Python goes through <code>pandas.read_sql()</code> backed by a SQLAlchemy engine, because the result is immediately a DataFrame. The <code>psycopg2</code> layer is worth understanding because it underlies everything else and is the right tool when you need fine-grained control, such as for transactions or bulk inserts.</p>
+<p>Because both Polars and pandas accept the same SQLAlchemy engine, you write the connection code once and choose your DataFrame library as a separate decision.</p>
 </section>
-<section id="connecting-with-psycopg2" class="level2" data-number="12.3">
-<h2 data-number="12.3" class="anchored" data-anchor-id="connecting-with-psycopg2"><span class="header-section-number">12.3</span> Connecting with psycopg2</h2>
-<p><code>psycopg2.connect()</code> establishes a connection to a PostgreSQL database. The connection object manages a session with the database server.</p>
+<section id="establishing-a-connection" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="establishing-a-connection"><span class="header-section-number">12.3</span> Establishing a Connection</h2>
+<p>SQLAlchemy creates a connection to the database from a URL that encodes all the connection parameters:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> psycopg2</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> psycopg2.<span class="ex">connect</span>(</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    host<span class="op">=</span><span class="st">"localhost"</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    port<span class="op">=</span><span class="bu">int</span>(os.environ.get(<span class="st">"PGPORT"</span>, <span class="dv">5432</span>)),</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    dbname<span class="op">=</span><span class="st">"nycflights"</span>,</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    user<span class="op">=</span><span class="st">"postgres"</span>,</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    password<span class="op">=</span>os.environ.get(<span class="st">"PGPASS"</span>, <span class="st">"postgres"</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>port     <span class="op">=</span> os.environ.get(<span class="st">"PGPORT"</span>, <span class="st">"5432"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>password <span class="op">=</span> os.environ.get(<span class="st">"PGPASS"</span>, <span class="st">"postgres"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"postgresql+psycopg2://postgres:</span><span class="sc">{</span>password<span class="sc">}</span><span class="ss">@localhost:</span><span class="sc">{</span>port<span class="sc">}</span><span class="ss">/nycflights"</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The connection object itself does not run queries. For that, you create a <strong>cursor</strong> from the connection. The cursor is what sends SQL to the database and retrieves results.</p>
+<p>The URL format is <code>dialect+driver://user:password@host:port/database</code>. The <code>postgresql+psycopg2</code> prefix tells SQLAlchemy which database engine and driver to use. Swapping to MySQL or SQLite means changing this prefix and the database name; the rest of your analysis code stays the same.</p>
+<p>Reading credentials from environment variables rather than writing them as plain text keeps them out of version control. <code>os.environ.get("PGPORT", "5432")</code> returns the <code>PGPORT</code> environment variable if it is set, falling back to <code>"5432"</code> if not.</p>
+<p>Before writing queries, SQLAlchemy’s <code>inspect()</code> function lets you explore the database structure:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cur <span class="op">=</span> conn.cursor()</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> inspect</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>cur.execute(<span class="st">"""</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT carrier, COUNT(*) AS flights</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM flights</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY carrier</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY flights DESC</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> cur.fetchall()</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> rows:</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(row)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>inspector <span class="op">=</span> inspect(engine)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(inspector.get_table_names())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>('DL', 23067)
-('MQ', 16928)
-('AA', 15459)
-('US', 13136)
-('EV', 8826)
-('UA', 8044)
-('WN', 6087)
-('B6', 6002)
-('FL', 3260)
-('9E', 2541)
-('F9', 685)
-('YV', 601)
-('OO', 26)</code></pre>
+<pre><code>['airports', 'weather', 'airlines', 'flights', 'planes']</code></pre>
 </div>
 </div>
-<p><code>cur.fetchall()</code> returns all result rows as a list of tuples. <code>cur.fetchone()</code> returns a single row, and <code>cur.fetchmany(n)</code> returns up to n rows — useful when results are too large to hold in memory at once.</p>
-<p>Column names are available through <code>cur.description</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>columns <span class="op">=</span> [desc[<span class="dv">0</span>] <span class="cf">for</span> desc <span class="kw">in</span> cur.description]</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(columns)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([col[<span class="st">"name"</span>] <span class="cf">for</span> col <span class="kw">in</span> inspector.get_columns(<span class="st">"flights"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['carrier', 'flights']</code></pre>
+<pre><code>['year', 'month', 'day', 'dep_time', 'sched_dep_time', 'dep_delay', 'arr_time', 'sched_arr_time', 'arr_delay', 'carrier', 'flight', 'tailnum', 'origin', 'dest', 'air_time', 'distance', 'hour', 'minute', 'time_hour']</code></pre>
 </div>
 </div>
-<section id="parameterized-queries-with-psycopg2" class="level3" data-number="12.3.1">
-<h3 data-number="12.3.1" class="anchored" data-anchor-id="parameterized-queries-with-psycopg2"><span class="header-section-number">12.3.1</span> Parameterized Queries with psycopg2</h3>
-<p>As with R, never interpolate Python values into a query string using f-strings or string concatenation. The <code>psycopg2</code> driver uses <code>%s</code> as the placeholder for parameterized values:</p>
+</section>
+<section id="querying-data" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="querying-data"><span class="header-section-number">12.4</span> Querying Data</h2>
+<p>Both Polars and pandas can query the database using the same SQLAlchemy engine. The query is identical; the return type depends on which library you call.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Polars</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Pandas</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p><code>polars.read_database()</code> takes a SQL query string and a SQLAlchemy engine. The result is a Polars DataFrame.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>carrier_code <span class="op">=</span> <span class="st">"AA"</span></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>cur.execute(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SELECT flight, dep_delay, dest FROM flights WHERE carrier = </span><span class="sc">%s</span><span class="st"> AND dep_delay &gt; </span><span class="sc">%s</span><span class="st"> ORDER BY dep_delay DESC"</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    (carrier_code, <span class="dv">60</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> cur.fetchmany(<span class="dv">10</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> rows:</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(row)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>delays_by_carrier <span class="op">=</span> pl.read_database(<span class="st">"""</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">        f.carrier,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">        a.name,</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">        COUNT(*)                               AS flights,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(f.dep_delay)::numeric, 1)    AS mean_delay,</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(STDDEV(f.dep_delay)::numeric, 1) AS stddev_delay</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM flights AS f</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="st">    JOIN airlines AS a ON f.carrier = a.carrier</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE f.dep_delay IS NOT NULL</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY f.carrier, a.name</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY mean_delay DESC</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, engine)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>delays_by_carrier</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (13, 5)</small>
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">carrier</th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">flights</th>
+<th data-quarto-table-cell-role="th">mean_delay</th>
+<th data-quarto-table-cell-role="th">stddev_delay</th>
+</tr>
+<tr class="even">
+<th>str</th>
+<th>str</th>
+<th>i64</th>
+<th>decimal[38,1]</th>
+<th>decimal[38,1]</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>"F9"</td>
+<td>"Frontier Airlines Inc."</td>
+<td>682</td>
+<td>20.2</td>
+<td>58.4</td>
+</tr>
+<tr class="even">
+<td>"EV"</td>
+<td>"ExpressJet Airlines Inc."</td>
+<td>8255</td>
+<td>19.1</td>
+<td>48.8</td>
+</tr>
+<tr class="odd">
+<td>"YV"</td>
+<td>"Mesa Airlines Inc."</td>
+<td>545</td>
+<td>19.0</td>
+<td>49.2</td>
+</tr>
+<tr class="even">
+<td>"FL"</td>
+<td>"AirTran Airways Corporation"</td>
+<td>3187</td>
+<td>18.7</td>
+<td>52.7</td>
+</tr>
+<tr class="odd">
+<td>"WN"</td>
+<td>"Southwest Airlines Co."</td>
+<td>6000</td>
+<td>17.6</td>
+<td>43.9</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>"DL"</td>
+<td>"Delta Air Lines Inc."</td>
+<td>22857</td>
+<td>9.6</td>
+<td>41.4</td>
+</tr>
+<tr class="even">
+<td>"9E"</td>
+<td>"Endeavor Air Inc."</td>
+<td>2372</td>
+<td>8.9</td>
+<td>34.8</td>
+</tr>
+<tr class="odd">
+<td>"MQ"</td>
+<td>"Envoy Air"</td>
+<td>16189</td>
+<td>8.5</td>
+<td>34.1</td>
+</tr>
+<tr class="even">
+<td>"AA"</td>
+<td>"American Airlines Inc."</td>
+<td>15063</td>
+<td>6.7</td>
+<td>34.8</td>
+</tr>
+<tr class="odd">
+<td>"US"</td>
+<td>"US Airways Inc."</td>
+<td>12574</td>
+<td>3.3</td>
+<td>27.9</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p><code>pandas.read_sql()</code> takes the same query and engine. The result is a pandas DataFrame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>delays_by_carrier_pd <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">        f.carrier,</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">        a.name,</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">        COUNT(*)                               AS flights,</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(f.dep_delay)::numeric, 1)    AS mean_delay,</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(STDDEV(f.dep_delay)::numeric, 1) AS stddev_delay</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM flights AS f</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">    JOIN airlines AS a ON f.carrier = a.carrier</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE f.dep_delay IS NOT NULL</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY f.carrier, a.name</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY mean_delay DESC</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, engine)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>delays_by_carrier_pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>(2019, 803, 'STL')
-(2437, 660, 'MIA')
-(731, 613, 'DFW')
-(753, 533, 'DFW')
-(731, 504, 'DFW')
-(745, 502, 'DFW')
-(341, 466, 'ORD')
-(2099, 437, 'MIA')
-(2379, 420, 'MIA')
-(1139, 413, 'DFW')</code></pre>
+<pre><code>   carrier                         name  flights  mean_delay  stddev_delay
+0       F9       Frontier Airlines Inc.      682        20.2          58.4
+1       EV     ExpressJet Airlines Inc.     8255        19.1          48.8
+2       YV           Mesa Airlines Inc.      545        19.0          49.2
+3       FL  AirTran Airways Corporation     3187        18.7          52.7
+4       WN       Southwest Airlines Co.     6000        17.6          43.9
+5       B6              JetBlue Airways     5925        14.8          46.7
+6       UA        United Air Lines Inc.     7837        12.1          42.9
+7       OO        SkyWest Airlines Inc.       23        10.4          40.7
+8       DL         Delta Air Lines Inc.    22857         9.6          41.4
+9       9E            Endeavor Air Inc.     2372         8.9          34.8
+10      MQ                    Envoy Air    16189         8.5          34.1
+11      AA       American Airlines Inc.    15063         6.7          34.8
+12      US              US Airways Inc.    12574         3.3          27.9</code></pre>
 </div>
 </div>
-<p>The second argument to <code>cur.execute()</code> is a tuple of values, one for each <code>%s</code> placeholder. The driver handles quoting and escaping, so no injection is possible.</p>
-<div class="callout callout-style-simple callout-warning">
+</div>
+</div>
+</div>
+<p>The result is immediately available for analysis. Every operation you would apply to a DataFrame — filtering, grouping, joining — works on the object returned by either function.</p>
+</section>
+<section id="visualizing-query-results" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="visualizing-query-results"><span class="header-section-number">12.5</span> Visualizing Query Results</h2>
+<p><code>plotnine</code> uses the same grammar of graphics as <code>ggplot2</code>: you build a plot by composing a dataset, an aesthetic mapping, and one or more geometric layers. Function names, argument names, and the <code>+</code> operator for adding layers are all carried over from <code>ggplot2</code>, so the Python and R code for equivalent plots look nearly identical.</p>
+<section id="distribution-of-departure-delays" class="level3" data-number="12.5.1">
+<h3 data-number="12.5.1" class="anchored" data-anchor-id="distribution-of-departure-delays"><span class="header-section-number">12.5.1</span> Distribution of Departure Delays</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">plotnine</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">seaborn</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plotnine <span class="im">import</span> (</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    ggplot, aes,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    geom_histogram, geom_point, geom_smooth, geom_col,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    labs, theme_minimal</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>delay_data <span class="op">=</span> pl.read_database(<span class="st">"""</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT dep_delay</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM flights</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE dep_delay IS NOT NULL</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="st">      AND dep_delay BETWEEN -30 AND 180</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, engine)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    ggplot(delay_data, aes(x<span class="op">=</span><span class="st">"dep_delay"</span>))</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> geom_histogram(binwidth<span class="op">=</span><span class="dv">5</span>, fill<span class="op">=</span><span class="st">"#0165fc"</span>, color<span class="op">=</span><span class="st">"white"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> labs(</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">"Distribution of Departure Delays"</span>,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        subtitle<span class="op">=</span><span class="st">"LGA flights, 2013 (trimmed to -30 to +180 minutes)"</span>,</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="st">"Departure Delay (minutes)"</span>,</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="st">"Number of Flights"</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> theme_minimal()</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="26-python-database_files/figure-html/plotnine-hist-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="26-python-database_files/figure-html/plotnine-hist-1.png" class="img-fluid figure-img" width="614"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>delay_data_pd <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT dep_delay</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM flights</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE dep_delay IS NOT NULL</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">      AND dep_delay BETWEEN -30 AND 180</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, engine)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>delay_data_pd, x<span class="op">=</span><span class="st">"dep_delay"</span>, binwidth<span class="op">=</span><span class="dv">5</span>, color<span class="op">=</span><span class="st">"#0165fc"</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Distribution of Departure Delays"</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Departure Delay (minutes)"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Number of Flights"</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="26-python-database_files/figure-html/seaborn-hist-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="26-python-database_files/figure-html/seaborn-hist-3.png" class="img-fluid figure-img" width="768"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The right skew is unmistakable. The bulk of flights cluster just below zero, and a long tail of severe delays extends to the right.</p>
+</section>
+<section id="departure-delay-vs.-arrival-delay" class="level3" data-number="12.5.2">
+<h3 data-number="12.5.2" class="anchored" data-anchor-id="departure-delay-vs.-arrival-delay"><span class="header-section-number">12.5.2</span> Departure Delay vs.&nbsp;Arrival Delay</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">plotnine</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">seaborn</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>delay_pairs <span class="op">=</span> pl.read_database(<span class="st">"""</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT dep_delay, arr_delay</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM flights</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE dep_delay IS NOT NULL</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="st">      AND arr_delay IS NOT NULL</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="st">      AND dep_delay BETWEEN -30 AND 120</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="st">      AND arr_delay BETWEEN -60 AND 120</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, engine)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    ggplot(delay_pairs, aes(x<span class="op">=</span><span class="st">"dep_delay"</span>, y<span class="op">=</span><span class="st">"arr_delay"</span>))</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> geom_point(alpha<span class="op">=</span><span class="fl">0.05</span>, color<span class="op">=</span><span class="st">"#0165fc"</span>, size<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> geom_smooth(method<span class="op">=</span><span class="st">"lm"</span>, color<span class="op">=</span><span class="st">"firebrick"</span>, se<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> labs(</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">"Departure Delay vs. Arrival Delay"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        subtitle<span class="op">=</span><span class="st">"Each point is one flight; regression line overlaid"</span>,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="st">"Departure Delay (minutes)"</span>,</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="st">"Arrival Delay (minutes)"</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> theme_minimal()</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="26-python-database_files/figure-html/plotnine-scatter-5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="26-python-database_files/figure-html/plotnine-scatter-5.png" class="img-fluid figure-img" width="614"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>delay_pairs_pd <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT dep_delay, arr_delay</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM flights</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE dep_delay IS NOT NULL</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">      AND arr_delay IS NOT NULL</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">      AND dep_delay BETWEEN -30 AND 120</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">      AND arr_delay BETWEEN -60 AND 120</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, engine)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>ax.scatter(delay_pairs_pd[<span class="st">"dep_delay"</span>], delay_pairs_pd[<span class="st">"arr_delay"</span>],</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>           alpha<span class="op">=</span><span class="fl">0.03</span>, color<span class="op">=</span><span class="st">"#0165fc"</span>, s<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>sns.regplot(data<span class="op">=</span>delay_pairs_pd, x<span class="op">=</span><span class="st">"dep_delay"</span>, y<span class="op">=</span><span class="st">"arr_delay"</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>            scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"firebrick"</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Departure Delay vs. Arrival Delay"</span>)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Departure Delay (minutes)"</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Arrival Delay (minutes)"</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="26-python-database_files/figure-html/seaborn-scatter-7.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="26-python-database_files/figure-html/seaborn-scatter-7.png" class="img-fluid figure-img" width="576"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>The regression line runs nearly through the origin with a slope close to 1: a one-minute departure delay corresponds to roughly one minute of arrival delay.</p>
+</section>
+<section id="mean-delay-by-carrier" class="level3" data-number="12.5.3">
+<h3 data-number="12.5.3" class="anchored" data-anchor-id="mean-delay-by-carrier"><span class="header-section-number">12.5.3</span> Mean Delay by Carrier</h3>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">plotnine</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">seaborn</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    ggplot(delays_by_carrier, aes(x<span class="op">=</span><span class="st">"mean_delay"</span>, y<span class="op">=</span><span class="st">"reorder(name, mean_delay)"</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> geom_col(fill<span class="op">=</span><span class="st">"#0165fc"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> labs(</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        title<span class="op">=</span><span class="st">"Mean Departure Delay by Carrier"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        subtitle<span class="op">=</span><span class="st">"LGA flights, 2013"</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="st">"Mean Departure Delay (minutes)"</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="va">None</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> theme_minimal()</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="26-python-database_files/figure-html/plotnine-bar-9.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="26-python-database_files/figure-html/plotnine-bar-9.png" class="img-fluid figure-img" width="614"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>delays_sorted <span class="op">=</span> delays_by_carrier_pd.sort_values(<span class="st">"mean_delay"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>ax.barh(delays_sorted[<span class="st">"name"</span>], delays_sorted[<span class="st">"mean_delay"</span>], color<span class="op">=</span><span class="st">"#0165fc"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Mean Departure Delay by Carrier"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Mean Departure Delay (minutes)"</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="va">None</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="26-python-database_files/figure-html/seaborn-bar-11.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="26-python-database_files/figure-html/seaborn-bar-11.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><code>reorder(name, mean_delay)</code> sorts the bars by delay value rather than alphabetically, making the ranking immediately visible — the same behavior as the <code>reorder()</code> call in <code>ggplot2</code>.</p>
+</section>
+</section>
+<section id="parameterized-queries" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="parameterized-queries"><span class="header-section-number">12.6</span> Parameterized Queries</h2>
+<p>Never interpolate Python values into a query string using f-strings or string concatenation. The same SQL injection risk that applies in R applies here. SQLAlchemy’s <code>text()</code> function supports named placeholders for safe value substitution:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Do not do this</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>carrier_code <span class="op">=</span> <span class="st">"AA"</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>pd.read_sql(<span class="ss">f"SELECT * FROM flights WHERE carrier = '</span><span class="sc">{</span>carrier_code<span class="sc">}</span><span class="ss">'"</span>, engine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The correct approach uses <code>:param_name</code> placeholders inside <code>text()</code>, with values passed as a separate dictionary:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> text</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>carrier_code <span class="op">=</span> <span class="st">"AA"</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.<span class="ex">connect</span>() <span class="im">as</span> conn:</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    aa_flights <span class="op">=</span> pd.read_sql(</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        text(<span class="st">"""</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="st">            SELECT flight, dep_delay, arr_delay, dest</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="st">            FROM flights</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="st">            WHERE carrier = :carrier</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="st">              AND dep_delay IS NOT NULL</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="st">            ORDER BY dep_delay DESC</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="st">        """</span>),</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>        conn,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        params<span class="op">=</span>{<span class="st">"carrier"</span>: carrier_code}</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>aa_flights.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   flight  dep_delay  arr_delay dest
+0    2019        803      802.0  STL
+1    2437        660      648.0  MIA
+2     731        613      598.0  DFW
+3     753        533      499.0  DFW
+4     731        504      493.0  DFW</code></pre>
+</div>
+</div>
+<p>The value of <code>carrier_code</code> is sent to the database separately from the query text. The driver handles quoting and escaping, so no injection is possible regardless of what the string contains. Multiple parameters follow the same pattern: add more <code>:name</code> placeholders and extend the dictionary.</p>
+<div class="callout callout-style-simple callout-tip">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>Do not confuse psycopg2’s <code>%s</code> placeholders with Python’s <code>%</code> string formatting operator. They look similar but are completely different mechanisms. Psycopg2’s <code>%s</code> goes through the driver’s safe substitution path. Python’s <code>%</code> operator does plain string substitution with no database safety guarantees — using it to build SQL strings is exactly the pattern you are trying to avoid.</p>
+<p>Always use parameterized queries whenever a query incorporates a value that originates from outside your own code, including user input, configuration files, or data from another source. SQLAlchemy’s <code>text()</code> with named parameters is the right tool for raw SQL.</p>
 </div>
 </div>
 </div>
 </section>
-<section id="closing-connections" class="level3" data-number="12.3.2">
-<h3 data-number="12.3.2" class="anchored" data-anchor-id="closing-connections"><span class="header-section-number">12.3.2</span> Closing Connections</h3>
-<p>Always close the cursor and connection when you are done. The <code>with</code> statement handles this automatically:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> psycopg2.<span class="ex">connect</span>(host<span class="op">=</span><span class="st">"localhost"</span>, port<span class="op">=</span><span class="dv">5433</span>, dbname<span class="op">=</span><span class="st">"nycflights"</span>,</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                      user<span class="op">=</span><span class="st">"postgres"</span>, password<span class="op">=</span><span class="st">"postgres"</span>) <span class="im">as</span> conn:</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> conn.cursor() <span class="im">as</span> cur:</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        cur.execute(<span class="st">"SELECT COUNT(*) FROM flights"</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(cur.fetchone())</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># connection and cursor are closed automatically here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-</section>
-<section id="connecting-with-sqlalchemy" class="level2" data-number="12.4">
-<h2 data-number="12.4" class="anchored" data-anchor-id="connecting-with-sqlalchemy"><span class="header-section-number">12.4</span> Connecting with SQLAlchemy</h2>
-<p>SQLAlchemy provides a higher-level connection abstraction. Its primary value in data analysis workflows is that it integrates directly with <code>pandas</code>, allowing query results to flow into DataFrames with a single function call.</p>
-<p>A SQLAlchemy <strong>engine</strong> is created from a connection string (called a URL):</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine, text</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>port <span class="op">=</span> os.environ.get(<span class="st">"PGPORT"</span>, <span class="st">"5432"</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>password <span class="op">=</span> os.environ.get(<span class="st">"PGPASS"</span>, <span class="st">"postgres"</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(<span class="ss">f"postgresql+psycopg2://postgres:</span><span class="sc">{</span>password<span class="sc">}</span><span class="ss">@localhost:</span><span class="sc">{</span>port<span class="sc">}</span><span class="ss">/nycflights"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The URL format is <code>dialect+driver://user:password@host:port/database</code>. SQLAlchemy uses psycopg2 as the underlying driver here, but the same engine interface works with MySQL, SQLite, and other databases by changing the URL prefix.</p>
-<p>Querying through SQLAlchemy uses <code>engine.connect()</code> as a context manager:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.<span class="ex">connect</span>() <span class="im">as</span> db_conn:</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> db_conn.execute(text(<span class="st">"""</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">        SELECT</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">            f.carrier,</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">            a.name,</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">            COUNT(*) AS flights,</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">            ROUND(AVG(f.dep_delay)::numeric, 1) AS mean_delay</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">        FROM flights AS f</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">        JOIN airlines AS a ON f.carrier = a.carrier</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="st">        WHERE f.dep_delay IS NOT NULL</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="st">        GROUP BY f.carrier, a.name</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="st">        ORDER BY mean_delay DESC</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>))</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> result:</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(row)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>('F9', 'Frontier Airlines Inc.', 682, Decimal('20.2'))
-('EV', 'ExpressJet Airlines Inc.', 8255, Decimal('19.1'))
-('YV', 'Mesa Airlines Inc.', 545, Decimal('19.0'))
-('FL', 'AirTran Airways Corporation', 3187, Decimal('18.7'))
-('WN', 'Southwest Airlines Co.', 6000, Decimal('17.6'))
-('B6', 'JetBlue Airways', 5925, Decimal('14.8'))
-('UA', 'United Air Lines Inc.', 7837, Decimal('12.1'))
-('OO', 'SkyWest Airlines Inc.', 23, Decimal('10.4'))
-('DL', 'Delta Air Lines Inc.', 22857, Decimal('9.6'))
-('9E', 'Endeavor Air Inc.', 2372, Decimal('8.9'))
-('MQ', 'Envoy Air', 16189, Decimal('8.5'))
-('AA', 'American Airlines Inc.', 15063, Decimal('6.7'))
-('US', 'US Airways Inc.', 12574, Decimal('3.3'))</code></pre>
-</div>
-</div>
-<p>The <code>text()</code> wrapper is required in SQLAlchemy 2.0 for raw SQL strings. It marks the string as literal SQL rather than a Python expression, and it also enables named parameter substitution.</p>
-<section id="parameterized-queries-with-sqlalchemy" class="level3" data-number="12.4.1">
-<h3 data-number="12.4.1" class="anchored" data-anchor-id="parameterized-queries-with-sqlalchemy"><span class="header-section-number">12.4.1</span> Parameterized Queries with SQLAlchemy</h3>
-<p>SQLAlchemy uses <code>:param_name</code> style placeholders with a dictionary of values:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.<span class="ex">connect</span>() <span class="im">as</span> db_conn:</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> db_conn.execute(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        text(<span class="st">"SELECT flight, dep_delay, dest FROM flights WHERE carrier = :carrier AND dep_delay &gt; :min_delay ORDER BY dep_delay DESC LIMIT 5"</span>),</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"carrier"</span>: <span class="st">"AA"</span>, <span class="st">"min_delay"</span>: <span class="dv">60</span>}</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> result:</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(row)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(2019, 803, 'STL')
-(2437, 660, 'MIA')
-(731, 613, 'DFW')
-(753, 533, 'DFW')
-(731, 504, 'DFW')</code></pre>
-</div>
-</div>
-</section>
-</section>
-<section id="pandas-and-read_sql" class="level2" data-number="12.5">
-<h2 data-number="12.5" class="anchored" data-anchor-id="pandas-and-read_sql"><span class="header-section-number">12.5</span> pandas and read_sql</h2>
-<p>For data analysis, the most convenient pattern is <code>pandas.read_sql()</code>, which runs a query and returns the result as a DataFrame in one step:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>delays <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">        f.carrier,</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">        a.name,</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(AVG(f.dep_delay)::numeric, 1) AS mean_delay,</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="st">        ROUND(STDDEV(f.dep_delay)::numeric, 1) AS stddev_delay,</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="st">        COUNT(*) AS flights</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM flights AS f</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="st">    JOIN airlines AS a ON f.carrier = a.carrier</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE f.dep_delay IS NOT NULL</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY f.carrier, a.name</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY mean_delay DESC</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, engine)</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>delays</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   carrier                         name  mean_delay  stddev_delay  flights
-0       F9       Frontier Airlines Inc.        20.2          58.4      682
-1       EV     ExpressJet Airlines Inc.        19.1          48.8     8255
-2       YV           Mesa Airlines Inc.        19.0          49.2      545
-3       FL  AirTran Airways Corporation        18.7          52.7     3187
-4       WN       Southwest Airlines Co.        17.6          43.9     6000
-5       B6              JetBlue Airways        14.8          46.7     5925
-6       UA        United Air Lines Inc.        12.1          42.9     7837
-7       OO        SkyWest Airlines Inc.        10.4          40.7       23
-8       DL         Delta Air Lines Inc.         9.6          41.4    22857
-9       9E            Endeavor Air Inc.         8.9          34.8     2372
-10      MQ                    Envoy Air         8.5          34.1    16189
-11      AA       American Airlines Inc.         6.7          34.8    15063
-12      US              US Airways Inc.         3.3          27.9    12574</code></pre>
-</div>
-</div>
-<p>The second argument is the SQLAlchemy engine (or a psycopg2 connection). The result is a fully functional pandas DataFrame:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(delays.dtypes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>carrier          object
-name             object
-mean_delay      float64
-stddev_delay    float64
-flights           int64
-dtype: object</code></pre>
-</div>
-</div>
-</section>
-<section id="visualizing-with-seaborn" class="level2" data-number="12.6">
-<h2 data-number="12.6" class="anchored" data-anchor-id="visualizing-with-seaborn"><span class="header-section-number">12.6</span> Visualizing with seaborn</h2>
-<p>With data in a DataFrame, <code>seaborn</code> and <code>matplotlib</code> are immediately available for visualization. The plots here parallel the ones built with <code>ggplot2</code> in the previous chapter.</p>
-<section id="distribution-of-departure-delays" class="level3" data-number="12.6.1">
-<h3 data-number="12.6.1" class="anchored" data-anchor-id="distribution-of-departure-delays"><span class="header-section-number">12.6.1</span> Distribution of Departure Delays</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>delay_data <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT dep_delay</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM flights</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE dep_delay IS NOT NULL</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="st">      AND dep_delay BETWEEN -30 AND 180</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, engine)</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>delay_data, x<span class="op">=</span><span class="st">"dep_delay"</span>, binwidth<span class="op">=</span><span class="dv">5</span>, color<span class="op">=</span><span class="st">"#0165fc"</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Distribution of Departure Delays"</span>)</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Departure Delay (minutes)"</span>)</span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Number of Flights"</span>)</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><a href="26-python-database_files/figure-html/hist-delays-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="26-python-database_files/figure-html/hist-delays-1.png" class="img-fluid figure-img" width="768"></a></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="departure-delay-vs.-arrival-delay" class="level3" data-number="12.6.2">
-<h3 data-number="12.6.2" class="anchored" data-anchor-id="departure-delay-vs.-arrival-delay"><span class="header-section-number">12.6.2</span> Departure Delay vs.&nbsp;Arrival Delay</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>delay_pairs <span class="op">=</span> pd.read_sql(<span class="st">"""</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT dep_delay, arr_delay</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM flights</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE dep_delay IS NOT NULL</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="st">      AND arr_delay IS NOT NULL</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="st">      AND dep_delay BETWEEN -30 AND 120</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="st">      AND arr_delay BETWEEN -60 AND 120</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, engine)</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">5</span>))</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>ax.scatter(delay_pairs[<span class="st">"dep_delay"</span>], delay_pairs[<span class="st">"arr_delay"</span>],</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>           alpha<span class="op">=</span><span class="fl">0.03</span>, color<span class="op">=</span><span class="st">"#0165fc"</span>, s<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>sns.regplot(data<span class="op">=</span>delay_pairs, x<span class="op">=</span><span class="st">"dep_delay"</span>, y<span class="op">=</span><span class="st">"arr_delay"</span>,</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>            scatter<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">"firebrick"</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Departure Delay vs. Arrival Delay"</span>)</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Departure Delay (minutes)"</span>)</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Arrival Delay (minutes)"</span>)</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><a href="26-python-database_files/figure-html/scatter-delays-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="26-python-database_files/figure-html/scatter-delays-3.png" class="img-fluid figure-img" width="576"></a></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="mean-delay-by-carrier" class="level3" data-number="12.6.3">
-<h3 data-number="12.6.3" class="anchored" data-anchor-id="mean-delay-by-carrier"><span class="header-section-number">12.6.3</span> Mean Delay by Carrier</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="dv">5</span>))</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>delays_sorted <span class="op">=</span> delays.sort_values(<span class="st">"mean_delay"</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>ax.barh(delays_sorted[<span class="st">"name"</span>], delays_sorted[<span class="st">"mean_delay"</span>], color<span class="op">=</span><span class="st">"#0165fc"</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Mean Departure Delay by Carrier"</span>)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Mean Departure Delay (minutes)"</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="va">None</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><a href="26-python-database_files/figure-html/bar-carrier-5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="26-python-database_files/figure-html/bar-carrier-5.png" class="img-fluid figure-img" width="672"></a></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="choosing-the-right-layer" class="level2" data-number="12.7">
-<h2 data-number="12.7" class="anchored" data-anchor-id="choosing-the-right-layer"><span class="header-section-number">12.7</span> Choosing the Right Layer</h2>
-<p>The three layers serve different purposes:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Scenario</th>
-<th>Tool</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Analytical queries returning DataFrames</td>
-<td><code>pandas.read_sql()</code> + SQLAlchemy engine</td>
-</tr>
-<tr class="even">
-<td>Transactions, multi-statement operations</td>
-<td>psycopg2 connection + cursor</td>
-</tr>
-<tr class="odd">
-<td>Bulk inserts or COPY operations</td>
-<td>psycopg2 with <code>execute_values</code> or <code>copy_expert</code></td>
-</tr>
-<tr class="even">
-<td>Non-PostgreSQL databases</td>
-<td>SQLAlchemy with the appropriate driver</td>
-</tr>
-</tbody>
-</table>
-<p>For most data science work, <code>pandas.read_sql()</code> is the right starting point. Drop down to psycopg2 when you need transaction control or performance-critical bulk operations.</p>
-</section>
-<section id="exercises" class="level2" data-number="12.8">
-<h2 data-number="12.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">12.8</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="12.8.1">
-<h3 data-number="12.8.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">12.8.1</span> Reflection</h3>
+<section id="exercises" class="level2" data-number="12.7">
+<h2 data-number="12.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">12.7</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="12.7.1">
+<h3 data-number="12.7.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">12.7.1</span> Reflection</h3>
 <ol type="1">
-<li><p>What is DB-API 2.0, and why does it matter that psycopg2 implements it?</p></li>
-<li><p>A colleague writes the following Python code to filter flights by carrier:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>carrier <span class="op">=</span> <span class="bu">input</span>(<span class="st">"Enter carrier code: "</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>cur.execute(<span class="ss">f"SELECT * FROM flights WHERE carrier = '</span><span class="sc">{</span>carrier<span class="sc">}</span><span class="ss">'"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>What is wrong with this approach? Rewrite it using parameterized queries.</p></li>
-<li><p>Explain the roles of <code>psycopg2</code>, SQLAlchemy, and <code>pandas.read_sql()</code>. When would you reach for each one?</p></li>
-<li><p>What does the <code>text()</code> wrapper do in SQLAlchemy 2.0, and why is it required for raw SQL strings?</p></li>
+<li><p>What is the role of SQLAlchemy in the Python database ecosystem? Why does using it as the connection layer allow you to switch between Polars and pandas without changing your connection code?</p></li>
+<li><p>Explain what is wrong with building a query string using an f-string to insert a user-supplied value. What does a parameterized query do differently, and why does it prevent SQL injection?</p></li>
+<li><p>Compare <code>plotnine</code> and <code>seaborn</code> as visualization libraries. In what way does <code>plotnine</code>’s API differ from <code>seaborn</code>’s, and what makes <code>plotnine</code> easier to learn for someone who already knows <code>ggplot2</code>?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="12.8.2">
-<h3 data-number="12.8.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">12.8.2</span> Coding</h3>
-<ol start="5" type="1">
-<li><p>Using <code>psycopg2</code>, connect to the <code>nycflights</code> database and retrieve the top 10 busiest destination airports by flight count. Print each row as a tuple.</p></li>
-<li><p>Using <code>pandas.read_sql()</code>, retrieve the monthly average departure delay and load it into a DataFrame. Then use <code>seaborn</code> or <code>matplotlib</code> to plot the result as a line chart. Describe the seasonal pattern.</p></li>
-<li><p>Write a parameterized query using SQLAlchemy that accepts a minimum departure delay and a destination airport code, and returns all matching flights with their carrier, flight number, and delay. Test it with at least two different parameter combinations.</p></li>
-<li><p>Connect to the <code>actors</code> database using either psycopg2 or SQLAlchemy (you will need a second engine or connection). Retrieve all actors born in the USA with at least three Oscar nominations, load the result into a pandas DataFrame, and produce a bar chart of Oscar nominations by actor sorted in descending order.</p></li>
+<section id="coding" class="level3" data-number="12.7.2">
+<h3 data-number="12.7.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">12.7.2</span> Coding</h3>
+<ol start="4" type="1">
+<li><p>Connect to the <code>nycflights</code> database and use <code>pl.read_database()</code> to retrieve the average temperature (<code>temp</code>) and average wind speed (<code>wind_speed</code>) from the <code>weather</code> table, grouped by month. Print the result.</p></li>
+<li><p>Using <code>pl.read_database()</code>, retrieve the number of flights per destination (<code>dest</code>). Then use <code>plotnine</code> to create a horizontal bar chart of the top 15 destinations by flight count.</p></li>
+<li><p>Write a parameterized query using SQLAlchemy’s <code>text()</code> that accepts a destination airport code and returns the average departure delay for flights to that destination, grouped by carrier. Test it with at least two destination codes.</p></li>
+<li><p>Retrieve daily average departure delay from <code>flights</code> (aggregate by <code>month</code> and <code>day</code>). Load the result into a Polars DataFrame, construct a date column from <code>month</code> and <code>day</code>, and plot the result as a line chart using <code>plotnine</code>. Describe the seasonal pattern you observe.</p></li>
 </ol>
 
 

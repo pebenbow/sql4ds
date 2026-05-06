@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -438,12 +458,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#mean-delay-by-carrier" id="toc-mean-delay-by-carrier" class="nav-link" data-scroll-target="#mean-delay-by-carrier"><span class="header-section-number">11.5.3</span> Mean Delay by Carrier</a></li>
   </ul></li>
   <li><a href="#parameterized-queries" id="toc-parameterized-queries" class="nav-link" data-scroll-target="#parameterized-queries"><span class="header-section-number">11.6</span> Parameterized Queries</a></li>
-  <li><a href="#non-returning-statements" id="toc-non-returning-statements" class="nav-link" data-scroll-target="#non-returning-statements"><span class="header-section-number">11.7</span> Non-Returning Statements</a></li>
-  <li><a href="#closing-the-connection" id="toc-closing-the-connection" class="nav-link" data-scroll-target="#closing-the-connection"><span class="header-section-number">11.8</span> Closing the Connection</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.9</span> Exercises</a>
+  <li><a href="#closing-the-connection" id="toc-closing-the-connection" class="nav-link" data-scroll-target="#closing-the-connection"><span class="header-section-number">11.7</span> Closing the Connection</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.8</span> Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">11.9.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">11.9.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">11.8.1</span> Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">11.8.2</span> Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/25-r-database.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -489,9 +508,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Retrieve</strong> query results as R data frames using <code>dbGetQuery</code> and <code>dbListTables</code>/<code>dbListFields</code> for schema exploration.</li>
 <li><strong>Visualize</strong> database query results using <code>ggplot2</code> within an R script or notebook.</li>
 <li><strong>Write</strong> parameterized queries using the <code>params</code> argument to prevent SQL injection.</li>
-<li><strong>Execute</strong> DDL and DML statements that return no rows using <code>dbExecute</code>.</li>
 </ul>
-<p>Throughout this book, SQL code blocks have been executing against a live PostgreSQL database without much explanation of how that connection actually works. The connection is established by R using the <code>DBI</code> package, and every query result comes back to R as a data frame. This chapter makes that mechanism explicit, showing you how to connect to a database from R, retrieve query results, visualize them with <code>ggplot2</code>, and write queries safely using parameterization.</p>
+<p>Throughout this book, SQL code blocks have been executing against a live PostgreSQL database without much explanation of how that connection actually works. The connection is established by R using the <code>DBI</code> package <span class="citation" data-cites="rpkg_dbi">(<a href="99-references.html#ref-rpkg_dbi" role="doc-biblioref">R Special Interest Group on Databases (R-SIG-DB), Wickham, and Müller 2026</a>)</span>, and every query result comes back to R as a data frame. This chapter makes that mechanism explicit, showing you how to connect to a database from R, retrieve query results, visualize them with <code>ggplot2</code> <span class="citation" data-cites="rpkg_ggplot2">(<a href="99-references.html#ref-rpkg_ggplot2" role="doc-biblioref">Wickham 2016</a>)</span>, and write queries safely using parameterization.</p>
 <p>These skills matter outside of Quarto documents. Most real data science work happens in R scripts and notebooks where you need to pull data from a database, analyze it in R, and produce outputs. Understanding how to drive that connection directly gives you full control over the process.</p>
 </section>
 <section id="the-dbi-ecosystem" class="level2" data-number="11.2">
@@ -527,6 +545,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+<p><strong>ODBC</strong> (Open Database Connectivity) is a decades-old standard API for database access supported by most enterprise databases: SQL Server, Oracle, Teradata, Snowflake, Databricks, and many others. The <code>odbc</code> package lets DBI connect to any database that has an ODBC driver installed on the system, making it the practical fallback when a native DBI driver does not exist for your database.</p>
 <p>Because DBI provides a uniform interface, the code for connecting to and querying a database looks almost identical regardless of which database you use. Swapping from SQLite to PostgreSQL means changing one line (the driver), not rewriting your analysis.</p>
 </section>
 <section id="establishing-a-connection" class="level2" data-number="11.3">
@@ -545,6 +564,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">password =</span> <span class="st">"postgres"</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Each argument tells DBI something specific about where and how to connect:</p>
+<ul>
+<li><code>Postgres()</code> — the driver object; tells DBI which database engine to use. Swapping this for <code>SQLite()</code> or <code>bigrquery::BigQuery()</code> would connect to a different database entirely, with the rest of the call staying mostly the same.</li>
+<li><code>host</code> — the network address of the server. <code>"localhost"</code> means the database is running on the same machine as R. On a remote server or cloud database, this would be a hostname or IP address.</li>
+<li><code>port</code> — the TCP port the server listens on. PostgreSQL’s default is 5432; this book’s Docker container is mapped to 5433. If you connect to a remote database and are unsure of the port, your database administrator can tell you.</li>
+<li><code>dbname</code> — the name of a specific database on that server. A single PostgreSQL server can host many independent databases. <code>"nycflights"</code> selects the one containing the flight data used throughout this book.</li>
+<li><code>user</code> / <code>password</code> — the credentials for the database account. In a production environment, these should come from environment variables or a secrets manager, not be written as plain text in a script.</li>
+</ul>
 <p>The object <code>con</code> represents an open connection to the database. It is passed to every subsequent DBI function that needs to communicate with the database.</p>
 <p>Before writing any queries, it is useful to explore what the database contains:</p>
 <div class="cell">
@@ -583,27 +610,124 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="st">  ORDER BY mean_delay DESC</span></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>delays_by_carrier</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   carrier                        name flights mean_delay stddev_delay
-1       F9      Frontier Airlines Inc.     682       20.2         58.4
-2       EV    ExpressJet Airlines Inc.    8255       19.1         48.8
-3       YV          Mesa Airlines Inc.     545       19.0         49.2
-4       FL AirTran Airways Corporation    3187       18.7         52.7
-5       WN      Southwest Airlines Co.    6000       17.6         43.9
-6       B6             JetBlue Airways    5925       14.8         46.7
-7       UA       United Air Lines Inc.    7837       12.1         42.9
-8       OO       SkyWest Airlines Inc.      23       10.4         40.7
-9       DL        Delta Air Lines Inc.   22857        9.6         41.4
-10      9E           Endeavor Air Inc.    2372        8.9         34.8
-11      MQ                   Envoy Air   16189        8.5         34.1
-12      AA      American Airlines Inc.   15063        6.7         34.8
-13      US             US Airways Inc.   12574        3.3         27.9</code></pre>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(delays_by_carrier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 41%">
+<col style="width: 11%">
+<col style="width: 16%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">carrier</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">flights</th>
+<th style="text-align: right;">mean_delay</th>
+<th style="text-align: right;">stddev_delay</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">F9</td>
+<td style="text-align: left;">Frontier Airlines Inc.</td>
+<td style="text-align: right;">682</td>
+<td style="text-align: right;">20.2</td>
+<td style="text-align: right;">58.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EV</td>
+<td style="text-align: left;">ExpressJet Airlines Inc.</td>
+<td style="text-align: right;">8255</td>
+<td style="text-align: right;">19.1</td>
+<td style="text-align: right;">48.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">YV</td>
+<td style="text-align: left;">Mesa Airlines Inc.</td>
+<td style="text-align: right;">545</td>
+<td style="text-align: right;">19.0</td>
+<td style="text-align: right;">49.2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FL</td>
+<td style="text-align: left;">AirTran Airways Corporation</td>
+<td style="text-align: right;">3187</td>
+<td style="text-align: right;">18.7</td>
+<td style="text-align: right;">52.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">WN</td>
+<td style="text-align: left;">Southwest Airlines Co.</td>
+<td style="text-align: right;">6000</td>
+<td style="text-align: right;">17.6</td>
+<td style="text-align: right;">43.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B6</td>
+<td style="text-align: left;">JetBlue Airways</td>
+<td style="text-align: right;">5925</td>
+<td style="text-align: right;">14.8</td>
+<td style="text-align: right;">46.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">UA</td>
+<td style="text-align: left;">United Air Lines Inc.</td>
+<td style="text-align: right;">7837</td>
+<td style="text-align: right;">12.1</td>
+<td style="text-align: right;">42.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">OO</td>
+<td style="text-align: left;">SkyWest Airlines Inc.</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">10.4</td>
+<td style="text-align: right;">40.7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DL</td>
+<td style="text-align: left;">Delta Air Lines Inc.</td>
+<td style="text-align: right;">22857</td>
+<td style="text-align: right;">9.6</td>
+<td style="text-align: right;">41.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9E</td>
+<td style="text-align: left;">Endeavor Air Inc.</td>
+<td style="text-align: right;">2372</td>
+<td style="text-align: right;">8.9</td>
+<td style="text-align: right;">34.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">MQ</td>
+<td style="text-align: left;">Envoy Air</td>
+<td style="text-align: right;">16189</td>
+<td style="text-align: right;">8.5</td>
+<td style="text-align: right;">34.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AA</td>
+<td style="text-align: left;">American Airlines Inc.</td>
+<td style="text-align: right;">15063</td>
+<td style="text-align: right;">6.7</td>
+<td style="text-align: right;">34.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">US</td>
+<td style="text-align: left;">US Airways Inc.</td>
+<td style="text-align: right;">12574</td>
+<td style="text-align: right;">3.3</td>
+<td style="text-align: right;">27.9</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <p>The result is a standard R data frame. Every tool you use for data manipulation in R, including <code>dplyr</code>, <code>data.table</code>, and base R, works on the result immediately.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(delays_by_carrier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(delays_by_carrier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "data.frame"</code></pre>
 </div>
@@ -616,24 +740,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="11.5.1" class="anchored" data-anchor-id="distribution-of-departure-delays"><span class="header-section-number">11.5.1</span> Distribution of Departure Delays</h3>
 <p>A histogram reveals the shape of the delay distribution discussed in the previous chapter:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>delays_raw <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT dep_delay</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM flights</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE dep_delay IS NOT NULL</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">    AND dep_delay BETWEEN -30 AND 180</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delays_raw, <span class="fu">aes</span>(<span class="at">x =</span> dep_delay)) <span class="sc">+</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"#0165fc"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of Departure Delays"</span>,</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"LGA flights, 2013 — trimmed to −30 to +180 minutes"</span>,</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Departure Delay (minutes)"</span>,</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Number of Flights"</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>delays_raw <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT dep_delay</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM flights</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE dep_delay IS NOT NULL</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">    AND dep_delay BETWEEN -30 AND 180</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delays_raw, <span class="fu">aes</span>(<span class="at">x =</span> dep_delay)) <span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"#0165fc"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of Departure Delays"</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"LGA flights, 2013 — trimmed to −30 to +180 minutes"</span>,</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Departure Delay (minutes)"</span>,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Number of Flights"</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -648,25 +772,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="11.5.2" class="anchored" data-anchor-id="departure-delay-vs.-arrival-delay"><span class="header-section-number">11.5.2</span> Departure Delay vs.&nbsp;Arrival Delay</h3>
 <p>The strong correlation between departure and arrival delay is easier to see as a scatterplot than as a single number:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>delay_pairs <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT dep_delay, arr_delay</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM flights</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE dep_delay IS NOT NULL</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="st">    AND arr_delay IS NOT NULL</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="st">    AND dep_delay BETWEEN -30 AND 120</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="st">    AND arr_delay BETWEEN -60 AND 120</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delay_pairs, <span class="fu">aes</span>(<span class="at">x =</span> dep_delay, <span class="at">y =</span> arr_delay)) <span class="sc">+</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">color =</span> <span class="st">"#0165fc"</span>) <span class="sc">+</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"firebrick"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Departure Delay vs. Arrival Delay"</span>,</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Each point is one flight; regression line overlaid"</span>,</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Departure Delay (minutes)"</span>,</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Arrival Delay (minutes)"</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>delay_pairs <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT dep_delay, arr_delay</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM flights</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE dep_delay IS NOT NULL</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">    AND arr_delay IS NOT NULL</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">    AND dep_delay BETWEEN -30 AND 120</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">    AND arr_delay BETWEEN -60 AND 120</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delay_pairs, <span class="fu">aes</span>(<span class="at">x =</span> dep_delay, <span class="at">y =</span> arr_delay)) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">color =</span> <span class="st">"#0165fc"</span>) <span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"firebrick"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Departure Delay vs. Arrival Delay"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Each point is one flight; regression line overlaid"</span>,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Departure Delay (minutes)"</span>,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Arrival Delay (minutes)"</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -675,21 +799,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The regression line runs nearly through the origin with a slope close to 1, consistent with the coefficients computed in SQL in the previous chapter. The transparency (<code>alpha = 0.05</code>) reveals where the mass of flights lies despite over 100,000 overlapping points.</p>
+<p>The regression line runs nearly through the origin with a slope close to 1: a one-minute departure delay corresponds to roughly one minute of arrival delay. The transparency (<code>alpha = 0.05</code>) reveals where the mass of flights lies despite over 100,000 overlapping points.</p>
 </section>
 <section id="mean-delay-by-carrier" class="level3" data-number="11.5.3">
 <h3 data-number="11.5.3" class="anchored" data-anchor-id="mean-delay-by-carrier"><span class="header-section-number">11.5.3</span> Mean Delay by Carrier</h3>
 <p>A horizontal bar chart makes carrier comparisons easy to read:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delays_by_carrier, <span class="fu">aes</span>(<span class="at">x =</span> mean_delay, <span class="at">y =</span> <span class="fu">reorder</span>(name, mean_delay))) <span class="sc">+</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#0165fc"</span>) <span class="sc">+</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Mean Departure Delay by Carrier"</span>,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"LGA flights, 2013"</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Mean Departure Delay (minutes)"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(delays_by_carrier, <span class="fu">aes</span>(<span class="at">x =</span> mean_delay, <span class="at">y =</span> <span class="fu">reorder</span>(name, mean_delay))) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#0165fc"</span>) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Mean Departure Delay by Carrier"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"LGA flights, 2013"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Mean Departure Delay (minutes)"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -705,26 +829,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="11.6" class="anchored" data-anchor-id="parameterized-queries"><span class="header-section-number">11.6</span> Parameterized Queries</h2>
 <p>When a query needs to incorporate a value from R, the instinct is to paste it directly into the query string:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Do not do this</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>carrier_code <span class="ot">&lt;-</span> <span class="st">"AA"</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, <span class="fu">paste0</span>(<span class="st">"SELECT * FROM flights WHERE carrier = '"</span>, carrier_code, <span class="st">"'"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Do not do this</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>carrier_code <span class="ot">&lt;-</span> <span class="st">"AA"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, <span class="fu">paste0</span>(<span class="st">"SELECT * FROM flights WHERE carrier = '"</span>, carrier_code, <span class="st">"'"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is unsafe. If <code>carrier_code</code> came from user input and contained something like <code>'; DROP TABLE flights; --</code>, the database would execute that injected SQL. The correct approach is a <strong>parameterized query</strong>, which passes values separately from the query text so the database treats them as data, never as SQL.</p>
 <p>DBI supports parameterized queries through the <code>params</code> argument. Placeholders in the query string are written as <code>$1</code>, <code>$2</code>, and so on (for PostgreSQL):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>carrier_code <span class="ot">&lt;-</span> <span class="st">"AA"</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>aa_flights <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  con,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SELECT flight, dep_delay, arr_delay, dest</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">   FROM flights</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">   WHERE carrier = $1</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="st">     AND dep_delay IS NOT NULL</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="st">   ORDER BY dep_delay DESC"</span>,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">params =</span> <span class="fu">list</span>(carrier_code)</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aa_flights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>carrier_code <span class="ot">&lt;-</span> <span class="st">"AA"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>aa_flights <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  con,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"SELECT flight, dep_delay, arr_delay, dest</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="st">   FROM flights</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="st">   WHERE carrier = $1</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="st">     AND dep_delay IS NOT NULL</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="st">   ORDER BY dep_delay DESC"</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">params =</span> <span class="fu">list</span>(carrier_code)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aa_flights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  flight dep_delay arr_delay dest
 1   2019       803       802  STL
@@ -747,52 +871,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="non-returning-statements" class="level2" data-number="11.7">
-<h2 data-number="11.7" class="anchored" data-anchor-id="non-returning-statements"><span class="header-section-number">11.7</span> Non-Returning Statements</h2>
-<p><code>dbGetQuery()</code> is for queries that return rows. For statements that modify data — <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>CREATE TABLE</code> — use <code>dbExecute()</code>. It sends the statement to the database and returns the number of rows affected rather than a result set.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, <span class="st">"</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="st">  CREATE TABLE IF NOT EXISTS carrier_summary AS</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="st">      carrier,</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="st">      COUNT(*)                            AS total_flights,</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="st">      ROUND(AVG(dep_delay)::numeric, 1)  AS avg_delay</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM flights</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE dep_delay IS NOT NULL</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="st">  GROUP BY carrier</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Like <code>dbGetQuery()</code>, <code>dbExecute()</code> accepts a <code>params</code> argument for safe value substitution.</p>
-</section>
-<section id="closing-the-connection" class="level2" data-number="11.8">
-<h2 data-number="11.8" class="anchored" data-anchor-id="closing-the-connection"><span class="header-section-number">11.8</span> Closing the Connection</h2>
+<section id="closing-the-connection" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="closing-the-connection"><span class="header-section-number">11.7</span> Closing the Connection</h2>
 <p>A database connection holds resources on both the R side and the database server side. Close it explicitly when you are done:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In a script that opens a connection at the top and closes it at the bottom, it is good practice to use <code>on.exit()</code> to ensure the connection closes even if an error occurs partway through:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">Postgres</span>(), <span class="at">host =</span> <span class="st">"localhost"</span>, <span class="at">port =</span> <span class="dv">5433</span>,</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dbname =</span> <span class="st">"nycflights"</span>, <span class="at">user =</span> <span class="st">"postgres"</span>, <span class="at">password =</span> <span class="st">"postgres"</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on.exit</span>(<span class="fu">dbDisconnect</span>(con), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ... rest of your analysis ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">Postgres</span>(), <span class="at">host =</span> <span class="st">"localhost"</span>, <span class="at">port =</span> <span class="dv">5433</span>,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dbname =</span> <span class="st">"nycflights"</span>, <span class="at">user =</span> <span class="st">"postgres"</span>, <span class="at">password =</span> <span class="st">"postgres"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on.exit</span>(<span class="fu">dbDisconnect</span>(con), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ... rest of your analysis ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code>on.exit(..., add = TRUE)</code> schedules <code>dbDisconnect(con)</code> to run when the surrounding function or script exits, regardless of whether it exits normally or with an error.</p>
 </section>
-<section id="exercises" class="level2" data-number="11.9">
-<h2 data-number="11.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">11.9</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="11.9.1">
-<h3 data-number="11.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">11.9.1</span> Reflection</h3>
+<section id="exercises" class="level2" data-number="11.8">
+<h2 data-number="11.8" class="anchored" data-anchor-id="exercises"><span class="header-section-number">11.8</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="11.8.1">
+<h3 data-number="11.8.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">11.8.1</span> Reflection</h3>
 <ol type="1">
 <li><p>What is the relationship between the <code>DBI</code> package and driver packages like <code>RPostgres</code>? Why is this two-layer design useful?</p></li>
 <li><p>Explain what is wrong with building a query string using <code>paste0()</code> to insert a user-supplied value. What does a parameterized query do differently, and why does it prevent SQL injection?</p></li>
-<li><p>When would you use <code>dbExecute()</code> instead of <code>dbGetQuery()</code>? Give an example of a SQL statement appropriate for each.</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="11.9.2">
-<h3 data-number="11.9.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">11.9.2</span> Coding</h3>
-<ol start="4" type="1">
+<section id="coding" class="level3" data-number="11.8.2">
+<h3 data-number="11.8.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">11.8.2</span> Coding</h3>
+<ol start="3" type="1">
 <li><p>Connect to the <code>nycflights</code> database and use <code>dbListFields()</code> to inspect the columns of the <code>weather</code> table. Then write a <code>dbGetQuery()</code> call that retrieves the average temperature (<code>temp</code>) and average wind speed (<code>wind_speed</code>) for each month. Store the result in a data frame and print it.</p></li>
 <li><p>Using <code>dbGetQuery()</code>, retrieve the number of flights per destination (<code>dest</code>) from the <code>flights</code> table. Then use <code>ggplot2</code> to create a bar chart of the top 15 destinations by flight count.</p></li>
 <li><p>Write a parameterized query that accepts a minimum number of Oscar nominations as a parameter and returns matching actors from the <code>actors</code> database. (You will need to open a second connection to the <code>actors</code> database.) Test it with at least two different threshold values.</p></li>
@@ -800,6 +906,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-rpkg_dbi" class="csl-entry" role="listitem">
+R Special Interest Group on Databases (R-SIG-DB), Hadley Wickham, and Kirill Müller. 2026. <em>DBI: R Database Interface</em>. <a href="https://dbi.r-dbi.org">https://dbi.r-dbi.org</a>.
+</div>
+<div id="ref-rpkg_ggplot2" class="csl-entry" role="listitem">
+Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.
+</div>
+</div>
 </section>
 </section>
 
