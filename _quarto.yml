@@ -40,7 +40,6 @@ book:
         - 21-conditional.qmd
         - 22-subqueries.qmd
         - 23-window-functions.qmd
-        - 24-stats-functions.qmd
         - 25-r-database.qmd
         - 26-python-database.qmd
 
