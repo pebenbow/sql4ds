@@ -85,7 +85,7 @@ The `main` branch has push protection and requires pull requests. All work must 
 
 - Always confirm you are on `dev` before making commits: `git branch`
 - Push changes to `origin/dev`, not `origin/main`
-- When a batch of work is ready to ship, open a PR from `dev` → `main` on GitHub
+- When a batch of work is ready to ship, open a PR from `dev` → `main` and assign it to `pebenbow`: `gh pr create --assignee pebenbow ...`
 
 ## Content Conventions
 
