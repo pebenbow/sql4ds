@@ -54,12 +54,7 @@ book:
         - 36-building-schema.qmd
         - 37-programmability.qmd
         - 38-security.qmd
-
-    - part: 40-optimize.qmd
-      chapters:
-        - 41-explain.qmd
-        - 42-indexes.qmd
-        - 43-optimization-patterns.qmd
+        - 39-indexes.qmd
 
     - part: 60-load.qmd
       chapters:
