@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6a145422a7536efbb204f5a8d1c5774.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3c0a8f952bb3711ad42cb3f3d697265c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -539,7 +539,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>log.info(<span class="st">"Pipeline initialized"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:24:06  INFO      Pipeline initialized</code></pre>
+<pre><code>09:49:52  INFO      Pipeline initialized</code></pre>
 </div>
 </div>
 </section>
@@ -712,16 +712,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(stats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:24:06  INFO      Extracting data/countries.csv
-09:24:06  INFO      Extracting data/indicators.parquet
-09:24:06  INFO      Extracted 218 country rows, 4991 indicator rows
-09:24:06  INFO      Transforming countries
-09:24:06  INFO      Transforming indicators
-09:24:06  INFO      Transformed: 218 countries, 4991 indicator rows
-09:24:06  INFO      Ensuring target tables exist
-09:24:06  INFO      Loading countries
-09:24:06  INFO      Loading indicators
-09:24:09  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
+<pre><code>09:49:53  INFO      Extracting data/countries.csv
+09:49:53  INFO      Extracting data/indicators.parquet
+09:49:53  INFO      Extracted 218 country rows, 4991 indicator rows
+09:49:53  INFO      Transforming countries
+09:49:53  INFO      Transforming indicators
+09:49:53  INFO      Transformed: 218 countries, 4991 indicator rows
+09:49:53  INFO      Ensuring target tables exist
+09:49:53  INFO      Loading countries
+09:49:53  INFO      Loading indicators
+09:49:59  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'countries': 218, 'indicators': 4991}</code></pre>
@@ -737,16 +737,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(stats2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:24:09  INFO      Extracting data/countries.csv
-09:24:09  INFO      Extracting data/indicators.parquet
-09:24:09  INFO      Extracted 218 country rows, 4991 indicator rows
-09:24:09  INFO      Transforming countries
-09:24:09  INFO      Transforming indicators
-09:24:09  INFO      Transformed: 218 countries, 4991 indicator rows
-09:24:09  INFO      Ensuring target tables exist
-09:24:09  INFO      Loading countries
-09:24:09  INFO      Loading indicators
-09:24:12  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
+<pre><code>09:49:59  INFO      Extracting data/countries.csv
+09:49:59  INFO      Extracting data/indicators.parquet
+09:49:59  INFO      Extracted 218 country rows, 4991 indicator rows
+09:49:59  INFO      Transforming countries
+09:49:59  INFO      Transforming indicators
+09:49:59  INFO      Transformed: 218 countries, 4991 indicator rows
+09:49:59  INFO      Ensuring target tables exist
+09:49:59  INFO      Loading countries
+09:49:59  INFO      Loading indicators
+09:50:04  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'countries': 218, 'indicators': 4991}</code></pre>
@@ -845,17 +845,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    log.warning(<span class="st">"Pipeline did not complete"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>09:24:12  INFO      Extracting data/countries.csv
-09:24:12  INFO      Extracting data/indicators.parquet
-09:24:12  INFO      Extracted 218 country rows, 4991 indicator rows
-09:24:12  INFO      Transforming countries
-09:24:12  INFO      Transforming indicators
-09:24:12  INFO      Transformed: 218 countries, 4991 indicator rows
-09:24:12  INFO      Ensuring target tables exist
-09:24:12  INFO      Loading countries
-09:24:13  INFO      Loading indicators
-09:24:16  INFO      Load complete: 218 countries, 4991 indicators
-09:24:16  INFO      Pipeline succeeded: {'countries': 218, 'indicators': 4991}</code></pre>
+<pre><code>09:50:04  INFO      Extracting data/countries.csv
+09:50:04  INFO      Extracting data/indicators.parquet
+09:50:04  INFO      Extracted 218 country rows, 4991 indicator rows
+09:50:04  INFO      Transforming countries
+09:50:04  INFO      Transforming indicators
+09:50:04  INFO      Transformed: 218 countries, 4991 indicator rows
+09:50:04  INFO      Ensuring target tables exist
+09:50:04  INFO      Loading countries
+09:50:04  INFO      Loading indicators
+09:50:08  INFO      Load complete: 218 countries, 4991 indicators
+09:50:08  INFO      Pipeline succeeded: {'countries': 218, 'indicators': 4991}</code></pre>
 </div>
 </div>
 <p><code>exc_info=True</code> tells the logger to include the full stack trace in the error message, which is essential for diagnosing failures in production.</p>

@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6a145422a7536efbb204f5a8d1c5774.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-3c0a8f952bb3711ad42cb3f3d697265c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -1405,9 +1405,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">2026-05-06 13:22:12</td>
+<td style="text-align: left;">2026-05-06 13:47:32</td>
 <td style="text-align: left;">2026-05-06</td>
-<td style="text-align: left;">13:22:12.21676</td>
+<td style="text-align: left;">13:47:32.996284</td>
 </tr>
 </tbody>
 </table>
@@ -1953,94 +1953,78 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-<p><strong>Rounding versus truncating.</strong> Casting a <code>NUMERIC</code> value to <code>INTEGER</code> rounds to the nearest integer. If you want to discard the decimal component entirely and always round toward zero, use <code>TRUNC()</code> instead.</p>
+<p><strong>Rounding versus truncating.</strong> Casting a <code>NUMERIC</code> value to <code>INTEGER</code> rounds to the nearest integer. If you want to discard the decimal component entirely and always round toward zero, use <code>TRUNC()</code> instead. The difference only shows when the decimal portion is 0.5 or greater. Converting heights from centimeters to whole feet makes the distinction visible:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    total_box_office_usd,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    total_box_office_usd <span class="op">/</span> <span class="fl">1000000.0</span>                     <span class="kw">AS</span> exact_millions,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">TRUNC</span>(total_box_office_usd <span class="op">/</span> <span class="fl">1000000.0</span>):<span class="ch">:integer</span>     <span class="kw">AS</span> truncated_millions,</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(total_box_office_usd <span class="op">/</span> <span class="fl">1000000.0</span>):<span class="ch">:integer</span>     <span class="kw">AS</span> rounded_millions</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> total_box_office_usd <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> total_box_office_usd <span class="kw">DESC</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="kw">ON</span> (height_cm)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name              <span class="kw">AS</span> actor,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    height_cm,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(height_cm:<span class="ch">:numeric</span> <span class="op">/</span> <span class="fl">30.48</span>, <span class="dv">2</span>)        <span class="kw">AS</span> exact_feet,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">TRUNC</span>(height_cm:<span class="ch">:numeric</span> <span class="op">/</span> <span class="fl">30.48</span>):<span class="ch">:integer</span>  <span class="kw">AS</span> truncated_feet,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(height_cm:<span class="ch">:numeric</span> <span class="op">/</span> <span class="fl">30.48</span>):<span class="ch">:integer</span>  <span class="kw">AS</span> rounded_feet</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> height_cm <span class="kw">BETWEEN</span> <span class="dv">163</span> <span class="kw">AND</span> <span class="dv">173</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> height_cm, last_name;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<colgroup>
-<col style="width: 29%">
-<col style="width: 20%">
-<col style="width: 26%">
-<col style="width: 23%">
-</colgroup>
+<caption>7 records</caption>
 <thead>
 <tr class="header">
-<th style="text-align: right;">total_box_office_usd</th>
-<th style="text-align: right;">exact_millions</th>
-<th style="text-align: right;">truncated_millions</th>
-<th style="text-align: right;">rounded_millions</th>
+<th style="text-align: left;">actor</th>
+<th style="text-align: right;">height_cm</th>
+<th style="text-align: right;">exact_feet</th>
+<th style="text-align: right;">truncated_feet</th>
+<th style="text-align: right;">rounded_feet</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">9.2e+09</td>
-<td style="text-align: right;">9200</td>
-<td style="text-align: right;">9200</td>
-<td style="text-align: right;">9200</td>
+<td style="text-align: left;">Victoria Abril</td>
+<td style="text-align: right;">163</td>
+<td style="text-align: right;">5.35</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">5.1e+09</td>
-<td style="text-align: right;">5100</td>
-<td style="text-align: right;">5100</td>
-<td style="text-align: right;">5100</td>
+<td style="text-align: left;">Bibi Andersson</td>
+<td style="text-align: right;">165</td>
+<td style="text-align: right;">5.41</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">4.8e+09</td>
-<td style="text-align: right;">4800</td>
-<td style="text-align: right;">4800</td>
-<td style="text-align: right;">4800</td>
+<td style="text-align: left;">Juliette Binoche</td>
+<td style="text-align: right;">167</td>
+<td style="text-align: right;">5.48</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">4.6e+09</td>
-<td style="text-align: right;">4600</td>
-<td style="text-align: right;">4600</td>
-<td style="text-align: right;">4600</td>
+<td style="text-align: left;">Julie Andrews</td>
+<td style="text-align: right;">168</td>
+<td style="text-align: right;">5.51</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">4.5e+09</td>
-<td style="text-align: right;">4500</td>
-<td style="text-align: right;">4500</td>
-<td style="text-align: right;">4500</td>
+<td style="text-align: left;">Monica Bellucci</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">5.58</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">4.2e+09</td>
-<td style="text-align: right;">4200</td>
-<td style="text-align: right;">4200</td>
-<td style="text-align: right;">4200</td>
+<td style="text-align: left;">Sandra Bullock</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: right;">5.61</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">4.1e+09</td>
-<td style="text-align: right;">4100</td>
-<td style="text-align: right;">4100</td>
-<td style="text-align: right;">4100</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">3.8e+09</td>
-<td style="text-align: right;">3800</td>
-<td style="text-align: right;">3800</td>
-<td style="text-align: right;">3800</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">3.5e+09</td>
-<td style="text-align: right;">3500</td>
-<td style="text-align: right;">3500</td>
-<td style="text-align: right;">3500</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">3.4e+09</td>
-<td style="text-align: right;">3400</td>
-<td style="text-align: right;">3400</td>
-<td style="text-align: right;">3400</td>
+<td style="text-align: left;">Jessica Lange</td>
+<td style="text-align: right;">173</td>
+<td style="text-align: right;">5.68</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6</td>
 </tr>
 </tbody>
 </table>
