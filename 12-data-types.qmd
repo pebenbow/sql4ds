@@ -431,20 +431,20 @@ SELECT
     'true'::boolean        AS bool_from_string;
 ```
 
-**Rounding versus truncating.** Casting a `NUMERIC` value to `INTEGER` rounds to the nearest integer. If you want to discard the decimal component entirely and always round toward zero, use `TRUNC()` instead.
+**Rounding versus truncating.** Casting a `NUMERIC` value to `INTEGER` rounds to the nearest integer. If you want to discard the decimal component entirely and always round toward zero, use `TRUNC()` instead. The difference only shows when the decimal portion is 0.5 or greater. Converting heights from centimeters to whole feet makes the distinction visible:
 
 ```{sql}
 #| connection: con
 #| label: cast-truncation
-SELECT
-    total_box_office_usd,
-    total_box_office_usd / 1000000.0                     AS exact_millions,
-    TRUNC(total_box_office_usd / 1000000.0)::integer     AS truncated_millions,
-    ROUND(total_box_office_usd / 1000000.0)::integer     AS rounded_millions
+SELECT DISTINCT ON (height_cm)
+    first_name || ' ' || last_name              AS actor,
+    height_cm,
+    ROUND(height_cm::numeric / 30.48, 2)        AS exact_feet,
+    TRUNC(height_cm::numeric / 30.48)::integer  AS truncated_feet,
+    ROUND(height_cm::numeric / 30.48)::integer  AS rounded_feet
 FROM actors
-WHERE total_box_office_usd IS NOT NULL
-ORDER BY total_box_office_usd DESC
-LIMIT 10;
+WHERE height_cm BETWEEN 163 AND 173
+ORDER BY height_cm, last_name;
 ```
 
 ### Implicit Casting
