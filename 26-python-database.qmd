@@ -147,7 +147,7 @@ The result is immediately available for analysis. Every operation you would appl
 from plotnine import (
     ggplot, aes,
     geom_histogram, geom_point, geom_smooth, geom_col,
-    labs, theme_minimal
+    coord_flip, labs, theme_minimal
 )
 
 delay_data = pl.read_database("""
@@ -267,13 +267,14 @@ The regression line runs nearly through the origin with a slope close to 1: a on
 ```{python}
 #| label: plotnine-bar
 (
-    ggplot(delays_by_carrier, aes(x="mean_delay", y="reorder(name, mean_delay)"))
+    ggplot(delays_by_carrier, aes(x="reorder(name, mean_delay)", y="mean_delay"))
     + geom_col(fill="#0165fc")
+    + coord_flip()
     + labs(
         title="Mean Departure Delay by Carrier",
         subtitle="LGA flights, 2013",
-        x="Mean Departure Delay (minutes)",
-        y=None
+        x=None,
+        y="Mean Departure Delay (minutes)"
     )
     + theme_minimal()
 )
