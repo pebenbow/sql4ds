@@ -98,7 +98,9 @@ delays_by_carrier = pl.read_database("""
     WHERE f.dep_delay IS NOT NULL
     GROUP BY f.carrier, a.name
     ORDER BY mean_delay DESC
-""", engine)
+""", engine).with_columns(
+    pl.col("mean_delay", "stddev_delay").cast(pl.Float64)
+)
 
 delays_by_carrier
 ```
