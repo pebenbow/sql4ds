@@ -522,24 +522,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="22.2" class="anchored" data-anchor-id="the-explain-command"><span class="header-section-number">22.2</span> The EXPLAIN Command</h2>
 <p><code>EXPLAIN</code> preceded a <code>SELECT</code> statement returns the query plan without executing the query. No rows are read from disk, no results are returned — only the plan.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPLAIN</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> flights <span class="kw">WHERE</span> carrier <span class="op">=</span> <span class="st">'UA'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>2 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">QUERY PLAN</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Seq Scan on flights (cost=0.00..3178.28 rows=8132 width=81)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Filter: ((carrier)::text = ‘UA’::text)</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con, <span class="st">"EXPLAIN SELECT * FROM flights WHERE carrier = 'UA'"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Seq Scan on flights  (cost=0.00..3178.28 rows=8132 width=81)
+  Filter: ((carrier)::text = 'UA'::text)</code></pre>
 </div>
 </div>
 <p>The output is a tree of <strong>plan nodes</strong>, each representing one operation. This plan has two nodes. The outer node is <code>Seq Scan on flights</code>, which reads the entire table row by row. Indented below it is a <code>Filter</code>, which is not a separate node but a condition applied inside the scan.</p>
@@ -558,36 +544,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A <strong>sequential scan</strong> reads every page of the table from start to finish, applying any filter condition to each row as it goes. For the query above, PostgreSQL chose a sequential scan even though the filter <code>carrier = 'UA'</code> discards most rows. That is not a mistake.</p>
 <p><code>EXPLAIN ANALYZE</code> executes the query and augments each node with actual measurements:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPLAIN</span> <span class="kw">ANALYZE</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> flights <span class="kw">WHERE</span> carrier <span class="op">=</span> <span class="st">'UA'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>5 records</caption>
-<colgroup>
-<col style="width: 100%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">QUERY PLAN</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Seq Scan on flights (cost=0.00..3178.28 rows=8132 width=81) (actual time=0.037..19.601 rows=8044 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Filter: ((carrier)::text = ‘UA’::text)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Rows Removed by Filter: 96618</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Planning Time: 0.087 ms</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Execution Time: 19.974 ms</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con, <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE carrier = 'UA'"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Seq Scan on flights  (cost=0.00..3178.28 rows=8132 width=81) (actual time=0.044..26.240 rows=8044 loops=1)
+  Filter: ((carrier)::text = 'UA'::text)
+  Rows Removed by Filter: 96618
+Planning Time: 0.118 ms
+Execution Time: 26.730 ms</code></pre>
 </div>
 </div>
 <p>The <code>actual time=0.088..31.365 rows=8044 loops=1</code> annotation shows that the scan took about 31 milliseconds and returned 8,044 rows. The <code>Rows Removed by Filter: 96618</code> line shows how many rows were discarded.</p>
@@ -607,37 +570,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="22.5" class="anchored" data-anchor-id="index-scan"><span class="header-section-number">22.5</span> Index Scan</h2>
 <p>When a query is highly selective — matching only a handful of rows out of millions — the planner switches to an <strong>index scan</strong>. The <code>flights</code> table has a composite primary key on <code>(year, month, day, carrier, flight, origin)</code>. A lookup that supplies all six components narrows the search to a single row.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPLAIN</span> <span class="kw">ANALYZE</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   flights</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  <span class="dt">year</span> <span class="op">=</span> <span class="dv">2013</span> <span class="kw">AND</span> <span class="dt">month</span> <span class="op">=</span> <span class="dv">6</span> <span class="kw">AND</span> <span class="dt">day</span> <span class="op">=</span> <span class="dv">15</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>   <span class="kw">AND</span> carrier <span class="op">=</span> <span class="st">'AA'</span> <span class="kw">AND</span> flight <span class="op">=</span> <span class="dv">301</span> <span class="kw">AND</span> origin <span class="op">=</span> <span class="st">'LGA'</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>4 records</caption>
-<colgroup>
-<col style="width: 100%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">QUERY PLAN</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Index Scan using flights_pkey on flights (cost=0.42..8.45 rows=1 width=81) (actual time=0.044..0.045 rows=1 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Index Cond: ((year = 2013) AND (month = 6) AND (day = 15) AND ((carrier)::text = ‘AA’::text) AND (flight = 301) AND ((origin)::text = ‘LGA’::text))</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Planning Time: 0.187 ms</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Execution Time: 0.092 ms</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">  EXPLAIN ANALYZE</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT *</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM   flights</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE  year = 2013 AND month = 6 AND day = 15</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">     AND carrier = 'AA' AND flight = 301 AND origin = 'LGA'</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Index Scan using flights_pkey on flights  (cost=0.42..8.45 rows=1 width=81) (actual time=0.061..0.063 rows=1 loops=1)
+  Index Cond: ((year = 2013) AND (month = 6) AND (day = 15) AND ((carrier)::text = 'AA'::text) AND (flight = 301) AND ((origin)::text = 'LGA'::text))
+Planning Time: 0.254 ms
+Execution Time: 0.154 ms</code></pre>
 </div>
 </div>
 <p>The plan is <code>Index Scan using flights_pkey</code>. The total cost is around 8 — compared to 3,178 for the sequential scan above. PostgreSQL traverses the B-tree index to find the matching leaf entry and then fetches the single heap page that contains that row. Planning and execution together take under 2 milliseconds.</p>
@@ -648,117 +592,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The planner builds its estimates from statistics stored in <code>pg_statistic</code>, which is populated by the <code>ANALYZE</code> command (run automatically in the background by <code>autovacuum</code>, and manually with <code>ANALYZE table_name</code>). When those statistics are stale or missing, estimates can diverge dramatically from reality.</p>
 <p>Consider joining <code>flights</code> to <code>airlines</code> to count flights per carrier:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPLAIN</span> <span class="kw">ANALYZE</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> f.carrier, a.name, <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   flights f</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span>   airlines a <span class="kw">ON</span> f.carrier <span class="op">=</span> a.carrier</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span>  <span class="kw">BY</span> f.carrier, a.name</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> <span class="fu">count</span>(<span class="op">*</span>) <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>14 records</caption>
-<colgroup>
-<col style="width: 100%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">QUERY PLAN</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Sort (cost=4060.54..4061.06 rows=208 width=31) (actual time=53.389..53.395 rows=13 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sort Key: (count(*)) DESC</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sort Method: quicksort Memory: 25kB</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">-&gt; HashAggregate (cost=4050.45..4052.53 rows=208 width=31) (actual time=53.329..53.337 rows=13 loops=1)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Group Key: f.carrier, a.name</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Batches: 1 Memory Usage: 40kB</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; Hash Join (cost=1.36..3265.49 rows=104662 width=23) (actual time=0.051..30.807 rows=104662 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hash Cond: ((f.carrier)::text = (a.carrier)::text)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; Seq Scan on flights f (cost=0.00..2916.62 rows=104662 width=3) (actual time=0.008..7.335 rows=104662 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">-&gt; Hash (cost=1.16..1.16 rows=16 width=23) (actual time=0.019..0.020 rows=16 loops=1)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Buckets: 1024 Batches: 1 Memory Usage: 9kB</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">-&gt; Seq Scan on airlines a (cost=0.00..1.16 rows=16 width=23) (actual time=0.005..0.007 rows=16 loops=1)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Planning Time: 1.766 ms</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Execution Time: 53.629 ms</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="st">  EXPLAIN ANALYZE</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT f.carrier, a.name, COUNT(*)</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM   flights f</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">  JOIN   airlines a ON f.carrier = a.carrier</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">  GROUP  BY f.carrier, a.name</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">  ORDER  BY count(*) DESC</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sort  (cost=4060.54..4061.06 rows=208 width=31) (actual time=68.778..68.784 rows=13 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 25kB
+  -&gt;  HashAggregate  (cost=4050.45..4052.53 rows=208 width=31) (actual time=68.696..68.705 rows=13 loops=1)
+        Group Key: f.carrier, a.name
+        Batches: 1  Memory Usage: 40kB
+        -&gt;  Hash Join  (cost=1.36..3265.49 rows=104662 width=23) (actual time=0.070..39.274 rows=104662 loops=1)
+              Hash Cond: ((f.carrier)::text = (a.carrier)::text)
+              -&gt;  Seq Scan on flights f  (cost=0.00..2916.62 rows=104662 width=3) (actual time=0.011..9.374 rows=104662 loops=1)
+              -&gt;  Hash  (cost=1.16..1.16 rows=16 width=23) (actual time=0.025..0.027 rows=16 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                    -&gt;  Seq Scan on airlines a  (cost=0.00..1.16 rows=16 width=23) (actual time=0.006..0.009 rows=16 loops=1)
+Planning Time: 2.540 ms
+Execution Time: 69.031 ms</code></pre>
 </div>
 </div>
 <p>Scan the plan carefully. The <code>Seq Scan on airlines</code> node reads the table fine — 16 rows returned — but the estimate says <code>rows=310</code>. PostgreSQL thought airlines had about 310 rows. The table actually has 16.</p>
 <p>That mismatch propagates upward: the <code>HashAggregate</code> node estimated 2,600 output groups but produced only 13. The planner’s statistics for the <code>airlines</code> table are stale. Running <code>ANALYZE</code> corrects them:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPLAIN</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> f.carrier, a.name, <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   flights f</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span>   airlines a <span class="kw">ON</span> f.carrier <span class="op">=</span> a.carrier</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span>  <span class="kw">BY</span> f.carrier, a.name</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> <span class="fu">count</span>(<span class="op">*</span>) <span class="kw">DESC</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>9 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">QUERY PLAN</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Sort (cost=4060.54..4061.06 rows=208 width=31)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sort Key: (count(*)) DESC</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; HashAggregate (cost=4050.45..4052.53 rows=208 width=31)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Group Key: f.carrier, a.name</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; Hash Join (cost=1.36..3265.49 rows=104662 width=23)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hash Cond: ((f.carrier)::text = (a.carrier)::text)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; Seq Scan on flights f (cost=0.00..2916.62 rows=104662 width=3)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">-&gt; Hash (cost=1.16..1.16 rows=16 width=23)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; Seq Scan on airlines a (cost=0.00..1.16 rows=16 width=23)</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="st">  EXPLAIN</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT f.carrier, a.name, COUNT(*)</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM   flights f</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">  JOIN   airlines a ON f.carrier = a.carrier</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">  GROUP  BY f.carrier, a.name</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">  ORDER  BY count(*) DESC</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sort  (cost=4060.54..4061.06 rows=208 width=31)
+  Sort Key: (count(*)) DESC
+  -&gt;  HashAggregate  (cost=4050.45..4052.53 rows=208 width=31)
+        Group Key: f.carrier, a.name
+        -&gt;  Hash Join  (cost=1.36..3265.49 rows=104662 width=23)
+              Hash Cond: ((f.carrier)::text = (a.carrier)::text)
+              -&gt;  Seq Scan on flights f  (cost=0.00..2916.62 rows=104662 width=3)
+              -&gt;  Hash  (cost=1.16..1.16 rows=16 width=23)
+                    -&gt;  Seq Scan on airlines a  (cost=0.00..1.16 rows=16 width=23)</code></pre>
 </div>
 </div>
 <p>The estimate for <code>airlines</code> now matches reality. When a plan behaves unexpectedly or a query is slower than it should be, stale statistics are one of the first things to check.</p>
@@ -776,49 +655,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A <strong>nested loop</strong> iterates over the outer input and, for each row, looks up matching rows in the inner input — ideally using an index. Nested loops are efficient when the outer input is small and the inner lookup is fast.</p>
 <p>A query that filters flights heavily before joining to airlines produces a nested loop:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPLAIN</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> f.<span class="op">*</span>, a.name</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   flights f</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span>   airlines a <span class="kw">ON</span> f.carrier <span class="op">=</span> a.carrier</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  f.<span class="dt">month</span> <span class="op">=</span> <span class="dv">7</span> <span class="kw">AND</span> f.dep_delay <span class="op">&gt;</span> <span class="dv">120</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>8 records</caption>
-<colgroup>
-<col style="width: 100%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">QUERY PLAN</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Nested Loop (cost=0.15..3448.21 rows=226 width=101)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">-&gt; Seq Scan on flights f (cost=0.00..3439.93 rows=226 width=81)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Filter: ((dep_delay &gt; 120) AND (month = 7))</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">-&gt; Memoize (cost=0.15..0.22 rows=1 width=23)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Cache Key: f.carrier</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Cache Mode: logical</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; Index Scan using airlines_pkey on airlines a (cost=0.14..0.21 rows=1 width=23)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Index Cond: ((carrier)::text = (f.carrier)::text)</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">  EXPLAIN</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT f.*, a.name</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM   flights f</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">  JOIN   airlines a ON f.carrier = a.carrier</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE  f.month = 7 AND f.dep_delay &gt; 120</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Nested Loop  (cost=0.15..3448.21 rows=226 width=101)
+  -&gt;  Seq Scan on flights f  (cost=0.00..3439.93 rows=226 width=81)
+        Filter: ((dep_delay &gt; 120) AND (month = 7))
+  -&gt;  Memoize  (cost=0.15..0.22 rows=1 width=23)
+        Cache Key: f.carrier
+        Cache Mode: logical
+        -&gt;  Index Scan using airlines_pkey on airlines a  (cost=0.14..0.21 rows=1 width=23)
+              Index Cond: ((carrier)::text = (f.carrier)::text)</code></pre>
 </div>
 </div>
 <p>With only around 226 matching flights after the filter, iterating over them and looking up each carrier in the <code>airlines</code> index is faster than building a full hash table. Notice the <code>Memoize</code> node wrapping the index scan: PostgreSQL caches the result of each carrier lookup so it does not repeat the same index probe for the same carrier twice.</p>
@@ -833,118 +685,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Between the sequential scan (reads everything) and the index scan (fetches one or a few rows directly) lies a third strategy: the <strong>bitmap scan</strong>.</p>
 <p>Without any index on <code>dep_delay</code>, a filter like <code>dep_delay &gt; 120</code> forces a sequential scan:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPLAIN</span> <span class="kw">ANALYZE</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> flights <span class="kw">WHERE</span> dep_delay <span class="op">&gt;</span> <span class="dv">120</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>5 records</caption>
-<colgroup>
-<col style="width: 100%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">QUERY PLAN</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Seq Scan on flights (cost=0.00..3178.28 rows=2778 width=81) (actual time=0.019..5.991 rows=2791 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Filter: (dep_delay &gt; 120)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Rows Removed by Filter: 101871</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Planning Time: 0.074 ms</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Execution Time: 6.101 ms</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con, <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Seq Scan on flights  (cost=0.00..3178.28 rows=2778 width=81) (actual time=0.023..8.260 rows=2791 loops=1)
+  Filter: (dep_delay &gt; 120)
+  Rows Removed by Filter: 101871
+Planning Time: 0.092 ms
+Execution Time: 8.421 ms</code></pre>
 </div>
 </div>
 <p>About 2,791 rows match the condition — roughly 2.7 percent of the table. The planner scans all 104,662 rows to find them, taking around 11 milliseconds.</p>
 <p>Adding an index on <code>dep_delay</code> changes the plan:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPLAIN</span> <span class="kw">ANALYZE</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> flights <span class="kw">WHERE</span> dep_delay <span class="op">&gt;</span> <span class="dv">120</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>7 records</caption>
-<colgroup>
-<col style="width: 100%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">QUERY PLAN</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Bitmap Heap Scan on flights (cost=33.82..2029.37 rows=2778 width=81) (actual time=0.572..1.648 rows=2791 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Recheck Cond: (dep_delay &gt; 120)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Heap Blocks: exact=890</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">-&gt; Bitmap Index Scan on idx_flights_dep_delay (cost=0.00..33.13 rows=2778 width=0) (actual time=0.431..0.432 rows=2791 loops=1)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Index Cond: (dep_delay &gt; 120)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Planning Time: 0.412 ms</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Execution Time: 1.895 ms</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con, <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bitmap Heap Scan on flights  (cost=33.82..2029.37 rows=2778 width=81) (actual time=0.614..1.943 rows=2791 loops=1)
+  Recheck Cond: (dep_delay &gt; 120)
+  Heap Blocks: exact=890
+  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..33.13 rows=2778 width=0) (actual time=0.467..0.468 rows=2791 loops=1)
+        Index Cond: (dep_delay &gt; 120)
+Planning Time: 0.464 ms
+Execution Time: 2.152 ms</code></pre>
 </div>
 </div>
 <p>The plan is now a <code>Bitmap Heap Scan</code>. It works in two phases. First, the <code>Bitmap Index Scan</code> traverses the index and builds an in-memory bitmap marking which heap pages contain matching rows. Then the <code>Bitmap Heap Scan</code> fetches only those pages, rechecking the filter condition for each row it finds. The execution time drops from about 11 milliseconds to around 2.</p>
 <p>For a highly selective filter — <code>dep_delay &gt; 300</code>, which matches only 228 rows — the same index is even more effective:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPLAIN</span> <span class="kw">ANALYZE</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> flights <span class="kw">WHERE</span> dep_delay <span class="op">&gt;</span> <span class="dv">300</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>7 records</caption>
-<colgroup>
-<col style="width: 100%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">QUERY PLAN</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Bitmap Heap Scan on flights (cost=5.90..607.22 rows=208 width=81) (actual time=0.060..0.244 rows=228 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Recheck Cond: (dep_delay &gt; 300)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Heap Blocks: exact=148</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">-&gt; Bitmap Index Scan on idx_flights_dep_delay (cost=0.00..5.85 rows=208 width=0) (actual time=0.037..0.038 rows=228 loops=1)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Index Cond: (dep_delay &gt; 300)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Planning Time: 0.083 ms</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Execution Time: 0.350 ms</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con, <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 300"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bitmap Heap Scan on flights  (cost=5.90..607.22 rows=208 width=81) (actual time=0.109..0.384 rows=228 loops=1)
+  Recheck Cond: (dep_delay &gt; 300)
+  Heap Blocks: exact=148
+  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..5.85 rows=208 width=0) (actual time=0.069..0.070 rows=228 loops=1)
+        Index Cond: (dep_delay &gt; 300)
+Planning Time: 0.144 ms
+Execution Time: 0.517 ms</code></pre>
 </div>
 </div>
 <p>Only 148 heap pages need to be fetched, and the query runs in well under a millisecond.</p>
@@ -986,105 +761,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="22.9" class="anchored" data-anchor-id="explain-analyze-buffers"><span class="header-section-number">22.9</span> EXPLAIN (ANALYZE, BUFFERS)</h2>
 <p>The <code>BUFFERS</code> option adds cache statistics to each node, showing how many 8 KB buffer pages were found in shared memory (<code>shared hit</code>) versus read from disk (<code>shared read</code>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">EXPLAIN</span> (<span class="kw">ANALYZE</span>, BUFFERS)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> f.dest, a2.name <span class="kw">AS</span> dest_name,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">COUNT</span>(<span class="op">*</span>)                             <span class="kw">AS</span> n_flights,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">ROUND</span>(<span class="fu">AVG</span>(f.arr_delay):<span class="ch">:numeric</span>, <span class="dv">1</span>)  <span class="kw">AS</span> avg_arr_delay</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   flights f</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span>   airports a2 <span class="kw">ON</span> f.dest <span class="op">=</span> a2.faa</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  f.dep_delay <span class="op">&gt;</span> <span class="dv">30</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span>  <span class="kw">BY</span> f.dest, a2.name</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> avg_arr_delay <span class="kw">DESC</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span>  <span class="dv">10</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<colgroup>
-<col style="width: 100%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">QUERY PLAN</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Limit (cost=3884.90..3884.93 rows=10 width=64) (actual time=11.831..11.835 rows=10 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Buffers: shared hit=1892</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; Sort (cost=3884.90..3918.15 rows=13298 width=64) (actual time=11.830..11.832 rows=10 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sort Key: (round(avg(f.arr_delay), 1)) DESC</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sort Method: top-N heapsort Memory: 26kB</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Buffers: shared hit=1892</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; HashAggregate (cost=3398.07..3597.54 rows=13298 width=64) (actual time=11.715..11.771 rows=64 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Group Key: f.dest, a2.name</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Batches: 1 Memory Usage: 417kB</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Buffers: shared hit=1889</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; Hash Join (cost=51.80..3265.09 rows=13298 width=28) (actual time=0.428..9.004 rows=13136 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hash Cond: ((f.dest)::text = (a2.faa)::text)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Buffers: shared hit=1889</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">-&gt; Seq Scan on flights f (cost=0.00..3178.28 rows=13298 width=8) (actual time=0.018..6.018 rows=13136 loops=1)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Filter: (dep_delay &gt; 30)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Rows Removed by Filter: 91526</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Buffers: shared hit=1870</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">-&gt; Hash (cost=33.58..33.58 rows=1458 width=24) (actual time=0.393..0.394 rows=1458 loops=1)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Buckets: 2048 Batches: 1 Memory Usage: 97kB</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Buffers: shared hit=19</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">-&gt; Seq Scan on airports a2 (cost=0.00..33.58 rows=1458 width=24) (actual time=0.003..0.132 rows=1458 loops=1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Buffers: shared hit=19</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Planning:</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Buffers: shared hit=82</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Planning Time: 1.057 ms</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">dbGetQuery</span>(con, <span class="st">"</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="st">  EXPLAIN (ANALYZE, BUFFERS)</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT f.dest, a2.name AS dest_name,</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="st">         COUNT(*)                             AS n_flights,</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="st">         ROUND(AVG(f.arr_delay)::numeric, 1)  AS avg_arr_delay</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM   flights f</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="st">  JOIN   airports a2 ON f.dest = a2.faa</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE  f.dep_delay &gt; 30</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="st">  GROUP  BY f.dest, a2.name</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="st">  ORDER  BY avg_arr_delay DESC</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="st">  LIMIT  10</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Limit  (cost=3884.90..3884.93 rows=10 width=64) (actual time=17.574..17.580 rows=10 loops=1)
+  Buffers: shared hit=1892
+  -&gt;  Sort  (cost=3884.90..3918.15 rows=13298 width=64) (actual time=17.571..17.575 rows=10 loops=1)
+        Sort Key: (round(avg(f.arr_delay), 1)) DESC
+        Sort Method: top-N heapsort  Memory: 26kB
+        Buffers: shared hit=1892
+        -&gt;  HashAggregate  (cost=3398.07..3597.54 rows=13298 width=64) (actual time=17.344..17.444 rows=64 loops=1)
+              Group Key: f.dest, a2.name
+              Batches: 1  Memory Usage: 417kB
+              Buffers: shared hit=1889
+              -&gt;  Hash Join  (cost=51.80..3265.09 rows=13298 width=28) (actual time=0.799..13.201 rows=13136 loops=1)
+                    Hash Cond: ((f.dest)::text = (a2.faa)::text)
+                    Buffers: shared hit=1889
+                    -&gt;  Seq Scan on flights f  (cost=0.00..3178.28 rows=13298 width=8) (actual time=0.034..8.624 rows=13136 loops=1)
+                          Filter: (dep_delay &gt; 30)
+                          Rows Removed by Filter: 91526
+                          Buffers: shared hit=1870
+                    -&gt;  Hash  (cost=33.58..33.58 rows=1458 width=24) (actual time=0.735..0.737 rows=1458 loops=1)
+                          Buckets: 2048  Batches: 1  Memory Usage: 97kB
+                          Buffers: shared hit=19
+                          -&gt;  Seq Scan on airports a2  (cost=0.00..33.58 rows=1458 width=24) (actual time=0.006..0.278 rows=1458 loops=1)
+                                Buffers: shared hit=19
+Planning:
+  Buffers: shared hit=82
+Planning Time: 1.413 ms
+Execution Time: 18.179 ms</code></pre>
 </div>
 </div>
 <p>The <code>flights</code> scan reports <code>shared hit=1870</code> and no reads, meaning the entire table was already in PostgreSQL’s shared buffer cache from prior queries in this chapter. The <code>airports</code> scan reports <code>shared read=19</code>, meaning it needed to load 19 pages from disk — the airports table had not been accessed recently enough to remain cached.</p>

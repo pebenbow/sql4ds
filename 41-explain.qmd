@@ -39,10 +39,9 @@ This chapter uses the `nycflights` database. The `flights` table contains 104,66
 
 `EXPLAIN` preceded a `SELECT` statement returns the query plan without executing the query. No rows are read from disk, no results are returned — only the plan.
 
-```{sql}
-#| connection: con
+```{r}
 #| label: explain-basic
-EXPLAIN SELECT * FROM flights WHERE carrier = 'UA';
+writeLines(dbGetQuery(con, "EXPLAIN SELECT * FROM flights WHERE carrier = 'UA'")[[1]])
 ```
 
 The output is a tree of **plan nodes**, each representing one operation. This plan has two nodes. The outer node is `Seq Scan on flights`, which reads the entire table row by row. Indented below it is a `Filter`, which is not a separate node but a condition applied inside the scan.
@@ -69,10 +68,9 @@ A **sequential scan** reads every page of the table from start to finish, applyi
 
 `EXPLAIN ANALYZE` executes the query and augments each node with actual measurements:
 
-```{sql}
-#| connection: con
+```{r}
 #| label: explain-analyze-seqscan
-EXPLAIN ANALYZE SELECT * FROM flights WHERE carrier = 'UA';
+writeLines(dbGetQuery(con, "EXPLAIN ANALYZE SELECT * FROM flights WHERE carrier = 'UA'")[[1]])
 ```
 
 The `actual time=0.088..31.365 rows=8044 loops=1` annotation shows that the scan took about 31 milliseconds and returned 8,044 rows. The `Rows Removed by Filter: 96618` line shows how many rows were discarded.
@@ -87,14 +85,15 @@ The estimated row count (8,132) and the actual count (8,044) are close but not i
 
 When a query is highly selective — matching only a handful of rows out of millions — the planner switches to an **index scan**. The `flights` table has a composite primary key on `(year, month, day, carrier, flight, origin)`. A lookup that supplies all six components narrows the search to a single row.
 
-```{sql}
-#| connection: con
+```{r}
 #| label: explain-index-scan
-EXPLAIN ANALYZE
-SELECT *
-FROM   flights
-WHERE  year = 2013 AND month = 6 AND day = 15
-   AND carrier = 'AA' AND flight = 301 AND origin = 'LGA';
+writeLines(dbGetQuery(con, "
+  EXPLAIN ANALYZE
+  SELECT *
+  FROM   flights
+  WHERE  year = 2013 AND month = 6 AND day = 15
+     AND carrier = 'AA' AND flight = 301 AND origin = 'LGA'
+")[[1]])
 ```
 
 The plan is `Index Scan using flights_pkey`. The total cost is around 8 — compared to 3,178 for the sequential scan above. PostgreSQL traverses the B-tree index to find the matching leaf entry and then fetches the single heap page that contains that row. Planning and execution together take under 2 milliseconds.
@@ -107,15 +106,16 @@ The planner builds its estimates from statistics stored in `pg_statistic`, which
 
 Consider joining `flights` to `airlines` to count flights per carrier:
 
-```{sql}
-#| connection: con
+```{r}
 #| label: explain-stale-stats
-EXPLAIN ANALYZE
-SELECT f.carrier, a.name, COUNT(*)
-FROM   flights f
-JOIN   airlines a ON f.carrier = a.carrier
-GROUP  BY f.carrier, a.name
-ORDER  BY count(*) DESC;
+writeLines(dbGetQuery(con, "
+  EXPLAIN ANALYZE
+  SELECT f.carrier, a.name, COUNT(*)
+  FROM   flights f
+  JOIN   airlines a ON f.carrier = a.carrier
+  GROUP  BY f.carrier, a.name
+  ORDER  BY count(*) DESC
+")[[1]])
 ```
 
 Scan the plan carefully. The `Seq Scan on airlines` node reads the table fine — 16 rows returned — but the estimate says `rows=310`. PostgreSQL thought airlines had about 310 rows. The table actually has 16.
@@ -128,15 +128,16 @@ That mismatch propagates upward: the `HashAggregate` node estimated 2,600 output
 dbExecute(con, "ANALYZE airlines")
 ```
 
-```{sql}
-#| connection: con
+```{r}
 #| label: explain-after-analyze
-EXPLAIN
-SELECT f.carrier, a.name, COUNT(*)
-FROM   flights f
-JOIN   airlines a ON f.carrier = a.carrier
-GROUP  BY f.carrier, a.name
-ORDER  BY count(*) DESC;
+writeLines(dbGetQuery(con, "
+  EXPLAIN
+  SELECT f.carrier, a.name, COUNT(*)
+  FROM   flights f
+  JOIN   airlines a ON f.carrier = a.carrier
+  GROUP  BY f.carrier, a.name
+  ORDER  BY count(*) DESC
+")[[1]])
 ```
 
 The estimate for `airlines` now matches reality. When a plan behaves unexpectedly or a query is slower than it should be, stale statistics are one of the first things to check.
@@ -157,14 +158,15 @@ A **nested loop** iterates over the outer input and, for each row, looks up matc
 
 A query that filters flights heavily before joining to airlines produces a nested loop:
 
-```{sql}
-#| connection: con
+```{r}
 #| label: explain-nested-loop
-EXPLAIN
-SELECT f.*, a.name
-FROM   flights f
-JOIN   airlines a ON f.carrier = a.carrier
-WHERE  f.month = 7 AND f.dep_delay > 120;
+writeLines(dbGetQuery(con, "
+  EXPLAIN
+  SELECT f.*, a.name
+  FROM   flights f
+  JOIN   airlines a ON f.carrier = a.carrier
+  WHERE  f.month = 7 AND f.dep_delay > 120
+")[[1]])
 ```
 
 With only around 226 matching flights after the filter, iterating over them and looking up each carrier in the `airlines` index is faster than building a full hash table. Notice the `Memoize` node wrapping the index scan: PostgreSQL caches the result of each carrier lookup so it does not repeat the same index probe for the same carrier twice.
@@ -179,10 +181,9 @@ Between the sequential scan (reads everything) and the index scan (fetches one o
 
 Without any index on `dep_delay`, a filter like `dep_delay > 120` forces a sequential scan:
 
-```{sql}
-#| connection: con
+```{r}
 #| label: explain-before-index
-EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 120;
+writeLines(dbGetQuery(con, "EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 120")[[1]])
 ```
 
 About 2,791 rows match the condition — roughly 2.7 percent of the table. The planner scans all 104,662 rows to find them, taking around 11 milliseconds.
@@ -195,20 +196,18 @@ Adding an index on `dep_delay` changes the plan:
 dbExecute(con, "CREATE INDEX idx_flights_dep_delay ON flights(dep_delay)")
 ```
 
-```{sql}
-#| connection: con
+```{r}
 #| label: explain-after-index
-EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 120;
+writeLines(dbGetQuery(con, "EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 120")[[1]])
 ```
 
 The plan is now a `Bitmap Heap Scan`. It works in two phases. First, the `Bitmap Index Scan` traverses the index and builds an in-memory bitmap marking which heap pages contain matching rows. Then the `Bitmap Heap Scan` fetches only those pages, rechecking the filter condition for each row it finds. The execution time drops from about 11 milliseconds to around 2.
 
 For a highly selective filter — `dep_delay > 300`, which matches only 228 rows — the same index is even more effective:
 
-```{sql}
-#| connection: con
+```{r}
 #| label: explain-highly-selective
-EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 300;
+writeLines(dbGetQuery(con, "EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 300")[[1]])
 ```
 
 Only 148 heap pages need to be fetched, and the query runs in well under a millisecond.
@@ -235,19 +234,20 @@ These thresholds are not fixed — they depend on table size, index size, and th
 
 The `BUFFERS` option adds cache statistics to each node, showing how many 8 KB buffer pages were found in shared memory (`shared hit`) versus read from disk (`shared read`).
 
-```{sql}
-#| connection: con
+```{r}
 #| label: explain-buffers
-EXPLAIN (ANALYZE, BUFFERS)
-SELECT f.dest, a2.name AS dest_name,
-       COUNT(*)                             AS n_flights,
-       ROUND(AVG(f.arr_delay)::numeric, 1)  AS avg_arr_delay
-FROM   flights f
-JOIN   airports a2 ON f.dest = a2.faa
-WHERE  f.dep_delay > 30
-GROUP  BY f.dest, a2.name
-ORDER  BY avg_arr_delay DESC
-LIMIT  10;
+writeLines(dbGetQuery(con, "
+  EXPLAIN (ANALYZE, BUFFERS)
+  SELECT f.dest, a2.name AS dest_name,
+         COUNT(*)                             AS n_flights,
+         ROUND(AVG(f.arr_delay)::numeric, 1)  AS avg_arr_delay
+  FROM   flights f
+  JOIN   airports a2 ON f.dest = a2.faa
+  WHERE  f.dep_delay > 30
+  GROUP  BY f.dest, a2.name
+  ORDER  BY avg_arr_delay DESC
+  LIMIT  10
+")[[1]])
 ```
 
 The `flights` scan reports `shared hit=1870` and no reads, meaning the entire table was already in PostgreSQL's shared buffer cache from prior queries in this chapter. The `airports` scan reports `shared read=19`, meaning it needed to load 19 pages from disk — the airports table had not been accessed recently enough to remain cached.
