@@ -27,7 +27,7 @@ con <- dbConnect(
 )
 ```
 
-Throughout this book, SQL code blocks have been executing against a live PostgreSQL database without much explanation of how that connection actually works. The connection is established by R using the `DBI` package, and every query result comes back to R as a data frame. This chapter makes that mechanism explicit, showing you how to connect to a database from R, retrieve query results, visualize them with `ggplot2`, and write queries safely using parameterization.
+Throughout this book, SQL code blocks have been executing against a live PostgreSQL database without much explanation of how that connection actually works. The connection is established by R using the `DBI` package [@rpkg_dbi], and every query result comes back to R as a data frame. This chapter makes that mechanism explicit, showing you how to connect to a database from R, retrieve query results, visualize them with `ggplot2` [@rpkg_ggplot2], and write queries safely using parameterization.
 
 These skills matter outside of Quarto documents. Most real data science work happens in R scripts and notebooks where you need to pull data from a database, analyze it in R, and produce outputs. Understanding how to drive that connection directly gives you full control over the process.
 
@@ -42,6 +42,8 @@ R's database connectivity is organized around a two-layer design. The `DBI` pack
 | `RMariaDB` | MySQL / MariaDB |
 | `bigrquery` | Google BigQuery |
 | `odbc` | Any ODBC-compatible database |
+
+**ODBC** (Open Database Connectivity) is a decades-old standard API for database access supported by most enterprise databases: SQL Server, Oracle, Teradata, Snowflake, Databricks, and many others. The `odbc` package lets DBI connect to any database that has an ODBC driver installed on the system, making it the practical fallback when a native DBI driver does not exist for your database.
 
 Because DBI provides a uniform interface, the code for connecting to and querying a database looks almost identical regardless of which database you use. Swapping from SQLite to PostgreSQL means changing one line (the driver), not rewriting your analysis.
 
@@ -64,6 +66,14 @@ con <- dbConnect(
   password = "postgres"
 )
 ```
+
+Each argument tells DBI something specific about where and how to connect:
+
+- `Postgres()` — the driver object; tells DBI which database engine to use. Swapping this for `SQLite()` or `bigrquery::BigQuery()` would connect to a different database entirely, with the rest of the call staying mostly the same.
+- `host` — the network address of the server. `"localhost"` means the database is running on the same machine as R. On a remote server or cloud database, this would be a hostname or IP address.
+- `port` — the TCP port the server listens on. PostgreSQL's default is 5432; this book's Docker container is mapped to 5433. If you connect to a remote database and are unsure of the port, your database administrator can tell you.
+- `dbname` — the name of a specific database on that server. A single PostgreSQL server can host many independent databases. `"nycflights"` selects the one containing the flight data used throughout this book.
+- `user` / `password` — the credentials for the database account. In a production environment, these should come from environment variables or a secrets manager, not be written as plain text in a script.
 
 The object `con` represents an open connection to the database. It is passed to every subsequent DBI function that needs to communicate with the database.
 
@@ -101,7 +111,7 @@ delays_by_carrier <- dbGetQuery(con, "
   ORDER BY mean_delay DESC
 ")
 
-delays_by_carrier
+knitr::kable(delays_by_carrier)
 ```
 
 The result is a standard R data frame. Every tool you use for data manipulation in R, including `dplyr`, `data.table`, and base R, works on the result immediately.
@@ -172,7 +182,7 @@ ggplot(delay_pairs, aes(x = dep_delay, y = arr_delay)) +
   theme_minimal()
 ```
 
-The regression line runs nearly through the origin with a slope close to 1, consistent with the coefficients computed in SQL in the previous chapter. The transparency (`alpha = 0.05`) reveals where the mass of flights lies despite over 100,000 overlapping points.
+The regression line runs nearly through the origin with a slope close to 1: a one-minute departure delay corresponds to roughly one minute of arrival delay. The transparency (`alpha = 0.05`) reveals where the mass of flights lies despite over 100,000 overlapping points.
 
 ### Mean Delay by Carrier
 
