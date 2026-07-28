@@ -56,19 +56,21 @@ These rules apply to all three operations. Violating any of them produces an err
 The query below combines all low-income and lower-middle-income countries into a single list.
 
 ```{sql}
-#| connection: con
-#| label: union-all-income
-SELECT short_name, income_group
-FROM countries
-WHERE income_group = 'Low income'
-  AND region != 'Aggregates'
+--| connection: con
+--| label: union-all-income
+SELECT c.short_name, ig.name AS income_group
+FROM countries AS c
+INNER JOIN income_groups AS ig ON c.income_group_id = ig.income_group_id
+WHERE ig.name = 'Low income'
+  AND NOT c.is_aggregate
 
 UNION ALL
 
-SELECT short_name, income_group
-FROM countries
-WHERE income_group = 'Lower middle income'
-  AND region != 'Aggregates'
+SELECT c.short_name, ig.name AS income_group
+FROM countries AS c
+INNER JOIN income_groups AS ig ON c.income_group_id = ig.income_group_id
+WHERE ig.name = 'Lower middle income'
+  AND NOT c.is_aggregate
 
 ORDER BY income_group, short_name;
 ```
@@ -84,13 +86,13 @@ The result has one row per country across both income groups. Because no country
 To see the difference, consider the question: which countries appeared in the top ten by GDP per capita in both 2000 and 2022? `UNION ALL` gives every entry from both ranked lists, while `UNION` collapses the countries that appeared in both down to a single row.
 
 ```{sql}
-#| connection: con
-#| label: union-all-top10
+--| connection: con
+--| label: union-all-top10
 (SELECT short_name
  FROM countries AS c
  INNER JOIN indicators AS i ON c.id = i.country_id
  WHERE i.year = 2000
-   AND c.region != 'Aggregates'
+   AND NOT c.is_aggregate
    AND i.gdp_per_capita_usd IS NOT NULL
  ORDER BY i.gdp_per_capita_usd DESC
  LIMIT 10)
@@ -101,7 +103,7 @@ UNION ALL
  FROM countries AS c
  INNER JOIN indicators AS i ON c.id = i.country_id
  WHERE i.year = 2022
-   AND c.region != 'Aggregates'
+   AND NOT c.is_aggregate
    AND i.gdp_per_capita_usd IS NOT NULL
  ORDER BY i.gdp_per_capita_usd DESC
  LIMIT 10)
@@ -114,13 +116,13 @@ Twenty rows come back, one for each entry in both top-ten lists. Countries that 
 Swapping `UNION ALL` for `UNION` removes those duplicates:
 
 ```{sql}
-#| connection: con
-#| label: union-top10
+--| connection: con
+--| label: union-top10
 (SELECT short_name
  FROM countries AS c
  INNER JOIN indicators AS i ON c.id = i.country_id
  WHERE i.year = 2000
-   AND c.region != 'Aggregates'
+   AND NOT c.is_aggregate
    AND i.gdp_per_capita_usd IS NOT NULL
  ORDER BY i.gdp_per_capita_usd DESC
  LIMIT 10)
@@ -131,7 +133,7 @@ UNION
  FROM countries AS c
  INNER JOIN indicators AS i ON c.id = i.country_id
  WHERE i.year = 2022
-   AND c.region != 'Aggregates'
+   AND NOT c.is_aggregate
    AND i.gdp_per_capita_usd IS NOT NULL
  ORDER BY i.gdp_per_capita_usd DESC
  LIMIT 10)
@@ -152,13 +154,13 @@ When each component query needs its own `ORDER BY` or `LIMIT`, wrap it in parent
 The `UNION` example above showed which countries appeared in either top-ten list. `INTERSECT` answers the narrower question: which countries appeared in both? The threshold here is raised to the top twenty to produce a more interesting result.
 
 ```{sql}
-#| connection: con
-#| label: intersect-top20
+--| connection: con
+--| label: intersect-top20
 (SELECT short_name
  FROM countries AS c
  INNER JOIN indicators AS i ON c.id = i.country_id
  WHERE i.year = 2000
-   AND c.region != 'Aggregates'
+   AND NOT c.is_aggregate
    AND i.gdp_per_capita_usd IS NOT NULL
  ORDER BY i.gdp_per_capita_usd DESC
  LIMIT 20)
@@ -169,7 +171,7 @@ INTERSECT
  FROM countries AS c
  INNER JOIN indicators AS i ON c.id = i.country_id
  WHERE i.year = 2022
-   AND c.region != 'Aggregates'
+   AND NOT c.is_aggregate
    AND i.gdp_per_capita_usd IS NOT NULL
  ORDER BY i.gdp_per_capita_usd DESC
  LIMIT 20)
@@ -188,23 +190,25 @@ Fourteen countries appear in the top twenty by GDP per capita in both 2000 and 2
 The `indicators` table contains data stretching back to 1960, but many countries did not exist as independent nations at the start of that period. The query below identifies countries that have forest area data for 2022 but not for 1990, a gap that reveals which nations were established after 1990 rather than which ones simply have incomplete records.
 
 ```{sql}
-#| connection: con
-#| label: except-forest-coverage
-SELECT c.short_name, c.region
+--| connection: con
+--| label: except-forest-coverage
+SELECT c.short_name, r.name AS region
 FROM countries AS c
+INNER JOIN regions AS r ON c.region_id = r.region_id
 INNER JOIN indicators AS i ON c.id = i.country_id
 WHERE i.year = 2022
   AND i.pct_forest_area IS NOT NULL
-  AND c.region != 'Aggregates'
+  AND NOT c.is_aggregate
 
 EXCEPT
 
-SELECT c.short_name, c.region
+SELECT c.short_name, r.name AS region
 FROM countries AS c
+INNER JOIN regions AS r ON c.region_id = r.region_id
 INNER JOIN indicators AS i ON c.id = i.country_id
 WHERE i.year = 1990
   AND i.pct_forest_area IS NOT NULL
-  AND c.region != 'Aggregates'
+  AND NOT c.is_aggregate
 
 ORDER BY region, short_name;
 ```
@@ -214,23 +218,25 @@ The result is a list of countries that are present in the 2022 dataset but absen
 Reversing the operands narrows the result considerably:
 
 ```{sql}
-#| connection: con
-#| label: except-reversed
-SELECT c.short_name, c.region
+--| connection: con
+--| label: except-reversed
+SELECT c.short_name, r.name AS region
 FROM countries AS c
+INNER JOIN regions AS r ON c.region_id = r.region_id
 INNER JOIN indicators AS i ON c.id = i.country_id
 WHERE i.year = 1990
   AND i.pct_forest_area IS NOT NULL
-  AND c.region != 'Aggregates'
+  AND NOT c.is_aggregate
 
 EXCEPT
 
-SELECT c.short_name, c.region
+SELECT c.short_name, r.name AS region
 FROM countries AS c
+INNER JOIN regions AS r ON c.region_id = r.region_id
 INNER JOIN indicators AS i ON c.id = i.country_id
 WHERE i.year = 2022
   AND i.pct_forest_area IS NOT NULL
-  AND c.region != 'Aggregates'
+  AND NOT c.is_aggregate
 
 ORDER BY region, short_name;
 ```
@@ -244,15 +250,17 @@ Like `INTERSECT`, `EXCEPT` implicitly deduplicates. PostgreSQL supports `EXCEPT 
 A single `ORDER BY` clause at the end of the entire statement sorts the combined result. It must reference columns by the names established in the first query, since those are the names the combined result carries.
 
 ```sql
-SELECT short_name, income_group
-FROM countries
-WHERE income_group = 'Low income' AND region != 'Aggregates'
+SELECT c.short_name, ig.name AS income_group
+FROM countries AS c
+INNER JOIN income_groups AS ig ON c.income_group_id = ig.income_group_id
+WHERE ig.name = 'Low income' AND NOT c.is_aggregate
 
 UNION ALL
 
-SELECT short_name, income_group
-FROM countries
-WHERE income_group = 'Lower middle income' AND region != 'Aggregates'
+SELECT c.short_name, ig.name AS income_group
+FROM countries AS c
+INNER JOIN income_groups AS ig ON c.income_group_id = ig.income_group_id
+WHERE ig.name = 'Lower middle income' AND NOT c.is_aggregate
 
 ORDER BY income_group, short_name;
 ```
@@ -264,11 +272,17 @@ You cannot place `ORDER BY` at the end of the first query alone without parenthe
 Multiple set operations can be chained in a single statement:
 
 ```sql
-SELECT short_name FROM countries WHERE income_group = 'Low income'
+SELECT c.short_name FROM countries AS c
+INNER JOIN income_groups AS ig ON c.income_group_id = ig.income_group_id
+WHERE ig.name = 'Low income'
 UNION
-SELECT short_name FROM countries WHERE income_group = 'Lower middle income'
+SELECT c.short_name FROM countries AS c
+INNER JOIN income_groups AS ig ON c.income_group_id = ig.income_group_id
+WHERE ig.name = 'Lower middle income'
 EXCEPT
-SELECT short_name FROM countries WHERE region = 'South Asia';
+SELECT c.short_name FROM countries AS c
+INNER JOIN regions AS r ON c.region_id = r.region_id
+WHERE r.name = 'South Asia';
 ```
 
 When mixing operation types, be aware that `INTERSECT` binds more tightly than `UNION` and `EXCEPT`, similar to how multiplication binds before addition. The expression `A UNION B INTERSECT C` is evaluated as `A UNION (B INTERSECT C)`, not `(A UNION B) INTERSECT C`. Use parentheses to make the intended order explicit whenever you chain more than one type of set operation.
@@ -287,12 +301,12 @@ When mixing operation types, be aware that `INTERSECT` binds more tightly than `
 
 ### Coding
 
-5. Write a query using `UNION ALL` that combines all high-income countries and all upper-middle-income countries into a single result set. Include the `short_name` and `income_group` columns. Sort alphabetically by `short_name`.
+5. Write a query using `UNION ALL` that combines all high-income countries and all upper-middle-income countries into a single result set. Include `short_name` and the income group name (joined from the `income_groups` table). Sort alphabetically by `short_name`.
 
 6. Rewrite the query from exercise 5 using `UNION` instead of `UNION ALL`. Explain whether the row count changes and why.
 
 7. Using `INTERSECT`, find the countries that appear in **both** of the following groups: countries with 2022 population above 50 million, and countries with 2022 GDP per capita above 10,000 USD. Return `short_name` sorted alphabetically.
 
-8. Using `EXCEPT`, find countries that had GDP per capita data in 1990 but have **no** GDP per capita data in 2022. Return `short_name` and `region`, sorted by `region` then `short_name`.
+8. Using `EXCEPT`, find countries that had GDP per capita data in 1990 but have **no** GDP per capita data in 2022. Return `short_name` and the region name (joined from the `regions` table), sorted by region then `short_name`.
 
 9. Write a query that returns the `short_name` of every country that ranks in the top 15 by population in 2022 **or** in the top 15 by GDP per capita in 2022, but not necessarily both. Use `UNION` to deduplicate the combined list. Sort by `short_name`.

@@ -36,10 +36,12 @@ Create an engine from the connection string. The engine manages a pool of connec
 
 ```{python}
 #| label: connect
+import os
 from sqlalchemy import create_engine
 
+port = os.environ.get("PGPORT", "5432")
 engine = create_engine(
-    "postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank"
+    f"postgresql+psycopg2://postgres:postgres@localhost:{port}/worldbank"
 )
 ```
 

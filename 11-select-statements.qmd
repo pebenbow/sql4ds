@@ -59,8 +59,8 @@ Every query that retrieves data starts with a `SELECT` statement. The two requir
 The quickest way to see everything a table contains is to use an asterisk (`*`) in place of column names. The asterisk is shorthand for "every column, in the order they are defined."
 
 ```{sql}
-#| connection: con
-#| label: select-star
+--| connection: con
+--| label: select-star
 SELECT *
 FROM actors
 LIMIT 5;
@@ -73,8 +73,8 @@ The `LIMIT 5` at the end restricts the output to five rows. Without it, the quer
 In most real situations, you will not want every column. Listing only the columns you need makes results easier to read and faster to retrieve from large tables.
 
 ```{sql}
-#| connection: con
-#| label: select-columns
+--| connection: con
+--| label: select-columns
 SELECT first_name, last_name, birth_country, primary_genre
 FROM actors;
 ```
@@ -94,8 +94,8 @@ Beyond choosing which columns to include, SQL lets you rename columns, combine t
 By default, a column in your result inherits the name it has in the table. You can override this with the `AS` keyword, which assigns an **alias** to a column. Aliases are useful for giving computed values a meaningful name, shortening long column names, or improving readability.
 
 ```{sql}
-#| connection: con
-#| label: aliases
+--| connection: con
+--| label: aliases
 SELECT
     first_name        AS given_name,
     last_name         AS surname,
@@ -112,8 +112,8 @@ The `AS` keyword is optional in PostgreSQL; you can write the alias directly aft
 PostgreSQL uses the `||` operator to concatenate (join) strings together. This lets you build a single display value out of multiple columns, or add literal text between column values.
 
 ```{sql}
-#| connection: con
-#| label: concatenation
+--| connection: con
+--| label: concatenation
 SELECT
     first_name || ' ' || last_name AS full_name,
     birth_country,
@@ -124,8 +124,8 @@ FROM actors;
 You can add as many literal strings as you like. Here, a comma and space are inserted between the last name and the birth country to produce a compact bio label:
 
 ```{sql}
-#| connection: con
-#| label: concatenation-2
+--| connection: con
+--| label: concatenation-2
 SELECT
     first_name || ' ' || last_name || ', ' || birth_country AS bio_label,
     primary_genre
@@ -143,8 +143,8 @@ SQL treats numeric columns like variables in an algebraic expression. You can ad
 As an example, `height_cm` stores each actor's height in centimeters. You can convert that to inches by dividing by 2.54:
 
 ```{sql}
-#| connection: con
-#| label: arithmetic
+--| connection: con
+--| label: arithmetic
 SELECT
     first_name || ' ' || last_name AS full_name,
     height_cm,
@@ -167,8 +167,8 @@ Adding the `DISTINCT` keyword immediately after `SELECT` tells the database to r
 A common use is to see every unique value that appears in a categorical column. The `actors` table has 200 rows but only eight distinct primary genres. Without `DISTINCT`, selecting the `primary_genre` column would return 200 rows with many repeated values. With it, you get the eight unique values once each:
 
 ```{sql}
-#| connection: con
-#| label: distinct-genre
+--| connection: con
+--| label: distinct-genre
 SELECT DISTINCT primary_genre
 FROM actors
 ORDER BY primary_genre;
@@ -185,8 +185,8 @@ ORDER BY primary_genre;
 `COUNT` is an **aggregate function**: rather than returning one row per input row, it collapses results into a single summary value. The most common form, `COUNT(*)`, returns the total number of rows in the result.
 
 ```{sql}
-#| connection: con
-#| label: count-all
+--| connection: con
+--| label: count-all
 SELECT COUNT(*) AS total_actors
 FROM actors;
 ```
@@ -194,8 +194,8 @@ FROM actors;
 Paired with a `WHERE` clause, `COUNT(*)` counts only the rows that satisfy the filter:
 
 ```{sql}
-#| connection: con
-#| label: count-filtered
+--| connection: con
+--| label: count-filtered
 SELECT COUNT(*) AS drama_actors
 FROM actors
 WHERE primary_genre = 'Drama';
@@ -204,8 +204,8 @@ WHERE primary_genre = 'Drama';
 `COUNT(column_name)`, with a specific column instead of `*`, counts only rows where that column is not NULL. This makes it a convenient way to measure how complete your data is:
 
 ```{sql}
-#| connection: con
-#| label: count-nulls
+--| connection: con
+--| label: count-nulls
 SELECT
     COUNT(*)          AS total_rows,
     COUNT(birth_name) AS rows_with_birth_name,
@@ -218,8 +218,8 @@ The `birth_name` column records an actor's legal name when they perform under a 
 `COUNT(DISTINCT column)` combines both ideas, counting how many unique values appear in a column:
 
 ```{sql}
-#| connection: con
-#| label: count-distinct
+--| connection: con
+--| label: count-distinct
 SELECT COUNT(DISTINCT birth_country) AS num_countries
 FROM actors;
 ```
@@ -243,8 +243,8 @@ WHERE condition;
 Use a single equals sign (`=`) to match a text value exactly. Text comparisons in PostgreSQL are case-sensitive by default, so `'Drama'` and `'drama'` are not the same.
 
 ```{sql}
-#| connection: con
-#| label: where-text
+--| connection: con
+--| label: where-text
 SELECT first_name, last_name, birth_country, oscar_nominations
 FROM actors
 WHERE primary_genre = 'Drama'
@@ -264,8 +264,8 @@ WHERE primary_genre <> 'Drama';
 The standard comparison operators work on numeric columns: `<`, `>`, `<=`, `>=`, `=`, and `<>`.
 
 ```{sql}
-#| connection: con
-#| label: where-numeric
+--| connection: con
+--| label: where-numeric
 SELECT first_name, last_name, oscar_nominations, oscar_wins
 FROM actors
 WHERE oscar_nominations >= 5
@@ -279,8 +279,8 @@ Fifteen actors in the table have received five or more Oscar nominations. Meryl 
 Date columns can be compared with the same operators as numbers. PostgreSQL accepts date literals in `'YYYY-MM-DD'` format.
 
 ```{sql}
-#| connection: con
-#| label: where-date
+--| connection: con
+--| label: where-date
 SELECT first_name, last_name, birth_date, birth_country
 FROM actors
 WHERE birth_date >= '1980-01-01'
@@ -304,8 +304,8 @@ WHERE birth_date BETWEEN '1950-01-01' AND '1969-12-31'
 `BETWEEN` is **inclusive on both ends**: a row where the column value equals either boundary is included in the result. It works with dates, integers, and strings.
 
 ```{sql}
-#| connection: con
-#| label: where-between-date
+--| connection: con
+--| label: where-between-date
 SELECT first_name, last_name, birth_date, oscar_nominations
 FROM actors
 WHERE birth_date BETWEEN '1950-01-01' AND '1969-12-31'
@@ -315,8 +315,8 @@ ORDER BY birth_date;
 The same syntax applies to integer columns:
 
 ```{sql}
-#| connection: con
-#| label: where-between-int
+--| connection: con
+--| label: where-between-int
 SELECT first_name, last_name, oscar_nominations, oscar_wins
 FROM actors
 WHERE oscar_nominations BETWEEN 3 AND 8
@@ -326,8 +326,8 @@ ORDER BY oscar_nominations DESC;
 With strings, `BETWEEN` uses alphabetical (lexicographic) order. The boundary behavior is the same — both ends are inclusive — but the upper boundary catches only that exact string, not everything that begins with it. `last_name BETWEEN 'D' AND 'H'` would miss `Hanks`, `Hepburn`, and every other name that starts with H but sorts after the bare letter `H`. The correct way to express "last names beginning with D through H" is a half-open range using explicit operators:
 
 ```{sql}
-#| connection: con
-#| label: where-string-range
+--| connection: con
+--| label: where-string-range
 SELECT first_name, last_name, primary_genre
 FROM actors
 WHERE last_name >= 'D' AND last_name < 'I'
@@ -347,8 +347,8 @@ Prefer explicit `>=` and `<=` comparisons over `BETWEEN` for most situations. Th
 The `death_date` column is NULL for actors who are still living. You can find living actors using `IS NULL`:
 
 ```{sql}
-#| connection: con
-#| label: where-is-null
+--| connection: con
+--| label: where-is-null
 SELECT first_name, last_name, birth_date, birth_country
 FROM actors
 WHERE death_date IS NULL
@@ -358,8 +358,8 @@ ORDER BY birth_date;
 To find rows where a value *is* present, use `IS NOT NULL`. The following query returns only deceased actors by requiring that `death_date` has been recorded:
 
 ```{sql}
-#| connection: con
-#| label: where-is-not-null
+--| connection: con
+--| label: where-is-not-null
 SELECT first_name, last_name, birth_date, death_date
 FROM actors
 WHERE death_date IS NOT NULL
@@ -378,8 +378,8 @@ A `WHERE` clause can include multiple conditions joined by `AND` or `OR`.
 - `OR` requires **at least one** condition to be true.
 
 ```{sql}
-#| connection: con
-#| label: where-and
+--| connection: con
+--| label: where-and
 SELECT first_name, last_name, birth_country, oscar_nominations, oscar_wins
 FROM actors
 WHERE primary_genre = 'Drama'
@@ -409,8 +409,8 @@ The `LIKE` operator filters text columns using simple patterns. Two wildcard cha
 The following example finds all actors whose last names begin with H:
 
 ```{sql}
-#| connection: con
-#| label: where-like
+--| connection: con
+--| label: where-like
 SELECT first_name, last_name, primary_genre, birth_country
 FROM actors
 WHERE last_name LIKE 'H%'
@@ -420,8 +420,8 @@ ORDER BY last_name;
 Lowercase `'h%'` would return no results here because text matching with `LIKE` is case-sensitive, and no last names in this table begin with a lower-case h. `ILIKE` works identically to `LIKE` but ignores case. Replacing `LIKE` with `ILIKE` makes the same pattern work regardless of how the value is capitalized:
 
 ```{sql}
-#| connection: con
-#| label: where-ilike
+--| connection: con
+--| label: where-ilike
 SELECT first_name, last_name, primary_genre, birth_country
 FROM actors
 WHERE last_name ILIKE 'h%'
@@ -433,8 +433,8 @@ Both queries return the same fourteen rows because the data happens to be consis
 With `%` wildcards on both sides of a search term, you can find text that occurs anywhere in a column. The following query finds actors whose birth names contain the word "Schwartz" or any other substring:
 
 ```{sql}
-#| connection: con
-#| label: where-like-2
+--| connection: con
+--| label: where-like-2
 SELECT first_name, last_name, birth_name
 FROM actors
 WHERE birth_name LIKE '%Bernard%';
@@ -445,8 +445,8 @@ WHERE birth_name LIKE '%Bernard%';
 When you want to match any one of several specific values, `IN` is more readable than a chain of `OR` conditions.
 
 ```{sql}
-#| connection: con
-#| label: where-in
+--| connection: con
+--| label: where-in
 SELECT first_name, last_name, birth_country, oscar_nominations
 FROM actors
 WHERE birth_country IN ('UK', 'Australia', 'Ireland')
@@ -460,8 +460,8 @@ The `NOT` keyword reverses the result of a condition. It can be placed in front 
 `NOT LIKE` excludes rows that match a pattern. The query below returns actors whose last names do not begin with a vowel:
 
 ```{sql}
-#| connection: con
-#| label: where-not-like
+--| connection: con
+--| label: where-not-like
 SELECT first_name, last_name, primary_genre
 FROM actors
 WHERE last_name NOT LIKE 'A%'
@@ -475,8 +475,8 @@ ORDER BY last_name;
 `NOT IN` excludes rows whose column value matches any entry in the list:
 
 ```{sql}
-#| connection: con
-#| label: where-not-in
+--| connection: con
+--| label: where-not-in
 SELECT first_name, last_name, birth_country, primary_genre
 FROM actors
 WHERE primary_genre NOT IN ('Drama', 'Action')
@@ -502,8 +502,8 @@ This is equivalent to `WHERE primary_genre <> 'Drama'`. The prefix form is more 
 When a NULL appears anywhere in the list passed to `NOT IN`, the condition returns no rows at all. To see this, try adding a NULL to an otherwise straightforward filter:
 
 ```{sql}
-#| connection: con
-#| label: not-in-null-list
+--| connection: con
+--| label: not-in-null-list
 SELECT first_name, last_name, primary_genre
 FROM actors
 WHERE primary_genre NOT IN ('Drama', 'Action', NULL);
@@ -536,8 +536,8 @@ ORDER BY column1 ASC;
 `ASC` (ascending) is the default and can be omitted. Use `DESC` (descending) to reverse the order.
 
 ```{sql}
-#| connection: con
-#| label: order-by-single
+--| connection: con
+--| label: order-by-single
 SELECT first_name, last_name, oscar_nominations, oscar_wins
 FROM actors
 ORDER BY oscar_nominations DESC;
@@ -548,8 +548,8 @@ ORDER BY oscar_nominations DESC;
 You can sort by more than one column by listing them after `ORDER BY`, separated by commas. The database sorts by the first column, then uses the second column to break ties, then the third, and so on.
 
 ```{sql}
-#| connection: con
-#| label: order-by-multi
+--| connection: con
+--| label: order-by-multi
 SELECT first_name, last_name, primary_genre, oscar_nominations
 FROM actors
 ORDER BY primary_genre ASC, oscar_nominations DESC;
@@ -562,8 +562,8 @@ This query first groups rows by genre alphabetically, then within each genre sor
 The `LIMIT` clause caps the number of rows returned by a query. It is most useful when combined with `ORDER BY`, because the two together let you answer "top N" questions: the ten most nominated actors, the five tallest actors, and so on.
 
 ```{sql}
-#| connection: con
-#| label: limit-with-order
+--| connection: con
+--| label: limit-with-order
 SELECT first_name, last_name, primary_genre, oscar_nominations
 FROM actors
 ORDER BY oscar_nominations DESC
@@ -587,8 +587,8 @@ The clauses covered in this chapter can be combined in a single query. PostgreSQ
 The query below uses all of these clauses together to find the ten most Oscar-nominated actors born outside the United States, showing their full name, birth country, nomination total, and wins.
 
 ```{sql}
-#| connection: con
-#| label: combined
+--| connection: con
+--| label: combined
 SELECT
     first_name || ' ' || last_name AS full_name,
     birth_country,

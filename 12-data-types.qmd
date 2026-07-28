@@ -51,8 +51,8 @@ Every value stored in a database has a data type, which tells the database how t
 Before discussing types in the abstract, it helps to see what types the `actors` table actually uses. The most direct way to do this is to query `information_schema.columns`, a catalog view available in every PostgreSQL database that describes the structure of the database itself.
 
 ```{sql}
-#| connection: con
-#| label: information-schema
+--| connection: con
+--| label: information-schema
 SELECT column_name, data_type, character_maximum_length,
        numeric_precision, numeric_scale
 FROM   information_schema.columns
@@ -65,8 +65,8 @@ The `data_type` column uses standard SQL type names. `character varying` is the 
 An alternative approach uses the `pg_typeof()` function to return the data type of any **expression** in your query. This includes table columns, but it also works on computed expressions, literals, and the results of function calls.
 
 ```{sql}
-#| connection: con
-#| label: pg-typeof
+--| connection: con
+--| label: pg-typeof
 SELECT
     pg_typeof(actor_id)             AS actor_id_type,
     pg_typeof(height_cm)            AS height_cm_type,
@@ -100,8 +100,8 @@ The `sex` column in the `actors` table is `CHAR(1)` — exactly one character, a
 `TEXT` stores a variable-length string with no upper limit on length. The `notable_role` column uses `TEXT` — film titles have no predictable maximum length, and there is no meaningful cap to enforce.
 
 ```{sql}
-#| connection: con
-#| label: text-column
+--| connection: con
+--| label: text-column
 SELECT first_name, last_name, notable_role
 FROM   actors
 ORDER  BY last_name
@@ -149,8 +149,8 @@ PostgreSQL also provides `SERIAL`, `SMALLSERIAL`, and `BIGSERIAL` as shorthand f
 The `total_box_office_usd` column is `NUMERIC(12, 0)` — up to twelve significant digits with no decimal places, suitable for whole-dollar box office figures up to $999,999,999,999.
 
 ```{sql}
-#| connection: con
-#| label: numeric-column
+--| connection: con
+--| label: numeric-column
 SELECT first_name, last_name,
        total_box_office_usd,
        total_box_office_usd / 1000000 AS millions
@@ -166,8 +166,8 @@ Because `NUMERIC` uses exact arithmetic, it is the correct choice for financial 
 PostgreSQL includes a `MONEY` type specifically for currency amounts. It stores values as an 8-byte integer internally and always displays them with exactly two decimal places, formatted according to the database server's locale setting.
 
 ```{sql}
-#| connection: con
-#| label: money-type
+--| connection: con
+--| label: money-type
 SELECT
     1234.56::money                  AS amount,
     pg_typeof(1234.56::money)       AS stored_as,
@@ -181,8 +181,8 @@ At first glance, `MONEY` looks convenient for financial data. In practice, it ha
 **Arithmetic produces unexpected types.** Dividing a `MONEY` value by an integer returns `MONEY`, which is intuitive. Dividing a `MONEY` value by another `MONEY` value, however, returns `DOUBLE PRECISION`, not `MONEY` or `NUMERIC`. This silently introduces floating-point approximation into a calculation you might expect to be exact.
 
 ```{sql}
-#| connection: con
-#| label: money-arithmetic
+--| connection: con
+--| label: money-arithmetic
 SELECT
     1234.56::money / 2                    AS divided_by_int,
     pg_typeof(1234.56::money / 2)         AS type_after_int_division,
@@ -199,8 +199,8 @@ The PostgreSQL wiki's "Don't Do This" guide lists `MONEY` as a type to avoid. Fo
 `REAL` (4 bytes) and `DOUBLE PRECISION` (8 bytes) store floating-point numbers — approximations rather than exact values. They follow the IEEE 754 standard used by most programming languages for `float` and `double`.
 
 ```{sql}
-#| connection: con
-#| label: float-demo
+--| connection: con
+--| label: float-demo
 SELECT
     pg_typeof(3.14)            AS uncast_literal,
     pg_typeof(3.14::real)      AS real_type,
@@ -218,8 +218,8 @@ Floating-point arithmetic can introduce tiny rounding errors that accumulate wit
 The `BOOLEAN` type stores a truth value: `TRUE`, `FALSE`, or `NULL`. The `has_honorary_oscar` column in the `actors` table is a boolean — each actor either has received an honorary Oscar or has not.
 
 ```{sql}
-#| connection: con
-#| label: boolean-column
+--| connection: con
+--| label: boolean-column
 SELECT first_name, last_name, has_honorary_oscar, oscar_wins
 FROM   actors
 WHERE  has_honorary_oscar = true
@@ -231,8 +231,8 @@ PostgreSQL displays boolean values as `t` and `f` in the terminal, though it acc
 Boolean values also arise naturally whenever you write a comparison expression. The following query adds a computed boolean column that is `TRUE` for actors with more than one Oscar win:
 
 ```{sql}
-#| connection: con
-#| label: boolean-expression
+--| connection: con
+--| label: boolean-expression
 SELECT
     first_name || ' ' || last_name AS full_name,
     oscar_wins,
@@ -253,8 +253,8 @@ PostgreSQL provides dedicated types for dates, times, and durations. Using these
 `DATE` stores a calendar date: year, month, and day, with no time component. The `birth_date` and `death_date` columns in the `actors` table are both `DATE`.
 
 ```{sql}
-#| connection: con
-#| label: date-column
+--| connection: con
+--| label: date-column
 SELECT first_name, last_name, birth_date, death_date
 FROM   actors
 WHERE  death_date IS NOT NULL
@@ -279,8 +279,8 @@ If you are coming from MySQL or SQL Server, you may be looking for a `DATETIME` 
 The function `NOW()` returns the current date and time as a `TIMESTAMPTZ`, and `CURRENT_DATE` returns today's date as a `DATE`.
 
 ```{sql}
-#| connection: con
-#| label: timestamp-now
+--| connection: con
+--| label: timestamp-now
 SELECT
     NOW()         AS current_timestamp,
     CURRENT_DATE  AS today,
@@ -294,8 +294,8 @@ SELECT
 Intervals are most useful for date arithmetic. You can add an interval to a date to compute a future or past date, or subtract two dates to compute the duration between them.
 
 ```{sql}
-#| connection: con
-#| label: interval-arithmetic
+--| connection: con
+--| label: interval-arithmetic
 SELECT
     first_name || ' ' || last_name      AS full_name,
     birth_date,
@@ -324,8 +324,8 @@ EXTRACT(field FROM date_or_timestamp)
 Common fields include `year`, `month`, `day`, `hour`, `minute`, `second`, `quarter`, `week`, and `dow` (day of week, where 0 is Sunday).
 
 ```{sql}
-#| connection: con
-#| label: extract-birth
+--| connection: con
+--| label: extract-birth
 SELECT
     first_name || ' ' || last_name  AS full_name,
     birth_date,
@@ -340,8 +340,8 @@ LIMIT 10;
 A practical use is computing an actor's age in whole years. Subtracting birth years alone is imprecise because it ignores whether the birthday has occurred yet in the current year. The expression below accounts for that by comparing the month and day:
 
 ```{sql}
-#| connection: con
-#| label: extract-age
+--| connection: con
+--| label: extract-age
 SELECT
     first_name || ' ' || last_name                          AS full_name,
     birth_date,
@@ -373,8 +373,8 @@ PostgreSQL provides two syntaxes for casting, which are fully interchangeable.
 `CAST(value AS type)` is the ANSI SQL standard form, supported by virtually every relational database.
 
 ```{sql}
-#| connection: con
-#| label: cast-function
+--| connection: con
+--| label: cast-function
 SELECT
     first_name || ' ' || last_name          AS full_name,
     height_cm,
@@ -389,8 +389,8 @@ LIMIT 10;
 The `::` operator is PostgreSQL's native shorthand for the same operation. `value::type` is identical in behavior to `CAST(value AS type)`, but more compact.
 
 ```{sql}
-#| connection: con
-#| label: cast-operator
+--| connection: con
+--| label: cast-operator
 SELECT
     first_name || ' ' || last_name          AS full_name,
     height_cm,
@@ -409,8 +409,8 @@ A few casting patterns come up repeatedly in practice.
 **Numeric to text for string building.** The `||` concatenation operator requires both operands to be text. Casting a number to text before concatenating is the standard solution.
 
 ```{sql}
-#| connection: con
-#| label: cast-to-text
+--| connection: con
+--| label: cast-to-text
 SELECT
     first_name || ' ' || last_name || ' — $' ||
     (total_box_office_usd / 1000000)::text || 'M'  AS bio_label
@@ -422,8 +422,8 @@ LIMIT 10;
 **Text to a typed value.** SQL queries often receive values from external sources as text strings. Casting converts them to the appropriate type for arithmetic or comparison.
 
 ```{sql}
-#| connection: con
-#| label: cast-text-to-typed
+--| connection: con
+--| label: cast-text-to-typed
 SELECT
     '1956'::integer        AS year_as_int,
     '3.14159'::numeric     AS pi_as_numeric,
@@ -434,8 +434,8 @@ SELECT
 **Rounding versus truncating.** Casting a `NUMERIC` value to `INTEGER` rounds to the nearest integer. If you want to discard the decimal component entirely and always round toward zero, use `TRUNC()` instead. The difference only shows when the decimal portion is 0.5 or greater. Converting heights from centimeters to whole feet makes the distinction visible:
 
 ```{sql}
-#| connection: con
-#| label: cast-truncation
+--| connection: con
+--| label: cast-truncation
 SELECT DISTINCT ON (height_cm)
     first_name || ' ' || last_name              AS actor,
     height_cm,
@@ -463,9 +463,9 @@ Implicit casting is convenient, but it can occasionally produce surprising resul
 A cast fails if the value cannot be converted to the target type. Attempting to cast a non-numeric string to an integer produces an error.
 
 ```{sql}
-#| connection: con
-#| label: cast-error
-#| error: TRUE
+--| connection: con
+--| label: cast-error
+--| error: TRUE
 SELECT CAST('Forrest Gump' AS integer);
 ```
 

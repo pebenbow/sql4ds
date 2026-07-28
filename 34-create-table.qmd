@@ -217,8 +217,8 @@ Inline `PRIMARY KEY` syntax cannot express a composite key. The full multi-table
 Here is the complete `students` table definition, bringing all the constraints above into a single statement:
 
 ```{sql}
-#| connection: con
-#| output: false
+--| connection: con
+--| output: false
 CREATE TABLE students (
     student_id   SERIAL        PRIMARY KEY,
     first_name   TEXT          NOT NULL,
@@ -233,8 +233,8 @@ CREATE TABLE students (
 Insert a few rows to verify the table works:
 
 ```{sql}
-#| connection: con
-#| output: false
+--| connection: con
+--| output: false
 INSERT INTO students (first_name, last_name, email, enrolled_on, gpa)
 VALUES
     ('Maria',  'Santos',  'msantos@university.edu',  '2023-08-28', 3.85),
@@ -244,7 +244,7 @@ VALUES
 ```
 
 ```{sql}
-#| connection: con
+--| connection: con
 SELECT * FROM students
 ```
 

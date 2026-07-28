@@ -203,6 +203,10 @@ With the three stages defined, the pipeline is a straightforward composition:
 
 ```{python}
 #| label: run-pipeline
+import os
+
+port = os.environ.get("PGPORT", "5432")
+
 def run_pipeline(
     countries_path: str,
     indicators_path: str,
@@ -219,7 +223,7 @@ def run_pipeline(
 stats = run_pipeline(
     countries_path="data/countries.csv",
     indicators_path="data/indicators.parquet",
-    db_url="postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank"
+    db_url=f"postgresql+psycopg2://postgres:postgres@localhost:{port}/worldbank"
 )
 
 print(stats)
@@ -232,7 +236,7 @@ Run it a second time to confirm idempotency:
 stats2 = run_pipeline(
     countries_path="data/countries.csv",
     indicators_path="data/indicators.parquet",
-    db_url="postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank"
+    db_url=f"postgresql+psycopg2://postgres:postgres@localhost:{port}/worldbank"
 )
 
 print(stats2)
@@ -247,7 +251,7 @@ After the pipeline runs, query PostgreSQL to confirm the data landed correctly:
 ```{python}
 #| label: verify
 engine = create_engine(
-    "postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank"
+    f"postgresql+psycopg2://postgres:postgres@localhost:{port}/worldbank"
 )
 
 summary_query = """
@@ -301,7 +305,7 @@ def run_pipeline_safe(countries_path, indicators_path, db_url) -> dict | None:
 result = run_pipeline_safe(
     countries_path="data/countries.csv",
     indicators_path="data/indicators.parquet",
-    db_url="postgresql+psycopg2://postgres:postgres@localhost:5433/worldbank"
+    db_url=f"postgresql+psycopg2://postgres:postgres@localhost:{port}/worldbank"
 )
 
 if result:

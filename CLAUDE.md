@@ -62,11 +62,16 @@ source("_common.R")   # opens `con`, a DBI connection to the container
 ```
 ````
 
-SQL chunks then reference that connection:
+SQL chunks then reference that connection. Use `--|`, not `#|`, for SQL
+chunk options -- knitr requires each engine's native comment prefix for its
+own chunk options, and `#|` on a `{sql}` chunk fails to parse (with a
+confusing "should start with '--|' instead of '#|'" error) whenever that
+chunk is preceded by an `{r}` chunk in the same document, which is true of
+essentially every chapter that sources `_common.R` first:
 
 ````sql
 ```{sql}
-#| connection: con
+--| connection: con
 SELECT * FROM some_table LIMIT 5;
 ```
 ````
