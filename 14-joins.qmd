@@ -80,7 +80,7 @@ This chapter introduces primary keys, foreign keys, and cardinality as the pract
 
 ## The worldbank Database
 
-The examples in this chapter use the `worldbank` database, which contains three tables drawn from World Bank development data.
+The examples in this chapter use the `worldbank` database. Three tables are used from the start:
 
 | Table | Primary Key | Description |
 |---|---|---|
@@ -88,11 +88,21 @@ The examples in this chapter use the `worldbank` database, which contains three 
 | `indicators` | `(country_id, year)` | One row per country-year with multiple measurement columns (16,704 rows) |
 | `series` | `id` | Metadata describing each measurement type (9 rows) |
 
-The only enforced foreign key relationship is:
+Two more lookup tables come into play once this chapter reaches joining more than two tables at a time:
+
+| Table | Primary Key | Description |
+|---|---|---|
+| `regions` | `region_id` | Human-readable name for each of the 7 world regions `countries.region_id` points to |
+| `income_groups` | `income_group_id` | Human-readable name for each of the 5 income classifications `countries.income_group_id` points to |
+
+The enforced foreign key relationships are:
 
 - `indicators.country_id` references `countries.id`
+- `countries.region_id` references `regions.region_id`
+- `countries.income_group_id` references `income_groups.income_group_id`
+- `countries.lending_type_id` references a similar `lending_types` lookup table, not used in this chapter's examples
 
-The `countries` table includes both individual countries and regional aggregates such as "Africa" and "High income". These 38 aggregate entries appear in `countries` but have no corresponding rows in `indicators`, which records data only for individual countries. That natural gap is what makes the left join and anti-join examples in this chapter meaningful.
+The `countries` table includes both individual countries and regional aggregates such as "Africa" and "High income", flagged by the boolean column `is_aggregate`. Aggregate entries have NULL `region_id` and `income_group_id`, since they do not belong to a real region or income classification. 38 rows in `countries` (37 aggregates, plus one country not yet sovereign for the years this data covers) have no corresponding rows in `indicators`, which records data only for individual countries with recorded measurements. That natural gap is what makes the left join and anti-join examples in this chapter meaningful.
 
 The `indicators` table stores measurements as columns rather than rows. Each row captures one country in one year, and columns like `gdp_per_capita_usd`, `population`, `pct_forest_area`, and `land_area_km2` hold the values for that combination. Data spans from 1960 through 2023.
 
@@ -148,7 +158,6 @@ This is the default join type. Writing `JOIN` without a qualifier is equivalent 
 --| label: inner-join-gdp
 SELECT
     c.short_name,
-    c.region,
     i.gdp_per_capita_usd,
     i.population
 FROM countries AS c
@@ -158,7 +167,7 @@ ORDER BY i.gdp_per_capita_usd DESC NULLS LAST
 LIMIT 10;
 ```
 
-This query pairs each country with its 2022 measurements. Because the join is inner, any country without a matching row in `indicators` is excluded from the result entirely. Notice that no entries from the `Aggregates` region appear: the 38 regional aggregates in `countries` have no rows in `indicators`, so the inner join drops them without any warning. The next section shows how a left join makes those gaps visible.
+This query pairs each country with its 2022 measurements. Because the join is inner, any country without a matching row in `indicators` is excluded from the result entirely. Notice that no aggregate entries (rows where `is_aggregate` is true, such as "Africa" or "High income") appear: most of them have no rows in `indicators` at all, so the inner join drops them without any warning. The next section shows how a left join makes those gaps visible.
 
 ::: {.callout-note}
 When a column name exists in only one of the joined tables, you can reference it without a qualifier and PostgreSQL will resolve it unambiguously. However, any column name that appears in more than one table must be qualified with the table alias, or the query will fail with an "ambiguous column" error. When in doubt, qualify every column.
@@ -175,7 +184,6 @@ The "left" table is the one named in the `FROM` clause. The "right" table is the
 --| label: left-join-basic
 SELECT
     c.short_name,
-    c.region,
     i.year,
     i.population
 FROM countries AS c
@@ -233,7 +241,6 @@ LIMIT 5;
 --| label: left-join-where-gotcha
 SELECT
     c.short_name,
-    c.region,
     i.year,
     i.gdp_per_capita_usd
 FROM countries AS c
@@ -252,7 +259,6 @@ Moving the condition into the `ON` clause fixes it:
 --| label: left-join-on-fix
 SELECT
     c.short_name,
-    c.region,
     i.year,
     i.gdp_per_capita_usd
 FROM countries AS c
@@ -305,7 +311,6 @@ A `FULL OUTER JOIN` returns **all rows from both tables**. Rows that have a matc
 --| label: full-outer-join
 SELECT
     c.short_name,
-    c.region,
     i.gdp_per_capita_usd
 FROM countries AS c
 FULL OUTER JOIN indicators AS i
@@ -357,14 +362,13 @@ The most common pattern extends a left join with a `WHERE` clause that keeps onl
 --| connection: con
 --| label: anti-join-left-null
 SELECT
-    c.short_name,
-    c.region
+    c.short_name
 FROM countries AS c
 LEFT JOIN indicators AS i ON c.id = i.country_id
 WHERE i.country_id IS NULL;
 ```
 
-This returns every entry in `countries` that has no rows in `indicators`. The left join brings in all countries; the `WHERE` clause discards the ones that did match, leaving only those that did not. The result is the 38 regional aggregate entries.
+This returns every entry in `countries` that has no rows in `indicators`. The left join brings in all countries; the `WHERE` clause discards the ones that did match, leaving only those that did not. The result is those same 38 entries: mostly regional aggregates, plus one individual country with no recorded measurements at all.
 
 ::: {.callout-tip}
 Filter on the join key column from the right table, not a data column. The join key is guaranteed to be NULL only when no match was found. A data column could be NULL for other reasons, which would produce false positives.
@@ -378,8 +382,7 @@ The second pattern uses `NOT EXISTS` with a correlated subquery. This is the app
 --| connection: con
 --| label: anti-join-not-exists
 SELECT
-    c.short_name,
-    c.region
+    c.short_name
 FROM countries AS c
 WHERE NOT EXISTS (
     SELECT 1
@@ -394,27 +397,29 @@ Both patterns produce the same rows. The `LEFT JOIN / IS NULL` form is often mor
 
 ## Joining More Than Two Tables
 
-Nothing limits a query to two tables. You can chain as many joins as the data requires, adding one table at a time. One particularly useful pattern is joining the same table twice under different aliases to compare values across two points in time. Here, the `indicators` table is joined twice to place 2000 and 2022 GDP figures side by side.
+Nothing limits a query to two tables. You can chain as many joins as the data requires, adding one table at a time. One particularly useful pattern is joining the same table twice under different aliases to compare values across two points in time. Here, the `indicators` table is joined twice to place 2000 and 2022 GDP figures side by side, and the `regions` lookup table is joined in as well so the result shows a readable region name instead of the raw `region_id` foreign key.
 
 ```{sql}
 --| connection: con
 --| label: multi-join-year-comparison
 SELECT
     c.short_name,
-    c.region,
+    r.name AS region,
     i2000.gdp_per_capita_usd AS gdp_2000,
     i2022.gdp_per_capita_usd AS gdp_2022
 FROM countries AS c
+INNER JOIN regions AS r
+    ON c.region_id = r.region_id
 INNER JOIN indicators AS i2000
     ON c.id = i2000.country_id AND i2000.year = 2000
 INNER JOIN indicators AS i2022
     ON c.id = i2022.country_id AND i2022.year = 2022
-WHERE c.region != 'Aggregates'
+WHERE NOT c.is_aggregate
 ORDER BY c.short_name
 LIMIT 10;
 ```
 
-Each instance of the `indicators` table gets its own alias (`i2000` and `i2022`) so the query can reference columns from each independently. The year condition is placed inside the `ON` clause for each join so it participates in the matching logic rather than filtering the result after the fact.
+Each instance of the `indicators` table gets its own alias (`i2000` and `i2022`) so the query can reference columns from each independently. The year condition is placed inside the `ON` clause for each join so it participates in the matching logic rather than filtering the result after the fact. The `WHERE NOT c.is_aggregate` filter is still needed even with the `regions` join in place: some aggregate entries do have indicator data for both years, so only the join to `regions` would not exclude them on its own.
 
 Because both joins are inner, only countries with data for **both** 2000 and 2022 appear. Countries that were not yet sovereign in 2000, such as South Sudan (independence: 2011), are silently excluded. If you need to preserve countries that have data for only one of the two years, replace the inner joins with left joins.
 
@@ -442,7 +447,6 @@ Before SQL-92, the only option was the **implicit** syntax: tables are comma-sep
 --| label: implicit-join-example
 SELECT
     c.short_name,
-    c.region,
     i.gdp_per_capita_usd
 FROM countries c, indicators i
 WHERE c.id = i.country_id
@@ -486,12 +490,12 @@ With explicit syntax, omitting the `ON` clause is a syntax error that fails imme
 
 ### Coding
 
-5. Write a query that returns the `short_name`, `region`, and 2022 `gdp_per_capita_usd` for every country that has 2022 data in the `indicators` table. Exclude regional aggregates (where `region = 'Aggregates'`). Sort by `gdp_per_capita_usd` descending, with NULLs last. Limit to 20 rows.
+5. Write a query that returns the `short_name`, region name (joined from the `regions` table), and 2022 `gdp_per_capita_usd` for every country that has 2022 data in the `indicators` table. Exclude aggregate entries (where `is_aggregate` is true). Sort by `gdp_per_capita_usd` descending, with NULLs last. Limit to 20 rows.
 
 6. Write a query that returns every country along with its 2010 `gdp_per_capita_usd`. Countries that have no 2010 data should still appear in the result, with NULL in the GDP column. Sort by `short_name`.
 
-7. Write a query that returns the `short_name` and `region` of every entry in `countries` that has **no rows at all** in the `indicators` table. Use the `LEFT JOIN / IS NULL` pattern.
+7. Write a query that returns the `short_name` of every entry in `countries` that has **no rows at all** in the `indicators` table. Use the `LEFT JOIN / IS NULL` pattern.
 
 8. Rewrite the query from exercise 7 using `NOT EXISTS` instead of `LEFT JOIN / IS NULL`. Confirm that both queries return the same set of entries.
 
-9. Write a query that returns each country's `short_name`, `region`, and GDP per capita for both 1990 and 2022 side by side. Name the GDP columns `gdp_1990` and `gdp_2022`. Include only countries that have data for both years, and exclude regional aggregates. Sort by `short_name`.
+9. Write a query that returns each country's `short_name`, region name (joined from the `regions` table), and GDP per capita for both 1990 and 2022 side by side. Name the GDP columns `gdp_1990` and `gdp_2022`. Include only countries that have data for both years, and exclude aggregate entries. Sort by `short_name`.
