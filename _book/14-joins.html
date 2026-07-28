@@ -59,7 +59,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -674,19 +693,19 @@ window.Quarto = {
 </section>
 <section id="reading-the-diagrams" class="level2" data-number="6.5">
 <h2 data-number="6.5" class="anchored" data-anchor-id="reading-the-diagrams"><span class="header-section-number">6.5</span> Reading the Diagrams</h2>
-<p>The diagrams in this chapter use the <strong>checkered flag</strong> method to illustrate joins. Each diagram shows two tables arranged as rotated grids facing each other. Color-coded cells identify which rows from each table contribute to the result, and a result table on the right shows the output.</p>
+<p>The diagrams in this chapter use the <strong>checkered flag</strong> method to illustrate joins, adapted from <span class="citation" data-cites="martinson2022"><span class="nocase">amartinson193</span> (<a href="99-references.html#ref-martinson2022" role="doc-biblioref">2022</a>)</span>. Each diagram shows two tables arranged as rotated grids facing each other. Color-coded cells identify which rows from each table contribute to the result, and a result table on the right shows the output.</p>
 <p>This approach is deliberately different from the Venn diagrams you may have seen elsewhere. Venn diagrams are not entirely wrong — Codd’s relational model defines a relation as an unordered set of tuples, so the set-based intuition has a legitimate foundation. The problem is more subtle. A Venn diagram implies that the “intersection” consists of rows that are identical members of both tables, the way the number 3 might belong to both Set A and Set B. A SQL join does not work that way. The two tables being joined typically contain different things entirely, and the join matches rows across them based on a condition you specify, usually a foreign key relationship. There is no literal overlap of identical elements. Venn diagrams also fail to convey cardinality: when one country joins to many yearly measurements, the result has one row per measurement, but the overlapping-circles picture gives no indication of that. The checkered flag diagrams make the row-matching process explicit, showing which rows from each table appear in the result and how NULLs fill in for unmatched rows in outer joins.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="images/joins-checkered-pg1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL OUTER JOIN illustrated with the checkered flag method."><img src="images/joins-checkered-pg1.png" class="img-fluid figure-img" style="width:80.0%" alt="Four checkered flag join diagrams showing the rows returned by INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL OUTER JOIN"></a></p>
-<figcaption>INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL OUTER JOIN illustrated with the checkered flag method.</figcaption>
-</figure>
-</div>
 </section>
 <section id="inner-join" class="level2" data-number="6.6">
 <h2 data-number="6.6" class="anchored" data-anchor-id="inner-join"><span class="header-section-number">6.6</span> INNER JOIN</h2>
 <p>An <code>INNER JOIN</code> returns only the rows where the join condition is satisfied in <strong>both</strong> tables. Rows that have no match on the other side are excluded from the result entirely.</p>
 <p>This is the default join type. Writing <code>JOIN</code> without a qualifier is equivalent to writing <code>INNER JOIN</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/joins-checkered-inner.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="INNER JOIN illustrated with the checkered flag method."><img src="images/joins-checkered-inner.png" class="img-fluid figure-img" style="width:80.0%" alt="Checkered flag diagram showing the rows returned by an INNER JOIN"></a></p>
+<figcaption>INNER JOIN illustrated with the checkered flag method.</figcaption>
+</figure>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
@@ -778,6 +797,12 @@ window.Quarto = {
 <h2 data-number="6.7" class="anchored" data-anchor-id="left-join"><span class="header-section-number">6.7</span> LEFT JOIN</h2>
 <p>A <code>LEFT JOIN</code> (also written <code>LEFT OUTER JOIN</code>) returns <strong>all rows from the left table</strong> and the matching rows from the right table. Where no match exists in the right table, the right-side columns are filled with NULL.</p>
 <p>The “left” table is the one named in the <code>FROM</code> clause. The “right” table is the one named in the <code>JOIN</code> clause.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/joins-checkered-left.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="LEFT JOIN illustrated with the checkered flag method."><img src="images/joins-checkered-left.png" class="img-fluid figure-img" style="width:80.0%" alt="Checkered flag diagram showing the rows returned by a LEFT JOIN"></a></p>
+<figcaption>LEFT JOIN illustrated with the checkered flag method.</figcaption>
+</figure>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
@@ -1170,6 +1195,12 @@ window.Quarto = {
 <section id="right-join" class="level3" data-number="6.7.2">
 <h3 data-number="6.7.2" class="anchored" data-anchor-id="right-join"><span class="header-section-number">6.7.2</span> RIGHT JOIN</h3>
 <p>A <code>RIGHT JOIN</code> is the mirror image of a <code>LEFT JOIN</code>. It returns all rows from the right table and the matching rows from the left, filling unmatched left-side columns with NULL.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/joins-checkered-right.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="RIGHT JOIN illustrated with the checkered flag method."><img src="images/joins-checkered-right.png" class="img-fluid figure-img" style="width:80.0%" alt="Checkered flag diagram showing the rows returned by a RIGHT JOIN"></a></p>
+<figcaption>RIGHT JOIN illustrated with the checkered flag method.</figcaption>
+</figure>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
@@ -1256,6 +1287,12 @@ window.Quarto = {
 <section id="full-outer-join" class="level2" data-number="6.8">
 <h2 data-number="6.8" class="anchored" data-anchor-id="full-outer-join"><span class="header-section-number">6.8</span> FULL OUTER JOIN</h2>
 <p>A <code>FULL OUTER JOIN</code> returns <strong>all rows from both tables</strong>. Rows that have a match are joined together. Rows from the left table with no right-side match appear with NULLs on the right. Rows from the right table with no left-side match appear with NULLs on the left.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/joins-checkered-fullouter.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="FULL OUTER JOIN illustrated with the checkered flag method."><img src="images/joins-checkered-fullouter.png" class="img-fluid figure-img" style="width:80.0%" alt="Checkered flag diagram showing the rows returned by a FULL OUTER JOIN"></a></p>
+<figcaption>FULL OUTER JOIN illustrated with the checkered flag method.</figcaption>
+</figure>
+</div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
@@ -1367,8 +1404,8 @@ window.Quarto = {
 <p>A <code>CROSS JOIN</code> produces the <strong>Cartesian product</strong> of two tables: every row from the left table is paired with every row from the right table. If the left table has M rows and the right table has N rows, the result has M × N rows. No join condition is specified.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="images/joins-checkered-pg2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="LEFT ANTI-JOIN, RIGHT ANTI-JOIN, and CROSS JOIN illustrated with the checkered flag method."><img src="images/joins-checkered-pg2.png" class="img-fluid figure-img" style="width:80.0%" alt="Three checkered flag diagrams showing LEFT ANTI-JOIN, RIGHT ANTI-JOIN, and CROSS JOIN"></a></p>
-<figcaption>LEFT ANTI-JOIN, RIGHT ANTI-JOIN, and CROSS JOIN illustrated with the checkered flag method.</figcaption>
+<p><a href="images/joins-checkered-cross.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="CROSS JOIN illustrated with the checkered flag method."><img src="images/joins-checkered-cross.png" class="img-fluid figure-img" style="width:80.0%" alt="Checkered flag diagram showing the Cartesian product returned by a CROSS JOIN"></a></p>
+<figcaption>CROSS JOIN illustrated with the checkered flag method.</figcaption>
 </figure>
 </div>
 <p>The <code>series</code> table, with its 9 rows describing each measurement type, pairs naturally with <code>countries</code> in a cross join. The result is a complete grid of every possible country-indicator combination.</p>
@@ -1458,7 +1495,20 @@ window.Quarto = {
 </section>
 <section id="anti-joins" class="level2" data-number="6.10">
 <h2 data-number="6.10" class="anchored" data-anchor-id="anti-joins"><span class="header-section-number">6.10</span> Anti-Joins</h2>
-<p>An <strong>anti-join</strong> returns rows from one table that have <strong>no matching row</strong> in the other table. It is the complement of an inner join.</p>
+<p>An <strong>anti-join</strong> returns rows from one table that have <strong>no matching row</strong> in the other table. It is the complement of an inner join. Like <code>LEFT JOIN</code>/<code>RIGHT JOIN</code>, an anti-join has a direction: a <strong>left anti-join</strong> returns unmatched rows from the left table, a <strong>right anti-join</strong> returns unmatched rows from the right table.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/joins-checkered-left-anti.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="LEFT ANTI-JOIN illustrated with the checkered flag method."><img src="images/joins-checkered-left-anti.png" class="img-fluid figure-img" style="width:80.0%" alt="Checkered flag diagram showing the rows returned by a left anti-join: rows from the left table with no match in the right table"></a></p>
+<figcaption>LEFT ANTI-JOIN illustrated with the checkered flag method.</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/joins-checkered-right-anti.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="RIGHT ANTI-JOIN illustrated with the checkered flag method."><img src="images/joins-checkered-right-anti.png" class="img-fluid figure-img" style="width:80.0%" alt="Checkered flag diagram showing the rows returned by a right anti-join: rows from the right table with no match in the left table"></a></p>
+<figcaption>RIGHT ANTI-JOIN illustrated with the checkered flag method.</figcaption>
+</figure>
+</div>
+<p>Both patterns below demonstrate a left anti-join — countries with no matching rows in <code>indicators</code> — since a right anti-join against this pair of tables would always return zero rows: <code>indicators.country_id</code> is an enforced foreign key, so every <code>indicators</code> row is guaranteed to have a matching <code>countries</code> row.</p>
 <p>Anti-joins do not have a dedicated keyword in SQL. They are expressed using one of two patterns.</p>
 <section id="using-left-join-and-is-null" class="level3" data-number="6.10.1">
 <h3 data-number="6.10.1" class="anchored" data-anchor-id="using-left-join-and-is-null"><span class="header-section-number">6.10.1</span> Using LEFT JOIN and IS NULL</h3>
@@ -1899,6 +1949,11 @@ window.Quarto = {
 </ol>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-martinson2022" class="csl-entry" role="listitem">
+<span class="nocase">amartinson193</span>. 2022. <em>SQL Checkered Flag Join Diagrams</em>. GitHub. <a href="https://github.com/amartinson193/SQL_Checkered_Flag_Join_Diagrams">https://github.com/amartinson193/SQL_Checkered_Flag_Join_Diagrams</a>.
+</div>
+</div>
 </section>
 </section>
 
