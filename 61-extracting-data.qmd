@@ -22,6 +22,18 @@ The example files used throughout this chapter live in the `data/` directory of 
 - `data/indicators_meta.json`: indicator definitions wrapped in a paginated API response envelope
 - `data/indicators.parquet`: economic and demographic indicators for 217 countries from 2000 to 2022
 
+## pandas vs. Polars
+
+Two DataFrame libraries dominate the Python data ecosystem: **pandas** and **Polars**. Chapter 26 introduced both side by side for querying a database, with pandas as the long-standing standard and Polars for its speed and expressive API. From here through the rest of the ETL section, this book uses Polars exclusively, and it is worth explaining why.
+
+**pandas** has been the standard since 2008, and that maturity is still its biggest strength. Its API is deeply embedded in the Python data ecosystem: most plotting libraries, machine learning frameworks, and existing tutorials assume a pandas DataFrame as the default input. If you need to hand data off to `scikit-learn`, `seaborn`, or a colleague's existing pipeline, pandas remains the safest common currency, which is exactly why it appeared alongside Polars in the previous chapter.
+
+**Polars** is a newer library built in Rust rather than on top of NumPy, and that difference in foundation produces two practical advantages that matter specifically for ETL work. **Speed** is the most immediate one: Polars executes many operations in parallel across all available CPU cores by default, while pandas is largely single-threaded. On the kind of large, repeated batch processing an ETL pipeline performs, that difference compounds quickly. **Consistent schema and null handling** is the second: pandas historically upcasts an integer column to floating point the moment a single null value appears, since the underlying NumPy arrays it wraps have no native integer null. Polars is built on the Apache Arrow columnar format instead, which supports null values natively in every data type without silently changing your schema out from under you. This is the same embedded-schema guarantee you will see Parquet files provide later in this chapter.
+
+Polars also supports a *lazy* mode (`pl.scan_csv()` instead of `pl.read_csv()`) that builds up a query plan before executing anything, deferring and optimizing the work much like a SQL query planner does with your `SELECT` statements. This chapter sticks to Polars' eager API for clarity, but the parallel to SQL execution is exactly why Polars fits a book about databases: reading data, transforming it, and loading it into a table are all operations you already understand as a query plan, not just a sequence of function calls.
+
+None of this makes pandas the wrong choice in general. For quick, interactive, one-off analysis, especially when you are already working with pandas-based tooling, it remains an excellent default, which is why it is not disappearing from this book. An ETL pipeline is simply a context where Polars' advantages compound: pipelines run repeatedly and at scale, and a stable, explicit schema matters more than one-off convenience.
+
 ## Prerequisites
 
 This chapter requires Polars and the `requests` library. Install them if you have not already:
@@ -190,7 +202,11 @@ print(f"CSV:     {csv_size / 1024:>8.1f} KB")
 print(f"Ratio:   {csv_size / parquet_size:.1f}× larger than Parquet")
 ```
 
-The Parquet file is roughly 3 to 4 times smaller. At the scale of millions of rows, this difference translates into meaningfully lower storage costs and faster transfer times.
+Measuring a dataset this small in absolute terms may seem underwhelming because we're only talking about a difference of a few hundred kilobytes. No big deal.
+
+In relative terms, though, the CSV file we just created is roughly 4 times larger than the Parquet file it came from. If we scale our example up to a hypothetical dataset of millions of rows, this difference translates into meaningfully lower storage costs and faster data operations.
+
+So, the next time someone sends you a massive CSV file, you might want to consider first converting the file into Parquet format. Not only can it reduce the size of the data thanks to its compression characteristics, but it can make it faster and easier to load the data into data frames (R and Python) or a database (SQL).
 
 ### Reading a Subset of Columns
 
