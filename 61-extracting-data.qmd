@@ -202,7 +202,11 @@ print(f"CSV:     {csv_size / 1024:>8.1f} KB")
 print(f"Ratio:   {csv_size / parquet_size:.1f}× larger than Parquet")
 ```
 
-The Parquet file is roughly 3 to 4 times smaller. At the scale of millions of rows, this difference translates into meaningfully lower storage costs and faster transfer times.
+Measuring a dataset this small in absolute terms may seem underwhelming because we're only talking about a difference of a few hundred kilobytes. No big deal.
+
+In relative terms, though, the CSV file we just created is roughly 4 times larger than the Parquet file it came from. If we scale our example up to a hypothetical dataset of millions of rows, this difference translates into meaningfully lower storage costs and faster data operations.
+
+So, the next time someone sends you a massive CSV file, you might want to consider first converting the file into Parquet format. Not only can it reduce the size of the data thanks to its compression characteristics, but it can make it faster and easier to load the data into data frames (R and Python) or a database (SQL).
 
 ### Reading a Subset of Columns
 
