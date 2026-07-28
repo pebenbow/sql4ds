@@ -145,13 +145,13 @@ The diagrams in this chapter use the **checkered flag** method to illustrate joi
 
 This approach is deliberately different from the Venn diagrams you may have seen elsewhere. Venn diagrams are not entirely wrong — Codd's relational model defines a relation as an unordered set of tuples, so the set-based intuition has a legitimate foundation. The problem is more subtle. A Venn diagram implies that the "intersection" consists of rows that are identical members of both tables, the way the number 3 might belong to both Set A and Set B. A SQL join does not work that way. The two tables being joined typically contain different things entirely, and the join matches rows across them based on a condition you specify, usually a foreign key relationship. There is no literal overlap of identical elements. Venn diagrams also fail to convey cardinality: when one country joins to many yearly measurements, the result has one row per measurement, but the overlapping-circles picture gives no indication of that. The checkered flag diagrams make the row-matching process explicit, showing which rows from each table appear in the result and how NULLs fill in for unmatched rows in outer joins.
 
-![INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL OUTER JOIN illustrated with the checkered flag method.](images/joins-checkered-pg1.png){fig-alt="Four checkered flag join diagrams showing the rows returned by INNER JOIN, LEFT JOIN, RIGHT JOIN, and FULL OUTER JOIN" width="80%"}
-
 ## INNER JOIN
 
 An `INNER JOIN` returns only the rows where the join condition is satisfied in **both** tables. Rows that have no match on the other side are excluded from the result entirely.
 
 This is the default join type. Writing `JOIN` without a qualifier is equivalent to writing `INNER JOIN`.
+
+![INNER JOIN illustrated with the checkered flag method.](images/joins-checkered-inner.png){fig-alt="Checkered flag diagram showing the rows returned by an INNER JOIN" width="80%"}
 
 ```{sql}
 --| connection: con
@@ -178,6 +178,8 @@ When a column name exists in only one of the joined tables, you can reference it
 A `LEFT JOIN` (also written `LEFT OUTER JOIN`) returns **all rows from the left table** and the matching rows from the right table. Where no match exists in the right table, the right-side columns are filled with NULL.
 
 The "left" table is the one named in the `FROM` clause. The "right" table is the one named in the `JOIN` clause.
+
+![LEFT JOIN illustrated with the checkered flag method.](images/joins-checkered-left.png){fig-alt="Checkered flag diagram showing the rows returned by a LEFT JOIN" width="80%"}
 
 ```{sql}
 --| connection: con
@@ -277,6 +279,8 @@ The practical rule: **conditions that restrict which right-table rows qualify as
 
 A `RIGHT JOIN` is the mirror image of a `LEFT JOIN`. It returns all rows from the right table and the matching rows from the left, filling unmatched left-side columns with NULL.
 
+![RIGHT JOIN illustrated with the checkered flag method.](images/joins-checkered-right.png){fig-alt="Checkered flag diagram showing the rows returned by a RIGHT JOIN" width="80%"}
+
 ```{sql}
 --| connection: con
 --| label: right-join
@@ -306,6 +310,8 @@ LEFT JOIN countries AS c ON c.id = i.country_id
 
 A `FULL OUTER JOIN` returns **all rows from both tables**. Rows that have a match are joined together. Rows from the left table with no right-side match appear with NULLs on the right. Rows from the right table with no left-side match appear with NULLs on the left.
 
+![FULL OUTER JOIN illustrated with the checkered flag method.](images/joins-checkered-fullouter.png){fig-alt="Checkered flag diagram showing the rows returned by a FULL OUTER JOIN" width="80%"}
+
 ```{sql}
 --| connection: con
 --| label: full-outer-join
@@ -326,7 +332,7 @@ Because `indicators.country_id` is enforced as a foreign key, every indicator ro
 
 A `CROSS JOIN` produces the **Cartesian product** of two tables: every row from the left table is paired with every row from the right table. If the left table has M rows and the right table has N rows, the result has M × N rows. No join condition is specified.
 
-![LEFT ANTI-JOIN, RIGHT ANTI-JOIN, and CROSS JOIN illustrated with the checkered flag method.](images/joins-checkered-pg2.png){fig-alt="Three checkered flag diagrams showing LEFT ANTI-JOIN, RIGHT ANTI-JOIN, and CROSS JOIN" width="80%"}
+![CROSS JOIN illustrated with the checkered flag method.](images/joins-checkered-cross.png){fig-alt="Checkered flag diagram showing the Cartesian product returned by a CROSS JOIN" width="80%"}
 
 The `series` table, with its 9 rows describing each measurement type, pairs naturally with `countries` in a cross join. The result is a complete grid of every possible country-indicator combination.
 
@@ -350,7 +356,13 @@ Intentional cross joins do have legitimate uses. Generating all possible combina
 
 ## Anti-Joins
 
-An **anti-join** returns rows from one table that have **no matching row** in the other table. It is the complement of an inner join.
+An **anti-join** returns rows from one table that have **no matching row** in the other table. It is the complement of an inner join. Like `LEFT JOIN`/`RIGHT JOIN`, an anti-join has a direction: a **left anti-join** returns unmatched rows from the left table, a **right anti-join** returns unmatched rows from the right table.
+
+![LEFT ANTI-JOIN illustrated with the checkered flag method.](images/joins-checkered-left-anti.png){fig-alt="Checkered flag diagram showing the rows returned by a left anti-join: rows from the left table with no match in the right table" width="80%"}
+
+![RIGHT ANTI-JOIN illustrated with the checkered flag method.](images/joins-checkered-right-anti.png){fig-alt="Checkered flag diagram showing the rows returned by a right anti-join: rows from the right table with no match in the left table" width="80%"}
+
+Both patterns below demonstrate a left anti-join — countries with no matching rows in `indicators` — since a right anti-join against this pair of tables would always return zero rows: `indicators.country_id` is an enforced foreign key, so every `indicators` row is guaranteed to have a matching `countries` row.
 
 Anti-joins do not have a dedicated keyword in SQL. They are expressed using one of two patterns.
 
