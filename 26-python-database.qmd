@@ -169,7 +169,7 @@ delay_data = pl.read_database("""
         y="Number of Flights"
     )
     + theme_minimal()
-)
+).show()
 ```
 
 ## seaborn
@@ -228,7 +228,7 @@ delay_pairs = pl.read_database("""
         y="Arrival Delay (minutes)"
     )
     + theme_minimal()
-)
+).show()
 ```
 
 ## seaborn
@@ -279,7 +279,7 @@ The regression line runs nearly through the origin with a slope close to 1: a on
         y="Mean Departure Delay (minutes)"
     )
     + theme_minimal()
-)
+).show()
 ```
 
 ## seaborn
