@@ -187,7 +187,7 @@ os.remove(csv_path)
 
 print(f"Parquet: {parquet_size / 1024:>8.1f} KB")
 print(f"CSV:     {csv_size / 1024:>8.1f} KB")
-print(f"Ratio:   {csv_size / parquet_size:.1f}× smaller as Parquet")
+print(f"Ratio:   {csv_size / parquet_size:.1f}× larger than Parquet")
 ```
 
 The Parquet file is roughly 3 to 4 times smaller. At the scale of millions of rows, this difference translates into meaningfully lower storage costs and faster transfer times.

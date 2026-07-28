@@ -741,11 +741,11 @@ Schema({'country_code': String, 'short_name': String, 'region': String, 'income_
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Parquet: </span><span class="sc">{</span>parquet_size <span class="op">/</span> <span class="dv">1024</span><span class="sc">:&gt;8.1f}</span><span class="ss"> KB"</span>)</span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"CSV:     </span><span class="sc">{</span>csv_size <span class="op">/</span> <span class="dv">1024</span><span class="sc">:&gt;8.1f}</span><span class="ss"> KB"</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Ratio:   </span><span class="sc">{</span>csv_size <span class="op">/</span> parquet_size<span class="sc">:.1f}</span><span class="ss">× smaller as Parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Ratio:   </span><span class="sc">{</span>csv_size <span class="op">/</span> parquet_size<span class="sc">:.1f}</span><span class="ss">× larger than Parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Parquet:    128.1 KB
 CSV:        501.9 KB
-Ratio:   3.9× smaller as Parquet</code></pre>
+Ratio:   3.9× larger than Parquet</code></pre>
 </div>
 </div>
 <p>The Parquet file is roughly 3 to 4 times smaller. At the scale of millions of rows, this difference translates into meaningfully lower storage costs and faster transfer times.</p>
