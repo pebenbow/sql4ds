@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sql4ds.com/index.html</loc>
-    <lastmod>2026-07-27T16:34:01.793Z</lastmod>
+    <lastmod>2026-07-28T18:35:45.403Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/00-intro.html</loc>
@@ -34,7 +34,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/14-joins.html</loc>
-    <lastmod>2026-07-28T18:19:20.600Z</lastmod>
+    <lastmod>2026-07-28T18:37:43.895Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/15-set-operations.html</loc>
@@ -62,7 +62,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/26-python-database.html</loc>
-    <lastmod>2026-07-27T16:34:01.529Z</lastmod>
+    <lastmod>2026-07-28T18:38:13.266Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/30-design.html</loc>
@@ -110,7 +110,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/61-extracting-data.html</loc>
-    <lastmod>2026-07-27T16:34:01.538Z</lastmod>
+    <lastmod>2026-07-28T18:38:42.288Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/62-transforming-with-polars.html</loc>
