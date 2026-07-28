@@ -144,8 +144,8 @@ An `INNER JOIN` returns only the rows where the join condition is satisfied in *
 This is the default join type. Writing `JOIN` without a qualifier is equivalent to writing `INNER JOIN`.
 
 ```{sql}
-#| connection: con
-#| label: inner-join-gdp
+--| connection: con
+--| label: inner-join-gdp
 SELECT
     c.short_name,
     c.region,
@@ -171,8 +171,8 @@ A `LEFT JOIN` (also written `LEFT OUTER JOIN`) returns **all rows from the left 
 The "left" table is the one named in the `FROM` clause. The "right" table is the one named in the `JOIN` clause.
 
 ```{sql}
-#| connection: con
-#| label: left-join-basic
+--| connection: con
+--| label: left-join-basic
 SELECT
     c.short_name,
     c.region,
@@ -199,8 +199,8 @@ The **`WHERE` clause** runs after the join is complete. It filters the already-a
 **With INNER JOIN, the placement makes no difference.** Because an inner join already discards rows with no match, there are no NULL-padded rows for a `WHERE` filter to remove. These two queries return identical results:
 
 ```{sql}
-#| connection: con
-#| label: inner-join-where-filter
+--| connection: con
+--| label: inner-join-where-filter
 SELECT
     c.short_name,
     i.year,
@@ -213,8 +213,8 @@ LIMIT 5;
 ```
 
 ```{sql}
-#| connection: con
-#| label: inner-join-on-filter
+--| connection: con
+--| label: inner-join-on-filter
 SELECT
     c.short_name,
     i.year,
@@ -229,8 +229,8 @@ LIMIT 5;
 **With LEFT JOIN (and other outer joins), the placement is critical.** Suppose you want every country alongside its 2022 GDP figure, with NULL for countries that have no 2022 data. This query does not accomplish that goal:
 
 ```{sql}
-#| connection: con
-#| label: left-join-where-gotcha
+--| connection: con
+--| label: left-join-where-gotcha
 SELECT
     c.short_name,
     c.region,
@@ -248,8 +248,8 @@ The left join runs first and correctly produces 16,742 rows: 16,704 matched rows
 Moving the condition into the `ON` clause fixes it:
 
 ```{sql}
-#| connection: con
-#| label: left-join-on-fix
+--| connection: con
+--| label: left-join-on-fix
 SELECT
     c.short_name,
     c.region,
@@ -272,8 +272,8 @@ The practical rule: **conditions that restrict which right-table rows qualify as
 A `RIGHT JOIN` is the mirror image of a `LEFT JOIN`. It returns all rows from the right table and the matching rows from the left, filling unmatched left-side columns with NULL.
 
 ```{sql}
-#| connection: con
-#| label: right-join
+--| connection: con
+--| label: right-join
 SELECT
     c.short_name,
     i.year,
@@ -301,8 +301,8 @@ LEFT JOIN countries AS c ON c.id = i.country_id
 A `FULL OUTER JOIN` returns **all rows from both tables**. Rows that have a match are joined together. Rows from the left table with no right-side match appear with NULLs on the right. Rows from the right table with no left-side match appear with NULLs on the left.
 
 ```{sql}
-#| connection: con
-#| label: full-outer-join
+--| connection: con
+--| label: full-outer-join
 SELECT
     c.short_name,
     c.region,
@@ -326,8 +326,8 @@ A `CROSS JOIN` produces the **Cartesian product** of two tables: every row from 
 The `series` table, with its 9 rows describing each measurement type, pairs naturally with `countries` in a cross join. The result is a complete grid of every possible country-indicator combination.
 
 ```{sql}
-#| connection: con
-#| label: cross-join
+--| connection: con
+--| label: cross-join
 SELECT
     c.short_name,
     s.indicator_name
@@ -354,8 +354,8 @@ Anti-joins do not have a dedicated keyword in SQL. They are expressed using one 
 The most common pattern extends a left join with a `WHERE` clause that keeps only the rows where the right side produced a NULL, meaning no match was found.
 
 ```{sql}
-#| connection: con
-#| label: anti-join-left-null
+--| connection: con
+--| label: anti-join-left-null
 SELECT
     c.short_name,
     c.region
@@ -375,8 +375,8 @@ Filter on the join key column from the right table, not a data column. The join 
 The second pattern uses `NOT EXISTS` with a correlated subquery. This is the approach mentioned in the WHERE clause chapter as the preferred alternative to `NOT IN` when NULL values may be present.
 
 ```{sql}
-#| connection: con
-#| label: anti-join-not-exists
+--| connection: con
+--| label: anti-join-not-exists
 SELECT
     c.short_name,
     c.region
@@ -397,8 +397,8 @@ Both patterns produce the same rows. The `LEFT JOIN / IS NULL` form is often mor
 Nothing limits a query to two tables. You can chain as many joins as the data requires, adding one table at a time. One particularly useful pattern is joining the same table twice under different aliases to compare values across two points in time. Here, the `indicators` table is joined twice to place 2000 and 2022 GDP figures side by side.
 
 ```{sql}
-#| connection: con
-#| label: multi-join-year-comparison
+--| connection: con
+--| label: multi-join-year-comparison
 SELECT
     c.short_name,
     c.region,
@@ -438,8 +438,8 @@ INNER JOIN indicators AS i ON c.id = i.country_id
 Before SQL-92, the only option was the **implicit** syntax: tables are comma-separated in the `FROM` clause and the join condition appears in `WHERE` alongside any other filters. The `AS` keyword for aliases is also commonly omitted in this style.
 
 ```{sql}
-#| connection: con
-#| label: implicit-join-example
+--| connection: con
+--| label: implicit-join-example
 SELECT
     c.short_name,
     c.region,
@@ -460,8 +460,8 @@ There are three reasons to use explicit syntax for any new work.
 **A missing join condition silently produces a cross join.** If the condition linking the two tables is accidentally left out in the implicit style, the database returns the Cartesian product without any warning or error:
 
 ```{sql}
-#| connection: con
-#| label: implicit-cross-danger
+--| connection: con
+--| label: implicit-cross-danger
 SELECT COUNT(*)
 FROM countries, indicators;
 ```

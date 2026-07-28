@@ -61,8 +61,8 @@ The five core aggregate functions are:
 Before using `GROUP BY`, it is worth seeing these functions applied to the entire table, without any grouping:
 
 ```{sql}
-#| connection: con
-#| label: agg-no-group
+--| connection: con
+--| label: agg-no-group
 SELECT
     COUNT(*)                              AS total_actors,
     SUM(oscar_wins)                       AS total_wins,
@@ -86,8 +86,8 @@ The `GROUP BY` clause comes after `WHERE` and before `ORDER BY`. The column you 
 The following query counts actors and totals Oscar wins for each primary genre:
 
 ```{sql}
-#| connection: con
-#| label: group-by-genre
+--| connection: con
+--| label: group-by-genre
 SELECT
     primary_genre,
     COUNT(*)        AS actor_count,
@@ -104,8 +104,8 @@ The result has one row per genre. Drama dominates with 135 actors and 115 wins. 
 You can group by more than one column by listing them in `GROUP BY`, separated by commas. The database creates one group per unique combination of those columns.
 
 ```{sql}
-#| connection: con
-#| label: group-by-multi
+--| connection: con
+--| label: group-by-multi
 SELECT
     primary_genre,
     sex,
@@ -129,8 +129,8 @@ aggregate_function(expression) FILTER (WHERE condition)
 The following query counts all actors per genre, then adds separate columns for those who have won at least one Oscar, those with an honorary Oscar, and those who are still living — all in a single pass over the table:
 
 ```{sql}
-#| connection: con
-#| label: filter-clause
+--| connection: con
+--| label: filter-clause
 SELECT
     primary_genre,
     COUNT(*)                                        AS total_actors,
@@ -162,8 +162,8 @@ HAVING   aggregate_condition;
 The following query returns only birth countries that have produced at least five actors in the dataset:
 
 ```{sql}
-#| connection: con
-#| label: having-basic
+--| connection: con
+--| label: having-basic
 SELECT
     birth_country,
     COUNT(*)        AS actor_count,
@@ -187,8 +187,8 @@ A useful way to remember the difference: `WHERE` filters **rows** before groupin
 The following query asks: among actors who are still living, which birth countries have produced at least three of them, and what is their combined box office?
 
 ```{sql}
-#| connection: con
-#| label: where-and-having
+--| connection: con
+--| label: where-and-having
 SELECT
     birth_country,
     COUNT(*)                                        AS living_actors,
@@ -219,8 +219,8 @@ The subtotal and grand total rows have `NULL` in the columns that were rolled up
 The following query counts actors by birth country and genre for three countries, with subtotals per country and a grand total:
 
 ```{sql}
-#| connection: con
-#| label: rollup
+--| connection: con
+--| label: rollup
 SELECT
     birth_country,
     primary_genre,
@@ -244,8 +244,8 @@ The NULL values in ROLLUP and CUBE results represent subtotal aggregations, not 
 The following query uses two countries and three genres to keep the output readable:
 
 ```{sql}
-#| connection: con
-#| label: cube
+--| connection: con
+--| label: cube
 SELECT
     birth_country,
     primary_genre,
@@ -272,8 +272,8 @@ There is a catch, however. Once `COALESCE` replaces the NULLs in the `SELECT` li
 The solution is `GROUPING(column)`, a companion function designed specifically for ROLLUP and CUBE results. It returns `1` when a column's NULL is a rollup marker and `0` when it holds a real grouping value. Sorting by `GROUPING(column)` first places subtotal rows after the detail rows they summarize, with no dependence on NULLs:
 
 ```{sql}
-#| connection: con
-#| label: rollup-coalesce
+--| connection: con
+--| label: rollup-coalesce
 SELECT
     COALESCE(birth_country, 'Grand Total')  AS birth_country,
     COALESCE(primary_genre, 'All Genres')   AS primary_genre,
@@ -290,8 +290,8 @@ For each country, `GROUPING(primary_genre)` is `0` for the detail rows and `1` f
 To reverse that arrangement and place each subtotal row before its detail rows, sort `GROUPING(primary_genre)` descending. Everything else stays the same:
 
 ```{sql}
-#| connection: con
-#| label: rollup-coalesce-subtotal-first
+--| connection: con
+--| label: rollup-coalesce-subtotal-first
 SELECT
     COALESCE(birth_country, 'Grand Total')  AS birth_country,
     COALESCE(primary_genre, 'All Genres')   AS primary_genre,
@@ -328,8 +328,8 @@ GROUP BY GROUPING SETS ((a, b), (a), (b), ())
 The following query returns actor counts at two levels: the `(primary_genre, sex)` detail level and the grand total, skipping the intermediate per-genre and per-sex subtotals that CUBE would add:
 
 ```{sql}
-#| connection: con
-#| label: grouping-sets
+--| connection: con
+--| label: grouping-sets
 SELECT
     primary_genre,
     sex,
@@ -385,8 +385,8 @@ The `actors` table has no NULL values in the numeric columns used in this chapte
 The following query combines all the clauses covered in this chapter to answer a specific question: for each primary genre with more than two actors born outside the USA, what are the actor count, total Oscar wins, and average box office in millions?
 
 ```{sql}
-#| connection: con
-#| label: combined
+--| connection: con
+--| label: combined
 SELECT
     primary_genre,
     COUNT(*)                                         AS actor_count,
