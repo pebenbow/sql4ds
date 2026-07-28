@@ -59,7 +59,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -674,7 +693,7 @@ window.Quarto = {
 </section>
 <section id="reading-the-diagrams" class="level2" data-number="6.5">
 <h2 data-number="6.5" class="anchored" data-anchor-id="reading-the-diagrams"><span class="header-section-number">6.5</span> Reading the Diagrams</h2>
-<p>The diagrams in this chapter use the <strong>checkered flag</strong> method to illustrate joins. Each diagram shows two tables arranged as rotated grids facing each other. Color-coded cells identify which rows from each table contribute to the result, and a result table on the right shows the output.</p>
+<p>The diagrams in this chapter use the <strong>checkered flag</strong> method to illustrate joins, adapted from <span class="citation" data-cites="martinson2022"><span class="nocase">amartinson193</span> (<a href="99-references.html#ref-martinson2022" role="doc-biblioref">2022</a>)</span>. Each diagram shows two tables arranged as rotated grids facing each other. Color-coded cells identify which rows from each table contribute to the result, and a result table on the right shows the output.</p>
 <p>This approach is deliberately different from the Venn diagrams you may have seen elsewhere. Venn diagrams are not entirely wrong — Codd’s relational model defines a relation as an unordered set of tuples, so the set-based intuition has a legitimate foundation. The problem is more subtle. A Venn diagram implies that the “intersection” consists of rows that are identical members of both tables, the way the number 3 might belong to both Set A and Set B. A SQL join does not work that way. The two tables being joined typically contain different things entirely, and the join matches rows across them based on a condition you specify, usually a foreign key relationship. There is no literal overlap of identical elements. Venn diagrams also fail to convey cardinality: when one country joins to many yearly measurements, the result has one row per measurement, but the overlapping-circles picture gives no indication of that. The checkered flag diagrams make the row-matching process explicit, showing which rows from each table appear in the result and how NULLs fill in for unmatched rows in outer joins.</p>
 </section>
 <section id="inner-join" class="level2" data-number="6.6">
@@ -1930,6 +1949,11 @@ window.Quarto = {
 </ol>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-martinson2022" class="csl-entry" role="listitem">
+<span class="nocase">amartinson193</span>. 2022. <em>SQL Checkered Flag Join Diagrams</em>. GitHub. <a href="https://github.com/amartinson193/SQL_Checkered_Flag_Join_Diagrams">https://github.com/amartinson193/SQL_Checkered_Flag_Join_Diagrams</a>.
+</div>
+</div>
 </section>
 </section>
 
