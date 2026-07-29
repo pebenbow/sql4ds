@@ -368,7 +368,7 @@ An **anti-join** returns rows from one table that have **no matching row** in th
 
 ![RIGHT ANTI-JOIN illustrated with the checkered flag method.](images/joins-checkered-right-anti.png){fig-alt="Checkered flag diagram showing the rows returned by a right anti-join: rows from the right table with no match in the left table" width="80%"}
 
-Both patterns below demonstrate a left anti-join — countries with no matching rows in `indicators` — since a right anti-join against this pair of tables would always return zero rows: `indicators.country_id` is an enforced foreign key, so every `indicators` row is guaranteed to have a matching `countries` row.
+Both patterns below demonstrate a left anti-join (countries with no matching rows in `indicators`), since a right anti-join against this pair of tables would always return zero rows: `indicators.country_id` is an enforced foreign key, so every `indicators` row is guaranteed to have a matching `countries` row.
 
 Anti-joins do not have a dedicated keyword in SQL. They are expressed using one of two patterns.
 

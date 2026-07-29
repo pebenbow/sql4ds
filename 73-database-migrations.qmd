@@ -204,7 +204,7 @@ The full cycle for a schema change under this system:
 
 ## Migrations Beyond Supabase
 
-The Supabase CLI is one tool for managing migrations, not the only one. When you deploy to a different platform — AWS RDS, Google Cloud SQL, Railway, Render, a bare Linux server running PostgreSQL — you need a different way to apply migration files. The concepts from this chapter transfer directly; only the tooling changes.
+The Supabase CLI is one tool for managing migrations, not the only one. When you deploy to a different platform (AWS RDS, Google Cloud SQL, Railway, Render, a bare Linux server running PostgreSQL), you need a different way to apply migration files. The concepts from this chapter transfer directly; only the tooling changes.
 
 ### What Every Migration Tool Has in Common
 

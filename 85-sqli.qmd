@@ -204,7 +204,7 @@ This returns every user-created table in the database, giving the attacker a roa
 
 Error-based and UNION-based are two of the most common patterns, but the broader SQLi landscape includes several other techniques.
 
-**Boolean-based blind injection** applies when the application gives no direct output, only behaving differently depending on whether a query returned rows. The attacker infers information one bit at a time by injecting conditions that are true or false (`AND 1=1` vs `AND 1=2`). By asking yes/no questions about the data — for example, `AND ASCII(SUBSTRING(email, 1, 1)) > 64` — the attacker reconstructs values character by character.
+**Boolean-based blind injection** applies when the application gives no direct output, only behaving differently depending on whether a query returned rows. The attacker infers information one bit at a time by injecting conditions that are true or false (`AND 1=1` vs `AND 1=2`). By asking yes/no questions about the data (for example, `AND ASCII(SUBSTRING(email, 1, 1)) > 64`), the attacker reconstructs values character by character.
 
 **Time-based blind injection** is used when the application gives no behavioral feedback at all. The attacker injects a conditional delay and measures whether the response slows down:
 
@@ -215,7 +215,7 @@ WHERE student_id = 1
 
 A five-second delay confirms the condition was true. This works even when the application swallows all errors and returns identical responses regardless of query outcome.
 
-**Stacked queries** allow the attacker to inject a semicolon and append entirely new SQL statements — `INSERT`, `UPDATE`, `DROP`, or anything else. Whether this is possible depends on the database driver; many drivers disable stacked queries explicitly.
+**Stacked queries** allow the attacker to inject a semicolon and append entirely new SQL statements: `INSERT`, `UPDATE`, `DROP`, or anything else. Whether this is possible depends on the database driver; many drivers disable stacked queries explicitly.
 
 **Second-order injection** (stored injection) occurs when malicious input is stored safely in the database by one operation, then later retrieved and used in query construction without being re-sanitized. The injection fires not on insert, but on a subsequent read.
 
@@ -267,7 +267,7 @@ The last `EXECUTE` returns zero rows. The single quote in the input is treated a
 
 ### Input Validation Is Not Enough
 
-Filtering or escaping user input before building the query string is not an adequate substitute for parameterized queries. Escaping approaches can be bypassed when character encoding is involved, when the input appears in a context other than a quoted string (such as a column name or numeric value), or when the escaping logic itself contains a bug. Parameterized queries do not escape input — they eliminate the possibility of input affecting query structure.
+Filtering or escaping user input before building the query string is not an adequate substitute for parameterized queries. Escaping approaches can be bypassed when character encoding is involved, when the input appears in a context other than a quoted string (such as a column name or numeric value), or when the escaping logic itself contains a bug. Parameterized queries do not escape input; they eliminate the possibility of input affecting query structure.
 
 Validation (checking that a value is within expected bounds or format) is still worthwhile as defense in depth, but parameterization is the non-negotiable requirement.
 

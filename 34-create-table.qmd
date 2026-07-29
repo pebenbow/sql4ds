@@ -58,7 +58,7 @@ CREATE DATABASE university;
 ```
 
 ::: {.callout-note}
-`CREATE DATABASE` must be run while connected to a *different* database — you cannot create a database while you are connected to it. The standard approach is to connect to the built-in `postgres` maintenance database first:
+`CREATE DATABASE` must be run while connected to a *different* database: you cannot create a database while you are connected to it. The standard approach is to connect to the built-in `postgres` maintenance database first:
 
 ```
 psql -U postgres -p 5433 -d postgres
@@ -72,7 +72,7 @@ Once connected to `university`, every `CREATE TABLE` statement you run will plac
 
 ## Schemas
 
-Within a database, a **schema** is a named namespace that groups related objects — tables, views, functions — together. Think of a database as a building and schemas as the floors inside it.
+Within a database, a **schema** is a named namespace that groups related objects (tables, views, functions) together. Think of a database as a building and schemas as the floors inside it.
 
 Every PostgreSQL database starts with a schema called `public`. When you create a table without specifying a schema, it lands in `public` by default:
 
@@ -82,9 +82,9 @@ CREATE TABLE students (...);
 CREATE TABLE public.students (...);
 ```
 
-You can create additional schemas to separate concerns — for example, a `registrar` schema for enrollment data and an `finance` schema for billing tables. Tables outside the default schema are referenced with a **schema-qualified name**: `schema_name.table_name`. The `search_path` setting controls which schemas PostgreSQL searches when you use an unqualified name.
+You can create additional schemas to separate concerns: for example, a `registrar` schema for enrollment data and an `finance` schema for billing tables. Tables outside the default schema are referenced with a **schema-qualified name**: `schema_name.table_name`. The `search_path` setting controls which schemas PostgreSQL searches when you use an unqualified name.
 
-For the exercises in this chapter, the `public` schema of the `university` database is sufficient. Schemas become more important when a single database serves multiple applications or teams — a pattern covered in the chapter on privileges.
+For the exercises in this chapter, the `public` schema of the `university` database is sufficient. Schemas become more important when a single database serves multiple applications or teams, a pattern covered in the chapter on privileges.
 
 ## Basic Syntax
 
@@ -133,7 +133,7 @@ If a new row is inserted without specifying `enrolled_on`, the database records 
 
 ### UNIQUE
 
-`UNIQUE` ensures no two rows share the same value in that column. A student's email address is a natural candidate — each address should appear at most once.
+`UNIQUE` ensures no two rows share the same value in that column. A student's email address is a natural candidate, since each address should appear at most once.
 
 ```sql
 CREATE TABLE students (
@@ -149,7 +149,7 @@ CREATE TABLE students (
 `PRIMARY KEY` already implies both uniqueness and non-nullability, so you do not add `UNIQUE` or `NOT NULL` to a primary key column separately.
 
 ::: {.callout-note}
-PostgreSQL permits multiple NULL values in a `UNIQUE` column because NULL is not considered equal to NULL — no uniqueness violation occurs. If a non-key column must be both unique and present in every row, declare both `UNIQUE` and `NOT NULL`.
+PostgreSQL permits multiple NULL values in a `UNIQUE` column because NULL is not considered equal to NULL, so no uniqueness violation occurs. If a non-key column must be both unique and present in every row, declare both `UNIQUE` and `NOT NULL`.
 :::
 
 ### CHECK
@@ -168,7 +168,7 @@ CREATE TABLE students (
 );
 ```
 
-`CHECK` constraints are evaluated on every `INSERT` and `UPDATE`. The `gpa IS NULL` clause is necessary because a CHECK constraint only fails when it evaluates to FALSE — a NULL result is treated as passing. Allowing NULL here is intentional: a newly enrolled student may not yet have a GPA on record.
+`CHECK` constraints are evaluated on every `INSERT` and `UPDATE`. The `gpa IS NULL` clause is necessary because a CHECK constraint only fails when it evaluates to FALSE: a NULL result is treated as passing. Allowing NULL here is intentional: a newly enrolled student may not yet have a GPA on record.
 
 ## Primary Keys
 
@@ -185,7 +185,7 @@ CREATE TABLE students (
 );
 ```
 
-`PRIMARY KEY` implies both `NOT NULL` and `UNIQUE`, so neither needs to be written separately. `SERIAL` is a PostgreSQL convenience type that creates an auto-incrementing integer column backed by a sequence — each new row automatically receives the next integer if no value is supplied. This is the standard way to create a surrogate primary key.
+`PRIMARY KEY` implies both `NOT NULL` and `UNIQUE`, so neither needs to be written separately. `SERIAL` is a PostgreSQL convenience type that creates an auto-incrementing integer column backed by a sequence: each new row automatically receives the next integer if no value is supplied. This is the standard way to create a surrogate primary key.
 
 ::: {.callout-note}
 `SERIAL` is PostgreSQL-specific. The SQL standard equivalent, supported in PostgreSQL 10 and later, is:
@@ -248,7 +248,7 @@ VALUES
 SELECT * FROM students
 ```
 
-Priya's GPA is NULL — she enrolled mid-year and has not yet completed any graded coursework. The CHECK constraint permits this because it was written to allow NULLs explicitly.
+Priya's GPA is NULL: she enrolled mid-year and has not yet completed any graded coursework. The CHECK constraint permits this because it was written to allow NULLs explicitly.
 
 ## CREATE TABLE IF NOT EXISTS
 
@@ -276,7 +276,7 @@ If `students` already exists, this statement does nothing and raises no error. T
 DROP TABLE students;
 ```
 
-`DROP TABLE IF EXISTS` is the complement to `CREATE TABLE IF NOT EXISTS` — it does nothing if the table does not exist rather than raising an error:
+`DROP TABLE IF EXISTS` is the complement to `CREATE TABLE IF NOT EXISTS`: it does nothing if the table does not exist rather than raising an error:
 
 ```sql
 DROP TABLE IF EXISTS students;
@@ -288,7 +288,7 @@ When a table has foreign keys pointing to it from other tables, dropping it requ
 DROP TABLE students CASCADE;
 ```
 
-`CASCADE` removes the constraint definitions in the dependent tables; it does not drop those tables themselves. Use it carefully — in a complex schema it can remove constraints you did not intend to touch.
+`CASCADE` removes the constraint definitions in the dependent tables; it does not drop those tables themselves. Use it carefully: in a complex schema it can remove constraints you did not intend to touch.
 
 ## Modifying Existing Tables
 
@@ -335,7 +335,7 @@ DROP COLUMN major;
 ```
 
 ::: {.callout-warning}
-`ALTER TABLE` modifies the live table immediately. On large tables, some operations — particularly adding a `NOT NULL` constraint without a default, or building a new index — can lock the table and block reads and writes for seconds or longer. In a learning environment the tables are small enough that this does not matter, but it is worth knowing before working on production systems.
+`ALTER TABLE` modifies the live table immediately. On large tables, some operations (particularly adding a `NOT NULL` constraint without a default, or building a new index) can lock the table and block reads and writes for seconds or longer. In a learning environment the tables are small enough that this does not matter, but it is worth knowing before working on production systems.
 :::
 
 ## Exercises

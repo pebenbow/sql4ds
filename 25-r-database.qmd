@@ -68,11 +68,11 @@ con <- dbConnect(
 
 Each argument tells DBI something specific about where and how to connect:
 
-- `Postgres()` — the driver object; tells DBI which database engine to use. Swapping this for `SQLite()` or `bigrquery::BigQuery()` would connect to a different database entirely, with the rest of the call staying mostly the same.
-- `host` — the network address of the server. `"localhost"` means the database is running on the same machine as R. On a remote server or cloud database, this would be a hostname or IP address.
-- `port` — the TCP port the server listens on. PostgreSQL's default is 5432; this book's Docker container is mapped to 5433. If you connect to a remote database and are unsure of the port, your database administrator can tell you.
-- `dbname` — the name of a specific database on that server. A single PostgreSQL server can host many independent databases. `"nycflights"` selects the one containing the flight data used throughout this book.
-- `user` / `password` — the credentials for the database account. In a production environment, these should come from environment variables or a secrets manager, not be written as plain text in a script.
+- `Postgres()`: the driver object; tells DBI which database engine to use. Swapping this for `SQLite()` or `bigrquery::BigQuery()` would connect to a different database entirely, with the rest of the call staying mostly the same.
+- `host`: the network address of the server. `"localhost"` means the database is running on the same machine as R. On a remote server or cloud database, this would be a hostname or IP address.
+- `port`: the TCP port the server listens on. PostgreSQL's default is 5432; this book's Docker container is mapped to 5433. If you connect to a remote database and are unsure of the port, your database administrator can tell you.
+- `dbname`: the name of a specific database on that server. A single PostgreSQL server can host many independent databases. `"nycflights"` selects the one containing the flight data used throughout this book.
+- `user` / `password`: the credentials for the database account. In a production environment, these should come from environment variables or a secrets manager, not be written as plain text in a script.
 
 The object `con` represents an open connection to the database. It is passed to every subsequent DBI function that needs to communicate with the database.
 
@@ -144,14 +144,14 @@ ggplot(delays_raw, aes(x = dep_delay)) +
   geom_histogram(binwidth = 5, fill = "#0165fc", color = "white") +
   labs(
     title = "Distribution of Departure Delays",
-    subtitle = "LGA flights, 2013 — trimmed to −30 to +180 minutes",
+    subtitle = "LGA flights, 2013, trimmed to -30 to +180 minutes",
     x = "Departure Delay (minutes)",
     y = "Number of Flights"
   ) +
   theme_minimal()
 ```
 
-The right skew is unmistakable. The bulk of flights cluster just below zero, and a long tail of severe delays extends to the right — the same pattern the mean-vs-median comparison in the previous chapter quantified numerically.
+The right skew is unmistakable. The bulk of flights cluster just below zero, and a long tail of severe delays extends to the right, the same pattern the mean-vs-median comparison in the previous chapter quantified numerically.
 
 ### Departure Delay vs. Arrival Delay
 
