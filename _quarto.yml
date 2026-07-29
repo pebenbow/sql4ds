@@ -26,6 +26,7 @@ book:
       chapters:
         - 01-why-learn-sql.qmd
         - 02-setup.qmd
+        - 03-database-organization.qmd
 
     - part: 10-query.qmd
       chapters:

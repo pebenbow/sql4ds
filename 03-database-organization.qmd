@@ -1,0 +1,167 @@
+---
+title: "Database Organization"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Identify** the core building blocks of a relational database: tables, rows, columns, and values.
+- **Distinguish** between a database, a schema, and a table, and explain how the three relate to one another.
+- **Explain** why a single column should hold only one kind of value, and one row should describe only one thing.
+- **Recognize** the redundancy and update problems that arise when a spreadsheet mixes multiple kinds of information together.
+- **Describe**, at a conceptual level, how two tables can be related to each other through a shared value.
+- **Translate** a small, familiar spreadsheet into a sketch of one or more related tables.
+- **Map** the formal relational model terms (relation, tuple, attribute) to the everyday terms (table, row, column) this book uses.
+
+## From Spreadsheets to Databases
+
+If you have used Excel or Google Sheets, you already have most of the intuition you need for this chapter. A spreadsheet is organized into a grid: columns running across the top, rows running down the side, and a single value sitting in each cell where a row and column meet. A relational database is organized the exact same way, just with stricter rules and the ability to connect many grids together.
+
+This chapter introduces the vocabulary and structure behind that organization: tables, rows, columns, values, and how tables relate to one another. It does not yet cover how to write queries against a database (that starts in the next chapter) or how to design an efficient schema from scratch (that is the subject of an entire later section of this book). The goal here is simpler: build a clear mental picture of what a database actually contains, so that everything that follows has something solid to attach to.
+
+## Tables: The Basic Container
+
+A **table** is the database equivalent of a single sheet in a spreadsheet workbook. It is a named, two-dimensional grid that holds information about one kind of thing: `students`, `orders`, `movies`, `countries`. A database is not one giant table holding everything; it is a collection of many tables, each focused on a single subject.
+
+Naming a table well is worth taking seriously from the start. A table name should describe what each row represents, usually with a plural noun: `students` holds one row per student, `orders` holds one row per order. This convention shows up throughout the rest of this book, and in the vast majority of real-world schemas you will encounter.
+
+## Rows: One Record, One Entity
+
+A **row** (also called a *record*) is a single entry in a table: one student, one order, one movie. Every row in a table has the same set of columns, but each row supplies its own values for them.
+
+Consider a `students` table:
+
+| student_id | first_name | last_name | major             | gpa  |
+|------------|------------|-----------|-------------------|------|
+| 1          | Alice      | Smith     | Computer Science  | 3.8  |
+| 2          | Bob        | Jones     | Biology           | 3.4  |
+| 3          | Carol      | Kim       | Economics         | 3.9  |
+
+Each row describes exactly one student. This is the single most important discipline in organizing data: a row should represent one, and only one, real-world thing. A row that tries to describe two students at once, or half of one student and half of an order, breaks the model and makes the data far harder to work with.
+
+## Columns: One Attribute, Every Row
+
+A **column** (also called a *field* or *attribute*) represents one specific piece of information that every row in the table has, such as `first_name`, `major`, or `gpa`. Every value in a given column should be the same *kind* of thing: `gpa` always holds a grade point average, never sometimes a GPA and sometimes a comment like `"still finishing coursework"`.
+
+This is a habit worth building early, because spreadsheets do not enforce it and databases do. In a spreadsheet, nothing stops you from typing a stray note into a column that is otherwise full of numbers. A relational database can be configured to reject that note outright, once you tell it what kind of value a column is supposed to hold. (The next chapter introduces the specific data types SQL uses to make that guarantee.)
+
+## Values: The Cells of the Grid
+
+A **value** is the single piece of data sitting at the intersection of one row and one column, such as `"Alice"` or `3.8` in the table above. A value should be *atomic*: one fact, not several facts crammed together.
+
+Compare these two ways of storing a student's major:
+
+| Not atomic                     | Atomic                                    |
+|---------------------------------|--------------------------------------------|
+| `major = "CS, minor in Stats"`   | `major = "Computer Science"`, `minor = "Statistics"` |
+
+The left version packs two facts into a single cell. Anyone who wants to find every student with a Statistics minor now has to search inside a text string and hope every row is formatted the same way. The right version splits the two facts into their own columns, so each one can be searched, filtered, and updated independently. This principle (one fact per value) is one of the most common threads running through good database design, and it will resurface with a more formal name later in this book.
+
+## Why Not Just Use One Big Spreadsheet?
+
+It is tempting to keep everything in a single wide spreadsheet, adding columns whenever new information shows up. Here is what that tends to look like for a small online store:
+
+| order_id | customer_name | customer_email      | product   | quantity |
+|----------|----------------|----------------------|-----------|----------|
+| 1001     | Maria Santos   | msantos@example.com  | Notebook  | 2        |
+| 1002     | Maria Santos   | msantos@example.com  | Pen Set   | 1        |
+| 1003     | James Okafor   | jokafor@example.com  | Notebook  | 5        |
+
+This works, until it does not. Maria Santos's name and email are repeated on every order she places. A few problems follow directly from that repetition:
+
+- **Redundancy.** The same customer information is copied over and over, wasting space and multiplying the effort needed to store it.
+- **Update anomalies.** If Maria changes her email address, every row that mentions her needs to be updated. Miss one row, and the spreadsheet now contains two different email addresses for the same person, with no way to tell which one is current.
+- **Deletion anomalies.** If order 1003 is the only order James Okafor has ever placed, and that order is deleted, every trace of James Okafor disappears along with it, even though he might still be a customer.
+
+The fix is to split the data into two tables: one for customers, one for orders.
+
+**customers**
+
+| customer_id | name         | email                |
+|-------------|--------------|------------------------|
+| 1           | Maria Santos | msantos@example.com   |
+| 2           | James Okafor | jokafor@example.com   |
+
+**orders**
+
+| order_id | customer_id | product   | quantity |
+|----------|-------------|-----------|----------|
+| 1001     | 1           | Notebook  | 2        |
+| 1002     | 1           | Pen Set   | 1        |
+| 1003     | 2           | Notebook  | 5        |
+
+Each customer's information now lives in exactly one place. Each order simply records which customer placed it, using the `customer_id` column, rather than repeating their name and email every time. Update Maria's email once, in the `customers` table, and every order associated with her is automatically up to date, because the order itself never stored a copy of that email in the first place.
+
+## Relationships: Tables Connected Through Shared Values
+
+The `customer_id` column in `orders` is what ties the two tables back together. It does not describe anything about the order itself; its entire purpose is to point at a specific row in `customers`. This is the essence of a **relationship** between tables: one table holds a value that refers to a row in another table, and that shared value is how the two are reconnected when needed.
+
+Notice what this buys you: `customers` and `orders` can each stay focused on describing exactly one kind of thing, while the relationship between them is preserved through this simple, shared reference. Later chapters give this pattern formal names (**primary key**, **foreign key**) and show how the database itself can be told to enforce it, refusing to allow an order to reference a customer that does not exist. For now, the important idea is simpler: a well-organized database is usually many focused tables connected by shared values, rather than one table trying to hold everything.
+
+## Schemas: A Collection of Related Tables
+
+Zooming out one more level, a **schema** is a named collection of related tables that together describe a single application or subject area. If a table is one sheet in a workbook, a schema is closer to the whole workbook: a bundle of sheets that make sense as a set. The `customers` and `orders` tables above, together with any other tables needed to run the store (`products`, `shipments`, and so on), would typically live together in one schema.
+
+A single database server can host multiple schemas at once, each isolated from the others, similar to how one computer can have multiple separate project folders. This book mostly works within a single schema per database, but the term will reappear later when tables need to be organized into groups.
+
+## Formal Terminology: The Relational Model
+
+Everything described so far (tables, rows, columns, values) is standard, practical vocabulary, and it is what this book, most SQL documentation, and most working data professionals actually say out loud. That vocabulary has a more formal counterpart, however, drawn from the **relational model**, the mathematical theory of data organization that Edgar F. Codd introduced in 1970 [@codd70] and that SQL was later built to implement. It's possible you'll be asked about this terminology in technical interviews, so it is worth being able to translate on sight.
+
+| Formal term | Common term | Meaning |
+|---|---|---|
+| **Relation** | Table | A named collection of tuples that all share the same attributes |
+| **Tuple** | Row / record | One entry in a relation |
+| **Attribute** | Column / field | A named component of a tuple |
+| **Domain** | Data type | The set of legal values an attribute is allowed to hold |
+| **Degree** | Column count | The number of attributes in a relation |
+| **Cardinality** | Row count | The number of tuples in a relation |
+| **Relation schema** | Table definition | The relation's name plus the list of its attributes and their domains |
+
+A few things are worth noticing about this mapping. First, a **relation** is not the same thing as a **relationship** as this chapter has been using the word. "Relation" is the formal term for a table, while "relationship" (the more casual term) describes how two tables connect to each other through a shared value. The similar wording can be confusing for students encountering this for the first time.
+
+Second, notice that a relation is technically defined as an *unordered* collection of tuples with no duplicates, which is stricter than how a table behaves in practice. Real SQL tables can contain duplicate rows and are usually returned in whatever order the database finds convenient, unless you explicitly sort them. This book uses "table" rather than "relation" specifically because it is describing SQL as it is actually used, not the pure mathematical abstraction SQL is loosely based on.
+
+You will not be asked to use the formal terms in this book's exercises, and the rest of this book sticks to table, row, and column throughout. But when you see "relation," "tuple," or "attribute" elsewhere (and you will), you now know exactly what they mean.
+
+If you have already worked with data frames in R or Python, you have effectively been using this same structure under yet another name. Data frames are analogous to database tables in many ways. For example, rows are typically referred to as "observations." Columns are a little more tricky because they are commonly referred to as "variables," but in Python data frames they are also often called "series."
+
+I'll admit, the comparison is not perfect when you take a more technical perspective because data frames in R and Python live in your program's memory, while a table lives in the database (which is stored on disk), but the shape of the data and the discipline around it (one kind of value per column, one entity per row) are the same idea you already know, just running inside a database instead of inside Python or R.
+
+## Putting It Together
+
+From smallest to largest, a relational database is organized as:
+
+1. **Value**: one piece of data, one fact, sitting in a single cell.
+2. **Column** (formally, an *attribute*): a named slot for one specific kind of value, with an enforce data type that is shared by every row in a table.
+3. **Row** (formally, a *tuple*): one record describing a single real-world thing, made up of one value per column.
+4. **Table** (formally, a *relation*): a named collection of rows that all describe the same kind of thing.
+5. **Schema**: a named collection of related tables.
+6. **Database**: the full environment that holds one or more schemas.
+
+Everything in the rest of this book builds on this structure. The next chapter starts writing queries against it with `SELECT`, and a later section of the book (starting with keys and integrity) returns to relationships and gives them the formal treatment only sketched here.
+
+## Exercises
+
+### Reflection
+
+**1.** In your own words, explain the difference between a row and a column. Use an example that does not appear in this chapter.
+
+---
+
+**2.** A friend keeps their reading list in a single spreadsheet with columns for `book_title`, `author_name`, `author_email`, and `date_finished`. Every time they log a new book by an author they have already read, the author's name and email are retyped on a new row. What problem does this create, and how would you restructure it into two related tables?
+
+---
+
+**3.** Why is it a problem for a single column to hold more than one kind of value, such as a `notes` column that sometimes contains a phone number and sometimes contains a free-text comment?
+
+---
+
+### Structural Analysis
+
+**4.** A small veterinary clinic tracks its data in one spreadsheet with these columns: `visit_id`, `pet_name`, `pet_species`, `owner_name`, `owner_phone`, `visit_date`, `reason_for_visit`. Sketch two or three related tables that would better organize this information. For each table, list its columns and identify which column(s) connect it to the other tables.
+
+---
+
+**5.** Consider a `products` table with columns `product_id`, `product_name`, `price`, and `category`. A colleague suggests adding a column called `details` that stores a mix of shipping weight, warehouse location, and supplier notes as a single text string, formatted differently depending on the product. Explain, using the ideas from this chapter, why this is a poor design choice, and propose an alternative.
