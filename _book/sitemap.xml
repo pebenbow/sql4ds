@@ -17,24 +17,28 @@
     <lastmod>2026-07-27T16:34:01.417Z</lastmod>
   </url>
   <url>
+    <loc>https://sql4ds.com/03-database-organization.html</loc>
+    <lastmod>2026-07-29T12:55:52.416Z</lastmod>
+  </url>
+  <url>
     <loc>https://sql4ds.com/10-query.html</loc>
     <lastmod>2026-07-27T16:34:01.520Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/11-select-statements.html</loc>
-    <lastmod>2026-07-28T17:23:20.789Z</lastmod>
+    <lastmod>2026-07-29T12:13:52.044Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/12-data-types.html</loc>
-    <lastmod>2026-07-28T17:23:20.791Z</lastmod>
+    <lastmod>2026-07-29T12:17:20.537Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/13-aggregating.html</loc>
-    <lastmod>2026-07-28T17:23:20.792Z</lastmod>
+    <lastmod>2026-07-29T12:14:36.032Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/14-joins.html</loc>
-    <lastmod>2026-07-28T18:37:43.895Z</lastmod>
+    <lastmod>2026-07-29T12:15:31.932Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/15-set-operations.html</loc>
@@ -58,11 +62,11 @@
   </url>
   <url>
     <loc>https://sql4ds.com/25-r-database.html</loc>
-    <lastmod>2026-07-27T16:34:01.528Z</lastmod>
+    <lastmod>2026-07-29T12:16:05.666Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/26-python-database.html</loc>
-    <lastmod>2026-07-28T18:38:13.266Z</lastmod>
+    <lastmod>2026-07-29T12:15:40.924Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/30-design.html</loc>
@@ -82,7 +86,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/34-create-table.html</loc>
-    <lastmod>2026-07-28T17:23:20.799Z</lastmod>
+    <lastmod>2026-07-29T12:13:38.453Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/35-views.html</loc>
@@ -102,7 +106,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/39-indexes.html</loc>
-    <lastmod>2026-07-27T16:34:01.536Z</lastmod>
+    <lastmod>2026-07-29T12:16:36.690Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/60-load.html</loc>
@@ -138,7 +142,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/73-database-migrations.html</loc>
-    <lastmod>2026-07-27T16:34:01.543Z</lastmod>
+    <lastmod>2026-07-29T12:16:43.570Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/80-labs.html</loc>
@@ -146,7 +150,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/85-sqli.html</loc>
-    <lastmod>2026-07-27T16:34:01.545Z</lastmod>
+    <lastmod>2026-07-29T12:17:03.266Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/99-references.html</loc>

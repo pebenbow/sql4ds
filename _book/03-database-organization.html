@@ -8,7 +8,7 @@
 
 <meta name="author" content="Pete Benbow">
 
-<title>18&nbsp; Views and Materialized Views – SQL for Data Science</title>
+<title>3&nbsp; Database Organization – SQL for Data Science</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -24,7 +24,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -34,8 +53,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./36-building-schema.html" rel="next">
-<link href="./34-create-table.html" rel="prev">
+<link href="./10-query.html" rel="next">
+<link href="./02-setup.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -88,7 +107,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./35-views.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Views and Materialized Views</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00-intro.html">Introduction</a></li><li class="breadcrumb-item"><a href="./03-database-organization.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Database Organization</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -150,7 +169,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-database-organization.html" class="sidebar-item-text sidebar-link">
+  <a href="./03-database-organization.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Database Organization</span></span></a>
   </div>
 </li>
@@ -273,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./35-views.html" class="sidebar-item-text sidebar-link active">
+  <a href="./35-views.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Views and Materialized Views</span></span></a>
   </div>
 </li>
@@ -400,9 +419,24 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">18.1</span> Learning Objectives</a></li>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">3.1</span> Learning Objectives</a></li>
+  <li><a href="#from-spreadsheets-to-databases" id="toc-from-spreadsheets-to-databases" class="nav-link" data-scroll-target="#from-spreadsheets-to-databases"><span class="header-section-number">3.2</span> From Spreadsheets to Databases</a></li>
+  <li><a href="#tables-the-basic-container" id="toc-tables-the-basic-container" class="nav-link" data-scroll-target="#tables-the-basic-container"><span class="header-section-number">3.3</span> Tables: The Basic Container</a></li>
+  <li><a href="#rows-one-record-one-entity" id="toc-rows-one-record-one-entity" class="nav-link" data-scroll-target="#rows-one-record-one-entity"><span class="header-section-number">3.4</span> Rows: One Record, One Entity</a></li>
+  <li><a href="#columns-one-attribute-every-row" id="toc-columns-one-attribute-every-row" class="nav-link" data-scroll-target="#columns-one-attribute-every-row"><span class="header-section-number">3.5</span> Columns: One Attribute, Every Row</a></li>
+  <li><a href="#values-the-cells-of-the-grid" id="toc-values-the-cells-of-the-grid" class="nav-link" data-scroll-target="#values-the-cells-of-the-grid"><span class="header-section-number">3.6</span> Values: The Cells of the Grid</a></li>
+  <li><a href="#why-not-just-use-one-big-spreadsheet" id="toc-why-not-just-use-one-big-spreadsheet" class="nav-link" data-scroll-target="#why-not-just-use-one-big-spreadsheet"><span class="header-section-number">3.7</span> Why Not Just Use One Big Spreadsheet?</a></li>
+  <li><a href="#relationships-tables-connected-through-shared-values" id="toc-relationships-tables-connected-through-shared-values" class="nav-link" data-scroll-target="#relationships-tables-connected-through-shared-values"><span class="header-section-number">3.8</span> Relationships: Tables Connected Through Shared Values</a></li>
+  <li><a href="#schemas-a-collection-of-related-tables" id="toc-schemas-a-collection-of-related-tables" class="nav-link" data-scroll-target="#schemas-a-collection-of-related-tables"><span class="header-section-number">3.9</span> Schemas: A Collection of Related Tables</a></li>
+  <li><a href="#formal-terminology-the-relational-model" id="toc-formal-terminology-the-relational-model" class="nav-link" data-scroll-target="#formal-terminology-the-relational-model"><span class="header-section-number">3.10</span> Formal Terminology: The Relational Model</a></li>
+  <li><a href="#putting-it-together" id="toc-putting-it-together" class="nav-link" data-scroll-target="#putting-it-together"><span class="header-section-number">3.11</span> Putting It Together</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">3.12</span> Exercises</a>
+  <ul class="collapse">
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">3.12.1</span> Reflection</a></li>
+  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis"><span class="header-section-number">3.12.2</span> Structural Analysis</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/35-views.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/03-database-organization.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -417,9 +451,9 @@ ul.task-list li input[type="checkbox"] {
     </div>
 </div>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./35-views.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Views and Materialized Views</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00-intro.html">Introduction</a></li><li class="breadcrumb-item"><a href="./03-database-organization.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Database Organization</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Views and Materialized Views</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Database Organization</span></h1>
 </div>
 
 
@@ -436,22 +470,311 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="learning-objectives" class="level2" data-number="18.1">
-<h2 data-number="18.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">18.1</span> Learning Objectives</h2>
+<section id="learning-objectives" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">3.1</span> Learning Objectives</h2>
 <p>By the end of this chapter, students will be able to:</p>
 <ul>
-<li><strong>Create</strong> a view using <code>CREATE VIEW</code> and query it like a table.</li>
-<li><strong>Explain</strong> what a view is and how it differs from a base table in terms of storage and execution.</li>
-<li><strong>Use</strong> <code>CREATE OR REPLACE VIEW</code> to update a view definition without dropping dependent objects.</li>
-<li><strong>Identify</strong> the conditions under which a view is updatable and explain what prevents a view from supporting <code>INSERT</code>, <code>UPDATE</code>, or <code>DELETE</code>.</li>
-<li><strong>Create</strong> a materialized view using <code>CREATE MATERIALIZED VIEW</code> and explain how it differs from a regular view.</li>
-<li><strong>Refresh</strong> a materialized view using <code>REFRESH MATERIALIZED VIEW</code> and <code>REFRESH MATERIALIZED VIEW CONCURRENTLY</code>.</li>
-<li><strong>Design</strong> an index on a materialized view to improve query performance against pre-computed results.</li>
-<li><strong>Evaluate</strong> whether a given use case calls for a regular view or a materialized view based on data freshness requirements and query frequency.</li>
+<li><strong>Identify</strong> the core building blocks of a relational database: tables, rows, columns, and values.</li>
+<li><strong>Distinguish</strong> between a database, a schema, and a table, and explain how the three relate to one another.</li>
+<li><strong>Explain</strong> why a single column should hold only one kind of value, and one row should describe only one thing.</li>
+<li><strong>Recognize</strong> the redundancy and update problems that arise when a spreadsheet mixes multiple kinds of information together.</li>
+<li><strong>Describe</strong>, at a conceptual level, how two tables can be related to each other through a shared value.</li>
+<li><strong>Translate</strong> a small, familiar spreadsheet into a sketch of one or more related tables.</li>
+<li><strong>Map</strong> the formal relational model terms (relation, tuple, attribute) to the everyday terms (table, row, column) this book uses.</li>
 </ul>
-<p>Stub: CREATE VIEW, replacing and dropping views, updatable views, security views; CREATE MATERIALIZED VIEW, REFRESH MATERIALIZED VIEW CONCURRENTLY, indexing materialized views, regular vs materialized tradeoffs.</p>
+</section>
+<section id="from-spreadsheets-to-databases" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="from-spreadsheets-to-databases"><span class="header-section-number">3.2</span> From Spreadsheets to Databases</h2>
+<p>If you have used Excel or Google Sheets, you already have most of the intuition you need for this chapter. A spreadsheet is organized into a grid: columns running across the top, rows running down the side, and a single value sitting in each cell where a row and column meet. A relational database is organized the exact same way, just with stricter rules and the ability to connect many grids together.</p>
+<p>This chapter introduces the vocabulary and structure behind that organization: tables, rows, columns, values, and how tables relate to one another. It does not yet cover how to write queries against a database (that starts in the next chapter) or how to design an efficient schema from scratch (that is the subject of an entire later section of this book). The goal here is simpler: build a clear mental picture of what a database actually contains, so that everything that follows has something solid to attach to.</p>
+</section>
+<section id="tables-the-basic-container" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="tables-the-basic-container"><span class="header-section-number">3.3</span> Tables: The Basic Container</h2>
+<p>A <strong>table</strong> is the database equivalent of a single sheet in a spreadsheet workbook. It is a named, two-dimensional grid that holds information about one kind of thing: <code>students</code>, <code>orders</code>, <code>movies</code>, <code>countries</code>. A database is not one giant table holding everything; it is a collection of many tables, each focused on a single subject.</p>
+<p>Naming a table well is worth taking seriously from the start. A table name should describe what each row represents, usually with a plural noun: <code>students</code> holds one row per student, <code>orders</code> holds one row per order. This convention shows up throughout the rest of this book, and in the vast majority of real-world schemas you will encounter.</p>
+</section>
+<section id="rows-one-record-one-entity" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="rows-one-record-one-entity"><span class="header-section-number">3.4</span> Rows: One Record, One Entity</h2>
+<p>A <strong>row</strong> (also called a <em>record</em>) is a single entry in a table: one student, one order, one movie. Every row in a table has the same set of columns, but each row supplies its own values for them.</p>
+<p>Consider a <code>students</code> table:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>student_id</th>
+<th>first_name</th>
+<th>last_name</th>
+<th>major</th>
+<th>gpa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Alice</td>
+<td>Smith</td>
+<td>Computer Science</td>
+<td>3.8</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Bob</td>
+<td>Jones</td>
+<td>Biology</td>
+<td>3.4</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Carol</td>
+<td>Kim</td>
+<td>Economics</td>
+<td>3.9</td>
+</tr>
+</tbody>
+</table>
+<p>Each row describes exactly one student. This is the single most important discipline in organizing data: a row should represent one, and only one, real-world thing. A row that tries to describe two students at once, or half of one student and half of an order, breaks the model and makes the data far harder to work with.</p>
+</section>
+<section id="columns-one-attribute-every-row" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="columns-one-attribute-every-row"><span class="header-section-number">3.5</span> Columns: One Attribute, Every Row</h2>
+<p>A <strong>column</strong> (also called a <em>field</em> or <em>attribute</em>) represents one specific piece of information that every row in the table has, such as <code>first_name</code>, <code>major</code>, or <code>gpa</code>. Every value in a given column should be the same <em>kind</em> of thing: <code>gpa</code> always holds a grade point average, never sometimes a GPA and sometimes a comment like <code>"still finishing coursework"</code>.</p>
+<p>This is a habit worth building early, because spreadsheets do not enforce it and databases do. In a spreadsheet, nothing stops you from typing a stray note into a column that is otherwise full of numbers. A relational database can be configured to reject that note outright, once you tell it what kind of value a column is supposed to hold. (The next chapter introduces the specific data types SQL uses to make that guarantee.)</p>
+</section>
+<section id="values-the-cells-of-the-grid" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="values-the-cells-of-the-grid"><span class="header-section-number">3.6</span> Values: The Cells of the Grid</h2>
+<p>A <strong>value</strong> is the single piece of data sitting at the intersection of one row and one column, such as <code>"Alice"</code> or <code>3.8</code> in the table above. A value should be <em>atomic</em>: one fact, not several facts crammed together.</p>
+<p>Compare these two ways of storing a student’s major:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 42%">
+<col style="width: 57%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Not atomic</th>
+<th>Atomic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>major = "CS, minor in Stats"</code></td>
+<td><code>major = "Computer Science"</code>, <code>minor = "Statistics"</code></td>
+</tr>
+</tbody>
+</table>
+<p>The left version packs two facts into a single cell. Anyone who wants to find every student with a Statistics minor now has to search inside a text string and hope every row is formatted the same way. The right version splits the two facts into their own columns, so each one can be searched, filtered, and updated independently. This principle (one fact per value) is one of the most common threads running through good database design, and it will resurface with a more formal name later in this book.</p>
+</section>
+<section id="why-not-just-use-one-big-spreadsheet" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="why-not-just-use-one-big-spreadsheet"><span class="header-section-number">3.7</span> Why Not Just Use One Big Spreadsheet?</h2>
+<p>It is tempting to keep everything in a single wide spreadsheet, adding columns whenever new information shows up. Here is what that tends to look like for a small online store:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 23%">
+<col style="width: 31%">
+<col style="width: 15%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>order_id</th>
+<th>customer_name</th>
+<th>customer_email</th>
+<th>product</th>
+<th>quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1001</td>
+<td>Maria Santos</td>
+<td>msantos@example.com</td>
+<td>Notebook</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>1002</td>
+<td>Maria Santos</td>
+<td>msantos@example.com</td>
+<td>Pen Set</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>1003</td>
+<td>James Okafor</td>
+<td>jokafor@example.com</td>
+<td>Notebook</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>This works, until it does not. Maria Santos’s name and email are repeated on every order she places. A few problems follow directly from that repetition:</p>
+<ul>
+<li><strong>Redundancy.</strong> The same customer information is copied over and over, wasting space and multiplying the effort needed to store it.</li>
+<li><strong>Update anomalies.</strong> If Maria changes her email address, every row that mentions her needs to be updated. Miss one row, and the spreadsheet now contains two different email addresses for the same person, with no way to tell which one is current.</li>
+<li><strong>Deletion anomalies.</strong> If order 1003 is the only order James Okafor has ever placed, and that order is deleted, every trace of James Okafor disappears along with it, even though he might still be a customer.</li>
+</ul>
+<p>The fix is to split the data into two tables: one for customers, one for orders.</p>
+<p><strong>customers</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>customer_id</th>
+<th>name</th>
+<th>email</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Maria Santos</td>
+<td>msantos@example.com</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>James Okafor</td>
+<td>jokafor@example.com</td>
+</tr>
+</tbody>
+</table>
+<p><strong>orders</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>order_id</th>
+<th>customer_id</th>
+<th>product</th>
+<th>quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1001</td>
+<td>1</td>
+<td>Notebook</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>1002</td>
+<td>1</td>
+<td>Pen Set</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>1003</td>
+<td>2</td>
+<td>Notebook</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>Each customer’s information now lives in exactly one place. Each order simply records which customer placed it, using the <code>customer_id</code> column, rather than repeating their name and email every time. Update Maria’s email once, in the <code>customers</code> table, and every order associated with her is automatically up to date, because the order itself never stored a copy of that email in the first place.</p>
+</section>
+<section id="relationships-tables-connected-through-shared-values" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="relationships-tables-connected-through-shared-values"><span class="header-section-number">3.8</span> Relationships: Tables Connected Through Shared Values</h2>
+<p>The <code>customer_id</code> column in <code>orders</code> is what ties the two tables back together. It does not describe anything about the order itself; its entire purpose is to point at a specific row in <code>customers</code>. This is the essence of a <strong>relationship</strong> between tables: one table holds a value that refers to a row in another table, and that shared value is how the two are reconnected when needed.</p>
+<p>Notice what this buys you: <code>customers</code> and <code>orders</code> can each stay focused on describing exactly one kind of thing, while the relationship between them is preserved through this simple, shared reference. Later chapters give this pattern formal names (<strong>primary key</strong>, <strong>foreign key</strong>) and show how the database itself can be told to enforce it, refusing to allow an order to reference a customer that does not exist. For now, the important idea is simpler: a well-organized database is usually many focused tables connected by shared values, rather than one table trying to hold everything.</p>
+</section>
+<section id="schemas-a-collection-of-related-tables" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="schemas-a-collection-of-related-tables"><span class="header-section-number">3.9</span> Schemas: A Collection of Related Tables</h2>
+<p>Zooming out one more level, a <strong>schema</strong> is a named collection of related tables that together describe a single application or subject area. If a table is one sheet in a workbook, a schema is closer to the whole workbook: a bundle of sheets that make sense as a set. The <code>customers</code> and <code>orders</code> tables above, together with any other tables needed to run the store (<code>products</code>, <code>shipments</code>, and so on), would typically live together in one schema.</p>
+<p>A single database server can host multiple schemas at once, each isolated from the others, similar to how one computer can have multiple separate project folders. This book mostly works within a single schema per database, but the term will reappear later when tables need to be organized into groups.</p>
+</section>
+<section id="formal-terminology-the-relational-model" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="formal-terminology-the-relational-model"><span class="header-section-number">3.10</span> Formal Terminology: The Relational Model</h2>
+<p>Everything described so far (tables, rows, columns, values) is standard, practical vocabulary, and it is what this book, most SQL documentation, and most working data professionals actually say out loud. That vocabulary has a more formal counterpart, however, drawn from the <strong>relational model</strong>, the mathematical theory of data organization that Edgar F. Codd introduced in 1970 <span class="citation" data-cites="codd70">(<a href="99-references.html#ref-codd70" role="doc-biblioref">Codd 1970</a>)</span> and that SQL was later built to implement. It’s possible you’ll be asked about this terminology in technical interviews, so it is worth being able to translate on sight.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formal term</th>
+<th>Common term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Relation</strong></td>
+<td>Table</td>
+<td>A named collection of tuples that all share the same attributes</td>
+</tr>
+<tr class="even">
+<td><strong>Tuple</strong></td>
+<td>Row / record</td>
+<td>One entry in a relation</td>
+</tr>
+<tr class="odd">
+<td><strong>Attribute</strong></td>
+<td>Column / field</td>
+<td>A named component of a tuple</td>
+</tr>
+<tr class="even">
+<td><strong>Domain</strong></td>
+<td>Data type</td>
+<td>The set of legal values an attribute is allowed to hold</td>
+</tr>
+<tr class="odd">
+<td><strong>Degree</strong></td>
+<td>Column count</td>
+<td>The number of attributes in a relation</td>
+</tr>
+<tr class="even">
+<td><strong>Cardinality</strong></td>
+<td>Row count</td>
+<td>The number of tuples in a relation</td>
+</tr>
+<tr class="odd">
+<td><strong>Relation schema</strong></td>
+<td>Table definition</td>
+<td>The relation’s name plus the list of its attributes and their domains</td>
+</tr>
+</tbody>
+</table>
+<p>A few things are worth noticing about this mapping. First, a <strong>relation</strong> is not the same thing as a <strong>relationship</strong> as this chapter has been using the word. “Relation” is the formal term for a table, while “relationship” (the more casual term) describes how two tables connect to each other through a shared value. The similar wording can be confusing for students encountering this for the first time.</p>
+<p>Second, notice that a relation is technically defined as an <em>unordered</em> collection of tuples with no duplicates, which is stricter than how a table behaves in practice. Real SQL tables can contain duplicate rows and are usually returned in whatever order the database finds convenient, unless you explicitly sort them. This book uses “table” rather than “relation” specifically because it is describing SQL as it is actually used, not the pure mathematical abstraction SQL is loosely based on.</p>
+<p>You will not be asked to use the formal terms in this book’s exercises, and the rest of this book sticks to table, row, and column throughout. But when you see “relation,” “tuple,” or “attribute” elsewhere (and you will), you now know exactly what they mean.</p>
+<p>If you have already worked with data frames in R or Python, you have effectively been using this same structure under yet another name. Data frames are analogous to database tables in many ways. For example, rows are typically referred to as “observations.” Columns are a little more tricky because they are commonly referred to as “variables,” but in Python data frames they are also often called “series.”</p>
+<p>I’ll admit, the comparison is not perfect when you take a more technical perspective because data frames in R and Python live in your program’s memory, while a table lives in the database (which is stored on disk), but the shape of the data and the discipline around it (one kind of value per column, one entity per row) are the same idea you already know, just running inside a database instead of inside Python or R.</p>
+</section>
+<section id="putting-it-together" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="putting-it-together"><span class="header-section-number">3.11</span> Putting It Together</h2>
+<p>From smallest to largest, a relational database is organized as:</p>
+<ol type="1">
+<li><strong>Value</strong>: one piece of data, one fact, sitting in a single cell.</li>
+<li><strong>Column</strong> (formally, an <em>attribute</em>): a named slot for one specific kind of value, with an enforce data type that is shared by every row in a table.</li>
+<li><strong>Row</strong> (formally, a <em>tuple</em>): one record describing a single real-world thing, made up of one value per column.</li>
+<li><strong>Table</strong> (formally, a <em>relation</em>): a named collection of rows that all describe the same kind of thing.</li>
+<li><strong>Schema</strong>: a named collection of related tables.</li>
+<li><strong>Database</strong>: the full environment that holds one or more schemas.</li>
+</ol>
+<p>Everything in the rest of this book builds on this structure. The next chapter starts writing queries against it with <code>SELECT</code>, and a later section of the book (starting with keys and integrity) returns to relationships and gives them the formal treatment only sketched here.</p>
+</section>
+<section id="exercises" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.12</span> Exercises</h2>
+<section id="reflection" class="level3" data-number="3.12.1">
+<h3 data-number="3.12.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">3.12.1</span> Reflection</h3>
+<p><strong>1.</strong> In your own words, explain the difference between a row and a column. Use an example that does not appear in this chapter.</p>
+<hr>
+<p><strong>2.</strong> A friend keeps their reading list in a single spreadsheet with columns for <code>book_title</code>, <code>author_name</code>, <code>author_email</code>, and <code>date_finished</code>. Every time they log a new book by an author they have already read, the author’s name and email are retyped on a new row. What problem does this create, and how would you restructure it into two related tables?</p>
+<hr>
+<p><strong>3.</strong> Why is it a problem for a single column to hold more than one kind of value, such as a <code>notes</code> column that sometimes contains a phone number and sometimes contains a free-text comment?</p>
+<hr>
+</section>
+<section id="structural-analysis" class="level3" data-number="3.12.2">
+<h3 data-number="3.12.2" class="anchored" data-anchor-id="structural-analysis"><span class="header-section-number">3.12.2</span> Structural Analysis</h3>
+<p><strong>4.</strong> A small veterinary clinic tracks its data in one spreadsheet with these columns: <code>visit_id</code>, <code>pet_name</code>, <code>pet_species</code>, <code>owner_name</code>, <code>owner_phone</code>, <code>visit_date</code>, <code>reason_for_visit</code>. Sketch two or three related tables that would better organize this information. For each table, list its columns and identify which column(s) connect it to the other tables.</p>
+<hr>
+<p><strong>5.</strong> Consider a <code>products</code> table with columns <code>product_id</code>, <code>product_name</code>, <code>price</code>, and <code>category</code>. A colleague suggests adding a column called <code>details</code> that stores a mix of shipping weight, warehouse location, and supplier notes as a single text string, formatted differently depending on the product. Explain, using the ideas from this chapter, why this is a poor design choice, and propose an alternative.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-codd70" class="csl-entry" role="listitem">
+Codd, E. F. 1970. <span>“A Relational Model of Data for Large Shared Data Banks.”</span> <em>Commun. ACM</em> (New York, NY, USA) 13 (6): 377–87. <a href="https://doi.org/10.1145/362384.362685">https://doi.org/10.1145/362384.362685</a>.
+</div>
+</div>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -862,13 +1185,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./34-create-table.html" class="pagination-link" aria-label="Creating Tables">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Creating Tables</span></span>
+      <a href="./02-setup.html" class="pagination-link" aria-label="Setup">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setup</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./36-building-schema.html" class="pagination-link" aria-label="Building a Schema">
-        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Building a Schema</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./10-query.html" class="pagination-link" aria-label="Query">
+        <span class="nav-page-text">Query</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -880,7 +1203,7 @@ ul.task-list li input[type="checkbox"] {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/35-views.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/03-database-organization.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was written with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
