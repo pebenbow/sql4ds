@@ -132,7 +132,7 @@ delays_by_carrier_pd
 
 :::
 
-The result is immediately available for analysis. Every operation you would apply to a DataFrame — filtering, grouping, joining — works on the object returned by either function.
+The result is immediately available for analysis. Every operation you would apply to a DataFrame (filtering, grouping, joining) works on the object returned by either function.
 
 ## Visualizing Query Results
 
@@ -299,7 +299,7 @@ plt.show()
 
 :::
 
-`reorder(name, mean_delay)` sorts the bars by delay value rather than alphabetically, making the ranking immediately visible — the same behavior as the `reorder()` call in `ggplot2`.
+`reorder(name, mean_delay)` sorts the bars by delay value rather than alphabetically, making the ranking immediately visible, the same behavior as the `reorder()` call in `ggplot2`.
 
 ## Parameterized Queries
 

@@ -60,7 +60,7 @@ WHERE  table_name = 'actors'
 ORDER  BY ordinal_position;
 ```
 
-The `data_type` column uses standard SQL type names. `character varying` is the standard name for `VARCHAR`, and `character` is the standard name for `CHAR`. PostgreSQL accepts both forms — the catalog stores the standard names regardless of which form you used when creating the table.
+The `data_type` column uses standard SQL type names. `character varying` is the standard name for `VARCHAR`, and `character` is the standard name for `CHAR`. PostgreSQL accepts both forms: the catalog stores the standard names regardless of which form you used when creating the table.
 
 An alternative approach uses the `pg_typeof()` function to return the data type of any **expression** in your query. This includes table columns, but it also works on computed expressions, literals, and the results of function calls.
 
@@ -87,17 +87,17 @@ PostgreSQL provides three types for storing text.
 
 `CHAR(n)` stores a fixed-length string of exactly `n` characters. If the value you insert is shorter than `n`, PostgreSQL pads it with trailing spaces to reach the declared length. If it is longer, you get an error.
 
-The `sex` column in the `actors` table is `CHAR(1)` — exactly one character, always either `'M'` or `'F'`. Fixed-length types like this made sense decades ago when storage was expensive and padding simplified low-level file management. For a single-character code that is always exactly one character long, `CHAR(1)` is still a reasonable choice. In most other situations, `VARCHAR` or `TEXT` is preferable.
+The `sex` column in the `actors` table is `CHAR(1)`: exactly one character, always either `'M'` or `'F'`. Fixed-length types like this made sense decades ago when storage was expensive and padding simplified low-level file management. For a single-character code that is always exactly one character long, `CHAR(1)` is still a reasonable choice. In most other situations, `VARCHAR` or `TEXT` is preferable.
 
 ### VARCHAR(n)
 
-`VARCHAR(n)` stores a variable-length string up to a maximum of `n` characters. No padding is added; the value is stored exactly as written. Most of the text columns in the `actors` table use `VARCHAR` with a length limit — `first_name` and `last_name` are `VARCHAR(50)`, `birth_country` and `primary_genre` are shorter, and `birth_name` is `VARCHAR(100)` to accommodate longer legal names.
+`VARCHAR(n)` stores a variable-length string up to a maximum of `n` characters. No padding is added; the value is stored exactly as written. Most of the text columns in the `actors` table use `VARCHAR` with a length limit: `first_name` and `last_name` are `VARCHAR(50)`, `birth_country` and `primary_genre` are shorter, and `birth_name` is `VARCHAR(100)` to accommodate longer legal names.
 
 `VARCHAR` is also written as `character varying` in catalog queries, as you saw in the `information_schema` output above.
 
 ### TEXT
 
-`TEXT` stores a variable-length string with no upper limit on length. The `notable_role` column uses `TEXT` — film titles have no predictable maximum length, and there is no meaningful cap to enforce.
+`TEXT` stores a variable-length string with no upper limit on length. The `notable_role` column uses `TEXT`: film titles have no predictable maximum length, and there is no meaningful cap to enforce.
 
 ```{sql}
 --| connection: con
@@ -128,7 +128,7 @@ Integer types store whole numbers with no decimal component. PostgreSQL provides
 | `INTEGER`  | 4 bytes | −2,147,483,648 to 2,147,483,647                          |
 | `BIGINT`   | 8 bytes | −9,223,372,036,854,775,808 to 9,223,372,036,854,775,807 |
 
-The `actors` table uses `SMALLINT` for `height_cm`, `oscar_nominations`, and `oscar_wins` — all values that comfortably fit within the −32,768 to 32,767 range. `actor_id` uses plain `INTEGER`. No column uses `BIGINT`, but it is the right choice whenever a whole-number value could exceed roughly two billion — population counts, row identifiers in very large tables, or any counter expected to grow without bound.
+The `actors` table uses `SMALLINT` for `height_cm`, `oscar_nominations`, and `oscar_wins`, all values that comfortably fit within the −32,768 to 32,767 range. `actor_id` uses plain `INTEGER`. No column uses `BIGINT`, but it is the right choice whenever a whole-number value could exceed roughly two billion: population counts, row identifiers in very large tables, or any counter expected to grow without bound.
 
 An **overflow error** occurs when you try to store a value that is too large for the column's type. PostgreSQL raises an error like this:
 
@@ -146,7 +146,7 @@ PostgreSQL also provides `SERIAL`, `SMALLSERIAL`, and `BIGSERIAL` as shorthand f
 
 `NUMERIC(precision, scale)` stores exact decimal numbers. The `precision` is the total number of significant digits, and `scale` is the number of digits to the right of the decimal point. `DECIMAL` is a synonym for `NUMERIC`; they are interchangeable.
 
-The `total_box_office_usd` column is `NUMERIC(12, 0)` — up to twelve significant digits with no decimal places, suitable for whole-dollar box office figures up to $999,999,999,999.
+The `total_box_office_usd` column is `NUMERIC(12, 0)`: up to twelve significant digits with no decimal places, suitable for whole-dollar box office figures up to $999,999,999,999.
 
 ```{sql}
 --| connection: con
@@ -196,7 +196,7 @@ The PostgreSQL wiki's "Don't Do This" guide lists `MONEY` as a type to avoid. Fo
 
 ### REAL and DOUBLE PRECISION
 
-`REAL` (4 bytes) and `DOUBLE PRECISION` (8 bytes) store floating-point numbers — approximations rather than exact values. They follow the IEEE 754 standard used by most programming languages for `float` and `double`.
+`REAL` (4 bytes) and `DOUBLE PRECISION` (8 bytes) store floating-point numbers, approximations rather than exact values. They follow the IEEE 754 standard used by most programming languages for `float` and `double`.
 
 ```{sql}
 --| connection: con
@@ -215,7 +215,7 @@ Floating-point arithmetic can introduce tiny rounding errors that accumulate wit
 
 ## Boolean
 
-The `BOOLEAN` type stores a truth value: `TRUE`, `FALSE`, or `NULL`. The `has_honorary_oscar` column in the `actors` table is a boolean — each actor either has received an honorary Oscar or has not.
+The `BOOLEAN` type stores a truth value: `TRUE`, `FALSE`, or `NULL`. The `has_honorary_oscar` column in the `actors` table is a boolean: each actor either has received an honorary Oscar or has not.
 
 ```{sql}
 --| connection: con
@@ -242,7 +242,7 @@ ORDER BY oscar_wins DESC
 LIMIT 10;
 ```
 
-The expression `oscar_wins > 1` evaluates to a `BOOLEAN` for each row. This is the same kind of expression you write in a `WHERE` clause — the difference here is that we are selecting it as a column rather than using it to filter rows.
+The expression `oscar_wins > 1` evaluates to a `BOOLEAN` for each row. This is the same kind of expression you write in a `WHERE` clause; the difference here is that we are selecting it as a column rather than using it to filter rows.
 
 ## Date and Time Types
 
@@ -262,7 +262,7 @@ ORDER  BY death_date DESC
 LIMIT  10;
 ```
 
-Date literals in PostgreSQL are written as quoted strings in ISO 8601 format: `'2024-12-16'`. The database validates that the string represents a real date — `'2024-02-30'` would produce an error.
+Date literals in PostgreSQL are written as quoted strings in ISO 8601 format: `'2024-12-16'`. The database validates that the string represents a real date: `'2024-02-30'` would produce an error.
 
 ### TIME
 
@@ -273,7 +273,7 @@ Date literals in PostgreSQL are written as quoted strings in ISO 8601 format: `'
 `TIMESTAMP` stores both a date and a time down to the microsecond. It also has two variants: `TIMESTAMP WITHOUT TIME ZONE` and `TIMESTAMP WITH TIME ZONE` (`TIMESTAMPTZ`).
 
 ::: {.callout-note}
-If you are coming from MySQL or SQL Server, you may be looking for a `DATETIME` type. PostgreSQL does not have one — `TIMESTAMP` covers the same use case.
+If you are coming from MySQL or SQL Server, you may be looking for a `DATETIME` type. PostgreSQL does not have one; `TIMESTAMP` covers the same use case.
 :::
 
 The function `NOW()` returns the current date and time as a `TIMESTAMPTZ`, and `CURRENT_DATE` returns today's date as a `DATE`.
@@ -289,7 +289,7 @@ SELECT
 
 ### INTERVAL
 
-`INTERVAL` stores a span of time — a duration rather than a specific point on the calendar. Intervals are written as quoted strings with a unit: `INTERVAL '1 year'`, `INTERVAL '3 months'`, `INTERVAL '45 days'`.
+`INTERVAL` stores a span of time, a duration rather than a specific point on the calendar. Intervals are written as quoted strings with a unit: `INTERVAL '1 year'`, `INTERVAL '3 months'`, `INTERVAL '45 days'`.
 
 Intervals are most useful for date arithmetic. You can add an interval to a date to compute a future or past date, or subtract two dates to compute the duration between them.
 
@@ -315,7 +315,7 @@ Some database systems and documentation use the term `DURATION` for this concept
 
 ### EXTRACT
 
-`EXTRACT` pulls a single component — year, month, day, and others — out of a date or timestamp as a number. The syntax is:
+`EXTRACT` pulls a single component (year, month, day, and others) out of a date or timestamp as a number. The syntax is:
 
 ```sql
 EXTRACT(field FROM date_or_timestamp)
@@ -412,7 +412,7 @@ A few casting patterns come up repeatedly in practice.
 --| connection: con
 --| label: cast-to-text
 SELECT
-    first_name || ' ' || last_name || ' — $' ||
+    first_name || ' ' || last_name || ' - $' ||
     (total_box_office_usd / 1000000)::text || 'M'  AS bio_label
 FROM actors
 ORDER BY total_box_office_usd DESC

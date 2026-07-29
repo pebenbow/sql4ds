@@ -65,11 +65,11 @@ Seq Scan on flights  (cost=0.00..3178.28 rows=2778 width=81)
                      (actual time=0.019..11.192 rows=2791 loops=1)
 ```
 
-- **cost=0.00..3178.28** — estimated work to return the first row (startup) and all rows (total). These are relative units the planner uses to compare strategies, not milliseconds.
-- **rows=2778** — estimated row count. The actual count follows in the ANALYZE output.
-- **width=81** — average bytes per output row.
-- **actual time=0.019..11.192** — measured wall-clock milliseconds to first row and last row.
-- **loops=1** — how many times this node executed. Nodes inside a nested loop execute once per outer row.
+- **cost=0.00..3178.28**: estimated work to return the first row (startup) and all rows (total). These are relative units the planner uses to compare strategies, not milliseconds.
+- **rows=2778**: estimated row count. The actual count follows in the ANALYZE output.
+- **width=81**: average bytes per output row.
+- **actual time=0.019..11.192**: measured wall-clock milliseconds to first row and last row.
+- **loops=1**: how many times this node executed. Nodes inside a nested loop execute once per outer row.
 
 The `Rows Removed by Filter: 101871` line shows how many rows the scan read and discarded. For this query, PostgreSQL examined all 104,662 rows to find 2,791 that matched, taking about 11 milliseconds.
 
@@ -104,9 +104,9 @@ writeLines(dbGetQuery(con,
 )[[1]])
 ```
 
-The planner switched to a **Bitmap Heap Scan**. It first ran a `Bitmap Index Scan` to traverse the new index and build an in-memory bitmap of pages containing matching rows, then fetched only those pages from the heap. Execution time dropped from about 11 milliseconds to about 2 — a roughly five-fold improvement.
+The planner switched to a **Bitmap Heap Scan**. It first ran a `Bitmap Index Scan` to traverse the new index and build an in-memory bitmap of pages containing matching rows, then fetched only those pages from the heap. Execution time dropped from about 11 milliseconds to about 2, a roughly five-fold improvement.
 
-For a more selective filter — flights delayed over five hours — the same index is even more effective:
+For a more selective filter (flights delayed over five hours), the same index is even more effective:
 
 ```{r}
 #| label: explain-highly-selective
@@ -157,7 +157,7 @@ Execution time drops from about 11 milliseconds to well under 1 millisecond.
 
 ### Column Order and the Leading-Column Rule
 
-The order of columns in a multi-column index determines which queries can use it. An index on `(month, carrier)` is organized first by month, then by carrier within each month. A query that filters on `month` alone can use this index, because month is the leading column. A query that filters on `carrier` alone cannot use the index efficiently — carrier values are interleaved across all months, so the index provides no useful ordering.
+The order of columns in a multi-column index determines which queries can use it. An index on `(month, carrier)` is organized first by month, then by carrier within each month. A query that filters on `month` alone can use this index, because month is the leading column. A query that filters on `carrier` alone cannot use the index efficiently: carrier values are interleaved across all months, so the index provides no useful ordering.
 
 ```{r}
 #| label: explain-non-leading
@@ -178,14 +178,14 @@ dbExecute(con, "DROP INDEX idx_flights_month_carrier")
 
 A **partial index** covers only the rows that satisfy a `WHERE` clause specified at creation time. It is smaller than a full index, builds faster, and uses less memory.
 
-The `flights` table has 3,153 rows where `dep_delay IS NULL` — cancelled or diverted flights that never received a departure delay measurement. Queries about departure delays almost never want these rows. An index on `dep_delay` that includes them wastes space on values that will never be matched in a filter like `dep_delay > 0`.
+The `flights` table has 3,153 rows where `dep_delay IS NULL`: cancelled or diverted flights that never received a departure delay measurement. Queries about departure delays almost never want these rows. An index on `dep_delay` that includes them wastes space on values that will never be matched in a filter like `dep_delay > 0`.
 
 ```sql
 CREATE INDEX idx_flights_delayed ON flights(dep_delay)
 WHERE dep_delay > 0;
 ```
 
-This index covers only the 33,690 rows with a positive delay — about a third of the table. Queries that filter on positive delays use the partial index just as they would a full index, but the index itself is one-third the size.
+This index covers only the 33,690 rows with a positive delay, about a third of the table. Queries that filter on positive delays use the partial index just as they would a full index, but the index itself is one-third the size.
 
 ```{r}
 #| label: create-partial-index
@@ -200,7 +200,7 @@ writeLines(dbGetQuery(con,
 )[[1]])
 ```
 
-The plan shows the partial index in use. The planner recognizes that `dep_delay > 120` is a subset of the partial index's `dep_delay > 0` condition and uses it accordingly. A query that does not satisfy the partial index predicate — such as `WHERE dep_delay IS NULL` — will not use it and will fall back to a sequential scan.
+The plan shows the partial index in use. The planner recognizes that `dep_delay > 120` is a subset of the partial index's `dep_delay > 0` condition and uses it accordingly. A query that does not satisfy the partial index predicate (such as `WHERE dep_delay IS NULL`) will not use it and will fall back to a sequential scan.
 
 ```{r}
 #| label: drop-partial-index
@@ -295,7 +295,7 @@ Not every column deserves an index. A useful mental checklist:
 - **Columns that appear in `WHERE` clauses frequently.** The more often a column is filtered, the more benefit an index provides.
 - **Join keys.** PostgreSQL uses indexes on join columns to avoid full scans when building hash or nested-loop joins.
 - **Foreign key columns.** PostgreSQL does not automatically index foreign keys (unlike some other databases). A missing foreign key index can cause slow cascading deletes and slow joins.
-- **High-selectivity columns.** A column with many distinct values — a UUID, an email address, a timestamp — benefits more from an index than a column with few distinct values, like a status flag.
+- **High-selectivity columns.** A column with many distinct values (a UUID, an email address, a timestamp) benefits more from an index than a column with few distinct values, like a status flag.
 - **Columns used in `ORDER BY`.** If a query both filters and sorts on the same column, the index may satisfy both operations, eliminating a sort step.
 
 Columns that are written to constantly, rarely queried, or very low selectivity are poor candidates. Monitor query performance over time and add indexes in response to observed slow queries rather than preemptively indexing every column.

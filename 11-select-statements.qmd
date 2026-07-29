@@ -323,7 +323,7 @@ WHERE oscar_nominations BETWEEN 3 AND 8
 ORDER BY oscar_nominations DESC;
 ```
 
-With strings, `BETWEEN` uses alphabetical (lexicographic) order. The boundary behavior is the same — both ends are inclusive — but the upper boundary catches only that exact string, not everything that begins with it. `last_name BETWEEN 'D' AND 'H'` would miss `Hanks`, `Hepburn`, and every other name that starts with H but sorts after the bare letter `H`. The correct way to express "last names beginning with D through H" is a half-open range using explicit operators:
+With strings, `BETWEEN` uses alphabetical (lexicographic) order. The boundary behavior is the same (both ends are inclusive), but the upper boundary catches only that exact string, not everything that begins with it. `last_name BETWEEN 'D' AND 'H'` would miss `Hanks`, `Hepburn`, and every other name that starts with H but sorts after the bare letter `H`. The correct way to express "last names beginning with D through H" is a half-open range using explicit operators:
 
 ```{sql}
 --| connection: con
@@ -428,7 +428,7 @@ WHERE last_name ILIKE 'h%'
 ORDER BY last_name;
 ```
 
-Both queries return the same fourteen rows because the data happens to be consistently capitalized. The difference becomes meaningful when data entry is inconsistent — for example, if `primary_genre` values were stored as a mix of `'drama'`, `'Drama'`, and `'DRAMA'`, a `LIKE` filter for `'drama'` would miss the capitalized variants while `ILIKE` would catch all of them.
+Both queries return the same fourteen rows because the data happens to be consistently capitalized. The difference becomes meaningful when data entry is inconsistent: for example, if `primary_genre` values were stored as a mix of `'drama'`, `'Drama'`, and `'DRAMA'`, a `LIKE` filter for `'drama'` would miss the capitalized variants while `ILIKE` would catch all of them.
 
 With `%` wildcards on both sides of a search term, you can find text that occurs anywhere in a column. The following query finds actors whose birth names contain the word "Schwartz" or any other substring:
 
