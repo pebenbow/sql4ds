@@ -81,7 +81,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -456,10 +524,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-logical-order-of-execution" id="toc-the-logical-order-of-execution" class="nav-link" data-scroll-target="#the-logical-order-of-execution"><span class="header-section-number">6.6</span> The Logical Order of Execution</a></li>
   <li><a href="#null-values-in-aggregation" id="toc-null-values-in-aggregation" class="nav-link" data-scroll-target="#null-values-in-aggregation"><span class="header-section-number">6.7</span> NULL Values in Aggregation</a></li>
   <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together"><span class="header-section-number">6.8</span> Putting It All Together</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.9</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">6.9.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">6.9.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding">Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/13-aggregating.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -554,7 +622,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>Before using <code>GROUP BY</code>, it is worth seeing these functions applied to the entire table, without any grouping:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)                              <span class="kw">AS</span> total_actors,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(oscar_wins)                       <span class="kw">AS</span> total_wins,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>)      <span class="kw">AS</span> avg_nominations,</span>
@@ -592,13 +660,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-group-by-clause" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="the-group-by-clause"><span class="header-section-number">6.3</span> The GROUP BY Clause</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   grouping_column, aggregate_function(<span class="kw">column</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   grouping_column, aggregate_function(<span class="kw">column</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     table_name</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> grouping_column;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>GROUP BY</code> clause comes after <code>WHERE</code> and before <code>ORDER BY</code>. The column you group by must appear in the <code>SELECT</code> list. Every column in <code>SELECT</code> that is not inside an aggregate function must appear in <code>GROUP BY</code>: this is a hard rule PostgreSQL enforces.</p>
 <p>The following query counts actors and totals Oscar wins for each primary genre:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)        <span class="kw">AS</span> actor_count,</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(oscar_wins) <span class="kw">AS</span> total_wins</span>
@@ -665,7 +733,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="6.3.1" class="anchored" data-anchor-id="grouping-by-multiple-columns"><span class="header-section-number">6.3.1</span> Grouping by Multiple Columns</h3>
 <p>You can group by more than one column by listing them in <code>GROUP BY</code>, separated by commas. The database creates one group per unique combination of those columns.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    sex,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)                            <span class="kw">AS</span> actor_count,</span>
@@ -778,10 +846,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="conditional-aggregation-with-filter" class="level3" data-number="6.3.2">
 <h3 data-number="6.3.2" class="anchored" data-anchor-id="conditional-aggregation-with-filter"><span class="header-section-number">6.3.2</span> Conditional Aggregation with FILTER</h3>
 <p>The <code>FILTER</code> clause attaches a condition to a single aggregate function, telling it to count (or sum, or average) only the rows that satisfy that condition. This lets you compute multiple conditional summaries in the same query without writing separate subqueries.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>aggregate_function(expression) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> condition)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>aggregate_function(expression) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> condition)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The following query counts all actors per genre, then adds separate columns for those who have won at least one Oscar, those with an honorary Oscar, and those who are still living, all in a single pass over the table:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)                                        <span class="kw">AS</span> total_actors,</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FILTER</span> (<span class="kw">WHERE</span> oscar_wins <span class="op">&gt;</span> <span class="dv">0</span>)          <span class="kw">AS</span> competitive_winners,</span>
@@ -886,13 +954,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="filtering-groups-with-having" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="filtering-groups-with-having"><span class="header-section-number">6.4</span> Filtering Groups with HAVING</h2>
 <p><code>WHERE</code> filters rows before grouping. Once groups are formed, you cannot use <code>WHERE</code> to filter them: the groups do not exist yet when <code>WHERE</code> runs. <code>HAVING</code> is the clause that filters groups <em>after</em> they have been computed.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   grouping_column, aggregate_function(<span class="kw">column</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span>   grouping_column, aggregate_function(<span class="kw">column</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>     table_name</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> grouping_column</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span>   aggregate_condition;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The following query returns only birth countries that have produced at least five actors in the dataset:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    birth_country,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)        <span class="kw">AS</span> actor_count,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(oscar_wins) <span class="kw">AS</span> total_wins</span>
@@ -966,7 +1034,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>WHERE</code> and <code>HAVING</code> can appear in the same query. <code>WHERE</code> narrows the rows that are fed into the grouping step, and <code>HAVING</code> then narrows the resulting groups.</p>
 <p>The following query asks: among actors who are still living, which birth countries have produced at least three of them, and what is their combined box office?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    birth_country,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)                                        <span class="kw">AS</span> living_actors,</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(total_box_office_usd) <span class="op">/</span> <span class="dv">1000000</span>             <span class="kw">AS</span> combined_box_office_millions</span>
@@ -1052,7 +1120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The subtotal and grand total rows have <code>NULL</code> in the columns that were rolled up. By default, PostgreSQL sorts <code>NULL</code> values after all non-NULL values in ascending order and before them in descending order. Because <code>ROLLUP</code> results contain meaningful <code>NULL</code> values in the grouping columns, the <code>ORDER BY</code> clause uses <code>NULLS LAST</code> to push the subtotal and grand total rows to the bottom regardless of sort direction, keeping the detail rows together at the top.</p>
 <p>The following query counts actors by birth country and genre for three countries, with subtotals per country and a grand total:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    birth_country,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> actors</span>
@@ -1202,7 +1270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>CUBE</code> generates subtotals for every possible combination of the grouping columns, not just the hierarchical rollup. <code>GROUP BY CUBE(a, b)</code> produces rows for <code>(a, b)</code>, <code>(a)</code>, <code>(b)</code>, and <code>()</code>, all four combinations of including or excluding each column.</p>
 <p>The following query uses two countries and three genres to keep the output readable:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    birth_country,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> actors</span>
@@ -1291,11 +1359,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="labeling-subtotals-with-coalesce-and-grouping" class="level3" data-number="6.5.3">
 <h3 data-number="6.5.3" class="anchored" data-anchor-id="labeling-subtotals-with-coalesce-and-grouping"><span class="header-section-number">6.5.3</span> Labeling Subtotals with COALESCE and GROUPING</h3>
 <p>The NULL values in ROLLUP and CUBE output are technically correct but can look awkward in a report. <code>COALESCE</code> addresses this: it takes two or more arguments and returns the first one that is not NULL.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">COALESCE</span>(expression, fallback_value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">COALESCE</span>(expression, fallback_value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>There is a catch, however. Once <code>COALESCE</code> replaces the NULLs in the <code>SELECT</code> list, <code>ORDER BY ... NULLS LAST</code> stops working: the alias now resolves to the COALESCE result, which contains no NULLs, so labels like <code>'Grand Total'</code> sort alphabetically among the real values rather than at the end.</p>
 <p>The solution is <code>GROUPING(column)</code>, a companion function designed specifically for ROLLUP and CUBE results. It returns <code>1</code> when a column’s NULL is a rollup marker and <code>0</code> when it holds a real grouping value. Sorting by <code>GROUPING(column)</code> first places subtotal rows after the detail rows they summarize, with no dependence on NULLs:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(birth_country, <span class="st">'Grand Total'</span>)  <span class="kw">AS</span> birth_country,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(primary_genre, <span class="st">'All Genres'</span>)   <span class="kw">AS</span> primary_genre,</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> actors</span>
@@ -1432,7 +1500,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For each country, <code>GROUPING(primary_genre)</code> is <code>0</code> for the detail rows and <code>1</code> for the per-country subtotal row, so the subtotal always appears after the genres it summarizes. <code>GROUPING(birth_country)</code> is <code>1</code> only for the grand total row, pushing it to the very end. <code>COALESCE</code> then handles the display without interfering with the ordering.</p>
 <p>To reverse that arrangement and place each subtotal row before its detail rows, sort <code>GROUPING(primary_genre)</code> descending. Everything else stays the same:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(birth_country, <span class="st">'Grand Total'</span>)  <span class="kw">AS</span> birth_country,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(primary_genre, <span class="st">'All Genres'</span>)   <span class="kw">AS</span> primary_genre,</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> actors</span>
@@ -1573,7 +1641,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="6.5.4" class="anchored" data-anchor-id="grouping-sets"><span class="header-section-number">6.5.4</span> GROUPING SETS</h3>
 <p><code>ROLLUP</code> and <code>CUBE</code> are both shortcuts for <code>GROUPING SETS</code>, which is the underlying primitive. <code>GROUPING SETS</code> lets you specify exactly which combinations of grouping columns should produce rows in the output. Each set in the list is one combination; every other combination is omitted.</p>
 <p>The two shortcuts expand to their GROUPING SETS equivalents like this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- These are identical:</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- These are identical:</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">ROLLUP</span> (a, b)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="fu">GROUPING</span> SETS ((a, b), (a), ())</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1583,7 +1651,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>ROLLUP</code> always gives you the full hierarchy from most-specific to grand total. <code>CUBE</code> always gives you every possible combination. <code>GROUPING SETS</code> lets you pick exactly the combinations you want, which matters when neither shortcut fits.</p>
 <p>The following query returns actor counts at two levels: the <code>(primary_genre, sex)</code> detail level and the grand total, skipping the intermediate per-genre and per-sex subtotals that CUBE would add:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    sex,</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> actors</span>
@@ -1661,7 +1729,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>LIMIT</code>: trim to the requested row count</li>
 </ol>
 <p>This order has a practical consequence: aggregate functions and column aliases defined in <code>SELECT</code> cannot be referenced in <code>HAVING</code>, because <code>HAVING</code> runs before <code>SELECT</code>. You must repeat the aggregate expression:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- This fails: 'avg_noms' is not defined when HAVING runs</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- This fails: 'avg_noms' is not defined when HAVING runs</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> primary_genre, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>) <span class="kw">AS</span> avg_noms</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
@@ -1682,7 +1750,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="6.8" class="anchored" data-anchor-id="putting-it-all-together"><span class="header-section-number">6.8</span> Putting It All Together</h2>
 <p>The following query combines all the clauses covered in this chapter to answer a specific question: for each primary genre with more than two actors born outside the USA, what are the actor count, total Oscar wins, and average box office in millions?</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    primary_genre,</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)                                         <span class="kw">AS</span> actor_count,</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(oscar_wins)                                  <span class="kw">AS</span> total_wins,</span>
@@ -1739,14 +1807,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="exercises" class="level2" data-number="6.9">
-<h2 data-number="6.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.9</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="6.9.1">
-<h3 data-number="6.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">6.9.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <p><strong>1.</strong> Explain the difference between <code>WHERE</code> and <code>HAVING</code>. Write an example of a condition that must go in <code>WHERE</code> and one that must go in <code>HAVING</code>, and explain why each belongs where it does.</p>
 <hr>
 <p><strong>2.</strong> A student writes the following query intending to find genres where the average number of Oscar nominations exceeds 2, but PostgreSQL returns an error. Identify the problem and fix it.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> primary_genre, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>) <span class="kw">AS</span> avg_noms</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> primary_genre, <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>) <span class="kw">AS</span> avg_noms</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> avg_noms <span class="op">&gt;</span> <span class="dv">2</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1754,8 +1822,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>3.</strong> Explain why <code>COUNT(*)</code> and <code>COUNT(birth_name)</code> would return different values when used inside a <code>GROUP BY</code> query. In what situation would they return the same value for every group?</p>
 <hr>
 </section>
-<section id="coding" class="level3" data-number="6.9.2">
-<h3 data-number="6.9.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">6.9.2</span> Coding</h3>
+<section id="coding" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="coding">Coding</h3>
 <p><strong>4.</strong> Write a query that counts the number of actors from each birth country. Return only countries with at least two actors, sorted from most to fewest.</p>
 <hr>
 <p><strong>5.</strong> Write a query that shows, for each primary genre, the total number of Oscar nominations and the total number of Oscar wins. Include a third column that expresses wins as a percentage of nominations, rounded to one decimal place. Sort by total nominations descending.</p>

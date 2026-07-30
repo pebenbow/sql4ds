@@ -184,7 +184,7 @@ Once connected, you can browse tables, run queries, and view results in a side p
 If the connection test fails, check that your Supabase project is not paused (free-tier projects pause after a week of inactivity). Visit the dashboard and wait for it to resume, then try again.
 :::
 
-## Exercises
+## Exercises {.unnumbered}
 
 1. Install the Supabase CLI on your machine and confirm the version with `supabase --version`.
 

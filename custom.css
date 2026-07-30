@@ -26,3 +26,27 @@ caption,
 .cell-output-display table td {
     border: 1px solid #c8cdd2;
 }
+
+/* Set the end-of-chapter Exercises section off in its own light-gray box */
+section#exercises {
+    background-color: #f4f4f5;
+    border-radius: 0.5rem;
+    padding: 1.75rem 2rem;
+    margin: 2.5rem 0;
+}
+
+section#exercises > h2:first-child {
+    margin-top: 0;
+}
+
+@media (max-width: 575.98px) {
+    section#exercises {
+        padding: 1.25rem 1.25rem;
+    }
+}
+
+/* Restore code block padding: disabling code-block-bg (for the code-window
+   extension's own background) also zeroes out Quarto's default padding. */
+pre.sourceCode {
+    padding: 0.85em 1em !important;
+}

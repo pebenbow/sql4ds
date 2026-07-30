@@ -65,7 +65,75 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -430,14 +498,10 @@ div.csl-indent {
   <li><a href="#schemas-a-collection-of-related-tables" id="toc-schemas-a-collection-of-related-tables" class="nav-link" data-scroll-target="#schemas-a-collection-of-related-tables"><span class="header-section-number">3.9</span> Schemas: A Collection of Related Tables</a></li>
   <li><a href="#formal-terminology-the-relational-model" id="toc-formal-terminology-the-relational-model" class="nav-link" data-scroll-target="#formal-terminology-the-relational-model"><span class="header-section-number">3.10</span> Formal Terminology: The Relational Model</a></li>
   <li><a href="#putting-it-together" id="toc-putting-it-together" class="nav-link" data-scroll-target="#putting-it-together"><span class="header-section-number">3.11</span> Putting It Together</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">3.12</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">3.12.1</span> Reflection</a></li>
-  </ul></li>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link" data-scroll-target="#welcome">Welcome</a>
-  <ul class="collapse">
-  <li><a href="#about-the-author" id="toc-about-the-author" class="nav-link" data-scroll-target="#about-the-author"><span class="header-section-number">3.13</span> About the Author</a></li>
-  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments"><span class="header-section-number">3.14</span> Acknowledgments</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis">Structural Analysis</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/03-database-organization.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -740,13 +804,22 @@ div.csl-indent {
 </ol>
 <p>Everything in the rest of this book builds on this structure. The next chapter starts writing queries against it with <code>SELECT</code>, and a later section of the book (starting with keys and integrity) returns to relationships and gives them the formal treatment only sketched here.</p>
 </section>
-<section id="exercises" class="level2" data-number="3.12">
-<h2 data-number="3.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.12</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="3.12.1">
-<h3 data-number="3.12.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">3.12.1</span> Reflection</h3>
-<p><strong>1.</strong> A friend keeps their reading list in a single spreadsheet with columns for <code>book_title</code>, <code>author_name</code>, <code>author_email</code>, and <code>date_finished</code>. Every time they log a new book by an author they have already read, the author’s name and email are retyped on a new row. What problem does this create, and how would you restructure it into two related tables?</p>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
+<p><strong>1.</strong> In your own words, explain the difference between a row and a column. Use an example that does not appear in this chapter.</p>
 <hr>
-<p><strong>2.</strong> Why is it a problem for a single column to hold more than one kind of value, such as a <code>notes</code> column that sometimes contains a phone number and sometimes contains a free-text comment?</p>
+<p><strong>2.</strong> A friend keeps their reading list in a single spreadsheet with columns for <code>book_title</code>, <code>author_name</code>, <code>author_email</code>, and <code>date_finished</code>. Every time they log a new book by an author they have already read, the author’s name and email are retyped on a new row. What problem does this create, and how would you restructure it into two related tables?</p>
+<hr>
+<p><strong>3.</strong> Why is it a problem for a single column to hold more than one kind of value, such as a <code>notes</code> column that sometimes contains a phone number and sometimes contains a free-text comment?</p>
+<hr>
+</section>
+<section id="structural-analysis" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="structural-analysis">Structural Analysis</h3>
+<p><strong>4.</strong> A small veterinary clinic tracks its data in one spreadsheet with these columns: <code>visit_id</code>, <code>pet_name</code>, <code>pet_species</code>, <code>owner_name</code>, <code>owner_phone</code>, <code>visit_date</code>, <code>reason_for_visit</code>. Sketch two or three related tables that would better organize this information. For each table, list its columns and identify which column(s) connect it to the other tables.</p>
+<hr>
+<p><strong>5.</strong> Consider a <code>products</code> table with columns <code>product_id</code>, <code>product_name</code>, <code>price</code>, and <code>category</code>. A colleague suggests adding a column called <code>details</code> that stores a mix of shipping weight, warehouse location, and supplier notes as a single text string, formatted differently depending on the product. Explain, using the ideas from this chapter, why this is a poor design choice, and propose an alternative.</p>
 
 
 </section>

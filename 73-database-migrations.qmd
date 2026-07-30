@@ -283,9 +283,9 @@ The most important thing to recognize is that the SQL files in `supabase/migrati
 
 The Supabase CLI adds the convenience of `supabase migration new` and `supabase db push`, and it integrates with the rest of the Supabase platform. But it is a thin layer over the same idea: ordered SQL files, applied in sequence, with a tracking table keeping record of what has been done.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 1. Explain the difference between running a `CREATE TABLE` statement directly in the Supabase SQL Editor versus creating a migration file and running `supabase db push`. What does the migration approach give you that the direct approach does not?
 
@@ -295,7 +295,7 @@ The Supabase CLI adds the convenience of `supabase migration new` and `supabase 
 
 4. Two developers, working on separate feature branches, both create migrations at roughly the same time. One creates `20250310120000_add_tags_table.sql` and the other creates `20250310130000_add_ratings_table.sql`. When both branches are merged, which migration will be applied first and why?
 
-### Coding
+### Coding {.unnumbered}
 
 5. Add a migration to your project from the previous chapter that adds an `instructor_id` column (integer, nullable) to the `courses` table. Push it to your Supabase project and verify with a query to `information_schema.columns`.
 

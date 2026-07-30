@@ -81,7 +81,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -516,7 +584,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Use</strong> <code>pg_typeof()</code> to inspect the inferred type of an expression in PostgreSQL.</li>
 </ul>
 <p>In the previous chapter, you encountered a line that looked like this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ROUND</span>(height_cm <span class="op">/</span> <span class="fl">2.54</span>:<span class="ch">:numeric</span>, <span class="dv">1</span>) <span class="kw">AS</span> height_in</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ROUND</span>(height_cm <span class="op">/</span> <span class="fl">2.54</span>:<span class="ch">:numeric</span>, <span class="dv">1</span>) <span class="kw">AS</span> height_in</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>::numeric</code> piece is a <strong>type cast</strong>: an instruction that tells PostgreSQL to treat one value as a different data type. This chapter explains why that was necessary, what data types PostgreSQL provides, and how to convert between them.</p>
 <p>Every value stored in a database has a data type, which tells the database how to store the value, how much space to allocate, and what operations are valid on it. Adding two integers produces a different result than concatenating two strings, and dividing a whole number by another whole number produces a different result than dividing two decimals. Choosing the right data type for each column is one of the most consequential decisions you make when designing a database.</p>
 </section>
@@ -524,7 +592,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="5.2" class="anchored" data-anchor-id="inspecting-column-types"><span class="header-section-number">5.2</span> Inspecting Column Types</h2>
 <p>Before discussing types in the abstract, it helps to see what types the <code>actors</code> table actually uses. The most direct way to do this is to query <code>information_schema.columns</code>, a catalog view available in every PostgreSQL database that describes the structure of the database itself.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column_name, data_type, character_maximum_length,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column_name, data_type, character_maximum_length,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>       numeric_precision, numeric_scale</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   information_schema.<span class="kw">columns</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  table_name <span class="op">=</span> <span class="st">'actors'</span></span>
@@ -661,7 +729,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <code>data_type</code> column uses standard SQL type names. <code>character varying</code> is the standard name for <code>VARCHAR</code>, and <code>character</code> is the standard name for <code>CHAR</code>. PostgreSQL accepts both forms: the catalog stores the standard names regardless of which form you used when creating the table.</p>
 <p>An alternative approach uses the <code>pg_typeof()</code> function to return the data type of any <strong>expression</strong> in your query. This includes table columns, but it also works on computed expressions, literals, and the results of function calls.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    pg_typeof(actor_id)             <span class="kw">AS</span> actor_id_type,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(height_cm)            <span class="kw">AS</span> height_cm_type,</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    pg_typeof(birth_date)           <span class="kw">AS</span> birth_date_type,</span>
@@ -719,7 +787,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="5.3.3" class="anchored" data-anchor-id="text"><span class="header-section-number">5.3.3</span> TEXT</h3>
 <p><code>TEXT</code> stores a variable-length string with no upper limit on length. The <code>notable_role</code> column uses <code>TEXT</code>: film titles have no predictable maximum length, and there is no meaningful cap to enforce.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, notable_role</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, notable_role</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> last_name</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span>  <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -840,7 +908,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>The <code>actors</code> table uses <code>SMALLINT</code> for <code>height_cm</code>, <code>oscar_nominations</code>, and <code>oscar_wins</code>, all values that comfortably fit within the −32,768 to 32,767 range. <code>actor_id</code> uses plain <code>INTEGER</code>. No column uses <code>BIGINT</code>, but it is the right choice whenever a whole-number value could exceed roughly two billion: population counts, row identifiers in very large tables, or any counter expected to grow without bound.</p>
 <p>An <strong>overflow error</strong> occurs when you try to store a value that is too large for the column’s type. PostgreSQL raises an error like this:</p>
-<pre><code>SQLSTATE 22003: integer out of range</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>SQLSTATE 22003: integer out of range</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>On modern hardware, <code>BIGINT</code> is not meaningfully more expensive to store or query than <code>INTEGER</code>. Many database designers use <code>BIGINT</code> for all whole-number columns as a precaution, to avoid having to migrate a column type later when values grow larger than anticipated.</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -858,7 +926,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>NUMERIC(precision, scale)</code> stores exact decimal numbers. The <code>precision</code> is the total number of significant digits, and <code>scale</code> is the number of digits to the right of the decimal point. <code>DECIMAL</code> is a synonym for <code>NUMERIC</code>; they are interchangeable.</p>
 <p>The <code>total_box_office_usd</code> column is <code>NUMERIC(12, 0)</code>: up to twelve significant digits with no decimal places, suitable for whole-dollar box office figures up to $999,999,999,999.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name,</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       total_box_office_usd,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>       total_box_office_usd <span class="op">/</span> <span class="dv">1000000</span> <span class="kw">AS</span> millions</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
@@ -946,7 +1014,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="5.4.3" class="anchored" data-anchor-id="money"><span class="header-section-number">5.4.3</span> MONEY</h3>
 <p>PostgreSQL includes a <code>MONEY</code> type specifically for currency amounts. It stores values as an 8-byte integer internally and always displays them with exactly two decimal places, formatted according to the database server’s locale setting.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span>                  <span class="kw">AS</span> amount,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span>)       <span class="kw">AS</span> stored_as,</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span>:<span class="ch">:text</span>            <span class="kw">AS</span> text_representation;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -974,7 +1042,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Locale-dependent output.</strong> The formatted output of a <code>MONEY</code> value depends on the <code>lc_monetary</code> locale configured on the server. Two databases with different locale settings will display the same stored value differently, and a value accepted as valid input on one server may be rejected on another.</p>
 <p><strong>Arithmetic produces unexpected types.</strong> Dividing a <code>MONEY</code> value by an integer returns <code>MONEY</code>, which is intuitive. Dividing a <code>MONEY</code> value by another <code>MONEY</code> value, however, returns <code>DOUBLE PRECISION</code>, not <code>MONEY</code> or <code>NUMERIC</code>. This silently introduces floating-point approximation into a calculation you might expect to be exact.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">2</span>                    <span class="kw">AS</span> divided_by_int,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">2</span>)         <span class="kw">AS</span> type_after_int_division,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">100</span>:<span class="ch">:money</span>           <span class="kw">AS</span> divided_by_money,</span>
@@ -1022,7 +1090,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="5.4.4" class="anchored" data-anchor-id="real-and-double-precision"><span class="header-section-number">5.4.4</span> REAL and DOUBLE PRECISION</h3>
 <p><code>REAL</code> (4 bytes) and <code>DOUBLE PRECISION</code> (8 bytes) store floating-point numbers, approximations rather than exact values. They follow the IEEE 754 standard used by most programming languages for <code>float</code> and <code>double</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">3.14</span>)            <span class="kw">AS</span> uncast_literal,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">3.14</span>:<span class="ch">:real</span>)      <span class="kw">AS</span> real_type,</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">3.14</span>:<span class="ch">:float8</span>)    <span class="kw">AS</span> double_type;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1063,7 +1131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="5.5" class="anchored" data-anchor-id="boolean"><span class="header-section-number">5.5</span> Boolean</h2>
 <p>The <code>BOOLEAN</code> type stores a truth value: <code>TRUE</code>, <code>FALSE</code>, or <code>NULL</code>. The <code>has_honorary_oscar</code> column in the <code>actors</code> table is a boolean: each actor either has received an honorary Oscar or has not.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, has_honorary_oscar, oscar_wins</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, has_honorary_oscar, oscar_wins</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  has_honorary_oscar <span class="op">=</span> <span class="kw">true</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> last_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1188,7 +1256,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>PostgreSQL displays boolean values as <code>t</code> and <code>f</code> in the terminal, though it accepts several input forms: <code>TRUE</code>/<code>FALSE</code>, <code>'t'</code>/‘f’<code>,</code>‘yes’<code>/</code>‘no’<code>,</code>‘1’<code>/</code>‘0’<code>, and</code>‘on’<code>/</code>‘off’<code>. Applications and reporting tools typically render them as</code>true<code>/</code>false` or checkboxes depending on context.</p>
 <p>Boolean values also arise naturally whenever you write a comparison expression. The following query adds a computed boolean column that is <code>TRUE</code> for actors with more than one Oscar win:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name <span class="kw">AS</span> full_name,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    oscar_wins,</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    oscar_wins <span class="op">&gt;</span> <span class="dv">1</span> <span class="kw">AS</span> multiple_wins</span>
@@ -1269,7 +1337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="5.6.1" class="anchored" data-anchor-id="date"><span class="header-section-number">5.6.1</span> DATE</h3>
 <p><code>DATE</code> stores a calendar date: year, month, and day, with no time component. The <code>birth_date</code> and <code>death_date</code> columns in the <code>actors</code> table are both <code>DATE</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, birth_date, death_date</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, birth_date, death_date</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  death_date <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> death_date <span class="kw">DESC</span></span>
@@ -1371,7 +1439,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The function <code>NOW()</code> returns the current date and time as a <code>TIMESTAMPTZ</code>, and <code>CURRENT_DATE</code> returns today’s date as a <code>DATE</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    NOW()         <span class="kw">AS</span> <span class="fu">current_timestamp</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CURRENT_DATE</span>  <span class="kw">AS</span> today,</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    CURRENT_TIME  <span class="kw">AS</span> time_now;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1387,9 +1455,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">2026-07-29 13:07:33</td>
-<td style="text-align: left;">2026-07-29</td>
-<td style="text-align: left;">13:07:33.923839</td>
+<td style="text-align: left;">2026-07-30 20:06:05</td>
+<td style="text-align: left;">2026-07-30</td>
+<td style="text-align: left;">20:06:05.188923</td>
 </tr>
 </tbody>
 </table>
@@ -1401,7 +1469,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>INTERVAL</code> stores a span of time, a duration rather than a specific point on the calendar. Intervals are written as quoted strings with a unit: <code>INTERVAL '1 year'</code>, <code>INTERVAL '3 months'</code>, <code>INTERVAL '45 days'</code>.</p>
 <p>Intervals are most useful for date arithmetic. You can add an interval to a date to compute a future or past date, or subtract two dates to compute the duration between them.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name      <span class="kw">AS</span> full_name,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    birth_date,</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    birth_date <span class="op">+</span> <span class="dt">INTERVAL</span> <span class="st">'50 years'</span>    <span class="kw">AS</span> fiftieth_birthday,</span>
@@ -1426,61 +1494,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: left;">Eva Marie Saint</td>
 <td style="text-align: left;">1924-07-04</td>
 <td style="text-align: left;">1974-07-04</td>
-<td style="text-align: right;">37280</td>
+<td style="text-align: right;">37281</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Gene Hackman</td>
 <td style="text-align: left;">1930-01-30</td>
 <td style="text-align: left;">1980-01-30</td>
-<td style="text-align: right;">35244</td>
+<td style="text-align: right;">35245</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Clint Eastwood</td>
 <td style="text-align: left;">1930-05-31</td>
 <td style="text-align: left;">1980-05-31</td>
-<td style="text-align: right;">35123</td>
+<td style="text-align: right;">35124</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Harriet Andersson</td>
 <td style="text-align: left;">1932-02-14</td>
 <td style="text-align: left;">1982-02-14</td>
-<td style="text-align: right;">34499</td>
+<td style="text-align: right;">34500</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Kim Novak</td>
 <td style="text-align: left;">1933-02-13</td>
 <td style="text-align: left;">1983-02-13</td>
-<td style="text-align: right;">34134</td>
+<td style="text-align: right;">34135</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Michael Caine</td>
 <td style="text-align: left;">1933-03-14</td>
 <td style="text-align: left;">1983-03-14</td>
-<td style="text-align: right;">34105</td>
+<td style="text-align: right;">34106</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Shirley MacLaine</td>
 <td style="text-align: left;">1934-04-24</td>
 <td style="text-align: left;">1984-04-24</td>
-<td style="text-align: right;">33699</td>
+<td style="text-align: right;">33700</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Sophia Loren</td>
 <td style="text-align: left;">1934-09-20</td>
 <td style="text-align: left;">1984-09-20</td>
-<td style="text-align: right;">33550</td>
+<td style="text-align: right;">33551</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Brigitte Bardot</td>
 <td style="text-align: left;">1934-09-28</td>
 <td style="text-align: left;">1984-09-28</td>
-<td style="text-align: right;">33542</td>
+<td style="text-align: right;">33543</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Judi Dench</td>
 <td style="text-align: left;">1934-12-09</td>
 <td style="text-align: left;">1984-12-09</td>
-<td style="text-align: right;">33470</td>
+<td style="text-align: right;">33471</td>
 </tr>
 </tbody>
 </table>
@@ -1501,10 +1569,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="extract" class="level3" data-number="5.6.5">
 <h3 data-number="5.6.5" class="anchored" data-anchor-id="extract"><span class="header-section-number">5.6.5</span> EXTRACT</h3>
 <p><code>EXTRACT</code> pulls a single component (year, month, day, and others) out of a date or timestamp as a number. The syntax is:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">EXTRACT</span>(field <span class="kw">FROM</span> date_or_timestamp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">EXTRACT</span>(field <span class="kw">FROM</span> date_or_timestamp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Common fields include <code>year</code>, <code>month</code>, <code>day</code>, <code>hour</code>, <code>minute</code>, <code>second</code>, <code>quarter</code>, <code>week</code>, and <code>dow</code> (day of week, where 0 is Sunday).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name  <span class="kw">AS</span> full_name,</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    birth_date,</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">EXTRACT</span>(<span class="dt">year</span>  <span class="kw">FROM</span> birth_date)  <span class="kw">AS</span> birth_year,</span>
@@ -1602,7 +1670,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>A practical use is computing an actor’s age in whole years. Subtracting birth years alone is imprecise because it ignores whether the birthday has occurred yet in the current year. The expression below accounts for that by comparing the month and day:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name                          <span class="kw">AS</span> full_name,</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    birth_date,</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">EXTRACT</span>(<span class="dt">year</span> <span class="kw">FROM</span> <span class="fu">CURRENT_DATE</span>) <span class="op">-</span></span>
@@ -1701,7 +1769,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="5.7.1" class="anchored" data-anchor-id="the-cast-function"><span class="header-section-number">5.7.1</span> The CAST() Function</h3>
 <p><code>CAST(value AS type)</code> is the ANSI SQL standard form, supported by virtually every relational database.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name          <span class="kw">AS</span> full_name,</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    height_cm,</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(<span class="fu">CAST</span>(height_cm <span class="kw">AS</span> <span class="dt">numeric</span>) <span class="op">/</span> <span class="fl">2.54</span>, <span class="dv">1</span>) <span class="kw">AS</span> height_in</span>
@@ -1778,7 +1846,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="5.7.2" class="anchored" data-anchor-id="the-operator"><span class="header-section-number">5.7.2</span> The :: Operator</h3>
 <p>The <code>::</code> operator is PostgreSQL’s native shorthand for the same operation. <code>value::type</code> is identical in behavior to <code>CAST(value AS type)</code>, but more compact.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name          <span class="kw">AS</span> full_name,</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    height_cm,</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(height_cm:<span class="ch">:numeric</span> <span class="op">/</span> <span class="fl">2.54</span>, <span class="dv">1</span>)     <span class="kw">AS</span> height_in</span>
@@ -1857,7 +1925,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A few casting patterns come up repeatedly in practice.</p>
 <p><strong>Numeric to text for string building.</strong> The <code>||</code> concatenation operator requires both operands to be text. Casting a number to text before concatenating is the standard solution.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name <span class="op">||</span> <span class="st">' - $'</span> <span class="op">||</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    (total_box_office_usd <span class="op">/</span> <span class="dv">1000000</span>):<span class="ch">:text</span> <span class="op">||</span> <span class="st">'M'</span>  <span class="kw">AS</span> bio_label</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
@@ -1908,7 +1976,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>Text to a typed value.</strong> SQL queries often receive values from external sources as text strings. Casting converts them to the appropriate type for arithmetic or comparison.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'1956'</span>:<span class="ch">:integer</span>        <span class="kw">AS</span> year_as_int,</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'3.14159'</span>:<span class="ch">:numeric</span>     <span class="kw">AS</span> pi_as_numeric,</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2024-12-16'</span>:<span class="ch">:date</span>     <span class="kw">AS</span> date_from_string,</span>
@@ -1937,7 +2005,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p><strong>Rounding versus truncating.</strong> Casting a <code>NUMERIC</code> value to <code>INTEGER</code> rounds to the nearest integer. If you want to discard the decimal component entirely and always round toward zero, use <code>TRUNC()</code> instead. The difference only shows when the decimal portion is 0.5 or greater. Converting heights from centimeters to whole feet makes the distinction visible:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="kw">ON</span> (height_cm)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> <span class="kw">ON</span> (height_cm)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name              <span class="kw">AS</span> actor,</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    height_cm,</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(height_cm:<span class="ch">:numeric</span> <span class="op">/</span> <span class="fl">30.48</span>, <span class="dv">2</span>)        <span class="kw">AS</span> exact_feet,</span>
@@ -2016,7 +2084,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="implicit-casting" class="level3" data-number="5.7.4">
 <h3 data-number="5.7.4" class="anchored" data-anchor-id="implicit-casting"><span class="header-section-number">5.7.4</span> Implicit Casting</h3>
 <p>PostgreSQL can often cast automatically without you having to write it explicitly. When you compare a <code>DATE</code> column to a text literal like <code>'1950-01-01'</code>, the database recognizes that the literal can be interpreted as a date and converts it silently. This is called an <strong>implicit cast</strong>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- PostgreSQL implicitly casts the string to a DATE for comparison</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- PostgreSQL implicitly casts the string to a DATE for comparison</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name <span class="kw">FROM</span> actors <span class="kw">WHERE</span> birth_date <span class="op">=</span> <span class="st">'1956-07-09'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Implicit casting is convenient, but it can occasionally produce surprising results or performance problems in complex queries. Being explicit with casts is always safe; being implicit is fine when the conversion is obvious.</p>
 </section>
@@ -2024,11 +2092,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="5.7.5" class="anchored" data-anchor-id="when-casts-fail"><span class="header-section-number">5.7.5</span> When Casts Fail</h3>
 <p>A cast fails if the value cannot be converted to the target type. Attempting to cast a non-numeric string to an integer produces an error.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">CAST</span>(<span class="st">'Forrest Gump'</span> <span class="kw">AS</span> <span class="dt">integer</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">CAST</span>(<span class="st">'Forrest Gump'</span> <span class="kw">AS</span> <span class="dt">integer</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Error: Failed to prepare query : ERROR:  invalid input syntax for type integer: "Forrest Gump"
-LINE 1: SELECT CAST('Forrest Gump' AS integer);
-                    ^</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Error: Failed to prepare query : ERROR:  invalid input syntax for type integer: "Forrest Gump"</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>LINE 1: SELECT CAST('Forrest Gump' AS integer);</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                    ^</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>PostgreSQL does not provide a built-in “try cast” function that returns <code>NULL</code> on failure instead of raising an error. Handling potentially invalid input requires either cleaning the data before it enters the database or using more advanced techniques such as regular expression validation, which are covered in a later chapter.</p>

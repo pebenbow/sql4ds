@@ -24,6 +24,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -46,7 +81,75 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -401,6 +504,19 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">9.1</span> Learning Objectives</a></li>
+  <li><a href="#the-searched-case-expression" id="toc-the-searched-case-expression" class="nav-link" data-scroll-target="#the-searched-case-expression"><span class="header-section-number">9.2</span> The Searched CASE Expression</a></li>
+  <li><a href="#the-simple-case-expression" id="toc-the-simple-case-expression" class="nav-link" data-scroll-target="#the-simple-case-expression"><span class="header-section-number">9.3</span> The Simple CASE Expression</a></li>
+  <li><a href="#case-when-inside-aggregate-functions" id="toc-case-when-inside-aggregate-functions" class="nav-link" data-scroll-target="#case-when-inside-aggregate-functions"><span class="header-section-number">9.4</span> CASE WHEN Inside Aggregate Functions</a></li>
+  <li><a href="#coalesce-substituting-a-default-for-null" id="toc-coalesce-substituting-a-default-for-null" class="nav-link" data-scroll-target="#coalesce-substituting-a-default-for-null"><span class="header-section-number">9.5</span> COALESCE: Substituting a Default for NULL</a></li>
+  <li><a href="#nullif-producing-null-on-equality" id="toc-nullif-producing-null-on-equality" class="nav-link" data-scroll-target="#nullif-producing-null-on-equality"><span class="header-section-number">9.6</span> NULLIF: Producing NULL on Equality</a></li>
+  <li><a href="#coalesce-vs.-nullif" id="toc-coalesce-vs.-nullif" class="nav-link" data-scroll-target="#coalesce-vs.-nullif"><span class="header-section-number">9.7</span> COALESCE vs.&nbsp;NULLIF</a></li>
+  <li><a href="#building-custom-categories-with-case-when-and-group-by" id="toc-building-custom-categories-with-case-when-and-group-by" class="nav-link" data-scroll-target="#building-custom-categories-with-case-when-and-group-by"><span class="header-section-number">9.8</span> Building Custom Categories with CASE WHEN and GROUP BY</a></li>
+  <li><a href="#choosing-the-right-tool" id="toc-choosing-the-right-tool" class="nav-link" data-scroll-target="#choosing-the-right-tool"><span class="header-section-number">9.9</span> Choosing the Right Tool</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
+  <ul class="collapse">
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#practical" id="toc-practical" class="nav-link" data-scroll-target="#practical">Practical</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/21-conditional.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -449,9 +565,510 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Combine</strong> <code>CASE WHEN</code> with <code>GROUP BY</code> to create custom categorical groupings from continuous or multi-valued columns.</li>
 <li><strong>Evaluate</strong> whether a conditional expression problem is best solved with <code>CASE WHEN</code>, <code>COALESCE</code>, or <code>NULLIF</code>.</li>
 </ul>
-<p>Stub: CASE WHEN, NULLIF, and COALESCE as conditional tools.</p>
+<p>Every query so far has treated a column the same way for every row: <code>SELECT dep_delay</code> returns the same kind of value no matter which row produced it. Often you want the <em>output</em> to depend on the <em>data</em>: label a flight “Delayed” or “On Time” depending on its <code>dep_delay</code>, substitute a sensible default when a value is missing, or guard an expression against a value that would otherwise cause an error. SQL’s conditional expressions, <code>CASE WHEN</code>, <code>COALESCE</code>, and <code>NULLIF</code>, let a query branch on the values it is looking at, without leaving the <code>SELECT</code> statement or filtering any rows out.</p>
+<p>This chapter uses the <code>flights</code>, <code>airlines</code>, and <code>planes</code> tables from the <code>nycflights</code> database throughout.</p>
+</section>
+<section id="the-searched-case-expression" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="the-searched-case-expression"><span class="header-section-number">9.2</span> The Searched CASE Expression</h2>
+<p>A <strong>searched <code>CASE</code> expression</strong> evaluates a list of conditions in order and returns the result tied to the first one that is true:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">CASE</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">WHEN</span> condition_1 <span class="cf">THEN</span> result_1</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">WHEN</span> condition_2 <span class="cf">THEN</span> result_2</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">ELSE</span> default_result</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Each <code>WHEN</code> is checked top to bottom. As soon as one evaluates to true, its <code>THEN</code> result is returned and the rest are skipped, even if a later condition would also have matched. <code>ELSE</code> is optional; if it is omitted and no condition matches, the expression returns <code>NULL</code>.</p>
+<p>Here is a <code>CASE WHEN</code> that labels each flight by how delayed it was:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    carrier,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    flight,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    dep_delay,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> dep_delay <span class="kw">IS</span> <span class="kw">NULL</span> <span class="cf">THEN</span> <span class="st">'Cancelled'</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> dep_delay <span class="op">&lt;=</span> <span class="dv">0</span>    <span class="cf">THEN</span> <span class="st">'On Time'</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> dep_delay <span class="op">&lt;=</span> <span class="dv">30</span>   <span class="cf">THEN</span> <span class="st">'Minor Delay'</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">ELSE</span> <span class="st">'Major Delay'</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">END</span> <span class="kw">AS</span> delay_category</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> dep_delay <span class="kw">DESC</span> <span class="kw">NULLS</span> <span class="fu">LAST</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>10 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">carrier</th>
+<th style="text-align: right;">flight</th>
+<th style="text-align: right;">dep_delay</th>
+<th style="text-align: left;">delay_category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">DL</td>
+<td style="text-align: right;">2119</td>
+<td style="text-align: right;">911</td>
+<td style="text-align: left;">Major Delay</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DL</td>
+<td style="text-align: right;">2047</td>
+<td style="text-align: right;">898</td>
+<td style="text-align: left;">Major Delay</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F9</td>
+<td style="text-align: right;">835</td>
+<td style="text-align: right;">853</td>
+<td style="text-align: left;">Major Delay</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DL</td>
+<td style="text-align: right;">1435</td>
+<td style="text-align: right;">812</td>
+<td style="text-align: left;">Major Delay</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AA</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">803</td>
+<td style="text-align: left;">Major Delay</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DL</td>
+<td style="text-align: right;">2319</td>
+<td style="text-align: right;">788</td>
+<td style="text-align: left;">Major Delay</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DL</td>
+<td style="text-align: right;">1715</td>
+<td style="text-align: right;">787</td>
+<td style="text-align: left;">Major Delay</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DL</td>
+<td style="text-align: right;">1485</td>
+<td style="text-align: right;">753</td>
+<td style="text-align: left;">Major Delay</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">DL</td>
+<td style="text-align: right;">2131</td>
+<td style="text-align: right;">696</td>
+<td style="text-align: left;">Major Delay</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">AA</td>
+<td style="text-align: right;">2437</td>
+<td style="text-align: right;">660</td>
+<td style="text-align: left;">Major Delay</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>The conditions are checked in the order written, which matters here: a flight with <code>dep_delay = -5</code> fails the first <code>WHEN</code> (it is not <code>NULL</code>) but passes the second (<code>-5 &lt;= 0</code>), so it is labeled <code>'On Time'</code> before the <code>'Minor Delay'</code> condition is ever checked. If the second and third conditions were swapped, every on-time flight would incorrectly match <code>&lt;= 30</code> first. Order your conditions from most specific to least specific, or from the edge cases inward, to avoid this trap.</p>
+<p><code>CASE</code> is an expression, not a statement: it produces a single value and can appear anywhere a column can, including inside <code>WHERE</code>, <code>ORDER BY</code>, or another expression.</p>
+</section>
+<section id="the-simple-case-expression" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="the-simple-case-expression"><span class="header-section-number">9.3</span> The Simple CASE Expression</h2>
+<p>When every branch is testing the <em>same</em> value for equality against a list of specific alternatives, SQL offers a shorter <strong>simple <code>CASE</code> expression</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">CASE</span> expression</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">WHEN</span> value_1 <span class="cf">THEN</span> result_1</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">WHEN</span> value_2 <span class="cf">THEN</span> result_2</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">..</span>.</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">ELSE</span> default_result</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">END</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This is equivalent to a searched <code>CASE</code> where every condition is <code>expression = value_n</code>, but it only writes the expression once. It is well suited to recoding a small, known set of values, such as turning a numeric day-of-week into its name:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span> <span class="fu">EXTRACT</span>(DOW <span class="kw">FROM</span> time_hour)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="st">'Sunday'</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> <span class="dv">1</span> <span class="cf">THEN</span> <span class="st">'Monday'</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> <span class="dv">2</span> <span class="cf">THEN</span> <span class="st">'Tuesday'</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> <span class="dv">3</span> <span class="cf">THEN</span> <span class="st">'Wednesday'</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> <span class="dv">4</span> <span class="cf">THEN</span> <span class="st">'Thursday'</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> <span class="dv">5</span> <span class="cf">THEN</span> <span class="st">'Friday'</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> <span class="dv">6</span> <span class="cf">THEN</span> <span class="st">'Saturday'</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">END</span> <span class="kw">AS</span> day_of_week,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> num_flights</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> day_of_week</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> num_flights <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>7 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">day_of_week</th>
+<th style="text-align: right;">num_flights</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Tuesday</td>
+<td style="text-align: right;">16232</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Monday</td>
+<td style="text-align: right;">16190</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wednesday</td>
+<td style="text-align: right;">16006</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Thursday</td>
+<td style="text-align: right;">15979</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Friday</td>
+<td style="text-align: right;">15960</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sunday</td>
+<td style="text-align: right;">12886</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Saturday</td>
+<td style="text-align: right;">11409</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>EXTRACT(DOW FROM time_hour)</code> (introduced in the data types chapter) returns an integer from 0 (Sunday) to 6 (Saturday). The simple <code>CASE</code> matches that single value against each <code>WHEN</code>, exactly the way a switch statement works in most general-purpose programming languages. If you find yourself writing <code>WHEN x = 0</code>, <code>WHEN x = 1</code>, <code>WHEN x = 2</code> repeatedly with a searched <code>CASE</code>, the simple form is almost always the better fit.</p>
+</section>
+<section id="case-when-inside-aggregate-functions" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="case-when-inside-aggregate-functions"><span class="header-section-number">9.4</span> CASE WHEN Inside Aggregate Functions</h2>
+<p>The aggregating chapter introduced the <code>FILTER</code> clause for computing more than one conditional summary in a single query, and mentioned in passing that <code>CASE WHEN</code> is the portable equivalent for databases that do not support <code>FILTER</code>. It is worth seeing that pattern in full, because it comes up constantly and because it reveals a useful property of aggregate functions: they ignore <code>NULL</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    carrier,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)                                         <span class="kw">AS</span> total_flights,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> dep_delay <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">END</span>)         <span class="kw">AS</span> delayed_flights,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SUM</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> dep_delay <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">THEN</span> dep_delay <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span>) <span class="kw">AS</span> total_delay_minutes</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> carrier</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> delayed_flights <span class="kw">DESC</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">carrier</th>
+<th style="text-align: right;">total_flights</th>
+<th style="text-align: right;">delayed_flights</th>
+<th style="text-align: right;">total_delay_minutes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">DL</td>
+<td style="text-align: right;">23067</td>
+<td style="text-align: right;">6993</td>
+<td style="text-align: right;">286808</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">MQ</td>
+<td style="text-align: right;">16928</td>
+<td style="text-align: right;">4777</td>
+<td style="text-align: right;">206442</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">AA</td>
+<td style="text-align: right;">15459</td>
+<td style="text-align: right;">4168</td>
+<td style="text-align: right;">158326</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">EV</td>
+<td style="text-align: right;">8826</td>
+<td style="text-align: right;">3341</td>
+<td style="text-align: right;">185114</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">WN</td>
+<td style="text-align: right;">6087</td>
+<td style="text-align: right;">3272</td>
+<td style="text-align: right;">112197</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>COUNT(CASE WHEN dep_delay &gt; 0 THEN 1 END)</code> has no <code>ELSE</code>, so every row that does not satisfy the condition produces <code>NULL</code> instead of a value. <code>COUNT()</code> only counts non-<code>NULL</code> inputs, so those rows are silently skipped, and the result is exactly the count of delayed flights per carrier. This is a common and deliberate idiom: omitting <code>ELSE</code> to let <code>COUNT</code> do the filtering.</p>
+<p><code>SUM</code>, by contrast, needs an explicit <code>ELSE 0</code>. <code>SUM</code> also ignores <code>NULL</code> inputs, but here every row should contribute <em>something</em> to the running total, zero for on-time flights and the actual delay for late ones, so the <code>ELSE 0</code> is required to keep those rows in the sum rather than dropping them out of it.</p>
+</section>
+<section id="coalesce-substituting-a-default-for-null" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="coalesce-substituting-a-default-for-null"><span class="header-section-number">9.5</span> COALESCE: Substituting a Default for NULL</h2>
+<p><code>COALESCE(expr_1, expr_2, ..., expr_n)</code> evaluates its arguments left to right and returns the first one that is not <code>NULL</code>. If every argument is <code>NULL</code>, the result is <code>NULL</code>.</p>
+<p>The <code>planes</code> table records a cruising <code>speed</code> for very few aircraft:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)          <span class="kw">AS</span> total_planes,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(speed)       <span class="kw">AS</span> planes_with_recorded_speed</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> planes;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>1 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">total_planes</th>
+<th style="text-align: right;">planes_with_recorded_speed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">3348</td>
+<td style="text-align: right;">26</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Most rows have no recorded speed at all. If a later calculation needs <em>some</em> speed value for every plane (say, to estimate flight duration), <code>COALESCE</code> can fall back to a reasonable assumption when the real value is missing:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    tailnum,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    manufacturer,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    model,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COALESCE</span>(speed, <span class="dv">260</span>) <span class="kw">AS</span> assumed_speed_mph</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> planes</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> tailnum</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">tailnum</th>
+<th style="text-align: left;">manufacturer</th>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">assumed_speed_mph</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">N10156</td>
+<td style="text-align: left;">EMBRAER</td>
+<td style="text-align: left;">EMB-145XR</td>
+<td style="text-align: right;">260</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">N102UW</td>
+<td style="text-align: left;">AIRBUS INDUSTRIE</td>
+<td style="text-align: left;">A320-214</td>
+<td style="text-align: right;">260</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">N103US</td>
+<td style="text-align: left;">AIRBUS INDUSTRIE</td>
+<td style="text-align: left;">A320-214</td>
+<td style="text-align: right;">260</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">N104UW</td>
+<td style="text-align: left;">AIRBUS INDUSTRIE</td>
+<td style="text-align: left;">A320-214</td>
+<td style="text-align: right;">260</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">N10575</td>
+<td style="text-align: left;">EMBRAER</td>
+<td style="text-align: left;">EMB-145LR</td>
+<td style="text-align: right;">260</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Every row here has a <code>NULL</code> <code>speed</code>, so every row falls back to the assumed default of 260 mph. For the handful of planes that <em>do</em> have a recorded speed, <code>COALESCE</code> would return that real value instead, since it is the first non-<code>NULL</code> argument. <code>COALESCE</code> can take more than two arguments, trying each in turn: <code>COALESCE(a, b, c)</code> returns <code>a</code> if it is not <code>NULL</code>, otherwise <code>b</code> if it is not <code>NULL</code>, otherwise <code>c</code>.</p>
+</section>
+<section id="nullif-producing-null-on-equality" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="nullif-producing-null-on-equality"><span class="header-section-number">9.6</span> NULLIF: Producing NULL on Equality</h2>
+<p><code>NULLIF(expr_1, expr_2)</code> is close to the opposite of <code>COALESCE</code>. It compares two expressions and returns <code>NULL</code> if they are equal, or the first expression’s value if they are not.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">NULLIF</span>(expr_1, expr_2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Its most common use is guarding a division against a zero denominator, since dividing by zero raises an error in SQL rather than returning infinity:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    carrier,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total_flights,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> dep_delay <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">END</span>) <span class="kw">AS</span> delayed_flights,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">COUNT</span>(<span class="cf">CASE</span> <span class="cf">WHEN</span> dep_delay <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">THEN</span> <span class="dv">1</span> <span class="cf">END</span>):<span class="ch">:numeric</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">/</span> <span class="fu">NULLIF</span>(<span class="fu">COUNT</span>(<span class="op">*</span>), <span class="dv">0</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">3</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="kw">AS</span> pct_delayed</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> carrier</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> pct_delayed <span class="kw">DESC</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">carrier</th>
+<th style="text-align: right;">total_flights</th>
+<th style="text-align: right;">delayed_flights</th>
+<th style="text-align: right;">pct_delayed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">WN</td>
+<td style="text-align: right;">6087</td>
+<td style="text-align: right;">3272</td>
+<td style="text-align: right;">0.538</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FL</td>
+<td style="text-align: right;">3260</td>
+<td style="text-align: right;">1654</td>
+<td style="text-align: right;">0.507</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">F9</td>
+<td style="text-align: right;">685</td>
+<td style="text-align: right;">341</td>
+<td style="text-align: right;">0.498</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">YV</td>
+<td style="text-align: right;">601</td>
+<td style="text-align: right;">233</td>
+<td style="text-align: right;">0.388</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">B6</td>
+<td style="text-align: right;">6002</td>
+<td style="text-align: right;">2299</td>
+<td style="text-align: right;">0.383</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><code>NULLIF(COUNT(*), 0)</code> returns <code>NULL</code> whenever a carrier has zero flights in the group, which turns the division into <code>something / NULL</code>. In SQL, any arithmetic operation involving <code>NULL</code> produces <code>NULL</code>, so <code>pct_delayed</code> comes back <code>NULL</code> for that row instead of raising a division-by-zero error. No carrier in this dataset actually has a zero-flight group, but the guard costs nothing to include and prevents the query from breaking the moment a filtered or grouped result set produces an empty group. This is a defensive habit worth building now, before it is the difference between a finished report and a crashed pipeline.</p>
+</section>
+<section id="coalesce-vs.-nullif" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="coalesce-vs.-nullif"><span class="header-section-number">9.7</span> COALESCE vs.&nbsp;NULLIF</h2>
+<p>The two functions solve opposite problems and are easy to mix up on a first encounter:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Question it answers</th>
+<th>Direction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>COALESCE(a, b, ...)</code></td>
+<td>“This value might be <code>NULL</code>. What should I use instead?”</td>
+<td>Fills a <code>NULL</code> in with something else</td>
+</tr>
+<tr class="even">
+<td><code>NULLIF(a, b)</code></td>
+<td>“This value is real, but if it equals something specific, I want to treat it as missing.”</td>
+<td>Turns a real value into <code>NULL</code></td>
+</tr>
+</tbody>
+</table>
+<p>A useful way to keep them straight: <code>COALESCE</code> is what you reach for when <code>NULL</code> is already a problem in your data. <code>NULLIF</code> is what you reach for when a real value (often <code>0</code>) would <em>cause</em> a problem if you did not treat it as missing first. They are sometimes used together: <code>COALESCE(NULLIF(price, 0), average_price)</code> first converts a <code>0</code> price into <code>NULL</code>, then falls back to an average, treating “priced at zero” the same way as “no price recorded.”</p>
+</section>
+<section id="building-custom-categories-with-case-when-and-group-by" class="level2" data-number="9.8">
+<h2 data-number="9.8" class="anchored" data-anchor-id="building-custom-categories-with-case-when-and-group-by"><span class="header-section-number">9.8</span> Building Custom Categories with CASE WHEN and GROUP BY</h2>
+<p><code>CASE WHEN</code> and <code>GROUP BY</code> combine to create categories that do not exist as columns in the table. This is the pattern behind the delay-severity buckets from the first section, now used to actually group and summarize:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">CASE</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> dep_delay <span class="kw">IS</span> <span class="kw">NULL</span> <span class="cf">THEN</span> <span class="st">'Cancelled'</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> dep_delay <span class="op">&lt;=</span> <span class="dv">0</span>    <span class="cf">THEN</span> <span class="st">'On Time'</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">WHEN</span> dep_delay <span class="op">&lt;=</span> <span class="dv">30</span>   <span class="cf">THEN</span> <span class="st">'Minor Delay'</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">ELSE</span> <span class="st">'Major Delay'</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">END</span> <span class="kw">AS</span> delay_category,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> num_flights</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> delay_category</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> num_flights <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>4 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">delay_category</th>
+<th style="text-align: right;">num_flights</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">On Time</td>
+<td style="text-align: right;">67819</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Minor Delay</td>
+<td style="text-align: right;">20554</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Major Delay</td>
+<td style="text-align: right;">13136</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cancelled</td>
+<td style="text-align: right;">3153</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>PostgreSQL allows <code>GROUP BY</code> to reference the output alias (<code>delay_category</code>) rather than repeating the full <code>CASE</code> expression, which is what happens above. This is a convenience, not a universal rule: some databases require the entire <code>CASE</code> expression to be repeated in the <code>GROUP BY</code> clause, since grouping happens logically before column aliases are assigned. If you want a query that works unmodified across database systems, repeat the full expression in both places instead of relying on the alias.</p>
+<p>This pattern, inventing categories on the fly with <code>CASE WHEN</code> and grouping by them, is one of the most frequently used techniques in analytical SQL. It turns a continuous measurement like <code>dep_delay</code> into whatever discrete buckets are useful for the question at hand, without needing to add a new column to the table.</p>
+</section>
+<section id="choosing-the-right-tool" class="level2" data-number="9.9">
+<h2 data-number="9.9" class="anchored" data-anchor-id="choosing-the-right-tool"><span class="header-section-number">9.9</span> Choosing the Right Tool</h2>
+<p>All three tools covered in this chapter branch on data, but they answer different questions:</p>
+<ul>
+<li>Reach for <strong><code>CASE WHEN</code></strong> when you need to produce a different <em>label or value</em> depending on one or more conditions, whether for direct output, for building a category to group by, or for computing a conditional aggregate.</li>
+<li>Reach for <strong><code>COALESCE</code></strong> when the concern is specifically <code>NULL</code>, and you want a fallback value in its place.</li>
+<li>Reach for <strong><code>NULLIF</code></strong> when a specific real value (commonly <code>0</code> or an empty string) should be treated as equivalent to missing, usually to protect a downstream calculation like division.</li>
+</ul>
+<p>In practice these tools compose. A <code>CASE WHEN</code> can contain a <code>COALESCE</code>, a <code>COALESCE</code> can wrap a <code>NULLIF</code>, and any of them can appear inside an aggregate function. Reading a complex expression from the inside out, and asking “what problem is this specific piece solving,” is the most reliable way to make sense of it.</p>
+</section>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
+<p><strong>1.</strong> In your own words, explain why <code>COUNT(CASE WHEN condition THEN 1 END)</code> works without an <code>ELSE</code> clause, while <code>SUM(CASE WHEN condition THEN value ELSE 0 END)</code> requires one.</p>
+<hr>
+<p><strong>2.</strong> A classmate writes <code>NULLIF(price, 0)</code> and expects it to return <code>0</code> when <code>price</code> is <code>0</code>. Explain what it actually returns, and why.</p>
+<hr>
+<p><strong>3.</strong> Describe a scenario, not covered in this chapter, where you would use <code>COALESCE</code>, and a different scenario where you would use <code>NULLIF</code>. Explain what problem each one solves in your example.</p>
+<hr>
+</section>
+<section id="practical" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="practical">Practical</h3>
+<p><strong>4.</strong> Write a query against <code>flights</code> that uses a searched <code>CASE WHEN</code> to label each flight’s <code>arr_delay</code> as <code>'Early'</code> (less than 0), <code>'On Time'</code> (0), <code>'Late'</code> (greater than 0), or <code>'Unknown'</code> (<code>NULL</code>). Show <code>carrier</code>, <code>flight</code>, <code>arr_delay</code>, and the new label for 10 rows.</p>
+<hr>
+<p><strong>5.</strong> Using <code>planes</code>, write a query with a simple <code>CASE</code> expression that recodes the <code>engine</code> column into three friendlier categories of your choosing (for example, grouping several turbine variants together). Count how many planes fall into each category.</p>
+<hr>
+<p><strong>6.</strong> Write a query that computes, for each carrier, the number of flights with <code>air_time</code> longer than 180 minutes and the number with <code>air_time</code> of 180 minutes or less, using <code>CASE WHEN</code> inside <code>COUNT()</code>. Handle <code>NULL</code> <code>air_time</code> values explicitly and explain in a comment which category they fall into and why.</p>
+<hr>
+<p><strong>7.</strong> The <code>planes</code> table’s <code>engines</code> column is never <code>NULL</code>, but suppose a future data load introduced planes with a missing <code>engines</code> value. Write a query that uses <code>COALESCE</code> to treat a missing <code>engines</code> value as <code>1</code> when computing the total number of engines across all planes with <code>SUM(COALESCE(engines, 1))</code>.</p>
+<hr>
+<p><strong>8.</strong> Write a query that computes the percentage of cancelled flights (<code>dep_delay IS NULL</code>) for each origin airport in <code>flights</code>, using <code>NULLIF</code> to guard against a division by zero. Even though this dataset has only one origin airport, write the query as though it might not.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

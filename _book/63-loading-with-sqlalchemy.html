@@ -81,7 +81,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -450,7 +518,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#conditional-updates-only-update-changed-rows" id="toc-conditional-updates-only-update-changed-rows" class="nav-link" data-scroll-target="#conditional-updates-only-update-changed-rows"><span class="header-section-number">25.8</span> Conditional Updates: Only Update Changed Rows</a></li>
   <li><a href="#reading-data-back-into-polars" id="toc-reading-data-back-into-polars" class="nav-link" data-scroll-target="#reading-data-back-into-polars"><span class="header-section-number">25.9</span> Reading Data Back into Polars</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">25.10</span> Summary</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">25.11</span> Exercises</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/63-loading-with-sqlalchemy.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -502,15 +570,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="prerequisites" class="level2" data-number="25.2">
 <h2 data-number="25.2" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">25.2</span> Prerequisites</h2>
 <p>Install SQLAlchemy and the psycopg2 adapter if you have not already:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install sqlalchemy psycopg2-binary pyarrow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install sqlalchemy psycopg2-binary pyarrow</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="connecting-to-postgresql" class="level2" data-number="25.3">
 <h2 data-number="25.3" class="anchored" data-anchor-id="connecting-to-postgresql"><span class="header-section-number">25.3</span> Connecting to PostgreSQL</h2>
 <p>SQLAlchemy uses a <em>connection string</em> (also called a connection URL) that encodes the database type, credentials, host, port, and database name in a single string:</p>
-<pre><code>postgresql+psycopg2://user:password@host:port/database</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>postgresql+psycopg2://user:password@host:port/database</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Create an engine from the connection string. The engine manages a pool of connections to the database; you do not open a raw connection until you actually execute a query:</p>
 <div id="connect" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>port <span class="op">=</span> os.environ.get(<span class="st">"PGPORT"</span>, <span class="st">"5432"</span>)</span>
@@ -520,7 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Verify the connection by running a trivial query:</p>
 <div id="verify-connect" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> text</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> text</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.<span class="ex">connect</span>() <span class="im">as</span> conn:</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> conn.execute(text(<span class="st">"SELECT current_database(), version()"</span>))</span>
@@ -528,8 +596,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Connected to: </span><span class="sc">{</span>db<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"PostgreSQL:   </span><span class="sc">{</span>version<span class="sc">.</span>split(<span class="st">','</span>)[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Connected to: worldbank
-PostgreSQL:   PostgreSQL 17.10 on x86_64-pc-linux-musl</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Connected to: worldbank</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>PostgreSQL:   PostgreSQL 17.10 on x86_64-pc-linux-musl</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The <code>with</code> block guarantees the connection is returned to the pool when the block exits, even if an exception is raised.</p>
@@ -538,7 +606,7 @@ PostgreSQL:   PostgreSQL 17.10 on x86_64-pc-linux-musl</code></pre>
 <h2 data-number="25.4" class="anchored" data-anchor-id="creating-the-target-tables"><span class="header-section-number">25.4</span> Creating the Target Tables</h2>
 <p>The ETL pipeline loads into two tables: <code>countries_etl</code> and <code>indicators_etl</code>. These are separate from the read-only teaching tables used in earlier chapters. Using <code>country_code</code> as the primary key (rather than a surrogate integer) makes upsert straightforward because we always know the natural identifier for each row.</p>
 <div id="create-tables" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.begin() <span class="im">as</span> conn:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.begin() <span class="im">as</span> conn:</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    conn.execute(text(<span class="st">"""</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">        CREATE TABLE IF NOT EXISTS countries_etl (</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">            country_code  VARCHAR(3)        PRIMARY KEY,</span></span>
@@ -566,13 +634,13 @@ PostgreSQL:   PostgreSQL 17.10 on x86_64-pc-linux-musl</code></pre>
 <span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>))</span>
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Tables ready"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Tables ready</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Tables ready</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>CREATE TABLE IF NOT EXISTS</code> makes this block idempotent: running it a second time does nothing if the tables already exist. The <code>REFERENCES countries_etl(country_code)</code> on <code>indicators_etl</code> is a foreign key constraint that prevents loading indicator rows for a country that is not yet in <code>countries_etl</code>. This is why countries must always be loaded before indicators.</p>
 <p>Confirm the schema was created correctly:</p>
 <div id="inspect-schema" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.<span class="ex">connect</span>() <span class="im">as</span> conn:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.<span class="ex">connect</span>() <span class="im">as</span> conn:</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> table <span class="kw">in</span> [<span class="st">"countries_etl"</span>, <span class="st">"indicators_etl"</span>]:</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> conn.execute(text(<span class="st">"""</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">            SELECT column_name, data_type, is_nullable</span></span>
@@ -586,28 +654,28 @@ PostgreSQL:   PostgreSQL 17.10 on x86_64-pc-linux-musl</code></pre>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            nullable <span class="op">=</span> <span class="st">"NULL"</span> <span class="cf">if</span> row.is_nullable <span class="op">==</span> <span class="st">"YES"</span> <span class="cf">else</span> <span class="st">"NOT NULL"</span></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>row<span class="sc">.</span>column_name<span class="sc">:&lt;28}</span><span class="ss"> </span><span class="sc">{</span>row<span class="sc">.</span>data_type<span class="sc">:&lt;15}</span><span class="ss"> </span><span class="sc">{</span>nullable<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-countries_etl
---------------------------------------------------
-  country_code                 character varying NOT NULL
-  iso2_code                    character varying NULL
-  short_name                   character varying NULL
-  region                       character varying NULL
-  capital                      character varying NULL
-  longitude                    double precision NULL
-  latitude                     double precision NULL
-  income_group                 character varying NULL
-  lending_type                 character varying NULL
-
-indicators_etl
---------------------------------------------------
-  country_code                 character varying NOT NULL
-  year                         integer         NOT NULL
-  population                   double precision NULL
-  gdp_usd                      double precision NULL
-  gdp_per_capita_usd           double precision NULL
-  pct_forest_area              double precision NULL
-  land_area_km2                double precision NULL</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>countries_etl</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>--------------------------------------------------</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  country_code                 character varying NOT NULL</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  iso2_code                    character varying NULL</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  short_name                   character varying NULL</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  region                       character varying NULL</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  capital                      character varying NULL</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  longitude                    double precision NULL</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  latitude                     double precision NULL</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  income_group                 character varying NULL</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  lending_type                 character varying NULL</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>indicators_etl</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>--------------------------------------------------</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  country_code                 character varying NOT NULL</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  year                         integer         NOT NULL</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  population                   double precision NULL</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  gdp_usd                      double precision NULL</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  gdp_per_capita_usd           double precision NULL</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  pct_forest_area              double precision NULL</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  land_area_km2                double precision NULL</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -615,7 +683,7 @@ indicators_etl
 <h2 data-number="25.5" class="anchored" data-anchor-id="loading-the-clean-dataframes"><span class="header-section-number">25.5</span> Loading the Clean DataFrames</h2>
 <p>Load the files produced at the end of Chapter 32:</p>
 <div id="load-clean" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> pl.read_parquet(<span class="st">"data/countries_clean.parquet"</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>indicators <span class="op">=</span> pl.read_parquet(<span class="st">"data/indicators_clean.parquet"</span>)</span>
@@ -623,8 +691,8 @@ indicators_etl
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"countries:  </span><span class="sc">{</span>countries<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"indicators: </span><span class="sc">{</span>indicators<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>countries:  (218, 9)
-indicators: (4991, 7)</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>countries:  (218, 9)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>indicators: (4991, 7)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -632,14 +700,14 @@ indicators: (4991, 7)</code></pre>
 <h2 data-number="25.6" class="anchored" data-anchor-id="simple-bulk-load-with-write_database"><span class="header-section-number">25.6</span> Simple Bulk Load with <code>write_database</code></h2>
 <p>Polars has a built-in <code>write_database()</code> method that writes a DataFrame directly to a database table. It is the fastest path when you are loading into an empty table or are comfortable replacing all existing data:</p>
 <div id="bulk-load" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>countries.write_database(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>countries.write_database(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    table_name<span class="op">=</span><span class="st">"countries_etl_staging"</span>,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    connection<span class="op">=</span>engine,</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    if_table_exists<span class="op">=</span><span class="st">"replace"</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Loaded countries_etl_staging"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Loaded countries_etl_staging</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Loaded countries_etl_staging</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The <code>if_table_exists="replace"</code> option drops and recreates the table, inferring column types from the DataFrame schema. This is convenient for staging tables where you do not care about preserving existing data. For production tables with constraints and foreign keys, you want <code>"append"</code> or an explicit upsert.</p>
@@ -648,7 +716,7 @@ indicators: (4991, 7)</code></pre>
 <h2 data-number="25.7" class="anchored" data-anchor-id="upsert-handling-duplicate-rows"><span class="header-section-number">25.7</span> Upsert: Handling Duplicate Rows</h2>
 <p>A pipeline that runs repeatedly will encounter rows it has already loaded. A plain <code>INSERT</code> will fail on a duplicate primary key. Truncating the table and reloading from scratch works but is slow and briefly leaves the table empty. The right solution is an <em>upsert</em>: insert new rows and update existing ones in a single atomic statement.</p>
 <p>PostgreSQL implements upsert via the <code>INSERT ... ON CONFLICT</code> clause:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> countries_etl (country_code, short_name, <span class="op">..</span>.)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> countries_etl (country_code, short_name, <span class="op">..</span>.)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (%s, %s, <span class="op">..</span>.)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> CONFLICT (country_code) DO <span class="kw">UPDATE</span> <span class="kw">SET</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    short_name <span class="op">=</span> EXCLUDED.short_name,</span>
@@ -658,7 +726,7 @@ indicators: (4991, 7)</code></pre>
 <h3 data-number="25.7.1" class="anchored" data-anchor-id="upsert-for-the-countries-table"><span class="header-section-number">25.7.1</span> Upsert for the Countries Table</h3>
 <p>We will execute the upsert with parameterized queries using SQLAlchemy’s <code>text()</code> and bulk <code>executemany()</code>:</p>
 <div id="upsert-countries" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>upsert_countries_sql <span class="op">=</span> text(<span class="st">"""</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>upsert_countries_sql <span class="op">=</span> text(<span class="st">"""</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="st">    INSERT INTO countries_etl</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="st">        (country_code, iso2_code, short_name, region,</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="st">         capital, longitude, latitude, income_group, lending_type)</span></span>
@@ -683,18 +751,18 @@ indicators: (4991, 7)</code></pre>
 <span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Upserted </span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> country rows"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Upserted 218 country rows</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Upserted 218 country rows</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>engine.begin()</code> opens a connection <em>and</em> starts a transaction. The transaction commits automatically when the <code>with</code> block exits cleanly and rolls back if an exception is raised. Never call <code>conn.commit()</code> manually inside an <code>engine.begin()</code> block.</p>
 <p><code>.to_dicts()</code> converts the Polars DataFrame into a list of dictionaries, one per row, which SQLAlchemy passes as named parameters (<code>:country_code</code>, <code>:iso2_code</code>, etc.) to the parameterized query.</p>
 <p>Verify the result:</p>
 <div id="verify-countries" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.<span class="ex">connect</span>() <span class="im">as</span> conn:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.<span class="ex">connect</span>() <span class="im">as</span> conn:</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> conn.execute(text(<span class="st">"SELECT COUNT(*) FROM countries_etl"</span>))</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"countries_etl rows: </span><span class="sc">{</span>result<span class="sc">.</span>scalar()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>countries_etl rows: 218</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>countries_etl rows: 218</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -702,7 +770,7 @@ indicators: (4991, 7)</code></pre>
 <h3 data-number="25.7.2" class="anchored" data-anchor-id="upsert-for-the-indicators-table"><span class="header-section-number">25.7.2</span> Upsert for the Indicators Table</h3>
 <p>The indicators table is larger (4,991 rows) and has a composite primary key: <code>(country_code, year)</code>. The upsert logic is the same; only the conflict target and column list change:</p>
 <div id="upsert-indicators" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>upsert_indicators_sql <span class="op">=</span> text(<span class="st">"""</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>upsert_indicators_sql <span class="op">=</span> text(<span class="st">"""</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="st">    INSERT INTO indicators_etl</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="st">        (country_code, year, population, gdp_usd,</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="st">         gdp_per_capita_usd, pct_forest_area, land_area_km2)</span></span>
@@ -724,15 +792,15 @@ indicators: (4991, 7)</code></pre>
 <span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Upserted </span><span class="sc">{</span><span class="bu">len</span>(rows)<span class="sc">}</span><span class="ss"> indicator rows"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Upserted 4991 indicator rows</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Upserted 4991 indicator rows</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div id="verify-indicators" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.<span class="ex">connect</span>() <span class="im">as</span> conn:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> engine.<span class="ex">connect</span>() <span class="im">as</span> conn:</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> conn.execute(text(<span class="st">"SELECT COUNT(*) FROM indicators_etl"</span>))</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"indicators_etl rows: </span><span class="sc">{</span>result<span class="sc">.</span>scalar()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>indicators_etl rows: 4991</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>indicators_etl rows: 4991</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -740,7 +808,7 @@ indicators: (4991, 7)</code></pre>
 <h3 data-number="25.7.3" class="anchored" data-anchor-id="batching-large-loads"><span class="header-section-number">25.7.3</span> Batching Large Loads</h3>
 <p>For very large DataFrames (hundreds of thousands of rows), sending all rows in a single <code>executemany()</code> call can consume substantial memory because SQLAlchemy builds the entire parameter list in Python before sending it to the database. Batching limits peak memory use:</p>
 <div id="batch-upsert" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upsert_in_batches(conn, sql, rows, batch_size<span class="op">=</span><span class="dv">1000</span>):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upsert_in_batches(conn, sql, rows, batch_size<span class="op">=</span><span class="dv">1000</span>):</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(rows), batch_size):</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>        batch <span class="op">=</span> rows[i : i <span class="op">+</span> batch_size]</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>        conn.execute(sql, batch)</span>
@@ -753,7 +821,7 @@ indicators: (4991, 7)</code></pre>
 <span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Upserted </span><span class="sc">{</span>total<span class="sc">}</span><span class="ss"> rows in batches of 500"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Upserted 4991 rows in batches of 500</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Upserted 4991 rows in batches of 500</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>A batch size of 500 to 1000 rows is a reasonable default. Very small batches (10 to 50 rows) generate excessive round trips to the database; very large batches (10,000+ rows) increase memory pressure on both the client and the server.</p>
@@ -762,7 +830,7 @@ indicators: (4991, 7)</code></pre>
 <section id="conditional-updates-only-update-changed-rows" class="level2" data-number="25.8">
 <h2 data-number="25.8" class="anchored" data-anchor-id="conditional-updates-only-update-changed-rows"><span class="header-section-number">25.8</span> Conditional Updates: Only Update Changed Rows</h2>
 <p>The upsert above updates every column on every conflict, even if nothing changed. For tables where updates trigger downstream processes (audit logs, cache invalidation, replication), you may want to skip rows that have not actually changed:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ON CONFLICT (country_code) DO UPDATE SET</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ON CONFLICT (country_code) DO UPDATE SET</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    short_name <span class="op">=</span> EXCLUDED.short_name,</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    region     <span class="op">=</span> EXCLUDED.region,</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    capital    <span class="op">=</span> EXCLUDED.capital</span>
@@ -776,7 +844,7 @@ indicators: (4991, 7)</code></pre>
 <h2 data-number="25.9" class="anchored" data-anchor-id="reading-data-back-into-polars"><span class="header-section-number">25.9</span> Reading Data Back into Polars</h2>
 <p>Once data is in PostgreSQL, you can read it back into a Polars DataFrame for further analysis using <code>pl.read_database()</code>:</p>
 <div id="read-back" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">"""</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT c.short_name, c.region, i.year,</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="st">           i.gdp_per_capita_usd, i.population</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM countries_etl AS c</span></span>
@@ -790,23 +858,23 @@ indicators: (4991, 7)</code></pre>
 <span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>top10 <span class="op">=</span> pl.read_database(query, connection<span class="op">=</span>engine)</span>
 <span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(top10)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (10, 5)
-┌────────────────┬────────────────────────────┬──────┬────────────────────┬────────────┐
-│ short_name     ┆ region                     ┆ year ┆ gdp_per_capita_usd ┆ population │
-│ ---            ┆ ---                        ┆ ---  ┆ ---                ┆ ---        │
-│ str            ┆ str                        ┆ i64  ┆ f64                ┆ f64        │
-╞════════════════╪════════════════════════════╪══════╪════════════════════╪════════════╡
-│ Monaco         ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 226052.0           ┆ 5.0        │
-│ Liechtenstein  ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 186400.23          ┆ 39493.0    │
-│ Luxembourg     ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 125006.02          ┆ 653103.0   │
-│ Bermuda        ┆ North America              ┆ 2022 ┆ 120897.31          ┆ 64749.0    │
-│ Norway         ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 108798.45          ┆ 5.457127e6 │
-│ Ireland        ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 106194.76          ┆ 5.1657e6   │
-│ Switzerland    ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 93245.8            ┆ 8.777088e6 │
-│ Cayman Islands ┆ Latin America &amp; Caribbean  ┆ 2022 ┆ 92202.15           ┆ 71591.0    │
-│ Qatar          ┆ Middle East &amp; North Africa ┆ 2022 ┆ 88701.46           ┆ 2.657333e6 │
-│ Singapore      ┆ East Asia &amp; Pacific        ┆ 2022 ┆ 88428.7            ┆ 5.637022e6 │
-└────────────────┴────────────────────────────┴──────┴────────────────────┴────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>shape: (10, 5)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>┌────────────────┬────────────────────────────┬──────┬────────────────────┬────────────┐</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>│ short_name     ┆ region                     ┆ year ┆ gdp_per_capita_usd ┆ population │</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>│ ---            ┆ ---                        ┆ ---  ┆ ---                ┆ ---        │</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>│ str            ┆ str                        ┆ i64  ┆ f64                ┆ f64        │</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>╞════════════════╪════════════════════════════╪══════╪════════════════════╪════════════╡</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>│ Monaco         ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 226052.0           ┆ 5.0        │</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>│ Liechtenstein  ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 186400.23          ┆ 39493.0    │</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>│ Luxembourg     ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 125006.02          ┆ 653103.0   │</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>│ Bermuda        ┆ North America              ┆ 2022 ┆ 120897.31          ┆ 64749.0    │</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>│ Norway         ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 108798.45          ┆ 5.457127e6 │</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>│ Ireland        ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 106194.76          ┆ 5.1657e6   │</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>│ Switzerland    ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 93245.8            ┆ 8.777088e6 │</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>│ Cayman Islands ┆ Latin America &amp; Caribbean  ┆ 2022 ┆ 92202.15           ┆ 71591.0    │</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>│ Qatar          ┆ Middle East &amp; North Africa ┆ 2022 ┆ 88701.46           ┆ 2.657333e6 │</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>│ Singapore      ┆ East Asia &amp; Pacific        ┆ 2022 ┆ 88428.7            ┆ 5.637022e6 │</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>└────────────────┴────────────────────────────┴──────┴────────────────────┴────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>This round-trip pattern (transform in Polars, load to PostgreSQL, query back with SQL, analyze in Polars) is how many data science workflows operate in practice. PostgreSQL handles the storage, indexing, and multi-user access; Polars handles the in-memory computation.</p>
@@ -847,8 +915,8 @@ indicators: (4991, 7)</code></pre>
 <p>The <code>INSERT ... ON CONFLICT DO UPDATE</code> pattern is the workhorse of production ETL pipelines. It is atomic, efficient, and safe to run repeatedly without any cleanup step between runs.</p>
 <p>In the final chapter of this section, you will combine extraction, transformation, and loading into a single end-to-end pipeline function.</p>
 </section>
-<section id="exercises" class="level2" data-number="25.11">
-<h2 data-number="25.11" class="anchored" data-anchor-id="exercises"><span class="header-section-number">25.11</span> Exercises</h2>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
 <ol type="1">
 <li><p>Run the countries upsert a second time without modifying any data. Verify that the row count in <code>countries_etl</code> does not change.</p></li>
 <li><p>Modify the countries upsert to use the conditional <code>WHERE IS DISTINCT FROM</code> clause so that only rows with changed values are updated. Test it by changing one country’s capital in the DataFrame and re-running.</p></li>

@@ -81,7 +81,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -448,7 +516,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#reshaping-long-to-wide" id="toc-reshaping-long-to-wide" class="nav-link" data-scroll-target="#reshaping-long-to-wide"><span class="header-section-number">24.11</span> Reshaping: Long to Wide</a></li>
   <li><a href="#preparing-the-clean-dataframes" id="toc-preparing-the-clean-dataframes" class="nav-link" data-scroll-target="#preparing-the-clean-dataframes"><span class="header-section-number">24.12</span> Preparing the Clean DataFrames</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">24.13</span> Summary</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">24.14</span> Exercises</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/62-transforming-with-polars.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -502,7 +570,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="24.2" class="anchored" data-anchor-id="loading-the-data"><span class="header-section-number">24.2</span> Loading the Data</h2>
 <p>We will work with the same two files from the previous chapter:</p>
 <div id="load-data" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>indicators <span class="op">=</span> pl.read_parquet(<span class="st">"data/indicators.parquet"</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> pl.read_csv(<span class="st">"data/countries.csv"</span>)</span>
@@ -510,8 +578,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"indicators: </span><span class="sc">{</span>indicators<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"countries:  </span><span class="sc">{</span>countries<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>indicators: (4991, 10)
-countries:  (218, 9)</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>indicators: (4991, 10)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>countries:  (218, 9)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -519,56 +587,56 @@ countries:  (218, 9)</code></pre>
 <h2 data-number="24.3" class="anchored" data-anchor-id="exploring-your-data"><span class="header-section-number">24.3</span> Exploring Your Data</h2>
 <p>Before transforming anything, spend a moment understanding what you have. Polars provides two useful starting points: <code>.schema</code> for types and <code>.describe()</code> for numeric summary statistics.</p>
 <div id="explore-schema" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators.schema)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators.schema)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Schema({'country_code': String, 'short_name': String, 'region': String, 'income_group': String, 'year': Int64, 'population': Int64, 'gdp_usd': Float64, 'gdp_per_capita_usd': Float64, 'pct_forest_area': Float64, 'land_area_km2': Float64})</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Schema({'country_code': String, 'short_name': String, 'region': String, 'income_group': String, 'year': Int64, 'population': Int64, 'gdp_usd': Float64, 'gdp_per_capita_usd': Float64, 'pct_forest_area': Float64, 'land_area_km2': Float64})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div id="explore-describe" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators.describe())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators.describe())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (9, 11)
-┌───────────┬───────────┬───────────┬───────────┬───┬───────────┬───────────┬───────────┬──────────┐
-│ statistic ┆ country_c ┆ short_nam ┆ region    ┆ … ┆ gdp_usd   ┆ gdp_per_c ┆ pct_fores ┆ land_are │
-│ ---       ┆ ode       ┆ e         ┆ ---       ┆   ┆ ---       ┆ apita_usd ┆ t_area    ┆ a_km2    │
-│ str       ┆ ---       ┆ ---       ┆ str       ┆   ┆ f64       ┆ ---       ┆ ---       ┆ ---      │
-│           ┆ str       ┆ str       ┆           ┆   ┆           ┆ f64       ┆ f64       ┆ f64      │
-╞═══════════╪═══════════╪═══════════╪═══════════╪═══╪═══════════╪═══════════╪═══════════╪══════════╡
-│ count     ┆ 4991      ┆ 4991      ┆ 4991      ┆ … ┆ 4828.0    ┆ 4832.0    ┆ 4849.0    ┆ 4893.0   │
-│ null_coun ┆ 0         ┆ 0         ┆ 0         ┆ … ┆ 163.0     ┆ 159.0     ┆ 142.0     ┆ 98.0     │
-│ t         ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆          │
-│ mean      ┆ null      ┆ null      ┆ null      ┆ … ┆ 3.1543e11 ┆ 15743.476 ┆ 32.378893 ┆ 604223.5 │
-│           ┆           ┆           ┆           ┆   ┆           ┆ 786       ┆           ┆ 76129    │
-│ std       ┆ null      ┆ null      ┆ null      ┆ … ┆ 1.4392e12 ┆ 24432.495 ┆ 24.549867 ┆ 1.7579e6 │
-│           ┆           ┆           ┆           ┆   ┆           ┆ 97        ┆           ┆          │
-│ min       ┆ ABW       ┆ Afghanist ┆ East Asia ┆ … ┆ 1.3965e7  ┆ 109.59    ┆ 0.0       ┆ 2.0      │
-│           ┆           ┆ an        ┆ &amp; Pacific ┆   ┆           ┆           ┆           ┆          │
-│ 25%       ┆ null      ┆ null      ┆ null      ┆ … ┆ 4.2047e9  ┆ 1508.67   ┆ 10.9386   ┆ 10120.0  │
-│ 50%       ┆ null      ┆ null      ┆ null      ┆ … ┆ 1.7638e10 ┆ 5270.43   ┆ 30.8998   ┆ 94280.0  │
-│ 75%       ┆ null      ┆ null      ┆ null      ┆ … ┆ 1.1531e11 ┆ 20571.48  ┆ 51.2193   ┆ 446300.0 │
-│ max       ┆ ZWE       ┆ Zimbabwe  ┆ Sub-Sahar ┆ … ┆ 2.6007e13 ┆ 226052.0  ┆ 95.5772   ┆ 1.638139 │
-│           ┆           ┆           ┆ an Africa ┆   ┆           ┆           ┆           ┆ e7       │
-└───────────┴───────────┴───────────┴───────────┴───┴───────────┴───────────┴───────────┴──────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>shape: (9, 11)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>┌───────────┬───────────┬───────────┬───────────┬───┬───────────┬───────────┬───────────┬──────────┐</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>│ statistic ┆ country_c ┆ short_nam ┆ region    ┆ … ┆ gdp_usd   ┆ gdp_per_c ┆ pct_fores ┆ land_are │</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>│ ---       ┆ ode       ┆ e         ┆ ---       ┆   ┆ ---       ┆ apita_usd ┆ t_area    ┆ a_km2    │</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>│ str       ┆ ---       ┆ ---       ┆ str       ┆   ┆ f64       ┆ ---       ┆ ---       ┆ ---      │</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>│           ┆ str       ┆ str       ┆           ┆   ┆           ┆ f64       ┆ f64       ┆ f64      │</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>╞═══════════╪═══════════╪═══════════╪═══════════╪═══╪═══════════╪═══════════╪═══════════╪══════════╡</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>│ count     ┆ 4991      ┆ 4991      ┆ 4991      ┆ … ┆ 4828.0    ┆ 4832.0    ┆ 4849.0    ┆ 4893.0   │</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>│ null_coun ┆ 0         ┆ 0         ┆ 0         ┆ … ┆ 163.0     ┆ 159.0     ┆ 142.0     ┆ 98.0     │</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>│ t         ┆           ┆           ┆           ┆   ┆           ┆           ┆           ┆          │</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>│ mean      ┆ null      ┆ null      ┆ null      ┆ … ┆ 3.1543e11 ┆ 15743.476 ┆ 32.378893 ┆ 604223.5 │</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆           ┆   ┆           ┆ 786       ┆           ┆ 76129    │</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>│ std       ┆ null      ┆ null      ┆ null      ┆ … ┆ 1.4392e12 ┆ 24432.495 ┆ 24.549867 ┆ 1.7579e6 │</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆           ┆   ┆           ┆ 97        ┆           ┆          │</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>│ min       ┆ ABW       ┆ Afghanist ┆ East Asia ┆ … ┆ 1.3965e7  ┆ 109.59    ┆ 0.0       ┆ 2.0      │</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆ an        ┆ &amp; Pacific ┆   ┆           ┆           ┆           ┆          │</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>│ 25%       ┆ null      ┆ null      ┆ null      ┆ … ┆ 4.2047e9  ┆ 1508.67   ┆ 10.9386   ┆ 10120.0  │</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>│ 50%       ┆ null      ┆ null      ┆ null      ┆ … ┆ 1.7638e10 ┆ 5270.43   ┆ 30.8998   ┆ 94280.0  │</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>│ 75%       ┆ null      ┆ null      ┆ null      ┆ … ┆ 1.1531e11 ┆ 20571.48  ┆ 51.2193   ┆ 446300.0 │</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>│ max       ┆ ZWE       ┆ Zimbabwe  ┆ Sub-Sahar ┆ … ┆ 2.6007e13 ┆ 226052.0  ┆ 95.5772   ┆ 1.638139 │</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ an Africa ┆   ┆           ┆           ┆           ┆ e7       │</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>└───────────┴───────────┴───────────┴───────────┴───┴───────────┴───────────┴───────────┴──────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The <code>describe()</code> output reports count, mean, standard deviation, min, and max for each numeric column, plus null counts. A few things stand out: <code>gdp_usd</code> and <code>gdp_per_capita_usd</code> each have roughly 160 nulls, <code>pct_forest_area</code> has around 140, and <code>land_area_km2</code> has about 100. These are data quality issues we will need to handle.</p>
 <p>For a targeted view of null counts, compute them directly:</p>
 <div id="explore-nulls" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>null_counts <span class="op">=</span> indicators.select([</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>null_counts <span class="op">=</span> indicators.select([</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    pl.col(name).is_null().<span class="bu">sum</span>().alias(name)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name <span class="kw">in</span> indicators.columns</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>])</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(null_counts)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (1, 10)
-┌────────────┬────────────┬────────┬────────────┬───┬─────────┬────────────┬───────────┬───────────┐
-│ country_co ┆ short_name ┆ region ┆ income_gro ┆ … ┆ gdp_usd ┆ gdp_per_ca ┆ pct_fores ┆ land_area │
-│ de         ┆ ---        ┆ ---    ┆ up         ┆   ┆ ---     ┆ pita_usd   ┆ t_area    ┆ _km2      │
-│ ---        ┆ u32        ┆ u32    ┆ ---        ┆   ┆ u32     ┆ ---        ┆ ---       ┆ ---       │
-│ u32        ┆            ┆        ┆ u32        ┆   ┆         ┆ u32        ┆ u32       ┆ u32       │
-╞════════════╪════════════╪════════╪════════════╪═══╪═════════╪════════════╪═══════════╪═══════════╡
-│ 0          ┆ 0          ┆ 0      ┆ 0          ┆ … ┆ 163     ┆ 159        ┆ 142       ┆ 98        │
-└────────────┴────────────┴────────┴────────────┴───┴─────────┴────────────┴───────────┴───────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>shape: (1, 10)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>┌────────────┬────────────┬────────┬────────────┬───┬─────────┬────────────┬───────────┬───────────┐</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>│ country_co ┆ short_name ┆ region ┆ income_gro ┆ … ┆ gdp_usd ┆ gdp_per_ca ┆ pct_fores ┆ land_area │</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>│ de         ┆ ---        ┆ ---    ┆ up         ┆   ┆ ---     ┆ pita_usd   ┆ t_area    ┆ _km2      │</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>│ ---        ┆ u32        ┆ u32    ┆ ---        ┆   ┆ u32     ┆ ---        ┆ ---       ┆ ---       │</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>│ u32        ┆            ┆        ┆ u32        ┆   ┆         ┆ u32        ┆ u32       ┆ u32       │</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>╞════════════╪════════════╪════════╪════════════╪═══╪═════════╪════════════╪═══════════╪═══════════╡</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>│ 0          ┆ 0          ┆ 0      ┆ 0          ┆ … ┆ 163     ┆ 159        ┆ 142       ┆ 98        │</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>└────────────┴────────────┴────────┴────────────┴───┴─────────┴────────────┴───────────┴───────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -576,15 +644,15 @@ countries:  (218, 9)</code></pre>
 <h2 data-number="24.4" class="anchored" data-anchor-id="filtering-rows"><span class="header-section-number">24.4</span> Filtering Rows</h2>
 <p>The <code>filter()</code> method accepts a Polars expression and keeps only the rows where that expression evaluates to <code>True</code>. A single condition is straightforward:</p>
 <div id="filter-single" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>indicators_2022 <span class="op">=</span> indicators.<span class="bu">filter</span>(pl.col(<span class="st">"year"</span>) <span class="op">==</span> <span class="dv">2022</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>indicators_2022 <span class="op">=</span> indicators.<span class="bu">filter</span>(pl.col(<span class="st">"year"</span>) <span class="op">==</span> <span class="dv">2022</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators_2022.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>(217, 10)</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(217, 10)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>For compound conditions, combine expressions with <code>&amp;</code> (and) and <code>|</code> (or). Each sub-expression must be wrapped in parentheses:</p>
 <div id="filter-compound" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>valid_2022 <span class="op">=</span> indicators.<span class="bu">filter</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>valid_2022 <span class="op">=</span> indicators.<span class="bu">filter</span>(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    (pl.col(<span class="st">"year"</span>) <span class="op">==</span> <span class="dv">2022</span>) <span class="op">&amp;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    (pl.col(<span class="st">"gdp_per_capita_usd"</span>).is_not_null()) <span class="op">&amp;</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    (pl.col(<span class="st">"region"</span>) <span class="op">!=</span> <span class="st">"Aggregates"</span>)</span>
@@ -592,22 +660,22 @@ countries:  (218, 9)</code></pre>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(valid_2022.shape)</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(valid_2022.select([<span class="st">"short_name"</span>, <span class="st">"region"</span>, <span class="st">"gdp_per_capita_usd"</span>]).head(<span class="dv">8</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>(207, 10)
-shape: (8, 3)
-┌──────────────────────┬────────────────────────────┬────────────────────┐
-│ short_name           ┆ region                     ┆ gdp_per_capita_usd │
-│ ---                  ┆ ---                        ┆ ---                │
-│ str                  ┆ str                        ┆ f64                │
-╞══════════════════════╪════════════════════════════╪════════════════════╡
-│ Aruba                ┆ Latin America &amp; Caribbean  ┆ 30559.53           │
-│ Afghanistan          ┆ South Asia                 ┆ 357.26             │
-│ Angola               ┆ Sub-Saharan Africa         ┆ 2929.69            │
-│ Albania              ┆ Europe &amp; Central Asia      ┆ 6846.43            │
-│ Andorra              ┆ Europe &amp; Central Asia      ┆ 42414.06           │
-│ United Arab Emirates ┆ Middle East &amp; North Africa ┆ 49899.07           │
-│ Argentina            ┆ Latin America &amp; Caribbean  ┆ 13935.68           │
-│ Armenia              ┆ Europe &amp; Central Asia      ┆ 6571.97            │
-└──────────────────────┴────────────────────────────┴────────────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>(207, 10)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>shape: (8, 3)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>┌──────────────────────┬────────────────────────────┬────────────────────┐</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>│ short_name           ┆ region                     ┆ gdp_per_capita_usd │</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>│ ---                  ┆ ---                        ┆ ---                │</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>│ str                  ┆ str                        ┆ f64                │</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>╞══════════════════════╪════════════════════════════╪════════════════════╡</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>│ Aruba                ┆ Latin America &amp; Caribbean  ┆ 30559.53           │</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>│ Afghanistan          ┆ South Asia                 ┆ 357.26             │</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>│ Angola               ┆ Sub-Saharan Africa         ┆ 2929.69            │</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>│ Albania              ┆ Europe &amp; Central Asia      ┆ 6846.43            │</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>│ Andorra              ┆ Europe &amp; Central Asia      ┆ 42414.06           │</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>│ United Arab Emirates ┆ Middle East &amp; North Africa ┆ 49899.07           │</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>│ Argentina            ┆ Latin America &amp; Caribbean  ┆ 13935.68           │</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>│ Armenia              ┆ Europe &amp; Central Asia      ┆ 6571.97            │</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>└──────────────────────┴────────────────────────────┴────────────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The <code>"Aggregates"</code> region contains World Bank summary rows (totals for regions, income groups, and the world) rather than individual countries. Filtering them out isolates the 217 actual countries.</p>
@@ -616,7 +684,7 @@ shape: (8, 3)
 <h2 data-number="24.5" class="anchored" data-anchor-id="selecting-and-renaming-columns"><span class="header-section-number">24.5</span> Selecting and Renaming Columns</h2>
 <p>Use <code>select()</code> to keep only the columns you need, and <code>rename()</code> to standardize column names. Both return a new DataFrame; they do not modify the original:</p>
 <div id="select-rename" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>countries_slim <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>countries_slim <span class="op">=</span> (</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    countries</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    .select([<span class="st">"country_code"</span>, <span class="st">"short_name"</span>, <span class="st">"region"</span>, <span class="st">"capital"</span>,</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"longitude"</span>, <span class="st">"latitude"</span>, <span class="st">"income_group"</span>, <span class="st">"lending_type"</span>])</span>
@@ -624,27 +692,27 @@ shape: (8, 3)
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries_slim.head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (5, 8)
-┌──────┬─────────────┬─────────────┬─────────────┬───────────┬──────────┬─────────────┬────────────┐
-│ code ┆ name        ┆ region      ┆ capital     ┆ longitude ┆ latitude ┆ income_grou ┆ lending_ty │
-│ ---  ┆ ---         ┆ ---         ┆ ---         ┆ ---       ┆ ---      ┆ p           ┆ pe         │
-│ str  ┆ str         ┆ str         ┆ str         ┆ f64       ┆ f64      ┆ ---         ┆ ---        │
-│      ┆             ┆             ┆             ┆           ┆          ┆ str         ┆ str        │
-╞══════╪═════════════╪═════════════╪═════════════╪═══════════╪══════════╪═════════════╪════════════╡
-│ AFG  ┆ Afghanistan ┆ South Asia  ┆ Kabul       ┆ 69.1761   ┆ 34.5228  ┆ Low income  ┆ IDA        │
-│ ALB  ┆ Albania     ┆ Europe &amp;    ┆ Tirane      ┆ 19.8172   ┆ 41.3317  ┆ Upper       ┆ IBRD       │
-│      ┆             ┆ Central     ┆             ┆           ┆          ┆ middle      ┆            │
-│      ┆             ┆ Asia        ┆             ┆           ┆          ┆ income      ┆            │
-│ DZA  ┆ Algeria     ┆ Middle East ┆ Algiers     ┆ 3.05097   ┆ 36.7397  ┆ Lower       ┆ IBRD       │
-│      ┆             ┆ &amp; North     ┆             ┆           ┆          ┆ middle      ┆            │
-│      ┆             ┆ Africa      ┆             ┆           ┆          ┆ income      ┆            │
-│ ASM  ┆ American    ┆ East Asia &amp; ┆ Pago Pago   ┆ -170.691  ┆ -14.2846 ┆ Upper       ┆ Not        │
-│      ┆ Samoa       ┆ Pacific     ┆             ┆           ┆          ┆ middle      ┆ classified │
-│      ┆             ┆             ┆             ┆           ┆          ┆ income      ┆            │
-│ AND  ┆ Andorra     ┆ Europe &amp;    ┆ Andorra la  ┆ 1.5218    ┆ 42.5075  ┆ High income ┆ Not        │
-│      ┆             ┆ Central     ┆ Vella       ┆           ┆          ┆             ┆ classified │
-│      ┆             ┆ Asia        ┆             ┆           ┆          ┆             ┆            │
-└──────┴─────────────┴─────────────┴─────────────┴───────────┴──────────┴─────────────┴────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>shape: (5, 8)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>┌──────┬─────────────┬─────────────┬─────────────┬───────────┬──────────┬─────────────┬────────────┐</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>│ code ┆ name        ┆ region      ┆ capital     ┆ longitude ┆ latitude ┆ income_grou ┆ lending_ty │</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>│ ---  ┆ ---         ┆ ---         ┆ ---         ┆ ---       ┆ ---      ┆ p           ┆ pe         │</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>│ str  ┆ str         ┆ str         ┆ str         ┆ f64       ┆ f64      ┆ ---         ┆ ---        │</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>│      ┆             ┆             ┆             ┆           ┆          ┆ str         ┆ str        │</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>╞══════╪═════════════╪═════════════╪═════════════╪═══════════╪══════════╪═════════════╪════════════╡</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>│ AFG  ┆ Afghanistan ┆ South Asia  ┆ Kabul       ┆ 69.1761   ┆ 34.5228  ┆ Low income  ┆ IDA        │</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>│ ALB  ┆ Albania     ┆ Europe &amp;    ┆ Tirane      ┆ 19.8172   ┆ 41.3317  ┆ Upper       ┆ IBRD       │</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>│      ┆             ┆ Central     ┆             ┆           ┆          ┆ middle      ┆            │</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>│      ┆             ┆ Asia        ┆             ┆           ┆          ┆ income      ┆            │</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>│ DZA  ┆ Algeria     ┆ Middle East ┆ Algiers     ┆ 3.05097   ┆ 36.7397  ┆ Lower       ┆ IBRD       │</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>│      ┆             ┆ &amp; North     ┆             ┆           ┆          ┆ middle      ┆            │</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>│      ┆             ┆ Africa      ┆             ┆           ┆          ┆ income      ┆            │</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>│ ASM  ┆ American    ┆ East Asia &amp; ┆ Pago Pago   ┆ -170.691  ┆ -14.2846 ┆ Upper       ┆ Not        │</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>│      ┆ Samoa       ┆ Pacific     ┆             ┆           ┆          ┆ middle      ┆ classified │</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>│      ┆             ┆             ┆             ┆           ┆          ┆ income      ┆            │</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>│ AND  ┆ Andorra     ┆ Europe &amp;    ┆ Andorra la  ┆ 1.5218    ┆ 42.5075  ┆ High income ┆ Not        │</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>│      ┆             ┆ Central     ┆ Vella       ┆           ┆          ┆             ┆ classified │</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>│      ┆             ┆ Asia        ┆             ┆           ┆          ┆             ┆            │</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>└──────┴─────────────┴─────────────┴─────────────┴───────────┴──────────┴─────────────┴────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>You can also rename inside an expression using <code>.alias()</code>. This is common when computing a new column and giving it a meaningful name in the same step.</p>
@@ -653,7 +721,7 @@ shape: (8, 3)
 <h2 data-number="24.6" class="anchored" data-anchor-id="computing-new-columns"><span class="header-section-number">24.6</span> Computing New Columns</h2>
 <p><code>with_columns()</code> adds or replaces columns without dropping any existing ones. Pass it a list of expressions, each ending with <code>.alias("new_name")</code>:</p>
 <div id="new-columns" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>indicators_enhanced <span class="op">=</span> indicators.with_columns([</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>indicators_enhanced <span class="op">=</span> indicators.with_columns([</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    (pl.col(<span class="st">"gdp_usd"</span>) <span class="op">/</span> <span class="fl">1e9</span>).alias(<span class="st">"gdp_billions"</span>),</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    (pl.col(<span class="st">"population"</span>) <span class="op">/</span> pl.col(<span class="st">"land_area_km2"</span>)).alias(<span class="st">"pop_density_per_km2"</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>])</span>
@@ -665,21 +733,21 @@ shape: (8, 3)
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">8</span>)</span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (8, 3)
-┌───────────────────────────┬──────────────┬─────────────────────┐
-│ short_name                ┆ gdp_billions ┆ pop_density_per_km2 │
-│ ---                       ┆ ---          ┆ ---                 │
-│ str                       ┆ f64          ┆ f64                 │
-╞═══════════════════════════╪══════════════╪═════════════════════╡
-│ Singapore                 ┆ 498.474541   ┆ 7851.005571         │
-│ Bahrain                   ┆ 46.680399    ┆ 1929.991139         │
-│ Maldives                  ┆ 6.177118     ┆ 1747.02             │
-│ Malta                     ┆ 19.20998     ┆ 1660.971875         │
-│ Bangladesh                ┆ 460.131689   ┆ 1301.2591           │
-│ Sint Maarten (Dutch part) ┆ 1.537089     ┆ 1239.382353         │
-│ Bermuda                   ┆ 7.82798      ┆ 1199.055556         │
-│ Barbados                  ┆ 6.257304     ┆ 656.553488          │
-└───────────────────────────┴──────────────┴─────────────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>shape: (8, 3)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>┌───────────────────────────┬──────────────┬─────────────────────┐</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>│ short_name                ┆ gdp_billions ┆ pop_density_per_km2 │</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>│ ---                       ┆ ---          ┆ ---                 │</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>│ str                       ┆ f64          ┆ f64                 │</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>╞═══════════════════════════╪══════════════╪═════════════════════╡</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>│ Singapore                 ┆ 498.474541   ┆ 7851.005571         │</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>│ Bahrain                   ┆ 46.680399    ┆ 1929.991139         │</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>│ Maldives                  ┆ 6.177118     ┆ 1747.02             │</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>│ Malta                     ┆ 19.20998     ┆ 1660.971875         │</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>│ Bangladesh                ┆ 460.131689   ┆ 1301.2591           │</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>│ Sint Maarten (Dutch part) ┆ 1.537089     ┆ 1239.382353         │</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>│ Bermuda                   ┆ 7.82798      ┆ 1199.055556         │</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>│ Barbados                  ┆ 6.257304     ┆ 656.553488          │</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>└───────────────────────────┴──────────────┴─────────────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Expressions compose naturally: you can divide one column by another, apply math functions from <code>pl.Expr</code>, compare against literals, and chain multiple operations. Polars evaluates all expressions in a <code>with_columns()</code> call in a single pass over the data.</p>
@@ -689,17 +757,17 @@ shape: (8, 3)
 <p>Nulls in your data require an explicit decision: drop the rows, fill with a constant, or impute from surrounding context. There is no single right answer; it depends on why the values are missing and how you intend to use the data.</p>
 <p><strong>Drop rows with nulls in specific columns:</strong></p>
 <div id="nulls-drop" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>indicators_complete_gdp <span class="op">=</span> indicators.drop_nulls(subset<span class="op">=</span>[<span class="st">"gdp_per_capita_usd"</span>, <span class="st">"gdp_usd"</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>indicators_complete_gdp <span class="op">=</span> indicators.drop_nulls(subset<span class="op">=</span>[<span class="st">"gdp_per_capita_usd"</span>, <span class="st">"gdp_usd"</span>])</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Before: </span><span class="sc">{</span>indicators<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> rows"</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"After:  </span><span class="sc">{</span>indicators_complete_gdp<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> rows"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Before: 4991 rows
-After:  4828 rows</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Before: 4991 rows</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>After:  4828 rows</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><strong>Fill nulls with a constant or group statistic:</strong></p>
 <div id="nulls-fill" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>indicators_filled <span class="op">=</span> indicators.with_columns(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>indicators_filled <span class="op">=</span> indicators.with_columns(</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"pct_forest_area"</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    .fill_null(</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"pct_forest_area"</span>).mean().over(<span class="st">"region"</span>)</span>
@@ -712,8 +780,8 @@ After:  4828 rows</code></pre>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Nulls before fill: </span><span class="sc">{</span>null_before<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Nulls after fill:  </span><span class="sc">{</span>null_after<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Nulls before fill: 142
-Nulls after fill:  0</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Nulls before fill: 142</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Nulls after fill:  0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The <code>.over("region")</code> call makes <code>mean()</code> a window function: it computes the mean within each region group and fills each null with the corresponding regional mean. Rows whose entire region has no forest area data remain null, which is why the count does not reach zero.</p>
@@ -723,7 +791,7 @@ Nulls after fill:  0</code></pre>
 <h2 data-number="24.8" class="anchored" data-anchor-id="grouping-and-aggregating"><span class="header-section-number">24.8</span> Grouping and Aggregating</h2>
 <p><code>group_by()</code> followed by <code>.agg()</code> computes summary statistics for each unique combination of grouping columns. You can compute multiple aggregations in a single call:</p>
 <div id="group-by" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>gdp_by_group <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>gdp_by_group <span class="op">=</span> (</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    indicators</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        (pl.col(<span class="st">"year"</span>) <span class="op">==</span> <span class="dv">2022</span>) <span class="op">&amp;</span></span>
@@ -740,23 +808,23 @@ Nulls after fill:  0</code></pre>
 <span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gdp_by_group)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (4, 4)
-┌─────────────────────┬─────────────────────┬───────────────────────┬───────────────┐
-│ income_group        ┆ mean_gdp_per_capita ┆ median_gdp_per_capita ┆ country_count │
-│ ---                 ┆ ---                 ┆ ---                   ┆ ---           │
-│ str                 ┆ f64                 ┆ f64                   ┆ u32           │
-╞═════════════════════╪═════════════════════╪═══════════════════════╪═══════════════╡
-│ High income         ┆ 48055.756133        ┆ 36142.21              ┆ 75            │
-│ Upper middle income ┆ 8897.194717         ┆ 7770.59               ┆ 53            │
-│ Lower middle income ┆ 2821.378519         ┆ 2599.755              ┆ 54            │
-│ Low income          ┆ 784.8912            ┆ 813.97                ┆ 25            │
-└─────────────────────┴─────────────────────┴───────────────────────┴───────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>shape: (4, 4)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>┌─────────────────────┬─────────────────────┬───────────────────────┬───────────────┐</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>│ income_group        ┆ mean_gdp_per_capita ┆ median_gdp_per_capita ┆ country_count │</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>│ ---                 ┆ ---                 ┆ ---                   ┆ ---           │</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>│ str                 ┆ f64                 ┆ f64                   ┆ u32           │</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>╞═════════════════════╪═════════════════════╪═══════════════════════╪═══════════════╡</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>│ High income         ┆ 48055.756133        ┆ 36142.21              ┆ 75            │</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>│ Upper middle income ┆ 8897.194717         ┆ 7770.59               ┆ 53            │</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>│ Lower middle income ┆ 2821.378519         ┆ 2599.755              ┆ 54            │</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>│ Low income          ┆ 784.8912            ┆ 813.97                ┆ 25            │</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>└─────────────────────┴─────────────────────┴───────────────────────┴───────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The mean and median diverge sharply in the high-income group because a handful of very high GDP-per-capita countries (Luxembourg, Singapore, Switzerland) pull the mean well above the median.</p>
 <p>You can also group by multiple columns:</p>
 <div id="group-by-multi" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>regional_summary <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>regional_summary <span class="op">=</span> (</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    indicators</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>        (pl.col(<span class="st">"year"</span>) <span class="op">==</span> <span class="dv">2022</span>) <span class="op">&amp;</span></span>
@@ -772,24 +840,24 @@ Nulls after fill:  0</code></pre>
 <span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(regional_summary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (23, 4)
-┌───────────────────────┬─────────────────────┬──────────────────┬───────────┐
-│ region                ┆ income_group        ┆ total_population ┆ countries │
-│ ---                   ┆ ---                 ┆ ---              ┆ ---       │
-│ str                   ┆ str                 ┆ i64              ┆ u32       │
-╞═══════════════════════╪═════════════════════╪══════════════════╪═══════════╡
-│ East Asia &amp; Pacific   ┆ High income         ┆ 222835509        ┆ 13        │
-│ East Asia &amp; Pacific   ┆ Low income          ┆ 26328845         ┆ 1         │
-│ East Asia &amp; Pacific   ┆ Lower middle income ┆ 587551208        ┆ 14        │
-│ East Asia &amp; Pacific   ┆ Upper middle income ┆ 1519746456       ┆ 9         │
-│ Europe &amp; Central Asia ┆ High income         ┆ 523632130        ┆ 38        │
-│ …                     ┆ …                   ┆ …                ┆ …         │
-│ South Asia            ┆ Upper middle income ┆ 524106           ┆ 1         │
-│ Sub-Saharan Africa    ┆ High income         ┆ 119878           ┆ 1         │
-│ Sub-Saharan Africa    ┆ Low income          ┆ 623481122        ┆ 24        │
-│ Sub-Saharan Africa    ┆ Lower middle income ┆ 532402794        ┆ 17        │
-│ Sub-Saharan Africa    ┆ Upper middle income ┆ 73204779         ┆ 6         │
-└───────────────────────┴─────────────────────┴──────────────────┴───────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>shape: (23, 4)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>┌───────────────────────┬─────────────────────┬──────────────────┬───────────┐</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>│ region                ┆ income_group        ┆ total_population ┆ countries │</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>│ ---                   ┆ ---                 ┆ ---              ┆ ---       │</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>│ str                   ┆ str                 ┆ i64              ┆ u32       │</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>╞═══════════════════════╪═════════════════════╪══════════════════╪═══════════╡</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>│ East Asia &amp; Pacific   ┆ High income         ┆ 222835509        ┆ 13        │</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>│ East Asia &amp; Pacific   ┆ Low income          ┆ 26328845         ┆ 1         │</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>│ East Asia &amp; Pacific   ┆ Lower middle income ┆ 587551208        ┆ 14        │</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>│ East Asia &amp; Pacific   ┆ Upper middle income ┆ 1519746456       ┆ 9         │</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>│ Europe &amp; Central Asia ┆ High income         ┆ 523632130        ┆ 38        │</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>│ …                     ┆ …                   ┆ …                ┆ …         │</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>│ South Asia            ┆ Upper middle income ┆ 524106           ┆ 1         │</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>│ Sub-Saharan Africa    ┆ High income         ┆ 119878           ┆ 1         │</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>│ Sub-Saharan Africa    ┆ Low income          ┆ 623481122        ┆ 24        │</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>│ Sub-Saharan Africa    ┆ Lower middle income ┆ 532402794        ┆ 17        │</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>│ Sub-Saharan Africa    ┆ Upper middle income ┆ 73204779         ┆ 6         │</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>└───────────────────────┴─────────────────────┴──────────────────┴───────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -832,7 +900,7 @@ Nulls after fill:  0</code></pre>
 </table>
 <p>The <code>countries.csv</code> file has a <code>lending_type</code> column that does not exist in <code>indicators.parquet</code>. A left join adds it:</p>
 <div id="join" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>lending <span class="op">=</span> countries.select([<span class="st">"country_code"</span>, <span class="st">"lending_type"</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>lending <span class="op">=</span> countries.select([<span class="st">"country_code"</span>, <span class="st">"lending_type"</span>])</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>indicators_with_lending <span class="op">=</span> indicators.join(</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    lending,</span>
@@ -843,39 +911,39 @@ Nulls after fill:  0</code></pre>
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators_with_lending.select([<span class="st">"short_name"</span>, <span class="st">"year"</span>, <span class="st">"lending_type"</span>]).head(<span class="dv">5</span>))</span>
 <span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Null lending_type rows: </span><span class="sc">{</span>indicators_with_lending[<span class="st">'lending_type'</span>]<span class="sc">.</span>is_null()<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (5, 3)
-┌────────────┬──────┬────────────────┐
-│ short_name ┆ year ┆ lending_type   │
-│ ---        ┆ ---  ┆ ---            │
-│ str        ┆ i64  ┆ str            │
-╞════════════╪══════╪════════════════╡
-│ Aruba      ┆ 2000 ┆ Not classified │
-│ Aruba      ┆ 2001 ┆ Not classified │
-│ Aruba      ┆ 2002 ┆ Not classified │
-│ Aruba      ┆ 2003 ┆ Not classified │
-│ Aruba      ┆ 2004 ┆ Not classified │
-└────────────┴──────┴────────────────┘
-
-Null lending_type rows: 0</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>shape: (5, 3)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>┌────────────┬──────┬────────────────┐</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>│ short_name ┆ year ┆ lending_type   │</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>│ ---        ┆ ---  ┆ ---            │</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>│ str        ┆ i64  ┆ str            │</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>╞════════════╪══════╪════════════════╡</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>│ Aruba      ┆ 2000 ┆ Not classified │</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>│ Aruba      ┆ 2001 ┆ Not classified │</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>│ Aruba      ┆ 2002 ┆ Not classified │</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>│ Aruba      ┆ 2003 ┆ Not classified │</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>│ Aruba      ┆ 2004 ┆ Not classified │</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>└────────────┴──────┴────────────────┘</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>Null lending_type rows: 0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The null count tells you how many indicator rows could not be matched to a country in the countries table. For this dataset, it should be low: the indicators file was derived from the same underlying database.</p>
 <p>Anti-joins are useful for auditing mismatches between two sources. This finds countries in the indicators file that have no matching entry in countries.csv:</p>
 <div id="anti-join" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>unmatched <span class="op">=</span> indicators.join(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>unmatched <span class="op">=</span> indicators.join(</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    countries.select([<span class="st">"country_code"</span>]),</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    on<span class="op">=</span><span class="st">"country_code"</span>,</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    how<span class="op">=</span><span class="st">"anti"</span></span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(unmatched.select(<span class="st">"country_code"</span>).unique())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (0, 1)
-┌──────────────┐
-│ country_code │
-│ ---          │
-│ str          │
-╞══════════════╡
-└──────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>shape: (0, 1)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>┌──────────────┐</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>│ country_code │</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>│ ---          │</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>│ str          │</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>╞══════════════╡</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>└──────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -883,7 +951,7 @@ Null lending_type rows: 0</code></pre>
 <h2 data-number="24.10" class="anchored" data-anchor-id="sorting"><span class="header-section-number">24.10</span> Sorting</h2>
 <p><code>sort()</code> accepts one or more column names and an optional <code>descending</code> flag. For nullable numeric columns, pass <code>nulls_last=True</code> to push null rows to the bottom:</p>
 <div id="sort" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>top10_gdp <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>top10_gdp <span class="op">=</span> (</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    indicators</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        (pl.col(<span class="st">"year"</span>) <span class="op">==</span> <span class="dv">2022</span>) <span class="op">&amp;</span></span>
@@ -895,28 +963,28 @@ Null lending_type rows: 0</code></pre>
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(top10_gdp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (10, 4)
-┌────────────────┬────────────────────────────┬──────────────┬────────────────────┐
-│ short_name     ┆ region                     ┆ income_group ┆ gdp_per_capita_usd │
-│ ---            ┆ ---                        ┆ ---          ┆ ---                │
-│ str            ┆ str                        ┆ str          ┆ f64                │
-╞════════════════╪════════════════════════════╪══════════════╪════════════════════╡
-│ Monaco         ┆ Europe &amp; Central Asia      ┆ High income  ┆ 226052.0           │
-│ Liechtenstein  ┆ Europe &amp; Central Asia      ┆ High income  ┆ 186400.23          │
-│ Luxembourg     ┆ Europe &amp; Central Asia      ┆ High income  ┆ 125006.02          │
-│ Bermuda        ┆ North America              ┆ High income  ┆ 120897.31          │
-│ Norway         ┆ Europe &amp; Central Asia      ┆ High income  ┆ 108798.45          │
-│ Ireland        ┆ Europe &amp; Central Asia      ┆ High income  ┆ 106194.76          │
-│ Switzerland    ┆ Europe &amp; Central Asia      ┆ High income  ┆ 93245.8            │
-│ Cayman Islands ┆ Latin America &amp; Caribbean  ┆ High income  ┆ 92202.15           │
-│ Qatar          ┆ Middle East &amp; North Africa ┆ High income  ┆ 88701.46           │
-│ Singapore      ┆ East Asia &amp; Pacific        ┆ High income  ┆ 88428.7            │
-└────────────────┴────────────────────────────┴──────────────┴────────────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>shape: (10, 4)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>┌────────────────┬────────────────────────────┬──────────────┬────────────────────┐</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>│ short_name     ┆ region                     ┆ income_group ┆ gdp_per_capita_usd │</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>│ ---            ┆ ---                        ┆ ---          ┆ ---                │</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>│ str            ┆ str                        ┆ str          ┆ f64                │</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>╞════════════════╪════════════════════════════╪══════════════╪════════════════════╡</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>│ Monaco         ┆ Europe &amp; Central Asia      ┆ High income  ┆ 226052.0           │</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>│ Liechtenstein  ┆ Europe &amp; Central Asia      ┆ High income  ┆ 186400.23          │</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>│ Luxembourg     ┆ Europe &amp; Central Asia      ┆ High income  ┆ 125006.02          │</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>│ Bermuda        ┆ North America              ┆ High income  ┆ 120897.31          │</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>│ Norway         ┆ Europe &amp; Central Asia      ┆ High income  ┆ 108798.45          │</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>│ Ireland        ┆ Europe &amp; Central Asia      ┆ High income  ┆ 106194.76          │</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>│ Switzerland    ┆ Europe &amp; Central Asia      ┆ High income  ┆ 93245.8            │</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>│ Cayman Islands ┆ Latin America &amp; Caribbean  ┆ High income  ┆ 92202.15           │</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>│ Qatar          ┆ Middle East &amp; North Africa ┆ High income  ┆ 88701.46           │</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>│ Singapore      ┆ East Asia &amp; Pacific        ┆ High income  ┆ 88428.7            │</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>└────────────────┴────────────────────────────┴──────────────┴────────────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Multi-column sort uses a list:</p>
 <div id="sort-multi" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    indicators</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"year"</span>) <span class="op">==</span> <span class="dv">2022</span>)</span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    .sort([<span class="st">"region"</span>, <span class="st">"gdp_per_capita_usd"</span>], descending<span class="op">=</span>[<span class="va">False</span>, <span class="va">True</span>], nulls_last<span class="op">=</span><span class="va">True</span>)</span>
@@ -924,21 +992,21 @@ Null lending_type rows: 0</code></pre>
 <span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    .head(<span class="dv">8</span>)</span>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (8, 3)
-┌──────────────────────┬─────────────────────┬────────────────────┐
-│ short_name           ┆ region              ┆ gdp_per_capita_usd │
-│ ---                  ┆ ---                 ┆ ---                │
-│ str                  ┆ str                 ┆ f64                │
-╞══════════════════════╪═════════════════════╪════════════════════╡
-│ Singapore            ┆ East Asia &amp; Pacific ┆ 88428.7            │
-│ Australia            ┆ East Asia &amp; Pacific ┆ 64997.01           │
-│ Hong Kong SAR, China ┆ East Asia &amp; Pacific ┆ 48826.05           │
-│ New Zealand          ┆ East Asia &amp; Pacific ┆ 48216.51           │
-│ Guam                 ┆ East Asia &amp; Pacific ┆ 41833.15           │
-│ Macao SAR, China     ┆ East Asia &amp; Pacific ┆ 36909.96           │
-│ Brunei Darussalam    ┆ East Asia &amp; Pacific ┆ 36632.93           │
-│ Japan                ┆ East Asia &amp; Pacific ┆ 34017.27           │
-└──────────────────────┴─────────────────────┴────────────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>shape: (8, 3)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>┌──────────────────────┬─────────────────────┬────────────────────┐</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>│ short_name           ┆ region              ┆ gdp_per_capita_usd │</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>│ ---                  ┆ ---                 ┆ ---                │</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>│ str                  ┆ str                 ┆ f64                │</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>╞══════════════════════╪═════════════════════╪════════════════════╡</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>│ Singapore            ┆ East Asia &amp; Pacific ┆ 88428.7            │</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>│ Australia            ┆ East Asia &amp; Pacific ┆ 64997.01           │</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>│ Hong Kong SAR, China ┆ East Asia &amp; Pacific ┆ 48826.05           │</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>│ New Zealand          ┆ East Asia &amp; Pacific ┆ 48216.51           │</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>│ Guam                 ┆ East Asia &amp; Pacific ┆ 41833.15           │</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>│ Macao SAR, China     ┆ East Asia &amp; Pacific ┆ 36909.96           │</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>│ Brunei Darussalam    ┆ East Asia &amp; Pacific ┆ 36632.93           │</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>│ Japan                ┆ East Asia &amp; Pacific ┆ 34017.27           │</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>└──────────────────────┴─────────────────────┴────────────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -946,7 +1014,7 @@ Null lending_type rows: 0</code></pre>
 <h2 data-number="24.11" class="anchored" data-anchor-id="reshaping-long-to-wide"><span class="header-section-number">24.11</span> Reshaping: Long to Wide</h2>
 <p>Analytical data is often stored in long format (one row per country-year combination), but reporting sometimes requires wide format (one row per country, years as columns). Polars <code>pivot()</code> handles this:</p>
 <div id="pivot" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>gdp_wide <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>gdp_wide <span class="op">=</span> (</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    indicators</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(</span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"year"</span>).is_in([<span class="dv">2000</span>, <span class="dv">2010</span>, <span class="dv">2020</span>, <span class="dv">2022</span>]) <span class="op">&amp;</span></span>
@@ -965,23 +1033,23 @@ Null lending_type rows: 0</code></pre>
 <span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gdp_wide)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (10, 6)
-┌──────────────┬────────────────┬──────────┬───────────┬───────────┬───────────┐
-│ country_code ┆ short_name     ┆ gdp_2000 ┆ gdp_2010  ┆ gdp_2020  ┆ gdp_2022  │
-│ ---          ┆ ---            ┆ ---      ┆ ---       ┆ ---       ┆ ---       │
-│ str          ┆ str            ┆ f64      ┆ f64       ┆ f64       ┆ f64       │
-╞══════════════╪════════════════╪══════════╪═══════════╪═══════════╪═══════════╡
-│ MCO          ┆ Monaco         ┆ 81789.02 ┆ 161853.92 ┆ 176891.89 ┆ 226052.0  │
-│ LIE          ┆ Liechtenstein  ┆ 76087.91 ┆ 141089.81 ┆ 164671.09 ┆ 186400.23 │
-│ LUX          ┆ Luxembourg     ┆ 48659.6  ┆ 110885.99 ┆ 116905.37 ┆ 125006.02 │
-│ BMU          ┆ Bermuda        ┆ 56542.96 ┆ 104111.82 ┆ 106973.18 ┆ 120897.31 │
-│ NOR          ┆ Norway         ┆ 38178.24 ┆ 88163.21  ┆ 68340.02  ┆ 108798.45 │
-│ IRL          ┆ Ireland        ┆ 26334.57 ┆ 48679.4   ┆ 87567.11  ┆ 106194.76 │
-│ CHE          ┆ Switzerland    ┆ 38865.02 ┆ 76531.37  ┆ 85897.78  ┆ 93245.8   │
-│ CYM          ┆ Cayman Islands ┆ null     ┆ 76837.67  ┆ 82338.8   ┆ 92202.15  │
-│ QAT          ┆ Qatar          ┆ 27535.18 ┆ 77387.33  ┆ 51683.51  ┆ 88701.46  │
-│ SGP          ┆ Singapore      ┆ 23852.84 ┆ 47236.68  ┆ 61466.8   ┆ 88428.7   │
-└──────────────┴────────────────┴──────────┴───────────┴───────────┴───────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>shape: (10, 6)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>┌──────────────┬────────────────┬──────────┬───────────┬───────────┬───────────┐</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>│ country_code ┆ short_name     ┆ gdp_2000 ┆ gdp_2010  ┆ gdp_2020  ┆ gdp_2022  │</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>│ ---          ┆ ---            ┆ ---      ┆ ---       ┆ ---       ┆ ---       │</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>│ str          ┆ str            ┆ f64      ┆ f64       ┆ f64       ┆ f64       │</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>╞══════════════╪════════════════╪══════════╪═══════════╪═══════════╪═══════════╡</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>│ MCO          ┆ Monaco         ┆ 81789.02 ┆ 161853.92 ┆ 176891.89 ┆ 226052.0  │</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>│ LIE          ┆ Liechtenstein  ┆ 76087.91 ┆ 141089.81 ┆ 164671.09 ┆ 186400.23 │</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>│ LUX          ┆ Luxembourg     ┆ 48659.6  ┆ 110885.99 ┆ 116905.37 ┆ 125006.02 │</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>│ BMU          ┆ Bermuda        ┆ 56542.96 ┆ 104111.82 ┆ 106973.18 ┆ 120897.31 │</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>│ NOR          ┆ Norway         ┆ 38178.24 ┆ 88163.21  ┆ 68340.02  ┆ 108798.45 │</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>│ IRL          ┆ Ireland        ┆ 26334.57 ┆ 48679.4   ┆ 87567.11  ┆ 106194.76 │</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>│ CHE          ┆ Switzerland    ┆ 38865.02 ┆ 76531.37  ┆ 85897.78  ┆ 93245.8   │</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>│ CYM          ┆ Cayman Islands ┆ null     ┆ 76837.67  ┆ 82338.8   ┆ 92202.15  │</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>│ QAT          ┆ Qatar          ┆ 27535.18 ┆ 77387.33  ┆ 51683.51  ┆ 88701.46  │</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>│ SGP          ┆ Singapore      ┆ 23852.84 ┆ 47236.68  ┆ 61466.8   ┆ 88428.7   │</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>└──────────────┴────────────────┴──────────┴───────────┴───────────┴───────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The reverse operation, wide to long, uses <code>unpivot()</code> (called <code>melt()</code> in some other libraries). We will not need it here, but it takes the same arguments in reverse: <code>on</code> lists the columns to collapse, <code>index</code> lists the columns to keep fixed, and <code>variable_name</code>/<code>value_name</code> name the resulting key and value columns.</p>
@@ -991,7 +1059,7 @@ Null lending_type rows: 0</code></pre>
 <p>Now we apply everything above to produce two clean DataFrames suitable for loading into PostgreSQL.</p>
 <p><strong>Countries:</strong> standard column selection, null rows retained for database <code>NULL</code> storage:</p>
 <div id="clean-countries" class="cell" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>countries_clean <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>countries_clean <span class="op">=</span> (</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    countries</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    .select([</span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"country_code"</span>, <span class="st">"iso2_code"</span>, <span class="st">"short_name"</span>, <span class="st">"region"</span>,</span>
@@ -1002,34 +1070,34 @@ Null lending_type rows: 0</code></pre>
 <span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"countries_clean: </span><span class="sc">{</span>countries_clean<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries_clean.head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>countries_clean: (218, 9)
-shape: (5, 9)
-┌───────────┬───────────┬───────────┬───────────┬───┬───────────┬──────────┬───────────┬───────────┐
-│ country_c ┆ iso2_code ┆ short_nam ┆ region    ┆ … ┆ longitude ┆ latitude ┆ income_gr ┆ lending_t │
-│ ode       ┆ ---       ┆ e         ┆ ---       ┆   ┆ ---       ┆ ---      ┆ oup       ┆ ype       │
-│ ---       ┆ str       ┆ ---       ┆ str       ┆   ┆ f64       ┆ f64      ┆ ---       ┆ ---       │
-│ str       ┆           ┆ str       ┆           ┆   ┆           ┆          ┆ str       ┆ str       │
-╞═══════════╪═══════════╪═══════════╪═══════════╪═══╪═══════════╪══════════╪═══════════╪═══════════╡
-│ ABW       ┆ AW        ┆ Aruba     ┆ Latin     ┆ … ┆ -70.0167  ┆ 12.5167  ┆ High      ┆ Not class │
-│           ┆           ┆           ┆ America &amp; ┆   ┆           ┆          ┆ income    ┆ ified     │
-│           ┆           ┆           ┆ Caribbean ┆   ┆           ┆          ┆           ┆           │
-│ AFG       ┆ AF        ┆ Afghanist ┆ South     ┆ … ┆ 69.1761   ┆ 34.5228  ┆ Low       ┆ IDA       │
-│           ┆           ┆ an        ┆ Asia      ┆   ┆           ┆          ┆ income    ┆           │
-│ AGO       ┆ AO        ┆ Angola    ┆ Sub-Sahar ┆ … ┆ 13.242    ┆ -8.81155 ┆ Lower     ┆ IBRD      │
-│           ┆           ┆           ┆ an Africa ┆   ┆           ┆          ┆ middle    ┆           │
-│           ┆           ┆           ┆           ┆   ┆           ┆          ┆ income    ┆           │
-│ ALB       ┆ AL        ┆ Albania   ┆ Europe &amp;  ┆ … ┆ 19.8172   ┆ 41.3317  ┆ Upper     ┆ IBRD      │
-│           ┆           ┆           ┆ Central   ┆   ┆           ┆          ┆ middle    ┆           │
-│           ┆           ┆           ┆ Asia      ┆   ┆           ┆          ┆ income    ┆           │
-│ AND       ┆ AD        ┆ Andorra   ┆ Europe &amp;  ┆ … ┆ 1.5218    ┆ 42.5075  ┆ High      ┆ Not class │
-│           ┆           ┆           ┆ Central   ┆   ┆           ┆          ┆ income    ┆ ified     │
-│           ┆           ┆           ┆ Asia      ┆   ┆           ┆          ┆           ┆           │
-└───────────┴───────────┴───────────┴───────────┴───┴───────────┴──────────┴───────────┴───────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>countries_clean: (218, 9)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>shape: (5, 9)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>┌───────────┬───────────┬───────────┬───────────┬───┬───────────┬──────────┬───────────┬───────────┐</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>│ country_c ┆ iso2_code ┆ short_nam ┆ region    ┆ … ┆ longitude ┆ latitude ┆ income_gr ┆ lending_t │</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>│ ode       ┆ ---       ┆ e         ┆ ---       ┆   ┆ ---       ┆ ---      ┆ oup       ┆ ype       │</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>│ ---       ┆ str       ┆ ---       ┆ str       ┆   ┆ f64       ┆ f64      ┆ ---       ┆ ---       │</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>│ str       ┆           ┆ str       ┆           ┆   ┆           ┆          ┆ str       ┆ str       │</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>╞═══════════╪═══════════╪═══════════╪═══════════╪═══╪═══════════╪══════════╪═══════════╪═══════════╡</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>│ ABW       ┆ AW        ┆ Aruba     ┆ Latin     ┆ … ┆ -70.0167  ┆ 12.5167  ┆ High      ┆ Not class │</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ America &amp; ┆   ┆           ┆          ┆ income    ┆ ified     │</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ Caribbean ┆   ┆           ┆          ┆           ┆           │</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>│ AFG       ┆ AF        ┆ Afghanist ┆ South     ┆ … ┆ 69.1761   ┆ 34.5228  ┆ Low       ┆ IDA       │</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆ an        ┆ Asia      ┆   ┆           ┆          ┆ income    ┆           │</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>│ AGO       ┆ AO        ┆ Angola    ┆ Sub-Sahar ┆ … ┆ 13.242    ┆ -8.81155 ┆ Lower     ┆ IBRD      │</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ an Africa ┆   ┆           ┆          ┆ middle    ┆           │</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆           ┆   ┆           ┆          ┆ income    ┆           │</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>│ ALB       ┆ AL        ┆ Albania   ┆ Europe &amp;  ┆ … ┆ 19.8172   ┆ 41.3317  ┆ Upper     ┆ IBRD      │</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ Central   ┆   ┆           ┆          ┆ middle    ┆           │</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ Asia      ┆   ┆           ┆          ┆ income    ┆           │</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>│ AND       ┆ AD        ┆ Andorra   ┆ Europe &amp;  ┆ … ┆ 1.5218    ┆ 42.5075  ┆ High      ┆ Not class │</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ Central   ┆   ┆           ┆          ┆ income    ┆ ified     │</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ Asia      ┆   ┆           ┆          ┆           ┆           │</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>└───────────┴───────────┴───────────┴───────────┴───┴───────────┴──────────┴───────────┴───────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><strong>Indicators:</strong> filter out the Aggregate summary rows, keep everything else including rows with null economic values:</p>
 <div id="clean-indicators" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>indicators_clean <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>indicators_clean <span class="op">=</span> (</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    indicators</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(pl.col(<span class="st">"region"</span>) <span class="op">!=</span> <span class="st">"Aggregates"</span>)</span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    .select([</span>
@@ -1041,30 +1109,30 @@ shape: (5, 9)
 <span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"indicators_clean: </span><span class="sc">{</span>indicators_clean<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators_clean.head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>indicators_clean: (4991, 7)
-shape: (5, 7)
-┌──────────────┬──────┬────────────┬──────────┬──────────────────┬─────────────────┬───────────────┐
-│ country_code ┆ year ┆ population ┆ gdp_usd  ┆ gdp_per_capita_u ┆ pct_forest_area ┆ land_area_km2 │
-│ ---          ┆ ---  ┆ ---        ┆ ---      ┆ sd               ┆ ---             ┆ ---           │
-│ str          ┆ i64  ┆ i64        ┆ f64      ┆ ---              ┆ f64             ┆ f64           │
-│              ┆      ┆            ┆          ┆ f64              ┆                 ┆               │
-╞══════════════╪══════╪════════════╪══════════╪══════════════════╪═════════════════╪═══════════════╡
-│ ABW          ┆ 2000 ┆ 90588      ┆ 1.8735e9 ┆ 20681.02         ┆ 2.3333          ┆ 180.0         │
-│ ABW          ┆ 2001 ┆ 91439      ┆ 1.8965e9 ┆ 20740.13         ┆ 2.3333          ┆ 180.0         │
-│ ABW          ┆ 2002 ┆ 92074      ┆ 1.9618e9 ┆ 21307.25         ┆ 2.3333          ┆ 180.0         │
-│ ABW          ┆ 2003 ┆ 93128      ┆ 2.0441e9 ┆ 21949.49         ┆ 2.3333          ┆ 180.0         │
-│ ABW          ┆ 2004 ┆ 95138      ┆ 2.2548e9 ┆ 23700.63         ┆ 2.3333          ┆ 180.0         │
-└──────────────┴──────┴────────────┴──────────┴──────────────────┴─────────────────┴───────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>indicators_clean: (4991, 7)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>shape: (5, 7)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>┌──────────────┬──────┬────────────┬──────────┬──────────────────┬─────────────────┬───────────────┐</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>│ country_code ┆ year ┆ population ┆ gdp_usd  ┆ gdp_per_capita_u ┆ pct_forest_area ┆ land_area_km2 │</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>│ ---          ┆ ---  ┆ ---        ┆ ---      ┆ sd               ┆ ---             ┆ ---           │</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>│ str          ┆ i64  ┆ i64        ┆ f64      ┆ ---              ┆ f64             ┆ f64           │</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>│              ┆      ┆            ┆          ┆ f64              ┆                 ┆               │</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>╞══════════════╪══════╪════════════╪══════════╪══════════════════╪═════════════════╪═══════════════╡</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>│ ABW          ┆ 2000 ┆ 90588      ┆ 1.8735e9 ┆ 20681.02         ┆ 2.3333          ┆ 180.0         │</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>│ ABW          ┆ 2001 ┆ 91439      ┆ 1.8965e9 ┆ 20740.13         ┆ 2.3333          ┆ 180.0         │</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>│ ABW          ┆ 2002 ┆ 92074      ┆ 1.9618e9 ┆ 21307.25         ┆ 2.3333          ┆ 180.0         │</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>│ ABW          ┆ 2003 ┆ 93128      ┆ 2.0441e9 ┆ 21949.49         ┆ 2.3333          ┆ 180.0         │</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>│ ABW          ┆ 2004 ┆ 95138      ┆ 2.2548e9 ┆ 23700.63         ┆ 2.3333          ┆ 180.0         │</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>└──────────────┴──────┴────────────┴──────────┴──────────────────┴─────────────────┴───────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>We drop <code>short_name</code>, <code>region</code>, and <code>income_group</code> from the indicators DataFrame because those fields belong to the <code>countries</code> table. Storing them in both tables would violate the normalization principles from the database design section of this book. When we need those fields for a query, we will join the two tables.</p>
 <p>Save both to Parquet so Chapter 33 can load them without re-running the transformation:</p>
 <div id="save-clean" class="cell" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>countries_clean.write_parquet(<span class="st">"data/countries_clean.parquet"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>countries_clean.write_parquet(<span class="st">"data/countries_clean.parquet"</span>)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>indicators_clean.write_parquet(<span class="st">"data/indicators_clean.parquet"</span>)</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Saved."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Saved.</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>Saved.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -1133,8 +1201,8 @@ shape: (5, 7)
 </table>
 <p>In the next chapter, you will load <code>countries_clean.parquet</code> and <code>indicators_clean.parquet</code> into PostgreSQL using SQLAlchemy, including proper upsert logic so the pipeline can be run repeatedly without creating duplicate rows.</p>
 </section>
-<section id="exercises" class="level2" data-number="24.14">
-<h2 data-number="24.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">24.14</span> Exercises</h2>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
 <ol type="1">
 <li><p>Filter <code>indicators</code> to the year 2000. How many countries have a non-null <code>pct_forest_area</code> value? How does that number compare to 2022?</p></li>
 <li><p>Compute a new column called <code>forest_area_km2</code> by multiplying <code>pct_forest_area</code> by <code>land_area_km2</code> and dividing by 100. Which 10 countries had the largest total forest area in 2022?</p></li>

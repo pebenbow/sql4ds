@@ -139,12 +139,26 @@ From smallest to largest, a relational database is organized as:
 
 Everything in the rest of this book builds on this structure. The next chapter starts writing queries against it with `SELECT`, and a later section of the book (starting with keys and integrity) returns to relationships and gives them the formal treatment only sketched here.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 **1.** A friend keeps their reading list in a single spreadsheet with columns for `book_title`, `author_name`, `author_email`, and `date_finished`. Every time they log a new book by an author they have already read, the author's name and email are retyped on a new row. What problem does this create, and how would you restructure it into two related tables?
 
 ---
 
-**2.** Why is it a problem for a single column to hold more than one kind of value, such as a `notes` column that sometimes contains a phone number and sometimes contains a free-text comment?
+**2.** A friend keeps their reading list in a single spreadsheet with columns for `book_title`, `author_name`, `author_email`, and `date_finished`. Every time they log a new book by an author they have already read, the author's name and email are retyped on a new row. What problem does this create, and how would you restructure it into two related tables?
+
+---
+
+**3.** Why is it a problem for a single column to hold more than one kind of value, such as a `notes` column that sometimes contains a phone number and sometimes contains a free-text comment?
+
+---
+
+### Structural Analysis {.unnumbered}
+
+**4.** A small veterinary clinic tracks its data in one spreadsheet with these columns: `visit_id`, `pet_name`, `pet_species`, `owner_name`, `owner_phone`, `visit_date`, `reason_for_visit`. Sketch two or three related tables that would better organize this information. For each table, list its columns and identify which column(s) connect it to the other tables.
+
+---
+
+**5.** Consider a `products` table with columns `product_id`, `product_name`, `price`, and `category`. A colleague suggests adding a column called `details` that stores a mix of shipping weight, warehouse location, and supplier notes as a single text string, formatted differently depending on the product. Explain, using the ideas from this chapter, why this is a poor design choice, and propose an alternative.

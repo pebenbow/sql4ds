@@ -15,4 +15,264 @@ By the end of this chapter, students will be able to:
 - **Combine** `CASE WHEN` with `GROUP BY` to create custom categorical groupings from continuous or multi-valued columns.
 - **Evaluate** whether a conditional expression problem is best solved with `CASE WHEN`, `COALESCE`, or `NULLIF`.
 
-Stub: CASE WHEN, NULLIF, and COALESCE as conditional tools.
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 25)
+
+con <- dbConnect(
+  Postgres(),
+  host     = "localhost",
+  port     = as.integer(Sys.getenv("PGPORT", unset = "5432")),
+  dbname   = "nycflights",
+  user     = "postgres",
+  password = Sys.getenv("PGPASS", unset = "postgres")
+)
+```
+
+Every query so far has treated a column the same way for every row: `SELECT dep_delay` returns the same kind of value no matter which row produced it. Often you want the *output* to depend on the *data*: label a flight "Delayed" or "On Time" depending on its `dep_delay`, substitute a sensible default when a value is missing, or guard an expression against a value that would otherwise cause an error. SQL's conditional expressions, `CASE WHEN`, `COALESCE`, and `NULLIF`, let a query branch on the values it is looking at, without leaving the `SELECT` statement or filtering any rows out.
+
+This chapter uses the `flights`, `airlines`, and `planes` tables from the `nycflights` database throughout.
+
+## The Searched CASE Expression
+
+A **searched `CASE` expression** evaluates a list of conditions in order and returns the result tied to the first one that is true:
+
+```sql
+CASE
+    WHEN condition_1 THEN result_1
+    WHEN condition_2 THEN result_2
+    ...
+    ELSE default_result
+END
+```
+
+Each `WHEN` is checked top to bottom. As soon as one evaluates to true, its `THEN` result is returned and the rest are skipped, even if a later condition would also have matched. `ELSE` is optional; if it is omitted and no condition matches, the expression returns `NULL`.
+
+Here is a `CASE WHEN` that labels each flight by how delayed it was:
+
+```{sql}
+--| connection: con
+--| label: case-searched
+SELECT
+    carrier,
+    flight,
+    dep_delay,
+    CASE
+        WHEN dep_delay IS NULL THEN 'Cancelled'
+        WHEN dep_delay <= 0    THEN 'On Time'
+        WHEN dep_delay <= 30   THEN 'Minor Delay'
+        ELSE 'Major Delay'
+    END AS delay_category
+FROM flights
+ORDER BY dep_delay DESC NULLS LAST
+LIMIT 10;
+```
+
+The conditions are checked in the order written, which matters here: a flight with `dep_delay = -5` fails the first `WHEN` (it is not `NULL`) but passes the second (`-5 <= 0`), so it is labeled `'On Time'` before the `'Minor Delay'` condition is ever checked. If the second and third conditions were swapped, every on-time flight would incorrectly match `<= 30` first. Order your conditions from most specific to least specific, or from the edge cases inward, to avoid this trap.
+
+`CASE` is an expression, not a statement: it produces a single value and can appear anywhere a column can, including inside `WHERE`, `ORDER BY`, or another expression.
+
+## The Simple CASE Expression
+
+When every branch is testing the *same* value for equality against a list of specific alternatives, SQL offers a shorter **simple `CASE` expression**:
+
+```sql
+CASE expression
+    WHEN value_1 THEN result_1
+    WHEN value_2 THEN result_2
+    ...
+    ELSE default_result
+END
+```
+
+This is equivalent to a searched `CASE` where every condition is `expression = value_n`, but it only writes the expression once. It is well suited to recoding a small, known set of values, such as turning a numeric day-of-week into its name:
+
+```{sql}
+--| connection: con
+--| label: case-simple
+SELECT
+    CASE EXTRACT(DOW FROM time_hour)
+        WHEN 0 THEN 'Sunday'
+        WHEN 1 THEN 'Monday'
+        WHEN 2 THEN 'Tuesday'
+        WHEN 3 THEN 'Wednesday'
+        WHEN 4 THEN 'Thursday'
+        WHEN 5 THEN 'Friday'
+        WHEN 6 THEN 'Saturday'
+    END AS day_of_week,
+    COUNT(*) AS num_flights
+FROM flights
+GROUP BY day_of_week
+ORDER BY num_flights DESC;
+```
+
+`EXTRACT(DOW FROM time_hour)` (introduced in the data types chapter) returns an integer from 0 (Sunday) to 6 (Saturday). The simple `CASE` matches that single value against each `WHEN`, exactly the way a switch statement works in most general-purpose programming languages. If you find yourself writing `WHEN x = 0`, `WHEN x = 1`, `WHEN x = 2` repeatedly with a searched `CASE`, the simple form is almost always the better fit.
+
+## CASE WHEN Inside Aggregate Functions
+
+The aggregating chapter introduced the `FILTER` clause for computing more than one conditional summary in a single query, and mentioned in passing that `CASE WHEN` is the portable equivalent for databases that do not support `FILTER`. It is worth seeing that pattern in full, because it comes up constantly and because it reveals a useful property of aggregate functions: they ignore `NULL`.
+
+```{sql}
+--| connection: con
+--| label: case-in-aggregate
+SELECT
+    carrier,
+    COUNT(*)                                         AS total_flights,
+    COUNT(CASE WHEN dep_delay > 0 THEN 1 END)         AS delayed_flights,
+    SUM(CASE WHEN dep_delay > 0 THEN dep_delay ELSE 0 END) AS total_delay_minutes
+FROM flights
+GROUP BY carrier
+ORDER BY delayed_flights DESC
+LIMIT 5;
+```
+
+`COUNT(CASE WHEN dep_delay > 0 THEN 1 END)` has no `ELSE`, so every row that does not satisfy the condition produces `NULL` instead of a value. `COUNT()` only counts non-`NULL` inputs, so those rows are silently skipped, and the result is exactly the count of delayed flights per carrier. This is a common and deliberate idiom: omitting `ELSE` to let `COUNT` do the filtering.
+
+`SUM`, by contrast, needs an explicit `ELSE 0`. `SUM` also ignores `NULL` inputs, but here every row should contribute *something* to the running total, zero for on-time flights and the actual delay for late ones, so the `ELSE 0` is required to keep those rows in the sum rather than dropping them out of it.
+
+## COALESCE: Substituting a Default for NULL
+
+`COALESCE(expr_1, expr_2, ..., expr_n)` evaluates its arguments left to right and returns the first one that is not `NULL`. If every argument is `NULL`, the result is `NULL`.
+
+The `planes` table records a cruising `speed` for very few aircraft:
+
+```{sql}
+--| connection: con
+--| label: coalesce-missing-speed
+SELECT
+    COUNT(*)          AS total_planes,
+    COUNT(speed)       AS planes_with_recorded_speed
+FROM planes;
+```
+
+Most rows have no recorded speed at all. If a later calculation needs *some* speed value for every plane (say, to estimate flight duration), `COALESCE` can fall back to a reasonable assumption when the real value is missing:
+
+```{sql}
+--| connection: con
+--| label: coalesce-basic
+SELECT
+    tailnum,
+    manufacturer,
+    model,
+    COALESCE(speed, 260) AS assumed_speed_mph
+FROM planes
+ORDER BY tailnum
+LIMIT 5;
+```
+
+Every row here has a `NULL` `speed`, so every row falls back to the assumed default of 260 mph. For the handful of planes that *do* have a recorded speed, `COALESCE` would return that real value instead, since it is the first non-`NULL` argument. `COALESCE` can take more than two arguments, trying each in turn: `COALESCE(a, b, c)` returns `a` if it is not `NULL`, otherwise `b` if it is not `NULL`, otherwise `c`.
+
+## NULLIF: Producing NULL on Equality
+
+`NULLIF(expr_1, expr_2)` is close to the opposite of `COALESCE`. It compares two expressions and returns `NULL` if they are equal, or the first expression's value if they are not.
+
+```sql
+NULLIF(expr_1, expr_2)
+```
+
+Its most common use is guarding a division against a zero denominator, since dividing by zero raises an error in SQL rather than returning infinity:
+
+```{sql}
+--| connection: con
+--| label: nullif-division
+SELECT
+    carrier,
+    COUNT(*) AS total_flights,
+    COUNT(CASE WHEN dep_delay > 0 THEN 1 END) AS delayed_flights,
+    ROUND(
+        COUNT(CASE WHEN dep_delay > 0 THEN 1 END)::numeric
+        / NULLIF(COUNT(*), 0),
+        3
+    ) AS pct_delayed
+FROM flights
+GROUP BY carrier
+ORDER BY pct_delayed DESC
+LIMIT 5;
+```
+
+`NULLIF(COUNT(*), 0)` returns `NULL` whenever a carrier has zero flights in the group, which turns the division into `something / NULL`. In SQL, any arithmetic operation involving `NULL` produces `NULL`, so `pct_delayed` comes back `NULL` for that row instead of raising a division-by-zero error. No carrier in this dataset actually has a zero-flight group, but the guard costs nothing to include and prevents the query from breaking the moment a filtered or grouped result set produces an empty group. This is a defensive habit worth building now, before it is the difference between a finished report and a crashed pipeline.
+
+## COALESCE vs. NULLIF
+
+The two functions solve opposite problems and are easy to mix up on a first encounter:
+
+| Function | Question it answers | Direction |
+|---|---|---|
+| `COALESCE(a, b, ...)` | "This value might be `NULL`. What should I use instead?" | Fills a `NULL` in with something else |
+| `NULLIF(a, b)` | "This value is real, but if it equals something specific, I want to treat it as missing." | Turns a real value into `NULL` |
+
+A useful way to keep them straight: `COALESCE` is what you reach for when `NULL` is already a problem in your data. `NULLIF` is what you reach for when a real value (often `0`) would *cause* a problem if you did not treat it as missing first. They are sometimes used together: `COALESCE(NULLIF(price, 0), average_price)` first converts a `0` price into `NULL`, then falls back to an average, treating "priced at zero" the same way as "no price recorded."
+
+## Building Custom Categories with CASE WHEN and GROUP BY
+
+`CASE WHEN` and `GROUP BY` combine to create categories that do not exist as columns in the table. This is the pattern behind the delay-severity buckets from the first section, now used to actually group and summarize:
+
+```{sql}
+--| connection: con
+--| label: case-group-by
+SELECT
+    CASE
+        WHEN dep_delay IS NULL THEN 'Cancelled'
+        WHEN dep_delay <= 0    THEN 'On Time'
+        WHEN dep_delay <= 30   THEN 'Minor Delay'
+        ELSE 'Major Delay'
+    END AS delay_category,
+    COUNT(*) AS num_flights
+FROM flights
+GROUP BY delay_category
+ORDER BY num_flights DESC;
+```
+
+PostgreSQL allows `GROUP BY` to reference the output alias (`delay_category`) rather than repeating the full `CASE` expression, which is what happens above. This is a convenience, not a universal rule: some databases require the entire `CASE` expression to be repeated in the `GROUP BY` clause, since grouping happens logically before column aliases are assigned. If you want a query that works unmodified across database systems, repeat the full expression in both places instead of relying on the alias.
+
+This pattern, inventing categories on the fly with `CASE WHEN` and grouping by them, is one of the most frequently used techniques in analytical SQL. It turns a continuous measurement like `dep_delay` into whatever discrete buckets are useful for the question at hand, without needing to add a new column to the table.
+
+## Choosing the Right Tool
+
+All three tools covered in this chapter branch on data, but they answer different questions:
+
+- Reach for **`CASE WHEN`** when you need to produce a different *label or value* depending on one or more conditions, whether for direct output, for building a category to group by, or for computing a conditional aggregate.
+- Reach for **`COALESCE`** when the concern is specifically `NULL`, and you want a fallback value in its place.
+- Reach for **`NULLIF`** when a specific real value (commonly `0` or an empty string) should be treated as equivalent to missing, usually to protect a downstream calculation like division.
+
+In practice these tools compose. A `CASE WHEN` can contain a `COALESCE`, a `COALESCE` can wrap a `NULLIF`, and any of them can appear inside an aggregate function. Reading a complex expression from the inside out, and asking "what problem is this specific piece solving," is the most reliable way to make sense of it.
+
+## Exercises {.unnumbered}
+
+### Reflection {.unnumbered}
+
+**1.** In your own words, explain why `COUNT(CASE WHEN condition THEN 1 END)` works without an `ELSE` clause, while `SUM(CASE WHEN condition THEN value ELSE 0 END)` requires one.
+
+---
+
+**2.** A classmate writes `NULLIF(price, 0)` and expects it to return `0` when `price` is `0`. Explain what it actually returns, and why.
+
+---
+
+**3.** Describe a scenario, not covered in this chapter, where you would use `COALESCE`, and a different scenario where you would use `NULLIF`. Explain what problem each one solves in your example.
+
+---
+
+### Practical {.unnumbered}
+
+**4.** Write a query against `flights` that uses a searched `CASE WHEN` to label each flight's `arr_delay` as `'Early'` (less than 0), `'On Time'` (0), `'Late'` (greater than 0), or `'Unknown'` (`NULL`). Show `carrier`, `flight`, `arr_delay`, and the new label for 10 rows.
+
+---
+
+**5.** Using `planes`, write a query with a simple `CASE` expression that recodes the `engine` column into three friendlier categories of your choosing (for example, grouping several turbine variants together). Count how many planes fall into each category.
+
+---
+
+**6.** Write a query that computes, for each carrier, the number of flights with `air_time` longer than 180 minutes and the number with `air_time` of 180 minutes or less, using `CASE WHEN` inside `COUNT()`. Handle `NULL` `air_time` values explicitly and explain in a comment which category they fall into and why.
+
+---
+
+**7.** The `planes` table's `engines` column is never `NULL`, but suppose a future data load introduced planes with a missing `engines` value. Write a query that uses `COALESCE` to treat a missing `engines` value as `1` when computing the total number of engines across all planes with `SUM(COALESCE(engines, 1))`.
+
+---
+
+**8.** Write a query that computes the percentage of cancelled flights (`dep_delay IS NULL`) for each origin airport in `flights`, using `NULLIF` to guard against a division by zero. Even though this dataset has only one origin airport, write the query as though it might not.

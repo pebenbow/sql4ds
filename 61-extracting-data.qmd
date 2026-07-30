@@ -319,7 +319,7 @@ The table below summarizes the extraction approach for each source type:
 
 In the next chapter, you will take the extracted data and apply transformations with Polars: filtering, reshaping, computing new columns, and summarizing.
 
-## Exercises
+## Exercises {.unnumbered}
 
 1. Read `data/countries.csv` and display the count of countries in each `region`. Sort the result from the region with the most countries to the fewest.
 

@@ -280,7 +280,7 @@ A layered approach reduces the impact if an injection does occur:
 - **Web Application Firewalls (WAFs)**: can detect and block common injection patterns at the network layer, but should be considered a supplementary control rather than a primary defense.
 - **Stored procedures**: encapsulating business logic in stored procedures can reduce the SQL surface area the application constructs, though stored procedures can themselves contain injection vulnerabilities if written without parameterization.
 
-## Exercises
+## Exercises {.unnumbered}
 
 **1.** Run the authentication bypass pattern against `students_lab` using a last name of `' OR 1=1 --`. Confirm that all rows are returned. Then explain in your own words what structural change the injected input made to the original query.
 

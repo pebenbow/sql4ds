@@ -265,15 +265,15 @@ on.exit(dbDisconnect(con), add = TRUE)
 
 `on.exit(..., add = TRUE)` schedules `dbDisconnect(con)` to run when the surrounding function or script exits, regardless of whether it exits normally or with an error.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 1. What is the relationship between the `DBI` package and driver packages like `RPostgres`? Why is this two-layer design useful?
 
 2. Explain what is wrong with building a query string using `paste0()` to insert a user-supplied value. What does a parameterized query do differently, and why does it prevent SQL injection?
 
-### Coding
+### Coding {.unnumbered}
 
 3. Connect to the `nycflights` database and use `dbListFields()` to inspect the columns of the `weather` table. Then write a `dbGetQuery()` call that retrieves the average temperature (`temp`) and average wind speed (`wind_speed`) for each month. Store the result in a data frame and print it.
 

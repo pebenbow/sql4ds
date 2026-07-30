@@ -81,7 +81,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -456,10 +524,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#framework-integrated-migrations" id="toc-framework-integrated-migrations" class="nav-link" data-scroll-target="#framework-integrated-migrations"><span class="header-section-number">29.9.4</span> Framework-Integrated Migrations</a></li>
   <li><a href="#your-migration-files-are-portable" id="toc-your-migration-files-are-portable" class="nav-link" data-scroll-target="#your-migration-files-are-portable"><span class="header-section-number">29.9.5</span> Your Migration Files Are Portable</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">29.10</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">29.10.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">29.10.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding">Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/73-database-migrations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -520,7 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="29.3" class="anchored" data-anchor-id="the-structure-of-a-migration-file"><span class="header-section-number">29.3</span> The Structure of a Migration File</h2>
 <p>A migration file is a plain SQL file. Its job is to implement one logical schema change. The file should be self-contained: reading it in isolation should make clear what it does, and running it against the appropriate database state should succeed without side effects.</p>
 <p>A migration that creates a new table:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> orders (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> orders (</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">id</span>          SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    customer_id <span class="dt">INTEGER</span> <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">REFERENCES</span> customers(<span class="kw">id</span>),</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    placed_at   TIMESTAMPTZ <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> now(),</span>
@@ -530,13 +598,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> <span class="kw">ON</span> orders (customer_id);</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">INDEX</span> <span class="kw">ON</span> orders (placed_at);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A migration that modifies an existing table:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ADD</span> <span class="kw">COLUMN</span> email TEXT;</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ADD</span> <span class="kw">COLUMN</span> email_verified_at TIMESTAMPTZ;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A migration that removes something:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">INDEX</span> <span class="cf">IF</span> <span class="kw">EXISTS</span> orders_placed_at_idx;</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DROP</span> <span class="kw">INDEX</span> <span class="cf">IF</span> <span class="kw">EXISTS</span> orders_placed_at_idx;</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> orders</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DROP</span> <span class="kw">COLUMN</span> <span class="cf">IF</span> <span class="kw">EXISTS</span> internal_notes;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -545,10 +613,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="naming-conventions" class="level2" data-number="29.4">
 <h2 data-number="29.4" class="anchored" data-anchor-id="naming-conventions"><span class="header-section-number">29.4</span> Naming Conventions</h2>
 <p>Migration files must be applied in a consistent order. The standard convention is a <strong>timestamp prefix</strong> followed by a short, lowercase description with words separated by underscores:</p>
-<pre><code>20250101120000_create_customers_table.sql
-20250115093000_create_orders_table.sql
-20250203140000_add_email_to_customers.sql
-20250210083000_drop_internal_notes_from_orders.sql</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>20250101120000_create_customers_table.sql</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>20250115093000_create_orders_table.sql</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>20250203140000_add_email_to_customers.sql</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>20250210083000_drop_internal_notes_from_orders.sql</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The timestamp is expressed to the second in UTC. This guarantees that files sort lexicographically in the order they should be applied, and that two developers creating migrations at the same time will almost certainly produce different timestamps without any coordination.</p>
 <p>The description that follows the timestamp should read as a brief, active-voice summary of what the migration does. Future readers will scan this list to understand the schema’s history, so the names carry real informational value.</p>
 <p>The Supabase CLI generates the timestamp automatically when you create a migration, so you only need to supply the description.</p>
@@ -557,28 +625,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="29.5" class="anchored" data-anchor-id="creating-and-applying-migrations"><span class="header-section-number">29.5</span> Creating and Applying Migrations</h2>
 <section id="creating-a-migration-file" class="level3" data-number="29.5.1">
 <h3 data-number="29.5.1" class="anchored" data-anchor-id="creating-a-migration-file"><span class="header-section-number">29.5.1</span> Creating a Migration File</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> migration new add_email_to_customers</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> migration new add_email_to_customers</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The CLI creates a new, empty file in <code>supabase/migrations/</code> with a timestamp prefix:</p>
-<pre><code>supabase/migrations/20250203140000_add_email_to_customers.sql</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>supabase/migrations/20250203140000_add_email_to_customers.sql</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Open the file in VS Code and write the SQL:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ADD</span> <span class="kw">COLUMN</span> email TEXT;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Save the file and commit it to version control before pushing. A migration file that exists in the repository but has not yet been applied to any database is called a <strong>pending</strong> migration.</p>
 </section>
 <section id="listing-migration-status" class="level3" data-number="29.5.2">
 <h3 data-number="29.5.2" class="anchored" data-anchor-id="listing-migration-status"><span class="header-section-number">29.5.2</span> Listing Migration Status</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> migration list</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> migration list</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This command shows every migration file in <code>supabase/migrations/</code>, indicating which have been applied to the remote database (linked with <code>supabase link</code>) and which are still pending. The output looks roughly like this:</p>
-<pre><code>        LOCAL      │     REMOTE     │     TIME (UTC)
-  ─────────────────┼────────────────┼─────────────────────
-  20250101120000   │ 20250101120000 │ 2025-01-01 12:00:00
-  20250115093000   │ 20250115093000 │ 2025-01-15 09:30:00
-  20250203140000   │                │</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>        LOCAL      │     REMOTE     │     TIME (UTC)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  ─────────────────┼────────────────┼─────────────────────</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  20250101120000   │ 20250101120000 │ 2025-01-01 12:00:00</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  20250115093000   │ 20250115093000 │ 2025-01-15 09:30:00</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  20250203140000   │                │</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The third migration exists locally but has not been applied remotely. It is pending.</p>
 </section>
 <section id="applying-pending-migrations" class="level3" data-number="29.5.3">
 <h3 data-number="29.5.3" class="anchored" data-anchor-id="applying-pending-migrations"><span class="header-section-number">29.5.3</span> Applying Pending Migrations</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> db push</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> db push</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The CLI identifies which migrations in <code>supabase/migrations/</code> have not yet been applied to the remote database, runs them in timestamp order, and reports the result. Only pending migrations are executed; already-applied migrations are skipped.</p>
 <p>Supabase tracks applied migrations in a table in the <code>supabase_migrations</code> schema on the remote database. You do not need to interact with this table directly, but knowing it exists explains how the CLI knows what has and has not been applied.</p>
 </section>
@@ -587,12 +655,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="29.6" class="anchored" data-anchor-id="rolling-back-a-migration"><span class="header-section-number">29.6</span> Rolling Back a Migration</h2>
 <p>Supabase migrations are forward-only by default: the CLI applies migrations but does not include a built-in mechanism for reverting them. Rolling back is instead handled by writing a new migration that undoes the previous one.</p>
 <p>To reverse the “add email to customers” migration:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">DROP</span> <span class="kw">COLUMN</span> <span class="cf">IF</span> <span class="kw">EXISTS</span> email;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This becomes a new migration file with its own timestamp, applied with <code>supabase db push</code> like any other migration. The schema moves forward through time even when the change is logically a reversal.</p>
 <p>This approach has a significant advantage: the rollback itself becomes part of the migration history, is reviewed, tested, and committed like any other change, and does not require special tooling to execute.</p>
 <p>Some teams annotate each migration file with the corresponding rollback SQL in a comment at the bottom, so that the undo logic is always visible alongside the change it reverses:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Up</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Up</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> customers</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ADD</span> <span class="kw">COLUMN</span> email TEXT;</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -605,13 +673,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The full cycle for a schema change under this system:</p>
 <ol type="1">
 <li><p><strong>Create the migration file.</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> migration new describe_the_change</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> migration new describe_the_change</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p><strong>Write the SQL in VS Code.</strong> Open the new file from <code>supabase/migrations/</code> and write the statements that implement the change. Test the SQL against a development database or in the Supabase SQL Editor if you want to verify it before committing.</p></li>
 <li><p><strong>Commit the file.</strong> Add the migration file to version control. This step is important: the migration file is the record of the change. If it is not committed, collaborators will not have it, and the history will be incomplete.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add supabase/migrations/</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add supabase/migrations/</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add email column to customers table"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p><strong>Push to the remote database.</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> db push</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">supabase</span> db push</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p><strong>Verify.</strong> Check the Supabase dashboard or run a query to confirm the change took effect. Review <code>supabase migration list</code> to confirm the migration now shows as applied.</p></li>
 </ol>
 </section>
@@ -640,16 +708,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="applying-migrations-with-psql" class="level3" data-number="29.9.2">
 <h3 data-number="29.9.2" class="anchored" data-anchor-id="applying-migrations-with-psql"><span class="header-section-number">29.9.2</span> Applying Migrations with psql</h3>
 <p>The most portable approach requires no additional tooling at all. <code>psql</code>, the standard PostgreSQL command-line client, can execute a SQL file against any PostgreSQL database given a connection string:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">psql</span> <span class="st">"postgresql://user:password@host:5432/dbname"</span> <span class="at">-f</span> supabase/migrations/20250101000000_create_products.sql</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">psql</span> <span class="st">"postgresql://user:password@host:5432/dbname"</span> <span class="at">-f</span> supabase/migrations/20250101000000_create_products.sql</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The connection string has the same format as the one shown in the Supabase Project Settings page. Substitute the host, credentials, and database name for whichever provider you are deploying to, and <code>psql</code> will apply the migration.</p>
 <p>For tracking which files have been applied, you can maintain a simple table in your database:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> schema_migrations (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> schema_migrations (</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    version     TEXT <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    applied_at  TIMESTAMPTZ <span class="kw">NOT</span> <span class="kw">NULL</span> <span class="kw">DEFAULT</span> now()</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Insert a row after each successful migration, using the filename’s timestamp prefix as the version value. Before applying a file, check whether that version already exists in the table. This is precisely what the Supabase CLI does internally, with slightly different table and column names.</p>
 <p>A minimal shell script that applies all pending migrations in order:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> supabase/migrations/<span class="pp">*</span>.sql<span class="kw">;</span> <span class="cf">do</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> file <span class="kw">in</span> supabase/migrations/<span class="pp">*</span>.sql<span class="kw">;</span> <span class="cf">do</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">version</span><span class="op">=</span><span class="va">$(</span><span class="fu">basename</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span> .sql<span class="va">)</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">exists</span><span class="op">=</span><span class="va">$(</span><span class="ex">psql</span> <span class="st">"</span><span class="va">$DATABASE_URL</span><span class="st">"</span> <span class="at">-tAc</span> <span class="dt">\</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"SELECT 1 FROM schema_migrations WHERE version = '</span><span class="va">$version</span><span class="st">'"</span><span class="va">)</span></span>
@@ -684,10 +752,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The Supabase CLI adds the convenience of <code>supabase migration new</code> and <code>supabase db push</code>, and it integrates with the rest of the Supabase platform. But it is a thin layer over the same idea: ordered SQL files, applied in sequence, with a tracking table keeping record of what has been done.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="29.10">
-<h2 data-number="29.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">29.10</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="29.10.1">
-<h3 data-number="29.10.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">29.10.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <ol type="1">
 <li><p>Explain the difference between running a <code>CREATE TABLE</code> statement directly in the Supabase SQL Editor versus creating a migration file and running <code>supabase db push</code>. What does the migration approach give you that the direct approach does not?</p></li>
 <li><p>Why is it important to commit migration files to version control before applying them to the remote database?</p></li>
@@ -695,8 +763,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Two developers, working on separate feature branches, both create migrations at roughly the same time. One creates <code>20250310120000_add_tags_table.sql</code> and the other creates <code>20250310130000_add_ratings_table.sql</code>. When both branches are merged, which migration will be applied first and why?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="29.10.2">
-<h3 data-number="29.10.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">29.10.2</span> Coding</h3>
+<section id="coding" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="coding">Coding</h3>
 <ol start="5" type="1">
 <li><p>Add a migration to your project from the previous chapter that adds an <code>instructor_id</code> column (integer, nullable) to the <code>courses</code> table. Push it to your Supabase project and verify with a query to <code>information_schema.columns</code>.</p></li>
 <li><p>Write a second migration that creates an <code>instructors</code> table with columns for a surrogate primary key, <code>last_name</code> (text, not null), <code>first_name</code> (text, not null), and <code>department</code> (text). After applying it, add a foreign key constraint on <code>courses.instructor_id</code> referencing <code>instructors.id</code> in a third migration.</p></li>

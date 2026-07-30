@@ -16,4 +16,327 @@ By the end of this chapter, students will be able to:
 - **Evaluate** when to use a subquery, a CTE, or a temporary table based on readability, reuse, and performance considerations.
 - **Apply** `NOT EXISTS` as a safer alternative to `NOT IN` when the subquery may return `NULL` values.
 
-Stub: scalar subqueries, correlated subqueries, derived tables, WITH clause (CTEs), recursive CTEs.
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 25)
+
+con <- dbConnect(
+  Postgres(),
+  host     = "localhost",
+  port     = as.integer(Sys.getenv("PGPORT", unset = "5432")),
+  dbname   = "nycflights",
+  user     = "postgres",
+  password = Sys.getenv("PGPASS", unset = "postgres")
+)
+```
+
+A **subquery** is a `SELECT` statement nested inside another query. It can appear almost anywhere a value, a table, or a condition is expected: in the `SELECT` list to compute a per-row value, in `WHERE` to filter based on something derived from other data, or in `FROM` to build a table on the fly. This chapter also introduces the **Common Table Expression** (CTE), written with a `WITH` clause, which packages a subquery under a name so a complex query can be read top to bottom as a sequence of clearly labeled steps rather than a tangle of nested parentheses.
+
+This chapter uses the `flights`, `airlines`, `airports`, and `planes` tables from the `nycflights` database.
+
+## Scalar Subqueries in the SELECT List
+
+A **scalar subquery** is a subquery that returns exactly one row and one column, a single value, which lets it be used anywhere a literal value could appear. Placed in the `SELECT` list, it computes something once and attaches it to every row of the outer query:
+
+```{sql}
+--| connection: con
+--| label: scalar-subquery
+SELECT
+    carrier,
+    flight,
+    dep_delay,
+    (SELECT ROUND(AVG(dep_delay), 1) FROM flights) AS overall_avg_delay
+FROM flights
+ORDER BY dep_delay DESC NULLS LAST
+LIMIT 5;
+```
+
+The subquery `(SELECT ROUND(AVG(dep_delay), 1) FROM flights)` computes the average delay across the *entire* `flights` table, a single number, and PostgreSQL repeats that same number on every output row. Nothing about the subquery changes based on which outer row it is attached to; it would return the identical value if it were the only thing in the query. This independence from the outer row is what makes it a scalar subquery rather than the correlated kind introduced next. If a scalar subquery were to somehow return more than one row, the database would raise an error rather than pick one arbitrarily.
+
+## Subqueries in the WHERE Clause
+
+A subquery can also filter rows by producing a *set* of values for `IN` (or `NOT IN`) to check membership against, rather than a single scalar value. This uncorrelated subquery finds every airport that actually appears as a destination somewhere in `flights`:
+
+```{sql}
+--| connection: con
+--| label: where-subquery-in
+SELECT faa, name
+FROM airports
+WHERE faa IN (SELECT DISTINCT dest FROM flights)
+ORDER BY name
+LIMIT 5;
+```
+
+The inner query `(SELECT DISTINCT dest FROM flights)` runs by itself, independent of anything in the outer `airports` query, and produces a list of airport codes. The outer query then keeps any `airports` row whose `faa` shows up in that list. Like the scalar subquery above, this inner query does not reference anything from the outer query, so it is evaluated once, not once per row. That property, whether a subquery depends on the row currently being processed by the outer query, is important enough to have its own name, covered next.
+
+## Correlated vs. Uncorrelated Subqueries
+
+An **uncorrelated subquery** (both examples so far) can run completely on its own; it does not reference any column from the outer query. A **correlated subquery** does the opposite: it references a column from the outer query, so its result can be different for every outer row, and conceptually it must be re-evaluated for each one.
+
+This query finds flights, on July 4th, that were delayed more than that flight's own carrier's average delay:
+
+```{sql}
+--| connection: con
+--| label: correlated-subquery
+SELECT f.carrier, f.flight, f.dep_delay
+FROM flights f
+WHERE f.month = 7 AND f.day = 4
+  AND f.dep_delay > (
+        SELECT AVG(f2.dep_delay)
+        FROM flights f2
+        WHERE f2.carrier = f.carrier
+  )
+ORDER BY f.dep_delay DESC
+LIMIT 5;
+```
+
+The inner subquery references `f.carrier`, a column from the outer query `f`. That reference is what makes it correlated: the inner `AVG` is computed separately for each carrier, using whichever carrier the current outer row happens to have. Conceptually, the database picks a row from `flights f`, notices its carrier, computes that carrier's average delay across *all* of `flights`, compares the two, and only then moves on to the next outer row.
+
+That conceptual re-execution is also the main drawback of correlated subqueries: written naively, they can force the database to scan the inner table once per outer row. The query above stays fast because filtering to a single day keeps the outer row count small, but the same subquery written without that filter, comparing every flight in the table (not just July 4th) against its carrier's average, takes dramatically longer to run over the same data, because the number of times the inner query must conceptually repeat grows with the size of the outer query. The derived table and CTE sections below show how to restructure this exact kind of comparison so the average is computed once, rather than once per row.
+
+## Derived Tables: Subqueries in the FROM Clause
+
+A subquery placed in the `FROM` clause is called a **derived table**: a result set that is queried as though it were a real table, but exists only for the duration of that query. It must be given an alias.
+
+Suppose you want to know which destination airports receive an above-average number of flights. Doing this in one step requires nesting a subquery inside another subquery:
+
+```{sql}
+--| connection: con
+--| label: derived-table-nested
+SELECT a.name, dest_counts.num_flights
+FROM (
+    SELECT dest, COUNT(*) AS num_flights
+    FROM flights
+    GROUP BY dest
+) AS dest_counts
+JOIN airports a ON a.faa = dest_counts.dest
+WHERE dest_counts.num_flights > (
+    SELECT AVG(cnt) FROM (SELECT COUNT(*) AS cnt FROM flights GROUP BY dest) AS sub
+)
+ORDER BY dest_counts.num_flights DESC
+LIMIT 5;
+```
+
+The derived table `dest_counts` computes a flight count per destination, and it is joined to `airports` like any other table to attach a readable name. But notice the `WHERE` clause: to compare each destination's count against the *overall average* count, this query resorts to a second, separately written subquery that recomputes the per-destination counts all over again just to average them. The logic is correct, but a reader has to mentally track three nested levels of `SELECT` to follow it. This is exactly the kind of query a CTE is designed to untangle.
+
+## Common Table Expressions: The WITH Clause
+
+A **Common Table Expression** (CTE) gives a subquery a name using a `WITH` clause, so it can be referenced later in the query by that name instead of being written inline:
+
+```sql
+WITH cte_name AS (
+    SELECT ...
+)
+SELECT ...
+FROM cte_name
+```
+
+Multiple CTEs can be chained in a single `WITH` clause, separated by commas, and later CTEs can reference earlier ones. Here is the previous derived-table query rewritten with two named CTEs:
+
+```{sql}
+--| connection: con
+--| label: cte-rewrite
+WITH dest_counts AS (
+    SELECT dest, COUNT(*) AS num_flights
+    FROM flights
+    GROUP BY dest
+),
+overall_avg AS (
+    SELECT AVG(num_flights) AS avg_flights
+    FROM dest_counts
+)
+SELECT a.name, dc.num_flights
+FROM dest_counts dc
+CROSS JOIN overall_avg oa
+JOIN airports a ON a.faa = dc.dest
+WHERE dc.num_flights > oa.avg_flights
+ORDER BY dc.num_flights DESC
+LIMIT 5;
+```
+
+This returns the identical result as the nested version, but the logic now reads as a sequence of named steps: first compute `dest_counts`, then compute `overall_avg` from it, then combine the two in the final `SELECT`. Each CTE can be understood on its own, without holding the other levels of nesting in your head at the same time. `overall_avg` returns exactly one row, so `CROSS JOIN` attaches that single row's value to every row from `dest_counts`, letting the final `WHERE` compare the two directly instead of embedding another subquery.
+
+This same rewrite works on the correlated subquery from the previous section. Instead of comparing each flight to a re-computed per-carrier average, a CTE computes every carrier's average delay exactly once, and the outer query simply joins to it:
+
+```{sql}
+--| connection: con
+--| label: cte-instead-of-correlated
+WITH carrier_avg_delay AS (
+    SELECT carrier, AVG(dep_delay) AS avg_delay
+    FROM flights
+    GROUP BY carrier
+)
+SELECT f.carrier, f.flight, f.dep_delay
+FROM flights f
+JOIN carrier_avg_delay cad ON cad.carrier = f.carrier
+WHERE f.month = 7 AND f.day = 4
+  AND f.dep_delay > cad.avg_delay
+ORDER BY f.dep_delay DESC
+LIMIT 5;
+```
+
+The result matches the correlated version exactly, but `carrier_avg_delay` is computed a single time, then joined like any other table, rather than being conceptually re-run for every candidate row. This is the general lesson: a correlated subquery is easy to write and often the first thing that comes to mind, but when the same per-group value is needed repeatedly, computing it once in a CTE (or derived table) and joining to it is usually both faster and easier to read.
+
+## Recursive CTEs
+
+Some data is naturally hierarchical: an employee reporting structure, a category with subcategories, a bill of materials made of parts that contain other parts. A **recursive CTE** is built to walk exactly this kind of structure, one level at a time, without knowing in advance how many levels deep it goes.
+
+A small standalone table illustrates the mechanism: a manager hierarchy, the same kind of self-referencing structure the keys and integrity chapter covers in more depth later in this book.
+
+```{sql}
+--| connection: con
+--| label: recursive-setup-create
+--| output: false
+CREATE TABLE employees (
+    employee_id  INTEGER PRIMARY KEY,
+    name         VARCHAR(50) NOT NULL,
+    manager_id   INTEGER REFERENCES employees(employee_id)
+);
+```
+
+```{sql}
+--| connection: con
+--| label: recursive-setup-insert
+--| output: false
+INSERT INTO employees (employee_id, name, manager_id) VALUES
+    (1, 'Sandra', NULL),
+    (2, 'Marcus', 1),
+    (3, 'Priya',  1),
+    (4, 'Tom',    2),
+    (5, 'Elena',  2),
+    (6, 'Wade',   4);
+```
+
+Sandra has no manager (`manager_id IS NULL`); Marcus and Priya report to her; Tom and Elena report to Marcus; Wade reports to Tom. A recursive CTE finds everyone in Sandra's reporting chain, at any depth:
+
+```{sql}
+--| connection: con
+--| label: recursive-cte
+WITH RECURSIVE reports_to_sandra AS (
+    -- Base case: Sandra herself, at depth 0
+    SELECT employee_id, name, manager_id, 0 AS depth
+    FROM employees
+    WHERE name = 'Sandra'
+
+    UNION ALL
+
+    -- Recursive case: anyone whose manager is already in the result
+    SELECT e.employee_id, e.name, e.manager_id, r.depth + 1
+    FROM employees e
+    JOIN reports_to_sandra r ON e.manager_id = r.employee_id
+)
+SELECT employee_id, name, depth
+FROM reports_to_sandra
+ORDER BY depth, employee_id;
+```
+
+A recursive CTE has two parts joined by `UNION ALL`. The **base case** (above the `UNION ALL`) selects the starting row or rows, here just Sandra, at depth 0. The **recursive case** (below it) joins the `employees` table back to the CTE's own name, `reports_to_sandra`, matching each employee's `manager_id` against an `employee_id` already found. The database runs the recursive case repeatedly: the first pass finds Sandra's direct reports (Marcus and Priya, since their `manager_id` matches Sandra's `employee_id`, now at depth 1), the second pass finds *their* reports using the rows the first pass just added (Tom and Elena, depth 2), and so on. Recursion stops automatically once a pass finds no new matching rows, here after Wade is found at depth 3.
+
+This is the same logical pattern behind traversing a category tree (find every subcategory, and every subcategory of those subcategories, and so on) or a bill of materials (find every part, and every part that makes up those parts). The base case defines where to start; the recursive case defines how to step from what you already have to the next level out.
+
+Clean up the demonstration table before moving on:
+
+```{sql}
+--| connection: con
+--| label: recursive-cleanup
+--| output: false
+DROP TABLE employees;
+```
+
+## NOT IN vs. NOT EXISTS: The NULL Trap
+
+`NOT IN` and `NOT EXISTS` both express "rows that have no match in another table," and they often produce identical results, until the subquery's column can contain `NULL`. The `tailnum` column in `flights` is `NULL` for roughly a quarter of all rows (flights with no recorded tail number). Watch what happens when it is used as the target of `NOT IN`:
+
+```{sql}
+--| connection: con
+--| label: not-in-broken
+SELECT COUNT(*)
+FROM planes
+WHERE tailnum NOT IN (SELECT tailnum FROM flights);
+```
+
+Zero. That is not because every plane in `planes` has flown a recorded flight; it is because SQL's three-valued logic breaks `NOT IN` the moment its list contains even one `NULL`. `x NOT IN (a, b, NULL)` is really shorthand for `x <> a AND x <> b AND x <> NULL`, and any comparison against `NULL` evaluates to `NULL` rather than `TRUE` or `FALSE`. An `AND` chain containing a `NULL` can never evaluate to `TRUE`, so no row can ever satisfy the condition, and the query silently, without any error or warning, returns nothing useful.
+
+`NOT EXISTS` avoids this trap entirely, because it never builds a list to compare against; it simply asks whether a matching row exists:
+
+```{sql}
+--| connection: con
+--| label: not-exists-fixed
+SELECT COUNT(*)
+FROM planes p
+WHERE NOT EXISTS (
+    SELECT 1 FROM flights f WHERE f.tailnum = p.tailnum
+);
+```
+
+This correctly finds every plane in `planes` with no corresponding row in `flights`. `NOT EXISTS` is a correlated subquery: `f.tailnum = p.tailnum` references the outer table `p`, so the inner query is conceptually re-run for each candidate plane, checking only whether *any* row matches, not building a list first.
+
+If you must use `NOT IN`, the safe version explicitly excludes `NULL` from the subquery's result first: `WHERE tailnum NOT IN (SELECT tailnum FROM flights WHERE tailnum IS NOT NULL)` produces the same correct result as `NOT EXISTS` above. But `NOT EXISTS` is the more reliable default, since it never depends on remembering whether the column on the other side of the comparison can be `NULL`.
+
+## Choosing Between a Subquery, a CTE, or a Temporary Table
+
+All three of these tools can express the same underlying logic; the choice between them is mostly about readability, reuse, and, occasionally, performance.
+
+- A **scalar or `WHERE`-clause subquery** is a fine choice when the logic is short, used only once, and easy to read inline, as in the destination-airport `IN` example earlier in this chapter.
+- A **CTE** is the right choice once a query needs more than one logical step, or once a subquery would otherwise need to be written out twice (as the derived-table example's nested `AVG` subquery did). Naming each step documents what it computes and lets later steps, or later CTEs in the same `WITH` clause, reference it without repeating it.
+- A **temporary table** (created with `CREATE TEMPORARY TABLE`, materialized once with real rows, and automatically dropped at the end of the session) is worth reaching for when the same intermediate result is needed across *multiple separate queries*, not just multiple steps within one query, or when that intermediate result is expensive to compute and you want to avoid recomputing it every time it is referenced. A CTE is generally recomputed each time a query runs, and in some databases each time it is referenced within a single query; a temporary table's rows are computed once and persist until the session ends or the table is explicitly dropped.
+
+None of these tools change what a query is *capable* of expressing; a correlated subquery, a CTE, and a temporary table can all arrive at the same answer to the carrier-average-delay problem earlier in this chapter. The decision is about which structure best communicates intent, and, as that example showed, about avoiding the accidental performance cost of recomputing the same aggregate once per outer row when it could have been computed once and joined against instead.
+
+## Exercises {.unnumbered}
+
+### Reflection {.unnumbered}
+
+**1.** In your own words, explain the difference between a correlated and an uncorrelated subquery. What specifically makes a subquery correlated?
+
+---
+
+**2.** A classmate's query using `NOT IN` unexpectedly returns zero rows, even though they are confident some rows should qualify. What is the most likely explanation, and how would you fix the query?
+
+---
+
+**3.** Explain, in your own words, what the base case and the recursive case of a recursive CTE each contribute, and why recursion stops automatically once no new rows are found.
+
+---
+
+### Practical {.unnumbered}
+
+**4.** Write a query against `flights` that adds a column showing each flight's `dep_delay` alongside the *maximum* `dep_delay` recorded anywhere in the table, using a scalar subquery in the `SELECT` list.
+
+---
+
+**5.** Write a query that returns every airline from `airlines` whose `carrier` code never appears in `flights`, first using `NOT IN`, then using `NOT EXISTS`. Do the two versions agree in this case? Explain why or why not, referencing whether `flights.carrier` can be `NULL`.
+
+---
+
+**6.** Rewrite this nested query as a CTE with at least one intermediate step, and explain in a comment what each step computes:
+
+```sql
+SELECT p.manufacturer, plane_counts.num_planes
+FROM (
+    SELECT manufacturer, COUNT(*) AS num_planes
+    FROM planes
+    GROUP BY manufacturer
+) AS plane_counts
+JOIN planes p ON p.manufacturer = plane_counts.manufacturer
+WHERE plane_counts.num_planes > (
+    SELECT AVG(cnt) FROM (SELECT COUNT(*) AS cnt FROM planes GROUP BY manufacturer) AS sub
+)
+GROUP BY p.manufacturer, plane_counts.num_planes;
+```
+
+---
+
+**7.** Restricting to flights in December (`month = 12`), write a correlated subquery that finds every flight whose `air_time` is longer than the average `air_time` for flights to the same `dest`. Then rewrite it using a CTE that computes each destination's average `air_time` once (computed across the same December flights). Confirm both versions return the same number of rows. If you have time, try removing the `month = 12` restriction from the correlated version and compare how much longer it takes to run.
+
+---
+
+**8.** Using the `employees` pattern from this chapter (recreate the table with your own hierarchy of at least three levels and six people), write a recursive CTE that finds everyone below a manager of your choosing, along with each person's depth relative to that manager. Remember to drop the table when you are finished.
+
+---
+
+**9.** A colleague suggests replacing a frequently-run CTE with a temporary table instead, arguing it will be faster. Under what circumstances would you agree with them, and under what circumstances would you push back? Justify your answer using the considerations from the final section of this chapter.

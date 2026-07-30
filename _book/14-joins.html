@@ -100,7 +100,75 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -511,10 +579,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#joining-more-than-two-tables" id="toc-joining-more-than-two-tables" class="nav-link" data-scroll-target="#joining-more-than-two-tables"><span class="header-section-number">7.11</span> Joining More Than Two Tables</a></li>
   <li><a href="#implicit-vs.-explicit-join-syntax" id="toc-implicit-vs.-explicit-join-syntax" class="nav-link" data-scroll-target="#implicit-vs.-explicit-join-syntax"><span class="header-section-number">7.12</span> Implicit vs.&nbsp;Explicit Join Syntax</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.13</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">7.13.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">7.13.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding">Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/14-joins.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -674,7 +742,7 @@ window.Quarto = {
 <section id="join-syntax" class="level2" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="join-syntax"><span class="header-section-number">7.4</span> JOIN Syntax</h2>
 <p>Before looking at specific join types, it helps to see the general shape of a join query.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    i.gdp_per_capita_usd</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
@@ -690,7 +758,7 @@ window.Quarto = {
 </div>
 <div class="callout-body-container">
 <p>PostgreSQL also supports a <code>USING</code> clause as a shorthand when both tables share an identically named join column:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_a</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_a</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> table_b <span class="kw">USING</span> (shared_column_name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>USING</code> is concise but requires the join columns to carry the same name in both tables. Because <code>countries</code> uses <code>id</code> while <code>indicators</code> uses <code>country_id</code>, this particular join must use <code>ON</code>. Throughout this book, all examples use <code>ON</code> for clarity and consistency.</p>
 </div>
@@ -721,7 +789,7 @@ window.Quarto = {
 </figure>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    i.gdp_per_capita_usd,</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    i.population</span>
@@ -818,7 +886,7 @@ window.Quarto = {
 </figure>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    i.<span class="dt">year</span>,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    i.population</span>
@@ -925,7 +993,7 @@ window.Quarto = {
 <p>The <strong><code>WHERE</code> clause</strong> runs after the join is complete. It filters the already-assembled result set. Any row that does not satisfy <code>WHERE</code> is discarded, NULLs and all.</p>
 <p><strong>With INNER JOIN, the placement makes no difference.</strong> Because an inner join already discards rows with no match, there are no NULL-padded rows for a <code>WHERE</code> filter to remove. These two queries return identical results:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    i.<span class="dt">year</span>,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    i.gdp_per_capita_usd</span>
@@ -975,7 +1043,7 @@ window.Quarto = {
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    i.<span class="dt">year</span>,</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    i.gdp_per_capita_usd</span>
@@ -1026,7 +1094,7 @@ window.Quarto = {
 </div>
 <p><strong>With LEFT JOIN (and other outer joins), the placement is critical.</strong> Suppose you want every country alongside its 2022 GDP figure, with NULL for countries that have no 2022 data. This query does not accomplish that goal:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    i.<span class="dt">year</span>,</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    i.gdp_per_capita_usd</span>
@@ -1103,7 +1171,7 @@ window.Quarto = {
 <p>The left join runs first and correctly produces 16,742 rows: 16,704 matched rows plus 38 NULL-padded rows for the regional aggregates. Then <code>WHERE i.year = 2022</code> runs on that result and discards every row where <code>i.year</code> is NULL, which are exactly the 38 unmatched rows. The left join’s promise of “all left rows” is silently undone, and the result is identical to an inner join.</p>
 <p>Moving the condition into the <code>ON</code> clause fixes it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    i.<span class="dt">year</span>,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    i.gdp_per_capita_usd</span>
@@ -1216,7 +1284,7 @@ window.Quarto = {
 </figure>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    i.<span class="dt">year</span>,</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    i.population</span>
@@ -1291,7 +1359,7 @@ window.Quarto = {
 </div>
 <p>This returns every row from <code>indicators</code>, with the country name attached from the left table. Because <code>indicators.country_id</code> is enforced as a foreign key, every indicator row already has a valid matching country, so no NULLs appear on the left side here.</p>
 <p>In practice, <code>RIGHT JOIN</code> is used infrequently. Any right join can be rewritten as a left join by swapping the order of the tables, which most developers find more readable. The queries below produce identical results:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">RIGHT</span> <span class="kw">JOIN</span> indicators <span class="kw">AS</span> i <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> i.country_id</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> indicators <span class="kw">AS</span> i</span>
@@ -1308,7 +1376,7 @@ window.Quarto = {
 </figure>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    i.gdp_per_capita_usd</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
@@ -1424,7 +1492,7 @@ window.Quarto = {
 </div>
 <p>The <code>series</code> table, with its 9 rows describing each measurement type, pairs naturally with <code>countries</code> in a cross join. The result is a complete grid of every possible country-indicator combination.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    s.indicator_name</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
@@ -1528,7 +1596,7 @@ window.Quarto = {
 <h3 data-number="7.10.1" class="anchored" data-anchor-id="using-left-join-and-is-null"><span class="header-section-number">7.10.1</span> Using LEFT JOIN and IS NULL</h3>
 <p>The most common pattern extends a left join with a <code>WHERE</code> clause that keeps only the rows where the right side produced a NULL, meaning no match was found.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    c.short_name</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">LEFT</span> <span class="kw">JOIN</span> indicators <span class="kw">AS</span> i <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> i.country_id</span>
@@ -1640,7 +1708,7 @@ window.Quarto = {
 <h3 data-number="7.10.2" class="anchored" data-anchor-id="using-not-exists"><span class="header-section-number">7.10.2</span> Using NOT EXISTS</h3>
 <p>The second pattern uses <code>NOT EXISTS</code> with a correlated subquery. This is the approach mentioned in the WHERE clause chapter as the preferred alternative to <code>NOT IN</code> when NULL values may be present.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    c.short_name</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> (</span>
@@ -1747,7 +1815,7 @@ window.Quarto = {
 <h2 data-number="7.11" class="anchored" data-anchor-id="joining-more-than-two-tables"><span class="header-section-number">7.11</span> Joining More Than Two Tables</h2>
 <p>Nothing limits a query to two tables. You can chain as many joins as the data requires, adding one table at a time. One particularly useful pattern is joining the same table twice under different aliases to compare values across two points in time. Here, the <code>indicators</code> table is joined twice to place 2000 and 2022 GDP figures side by side, and the <code>regions</code> lookup table is joined in as well so the result shows a readable region name instead of the raw <code>region_id</code> foreign key.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    r.name <span class="kw">AS</span> region,</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    i2000.gdp_per_capita_usd <span class="kw">AS</span> gdp_2000,</span>
@@ -1848,11 +1916,11 @@ window.Quarto = {
 <section id="implicit-vs.-explicit-join-syntax" class="level2" data-number="7.12">
 <h2 data-number="7.12" class="anchored" data-anchor-id="implicit-vs.-explicit-join-syntax"><span class="header-section-number">7.12</span> Implicit vs.&nbsp;Explicit Join Syntax</h2>
 <p>SQL has two ways to join tables. The style used throughout this book is the <strong>explicit</strong> syntax, introduced in the ANSI SQL-92 standard, where the join type and condition are stated directly:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> indicators <span class="kw">AS</span> i <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> i.country_id</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Before SQL-92, the only option was the <strong>implicit</strong> syntax: tables are comma-separated in the <code>FROM</code> clause and the join condition appears in <code>WHERE</code> alongside any other filters. The <code>AS</code> keyword for aliases is also commonly omitted in this style.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    c.short_name,</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    i.gdp_per_capita_usd</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries c, indicators i</span>
@@ -1919,7 +1987,7 @@ window.Quarto = {
 <p><strong>Join conditions and filter conditions are visually indistinguishable.</strong> In the implicit style, <code>c.id = i.country_id</code> (a join condition) and <code>i.year = 2022</code> (a data filter) both sit in <code>WHERE</code> with no structural difference between them. With explicit syntax, join conditions live in <code>ON</code> and filters live in <code>WHERE</code>, so the purpose of each clause is immediately clear.</p>
 <p><strong>A missing join condition silently produces a cross join.</strong> If the condition linking the two tables is accidentally left out in the implicit style, the database returns the Cartesian product without any warning or error:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries, indicators;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1940,10 +2008,10 @@ window.Quarto = {
 <p>With explicit syntax, omitting the <code>ON</code> clause is a syntax error that fails immediately rather than quietly returning millions of rows.</p>
 <p><strong>Outer joins require explicit syntax.</strong> There is no comma-table equivalent of <code>LEFT JOIN</code> or <code>FULL OUTER JOIN</code>. Some databases offered proprietary workarounds (Oracle’s <code>(+)</code> operator, for example), but they were not portable and are now deprecated. Any query that needs to preserve unmatched rows must use explicit syntax.</p>
 </section>
-<section id="exercises" class="level2" data-number="7.13">
-<h2 data-number="7.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">7.13</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="7.13.1">
-<h3 data-number="7.13.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">7.13.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <ol type="1">
 <li><p>Explain the difference between a primary key and a foreign key. Why does a database need both?</p></li>
 <li><p>A data analyst runs an inner join between <code>countries</code> (299 rows) and <code>indicators</code> without filtering by year and gets back over 16,000 rows. They suspect something went wrong. Is this necessarily a problem? Explain what produces a result with many more rows than the starting table.</p></li>
@@ -1952,8 +2020,8 @@ window.Quarto = {
 <li><p>You find the following query in a legacy codebase: <code>SELECT c.short_name, i.population FROM countries c, indicators i WHERE c.id = i.country_id AND i.year = 2010</code>. Rewrite it using explicit join syntax. Does the rewrite change the result?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="7.13.2">
-<h3 data-number="7.13.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">7.13.2</span> Coding</h3>
+<section id="coding" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="coding">Coding</h3>
 <ol start="5" type="1">
 <li><p>Write a query that returns the <code>short_name</code>, region name (joined from the <code>regions</code> table), and 2022 <code>gdp_per_capita_usd</code> for every country that has 2022 data in the <code>indicators</code> table. Exclude aggregate entries (where <code>is_aggregate</code> is true). Sort by <code>gdp_per_capita_usd</code> descending, with NULLs last. Limit to 20 rows.</p></li>
 <li><p>Write a query that returns every country along with its 2010 <code>gdp_per_capita_usd</code>. Countries that have no 2010 data should still appear in the result, with NULL in the GDP column. Sort by <code>short_name</code>.</p></li>

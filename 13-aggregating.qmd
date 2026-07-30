@@ -399,9 +399,9 @@ HAVING COUNT(*) > 2
 ORDER BY actor_count DESC;
 ```
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 **1.** Explain the difference between `WHERE` and `HAVING`. Write an example of a condition that must go in `WHERE` and one that must go in `HAVING`, and explain why each belongs where it does.
 
@@ -422,7 +422,7 @@ HAVING avg_noms > 2;
 
 ---
 
-### Coding
+### Coding {.unnumbered}
 
 **4.** Write a query that counts the number of actors from each birth country. Return only countries with at least two actors, sorted from most to fewest.
 

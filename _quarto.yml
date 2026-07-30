@@ -77,6 +77,8 @@ book:
 
 filters:
   - quarto-dbml
+  - at: pre-quarto
+    path: code-window
 
 dbml:
   theme: light
@@ -89,8 +91,8 @@ format:
   html:
     lightbox: true
     code-overflow: wrap
-    code-block-bg: true
-    code-block-border-left: "#0165fc"
+    code-block-bg: false
+    # code-block-border-left: "#0165fc"
     author-meta: "Pete Benbow"
     callout-appearance: simple
     link-external-newwindow: true
