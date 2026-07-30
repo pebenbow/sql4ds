@@ -674,7 +674,7 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
-<p>This works, until it does not. Maria Santos’s name and email are repeated on every order she places. A few problems follow directly from that repetition:</p>
+<p>This works, but it’s very fragile. Maria Santos’s name and email are repeated on every order she places. A few problems follow directly from that repetition:</p>
 <ul>
 <li><strong>Redundancy.</strong> The same customer information is copied over and over, wasting space and multiplying the effort needed to store it.</li>
 <li><strong>Update anomalies.</strong> If Maria changes her email address, every row that mentions her needs to be updated. Miss one row, and the spreadsheet now contains two different email addresses for the same person, with no way to tell which one is current.</li>
@@ -781,22 +781,7 @@ div.csl-indent {
 <tr class="even">
 <td><strong>Domain</strong></td>
 <td>Data type</td>
-<td>The set of legal values an attribute is allowed to hold</td>
-</tr>
-<tr class="odd">
-<td><strong>Degree</strong></td>
-<td>Column count</td>
-<td>The number of attributes in a relation</td>
-</tr>
-<tr class="even">
-<td><strong>Cardinality</strong></td>
-<td>Row count</td>
-<td>The number of tuples in a relation</td>
-</tr>
-<tr class="odd">
-<td><strong>Relation schema</strong></td>
-<td>Table definition</td>
-<td>The relation’s name plus the list of its attributes and their domains</td>
+<td>The set of values an attribute is allowed to hold</td>
 </tr>
 </tbody>
 </table>
@@ -837,6 +822,23 @@ div.csl-indent {
 <p><strong>5.</strong> Consider a <code>products</code> table with columns <code>product_id</code>, <code>product_name</code>, <code>price</code>, and <code>category</code>. A colleague suggests adding a column called <code>details</code> that stores a mix of shipping weight, warehouse location, and supplier notes as a single text string, formatted differently depending on the product. Explain, using the ideas from this chapter, why this is a poor design choice, and propose an alternative.</p>
 
 
+</section>
+</section>
+<section id="welcome" class="level1 unnumbered">
+<h1 class="unnumbered">Welcome</h1>
+<p>Welcome to <em>SQL for Data Science</em>, the free online textbook that aims to help students, researchers, and professional data scientists understand the world of SQL and relational databases!</p>
+<p>In this book, you will learn how to explore and interact with databases, extract insights from them, and build your own databases for storing and sharing knowledge.</p>
+<p>This text is aimed at beginning learners who want to master the basics of SQL and database programming. You may be a student whose class is using this book as a textbook, a data analyst who needs to use SQL for your job, or an experienced professional who wants to master new skills and broaden your horizons. In any case, you should find this book to be an accessible (and free!) way to meet your learning objectives.</p>
+<section id="about-the-author" class="level2" data-number="3.13">
+<h2 data-number="3.13" class="anchored" data-anchor-id="about-the-author"><span class="header-section-number">3.13</span> About the Author</h2>
+<p>I (Pete Benbow) am the James B. Duke Assistant Professor of the Practice in Data Science at <a href="https://www.davidson.edu/">Davidson College</a>. My teaching focuses primarily on data engineering, a discipline which complements and facilitates data science by providing the infrastructure upon which data scientists do their work. I worked heavily in this area for over a decade across a number of industries before I began teaching in 2024. A regular “working stiff,” I do not hold a Ph.D.&nbsp;in any field. My only degree is a bachelor’s in political science, which I earned from Davidson.</p>
+</section>
+<section id="acknowledgments" class="level2" data-number="3.14">
+<h2 data-number="3.14" class="anchored" data-anchor-id="acknowledgments"><span class="header-section-number">3.14</span> Acknowledgments</h2>
+<p>Significant portions of this textbook were written with agentic AI assistance, specifically Anthrophic’s Claude Code platform. This obviously helps tremendously with efficient content generation, but a bigger reason I chose this path is how it streamlines some of the more tedious parts of writing a technical textbook. For example, the entire book centers on a Docker image I created which has all of the databases we use pre-installed on it, and agentic AI was able to automatically run the Docker image and execute SQL queries against these databases to validate all the code in the book. This helps ensure consistency and accuracy in a matter of minutes, and at a level that would take many hours for a human reviewer to match.</p>
+<p>That being said, this book has undergone thorough and painstaking human review by myself and my team. On that note, I want to give a profound THANK YOU to my technical reviewers, <strong>Taehee Kim</strong> and <strong>Patrick Grimes</strong>, two of my Data Science advisees here at Davidson. I have been incredibly fortunate to have their help on this undertaking which, without their acumen and insight, would have been monumentally more difficult.</p>
+<p>I also need to thank the <a href="https://www.dukeendowment.org/our-work/higher-education">Duke Endowment</a>, whose generosity funds my work and creates opportunities for my students to gain meaningful experience in data science and data engineering.</p>
+<p>Lastly but most importantly, I need to thank my wife and partner, Megan. I was already an established data engineering professional when I answered Davidson’s call to teach, and becoming a professor was a major change in the nature of my work and the hours required. The first few semesters were especially brutal, with lots of stress and long weekends at the office, and she was worried about the amount of work it would take for me to write this book. I’ve been able to pull this off in large part thanks to her steadfast love and patience.</p>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-codd70" class="csl-entry" role="listitem">
 Codd, E. F. 1970. <span>“A Relational Model of Data for Large Shared Data Banks.”</span> <em>Commun. ACM</em> (New York, NY, USA) 13 (6): 377–87. <a href="https://doi.org/10.1145/362384.362685">https://doi.org/10.1145/362384.362685</a>.
