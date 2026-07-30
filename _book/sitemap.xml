@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sql4ds.com/index.html</loc>
-    <lastmod>2026-07-28T19:00:23.728Z</lastmod>
+    <lastmod>2026-07-30T16:18:23.377Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/00-intro.html</loc>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/03-database-organization.html</loc>
-    <lastmod>2026-07-29T12:55:52.416Z</lastmod>
+    <lastmod>2026-07-30T16:18:23.368Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/10-query.html</loc>
@@ -50,11 +50,11 @@
   </url>
   <url>
     <loc>https://sql4ds.com/21-conditional.html</loc>
-    <lastmod>2026-07-27T16:34:01.526Z</lastmod>
+    <lastmod>2026-07-30T16:19:25.449Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/22-subqueries.html</loc>
-    <lastmod>2026-07-27T16:34:01.526Z</lastmod>
+    <lastmod>2026-07-30T16:24:49.586Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/23-window-functions.html</loc>
