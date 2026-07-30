@@ -81,7 +81,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -540,7 +608,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>UNION ALL</code> stacks two result sets together and returns every row from both, including duplicates. It is the simplest set operation conceptually: the result is everything on the left, followed by everything on the right.</p>
 <p>The query below combines all low-income and lower-middle-income countries into a single list.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.short_name, ig.name <span class="kw">AS</span> income_group</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.short_name, ig.name <span class="kw">AS</span> income_group</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> income_groups <span class="kw">AS</span> ig <span class="kw">ON</span> c.income_group_id <span class="op">=</span> ig.income_group_id</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> ig.name <span class="op">=</span> <span class="st">'Low income'</span></span>
@@ -677,7 +745,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>UNION</code> works exactly like <code>UNION ALL</code> but adds a deduplication step: any row that appears in both result sets is included only once in the final output.</p>
 <p>To see the difference, consider the question: which countries appeared in the top ten by GDP per capita in both 2000 and 2022? <code>UNION ALL</code> gives every entry from both ranked lists, while <code>UNION</code> collapses the countries that appeared in both down to a single row.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> short_name</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> short_name</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">INNER</span> <span class="kw">JOIN</span> indicators <span class="kw">AS</span> i <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> i.country_id</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">WHERE</span> i.<span class="dt">year</span> <span class="op">=</span> <span class="dv">2000</span></span>
@@ -774,7 +842,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Twenty rows come back, one for each entry in both top-ten lists. Countries that ranked in the top ten in both years appear twice: Monaco, Liechtenstein, Luxembourg, Bermuda, Norway, and Switzerland each have two rows.</p>
 <p>Swapping <code>UNION ALL</code> for <code>UNION</code> removes those duplicates:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> short_name</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> short_name</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">INNER</span> <span class="kw">JOIN</span> indicators <span class="kw">AS</span> i <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> i.country_id</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">WHERE</span> i.<span class="dt">year</span> <span class="op">=</span> <span class="dv">2000</span></span>
@@ -867,7 +935,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>INTERSECT</code> returns only the rows that appear in <strong>both</strong> result sets. It is the overlap.</p>
 <p>The <code>UNION</code> example above showed which countries appeared in either top-ten list. <code>INTERSECT</code> answers the narrower question: which countries appeared in both? The threshold here is raised to the top twenty to produce a more interesting result.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> short_name</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">SELECT</span> short_name</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">INNER</span> <span class="kw">JOIN</span> indicators <span class="kw">AS</span> i <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> i.country_id</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">WHERE</span> i.<span class="dt">year</span> <span class="op">=</span> <span class="dv">2000</span></span>
@@ -951,7 +1019,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>EXCEPT</code> returns rows from the first result set that do <strong>not</strong> appear in the second. The order of the two queries matters: <code>A EXCEPT B</code> and <code>B EXCEPT A</code> return different results.</p>
 <p>The <code>indicators</code> table contains data stretching back to 1960, but many countries did not exist as independent nations at the start of that period. The query below identifies countries that have forest area data for 2022 but not for 1990, a gap that reveals which nations were established after 1990 rather than which ones simply have incomplete records.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.short_name, r.name <span class="kw">AS</span> region</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.short_name, r.name <span class="kw">AS</span> region</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> regions <span class="kw">AS</span> r <span class="kw">ON</span> c.region_id <span class="op">=</span> r.region_id</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> indicators <span class="kw">AS</span> i <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> i.country_id</span>
@@ -1087,7 +1155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The result is a list of countries that are present in the 2022 dataset but absent from 1990: mostly states that emerged from the dissolution of the Soviet Union and Yugoslavia, such as Armenia, Estonia, Kazakhstan, and Slovenia, along with a few others like South Sudan (independence: 2011) and Eritrea (independence: 1993). No data existed for them in 1990 because they were not yet sovereign countries.</p>
 <p>Reversing the operands narrows the result considerably:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.short_name, r.name <span class="kw">AS</span> region</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.short_name, r.name <span class="kw">AS</span> region</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> regions <span class="kw">AS</span> r <span class="kw">ON</span> c.region_id <span class="op">=</span> r.region_id</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> indicators <span class="kw">AS</span> i <span class="kw">ON</span> c.<span class="kw">id</span> <span class="op">=</span> i.country_id</span>
@@ -1142,7 +1210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="ordering-the-combined-result" class="level2" data-number="8.7">
 <h2 data-number="8.7" class="anchored" data-anchor-id="ordering-the-combined-result"><span class="header-section-number">8.7</span> Ordering the Combined Result</h2>
 <p>A single <code>ORDER BY</code> clause at the end of the entire statement sorts the combined result. It must reference columns by the names established in the first query, since those are the names the combined result carries.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.short_name, ig.name <span class="kw">AS</span> income_group</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.short_name, ig.name <span class="kw">AS</span> income_group</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> income_groups <span class="kw">AS</span> ig <span class="kw">ON</span> c.income_group_id <span class="op">=</span> ig.income_group_id</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> ig.name <span class="op">=</span> <span class="st">'Low income'</span> <span class="kw">AND</span> <span class="kw">NOT</span> c.is_aggregate</span>
@@ -1160,7 +1228,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="chaining-set-operations" class="level2" data-number="8.8">
 <h2 data-number="8.8" class="anchored" data-anchor-id="chaining-set-operations"><span class="header-section-number">8.8</span> Chaining Set Operations</h2>
 <p>Multiple set operations can be chained in a single statement:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.short_name <span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> c.short_name <span class="kw">FROM</span> countries <span class="kw">AS</span> c</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> income_groups <span class="kw">AS</span> ig <span class="kw">ON</span> c.income_group_id <span class="op">=</span> ig.income_group_id</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> ig.name <span class="op">=</span> <span class="st">'Low income'</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">UNION</span></span>

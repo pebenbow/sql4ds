@@ -81,7 +81,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -524,48 +592,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="prerequisites" class="level2" data-number="23.3">
 <h2 data-number="23.3" class="anchored" data-anchor-id="prerequisites"><span class="header-section-number">23.3</span> Prerequisites</h2>
 <p>This chapter requires Polars and the <code>requests</code> library. Install them if you have not already:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install polars requests</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install polars requests</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="reading-csv-files" class="level2" data-number="23.4">
 <h2 data-number="23.4" class="anchored" data-anchor-id="reading-csv-files"><span class="header-section-number">23.4</span> Reading CSV Files</h2>
 <p>Comma-separated values (CSV) is the most common data exchange format. Despite its simplicity, CSV files can hide surprises: missing values represented as blank strings or sentinel values like <code>"N/A"</code>, columns whose types are ambiguous, and inconsistent quoting. Polars handles most of this gracefully.</p>
 <p>The <code>pl.read_csv()</code> function reads a CSV file into a Polars DataFrame with automatic type inference:</p>
 <div id="csv-read" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> pl.read_csv(<span class="st">"data/countries.csv"</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries.head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (5, 9)
-┌───────────┬───────────┬───────────┬───────────┬───┬───────────┬──────────┬───────────┬───────────┐
-│ country_c ┆ iso2_code ┆ short_nam ┆ region    ┆ … ┆ longitude ┆ latitude ┆ income_gr ┆ lending_t │
-│ ode       ┆ ---       ┆ e         ┆ ---       ┆   ┆ ---       ┆ ---      ┆ oup       ┆ ype       │
-│ ---       ┆ str       ┆ ---       ┆ str       ┆   ┆ f64       ┆ f64      ┆ ---       ┆ ---       │
-│ str       ┆           ┆ str       ┆           ┆   ┆           ┆          ┆ str       ┆ str       │
-╞═══════════╪═══════════╪═══════════╪═══════════╪═══╪═══════════╪══════════╪═══════════╪═══════════╡
-│ AFG       ┆ AF        ┆ Afghanist ┆ South     ┆ … ┆ 69.1761   ┆ 34.5228  ┆ Low       ┆ IDA       │
-│           ┆           ┆ an        ┆ Asia      ┆   ┆           ┆          ┆ income    ┆           │
-│ ALB       ┆ AL        ┆ Albania   ┆ Europe &amp;  ┆ … ┆ 19.8172   ┆ 41.3317  ┆ Upper     ┆ IBRD      │
-│           ┆           ┆           ┆ Central   ┆   ┆           ┆          ┆ middle    ┆           │
-│           ┆           ┆           ┆ Asia      ┆   ┆           ┆          ┆ income    ┆           │
-│ DZA       ┆ DZ        ┆ Algeria   ┆ Middle    ┆ … ┆ 3.05097   ┆ 36.7397  ┆ Lower     ┆ IBRD      │
-│           ┆           ┆           ┆ East &amp;    ┆   ┆           ┆          ┆ middle    ┆           │
-│           ┆           ┆           ┆ North     ┆   ┆           ┆          ┆ income    ┆           │
-│           ┆           ┆           ┆ Africa    ┆   ┆           ┆          ┆           ┆           │
-│ ASM       ┆ AS        ┆ American  ┆ East Asia ┆ … ┆ -170.691  ┆ -14.2846 ┆ Upper     ┆ Not class │
-│           ┆           ┆ Samoa     ┆ &amp; Pacific ┆   ┆           ┆          ┆ middle    ┆ ified     │
-│           ┆           ┆           ┆           ┆   ┆           ┆          ┆ income    ┆           │
-│ AND       ┆ AD        ┆ Andorra   ┆ Europe &amp;  ┆ … ┆ 1.5218    ┆ 42.5075  ┆ High      ┆ Not class │
-│           ┆           ┆           ┆ Central   ┆   ┆           ┆          ┆ income    ┆ ified     │
-│           ┆           ┆           ┆ Asia      ┆   ┆           ┆          ┆           ┆           │
-└───────────┴───────────┴───────────┴───────────┴───┴───────────┴──────────┴───────────┴───────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>shape: (5, 9)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>┌───────────┬───────────┬───────────┬───────────┬───┬───────────┬──────────┬───────────┬───────────┐</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>│ country_c ┆ iso2_code ┆ short_nam ┆ region    ┆ … ┆ longitude ┆ latitude ┆ income_gr ┆ lending_t │</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>│ ode       ┆ ---       ┆ e         ┆ ---       ┆   ┆ ---       ┆ ---      ┆ oup       ┆ ype       │</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>│ ---       ┆ str       ┆ ---       ┆ str       ┆   ┆ f64       ┆ f64      ┆ ---       ┆ ---       │</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>│ str       ┆           ┆ str       ┆           ┆   ┆           ┆          ┆ str       ┆ str       │</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>╞═══════════╪═══════════╪═══════════╪═══════════╪═══╪═══════════╪══════════╪═══════════╪═══════════╡</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>│ AFG       ┆ AF        ┆ Afghanist ┆ South     ┆ … ┆ 69.1761   ┆ 34.5228  ┆ Low       ┆ IDA       │</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆ an        ┆ Asia      ┆   ┆           ┆          ┆ income    ┆           │</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>│ ALB       ┆ AL        ┆ Albania   ┆ Europe &amp;  ┆ … ┆ 19.8172   ┆ 41.3317  ┆ Upper     ┆ IBRD      │</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ Central   ┆   ┆           ┆          ┆ middle    ┆           │</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ Asia      ┆   ┆           ┆          ┆ income    ┆           │</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>│ DZA       ┆ DZ        ┆ Algeria   ┆ Middle    ┆ … ┆ 3.05097   ┆ 36.7397  ┆ Lower     ┆ IBRD      │</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ East &amp;    ┆   ┆           ┆          ┆ middle    ┆           │</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ North     ┆   ┆           ┆          ┆ income    ┆           │</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ Africa    ┆   ┆           ┆          ┆           ┆           │</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>│ ASM       ┆ AS        ┆ American  ┆ East Asia ┆ … ┆ -170.691  ┆ -14.2846 ┆ Upper     ┆ Not class │</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆ Samoa     ┆ &amp; Pacific ┆   ┆           ┆          ┆ middle    ┆ ified     │</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆           ┆   ┆           ┆          ┆ income    ┆           │</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>│ AND       ┆ AD        ┆ Andorra   ┆ Europe &amp;  ┆ … ┆ 1.5218    ┆ 42.5075  ┆ High      ┆ Not class │</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ Central   ┆   ┆           ┆          ┆ income    ┆ ified     │</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>│           ┆           ┆           ┆ Asia      ┆   ┆           ┆          ┆           ┆           │</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>└───────────┴───────────┴───────────┴───────────┴───┴───────────┴──────────┴───────────┴───────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Polars inferred the column types by sampling the file. Let’s inspect the schema it chose:</p>
 <div id="csv-schema" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries.schema)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries.schema)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Schema({'country_code': String, 'iso2_code': String, 'short_name': String, 'region': String, 'capital': String, 'longitude': Float64, 'latitude': Float64, 'income_group': String, 'lending_type': String})</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Schema({'country_code': String, 'iso2_code': String, 'short_name': String, 'region': String, 'capital': String, 'longitude': Float64, 'latitude': Float64, 'income_group': String, 'lending_type': String})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>String columns were correctly identified as <code>String</code>. The <code>longitude</code> and <code>latitude</code> columns were inferred as <code>Float64</code> because they contain decimal values.</p>
@@ -573,54 +641,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="23.4.1" class="anchored" data-anchor-id="handling-null-values"><span class="header-section-number">23.4.1</span> Handling Null Values</h3>
 <p>Seven countries in this dataset have no recorded longitude or latitude: territories and disputed regions such as Gibraltar, Taiwan, and the Channel Islands. Polars represents these missing values as <code>null</code> in the DataFrame:</p>
 <div id="csv-nulls" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>missing_coords <span class="op">=</span> countries.<span class="bu">filter</span>(pl.col(<span class="st">"longitude"</span>).is_null())</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>missing_coords <span class="op">=</span> countries.<span class="bu">filter</span>(pl.col(<span class="st">"longitude"</span>).is_null())</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(missing_coords.select([<span class="st">"short_name"</span>, <span class="st">"region"</span>, <span class="st">"capital"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (7, 3)
-┌───────────────────────────┬────────────────────────────┬─────────────┐
-│ short_name                ┆ region                     ┆ capital     │
-│ ---                       ┆ ---                        ┆ ---         │
-│ str                       ┆ str                        ┆ str         │
-╞═══════════════════════════╪════════════════════════════╪═════════════╡
-│ Channel Islands           ┆ Europe &amp; Central Asia      ┆             │
-│ Curacao                   ┆ Latin America &amp; Caribbean  ┆ Willemstad  │
-│ Gibraltar                 ┆ Europe &amp; Central Asia      ┆             │
-│ Sint Maarten (Dutch part) ┆ Latin America &amp; Caribbean  ┆ Philipsburg │
-│ St. Martin (French part)  ┆ Latin America &amp; Caribbean  ┆ Marigot     │
-│ Taiwan, China             ┆ East Asia &amp; Pacific        ┆             │
-│ West Bank and Gaza        ┆ Middle East &amp; North Africa ┆             │
-└───────────────────────────┴────────────────────────────┴─────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>shape: (7, 3)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>┌───────────────────────────┬────────────────────────────┬─────────────┐</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>│ short_name                ┆ region                     ┆ capital     │</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>│ ---                       ┆ ---                        ┆ ---         │</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>│ str                       ┆ str                        ┆ str         │</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>╞═══════════════════════════╪════════════════════════════╪═════════════╡</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>│ Channel Islands           ┆ Europe &amp; Central Asia      ┆             │</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>│ Curacao                   ┆ Latin America &amp; Caribbean  ┆ Willemstad  │</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>│ Gibraltar                 ┆ Europe &amp; Central Asia      ┆             │</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>│ Sint Maarten (Dutch part) ┆ Latin America &amp; Caribbean  ┆ Philipsburg │</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>│ St. Martin (French part)  ┆ Latin America &amp; Caribbean  ┆ Marigot     │</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>│ Taiwan, China             ┆ East Asia &amp; Pacific        ┆             │</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>│ West Bank and Gaza        ┆ Middle East &amp; North Africa ┆             │</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>└───────────────────────────┴────────────────────────────┴─────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>By default, <code>pl.read_csv()</code> treats blank fields as <code>null</code>. If your CSV uses a different sentinel to indicate missing data, pass it via the <code>null_values</code> parameter:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pl.read_csv(<span class="st">"data/countries.csv"</span>, null_values<span class="op">=</span>[<span class="st">"N/A"</span>, <span class="st">"-"</span>, <span class="st">""</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pl.read_csv(<span class="st">"data/countries.csv"</span>, null_values<span class="op">=</span>[<span class="st">"N/A"</span>, <span class="st">"-"</span>, <span class="st">""</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You can also pass a dictionary to specify different null sentinels per column, which is useful when different columns use different conventions in the same file.</p>
 </section>
 <section id="selecting-columns-at-read-time" class="level3" data-number="23.4.2">
 <h3 data-number="23.4.2" class="anchored" data-anchor-id="selecting-columns-at-read-time"><span class="header-section-number">23.4.2</span> Selecting Columns at Read Time</h3>
 <p>You rarely need every column in a large file. Polars lets you select specific columns during the read, which avoids loading unnecessary data into memory:</p>
 <div id="csv-select-cols" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>countries_slim <span class="op">=</span> pl.read_csv(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>countries_slim <span class="op">=</span> pl.read_csv(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/countries.csv"</span>,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"country_code"</span>, <span class="st">"short_name"</span>, <span class="st">"region"</span>, <span class="st">"income_group"</span>]</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries_slim.head(<span class="dv">8</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (8, 4)
-┌──────────────┬─────────────────────┬────────────────────────────┬─────────────────────┐
-│ country_code ┆ short_name          ┆ region                     ┆ income_group        │
-│ ---          ┆ ---                 ┆ ---                        ┆ ---                 │
-│ str          ┆ str                 ┆ str                        ┆ str                 │
-╞══════════════╪═════════════════════╪════════════════════════════╪═════════════════════╡
-│ AFG          ┆ Afghanistan         ┆ South Asia                 ┆ Low income          │
-│ ALB          ┆ Albania             ┆ Europe &amp; Central Asia      ┆ Upper middle income │
-│ DZA          ┆ Algeria             ┆ Middle East &amp; North Africa ┆ Lower middle income │
-│ ASM          ┆ American Samoa      ┆ East Asia &amp; Pacific        ┆ Upper middle income │
-│ AND          ┆ Andorra             ┆ Europe &amp; Central Asia      ┆ High income         │
-│ AGO          ┆ Angola              ┆ Sub-Saharan Africa         ┆ Lower middle income │
-│ ATG          ┆ Antigua and Barbuda ┆ Latin America &amp; Caribbean  ┆ High income         │
-│ ARG          ┆ Argentina           ┆ Latin America &amp; Caribbean  ┆ Upper middle income │
-└──────────────┴─────────────────────┴────────────────────────────┴─────────────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>shape: (8, 4)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>┌──────────────┬─────────────────────┬────────────────────────────┬─────────────────────┐</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>│ country_code ┆ short_name          ┆ region                     ┆ income_group        │</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>│ ---          ┆ ---                 ┆ ---                        ┆ ---                 │</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>│ str          ┆ str                 ┆ str                        ┆ str                 │</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>╞══════════════╪═════════════════════╪════════════════════════════╪═════════════════════╡</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>│ AFG          ┆ Afghanistan         ┆ South Asia                 ┆ Low income          │</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>│ ALB          ┆ Albania             ┆ Europe &amp; Central Asia      ┆ Upper middle income │</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>│ DZA          ┆ Algeria             ┆ Middle East &amp; North Africa ┆ Lower middle income │</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>│ ASM          ┆ American Samoa      ┆ East Asia &amp; Pacific        ┆ Upper middle income │</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>│ AND          ┆ Andorra             ┆ Europe &amp; Central Asia      ┆ High income         │</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>│ AGO          ┆ Angola              ┆ Sub-Saharan Africa         ┆ Lower middle income │</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>│ ATG          ┆ Antigua and Barbuda ┆ Latin America &amp; Caribbean  ┆ High income         │</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>│ ARG          ┆ Argentina           ┆ Latin America &amp; Caribbean  ┆ Upper middle income │</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>└──────────────┴─────────────────────┴────────────────────────────┴─────────────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>For quick inspection, <code>.head(n)</code> returns the first <code>n</code> rows and <code>.tail(n)</code> returns the last <code>n</code>.</p>
@@ -629,7 +697,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="23.4.3" class="anchored" data-anchor-id="overriding-inferred-types"><span class="header-section-number">23.4.3</span> Overriding Inferred Types</h3>
 <p>Automatic type inference is convenient but not infallible. Suppose you want to treat <code>region</code> and <code>income_group</code> as categorical variables rather than plain strings. Categoricals store repeated string values more efficiently, which matters for columns with low cardinality (few unique values relative to total rows). Use <code>schema_overrides</code> to specify types explicitly:</p>
 <div id="csv-type-override" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>countries_typed <span class="op">=</span> pl.read_csv(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>countries_typed <span class="op">=</span> pl.read_csv(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/countries.csv"</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    schema_overrides<span class="op">=</span>{</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"region"</span>: pl.Categorical,</span>
@@ -639,7 +707,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries_typed.schema)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Schema({'country_code': String, 'iso2_code': String, 'short_name': String, 'region': Categorical, 'capital': String, 'longitude': Float64, 'latitude': Float64, 'income_group': Categorical, 'lending_type': Categorical})</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Schema({'country_code': String, 'iso2_code': String, 'short_name': String, 'region': Categorical, 'capital': String, 'longitude': Float64, 'latitude': Float64, 'income_group': Categorical, 'lending_type': Categorical})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Notice that <code>region</code>, <code>income_group</code>, and <code>lending_type</code> now show as <code>Categorical</code> while all other columns remain as inferred.</p>
@@ -651,7 +719,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Polars can read a flat JSON array directly with <code>pl.read_json()</code>. But most real-world API responses wrap the data you actually care about inside a response <em>envelope</em> that includes pagination metadata, status codes, and other fields alongside the records. You cannot read those files with <code>pl.read_json()</code> alone.</p>
 <p>The <code>data/indicators_meta.json</code> file mimics this pattern. Let’s look at its top-level structure first:</p>
 <div id="json-inspect" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"data/indicators_meta.json"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> json.load(f)</span>
@@ -660,39 +728,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Page </span><span class="sc">{</span>response[<span class="st">'page'</span>]<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span>response[<span class="st">'pages'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Showing </span><span class="sc">{</span><span class="bu">len</span>(response[<span class="st">'indicators'</span>])<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span>response[<span class="st">'total'</span>]<span class="sc">}</span><span class="ss"> indicators"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>['page', 'pages', 'per_page', 'total', 'source', 'indicators']
-Page 1 of 1
-Showing 9 of 9 indicators</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>['page', 'pages', 'per_page', 'total', 'source', 'indicators']</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>Page 1 of 1</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Showing 9 of 9 indicators</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The actual records live under the <code>"indicators"</code> key. Extract that list, then construct a Polars DataFrame from it:</p>
 <div id="json-dataframe" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>indicators_meta <span class="op">=</span> pl.DataFrame(response[<span class="st">"indicators"</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>indicators_meta <span class="op">=</span> pl.DataFrame(response[<span class="st">"indicators"</span>])</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators_meta.select([<span class="st">"id"</span>, <span class="st">"name"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (9, 2)
-┌───────────────────┬─────────────────────────────────┐
-│ id                ┆ name                            │
-│ ---               ┆ ---                             │
-│ str               ┆ str                             │
-╞═══════════════════╪═════════════════════════════════╡
-│ AG.LND.AGRI.ZS    ┆ Agricultural land (% of land a… │
-│ AG.LND.ARBL.ZS    ┆ Arable land (% of land area)    │
-│ AG.LND.FRST.ZS    ┆ Forest area (% of land area)    │
-│ AG.LND.TOTL.K2    ┆ Land area (sq. km)              │
-│ AG.LND.TOTL.RU.K2 ┆ Rural land area (sq. km)        │
-│ AG.LND.TOTL.UR.K2 ┆ Urban land area (sq. km)        │
-│ NY.GDP.MKTP.CD    ┆ GDP (current US$)               │
-│ NY.GDP.PCAP.CD    ┆ GDP per capita (current US$)    │
-│ SP.POP.TOTL       ┆ Population, total               │
-└───────────────────┴─────────────────────────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>shape: (9, 2)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>┌───────────────────┬─────────────────────────────────┐</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>│ id                ┆ name                            │</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>│ ---               ┆ ---                             │</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>│ str               ┆ str                             │</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>╞═══════════════════╪═════════════════════════════════╡</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>│ AG.LND.AGRI.ZS    ┆ Agricultural land (% of land a… │</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>│ AG.LND.ARBL.ZS    ┆ Arable land (% of land area)    │</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>│ AG.LND.FRST.ZS    ┆ Forest area (% of land area)    │</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>│ AG.LND.TOTL.K2    ┆ Land area (sq. km)              │</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>│ AG.LND.TOTL.RU.K2 ┆ Rural land area (sq. km)        │</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>│ AG.LND.TOTL.UR.K2 ┆ Urban land area (sq. km)        │</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>│ NY.GDP.MKTP.CD    ┆ GDP (current US$)               │</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>│ NY.GDP.PCAP.CD    ┆ GDP per capita (current US$)    │</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>│ SP.POP.TOTL       ┆ Population, total               │</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>└───────────────────┴─────────────────────────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="handling-nested-fields" class="level3" data-number="23.5.1">
 <h3 data-number="23.5.1" class="anchored" data-anchor-id="handling-nested-fields"><span class="header-section-number">23.5.1</span> Handling Nested Fields</h3>
 <p>Notice the <code>source</code> column. Rather than a plain string, each row’s <code>source</code> value is itself an object with <code>id</code> and <code>value</code> fields. Polars stores these as the <code>Struct</code> type. Use <code>.struct.field()</code> to extract the nested values into their own columns:</p>
 <div id="json-unnest" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>indicators_meta <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>indicators_meta <span class="op">=</span> (</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    pl.DataFrame(response[<span class="st">"indicators"</span>])</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    .with_columns([</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        pl.col(<span class="st">"source"</span>).struct.field(<span class="st">"id"</span>).alias(<span class="st">"source_id"</span>),</span>
@@ -702,22 +770,22 @@ Showing 9 of 9 indicators</code></pre>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators_meta.select([<span class="st">"id"</span>, <span class="st">"name"</span>, <span class="st">"source_id"</span>, <span class="st">"source_name"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (9, 4)
-┌───────────────────┬─────────────────────────────────┬───────────┬──────────────────────────────┐
-│ id                ┆ name                            ┆ source_id ┆ source_name                  │
-│ ---               ┆ ---                             ┆ ---       ┆ ---                          │
-│ str               ┆ str                             ┆ str       ┆ str                          │
-╞═══════════════════╪═════════════════════════════════╪═══════════╪══════════════════════════════╡
-│ AG.LND.AGRI.ZS    ┆ Agricultural land (% of land a… ┆ 2         ┆ World Development Indicators │
-│ AG.LND.ARBL.ZS    ┆ Arable land (% of land area)    ┆ 2         ┆ World Development Indicators │
-│ AG.LND.FRST.ZS    ┆ Forest area (% of land area)    ┆ 2         ┆ World Development Indicators │
-│ AG.LND.TOTL.K2    ┆ Land area (sq. km)              ┆ 2         ┆ World Development Indicators │
-│ AG.LND.TOTL.RU.K2 ┆ Rural land area (sq. km)        ┆ 2         ┆ World Development Indicators │
-│ AG.LND.TOTL.UR.K2 ┆ Urban land area (sq. km)        ┆ 2         ┆ World Development Indicators │
-│ NY.GDP.MKTP.CD    ┆ GDP (current US$)               ┆ 2         ┆ World Development Indicators │
-│ NY.GDP.PCAP.CD    ┆ GDP per capita (current US$)    ┆ 2         ┆ World Development Indicators │
-│ SP.POP.TOTL       ┆ Population, total               ┆ 2         ┆ World Development Indicators │
-└───────────────────┴─────────────────────────────────┴───────────┴──────────────────────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>shape: (9, 4)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>┌───────────────────┬─────────────────────────────────┬───────────┬──────────────────────────────┐</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>│ id                ┆ name                            ┆ source_id ┆ source_name                  │</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>│ ---               ┆ ---                             ┆ ---       ┆ ---                          │</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>│ str               ┆ str                             ┆ str       ┆ str                          │</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>╞═══════════════════╪═════════════════════════════════╪═══════════╪══════════════════════════════╡</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>│ AG.LND.AGRI.ZS    ┆ Agricultural land (% of land a… ┆ 2         ┆ World Development Indicators │</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>│ AG.LND.ARBL.ZS    ┆ Arable land (% of land area)    ┆ 2         ┆ World Development Indicators │</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>│ AG.LND.FRST.ZS    ┆ Forest area (% of land area)    ┆ 2         ┆ World Development Indicators │</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>│ AG.LND.TOTL.K2    ┆ Land area (sq. km)              ┆ 2         ┆ World Development Indicators │</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>│ AG.LND.TOTL.RU.K2 ┆ Rural land area (sq. km)        ┆ 2         ┆ World Development Indicators │</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>│ AG.LND.TOTL.UR.K2 ┆ Urban land area (sq. km)        ┆ 2         ┆ World Development Indicators │</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>│ NY.GDP.MKTP.CD    ┆ GDP (current US$)               ┆ 2         ┆ World Development Indicators │</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>│ NY.GDP.PCAP.CD    ┆ GDP per capita (current US$)    ┆ 2         ┆ World Development Indicators │</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>│ SP.POP.TOTL       ┆ Population, total               ┆ 2         ┆ World Development Indicators │</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>└───────────────────┴─────────────────────────────────┴───────────┴──────────────────────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>This pattern applies broadly: read the raw response with <code>json.load()</code>, extract the list of records by key, build a DataFrame, then use <code>.struct.field()</code> to flatten any nested fields you need.</p>
@@ -728,12 +796,12 @@ Showing 9 of 9 indicators</code></pre>
 <p>Parquet is a columnar storage format designed for analytical workloads. Unlike CSV, which stores data row by row as plain text, Parquet stores each column independently in a binary, compressed format. This makes it far faster to read when you only need a subset of columns, and far smaller on disk.</p>
 <p>Reading a Parquet file with Polars is simple:</p>
 <div id="parquet-read" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>indicators <span class="op">=</span> pl.read_parquet(<span class="st">"data/indicators.parquet"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>indicators <span class="op">=</span> pl.read_parquet(<span class="st">"data/indicators.parquet"</span>)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators.shape)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators.schema)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>(4991, 10)
-Schema({'country_code': String, 'short_name': String, 'region': String, 'income_group': String, 'year': Int64, 'population': Int64, 'gdp_usd': Float64, 'gdp_per_capita_usd': Float64, 'pct_forest_area': Float64, 'land_area_km2': Float64})</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>(4991, 10)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Schema({'country_code': String, 'short_name': String, 'region': String, 'income_group': String, 'year': Int64, 'population': Int64, 'gdp_usd': Float64, 'gdp_per_capita_usd': Float64, 'pct_forest_area': Float64, 'land_area_km2': Float64})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Two things stand out compared to CSV:</p>
@@ -745,7 +813,7 @@ Schema({'country_code': String, 'short_name': String, 'region': String, 'income_
 <h3 data-number="23.6.1" class="anchored" data-anchor-id="size-comparison"><span class="header-section-number">23.6.1</span> Size Comparison</h3>
 <p>To appreciate the compression benefit, compare the Parquet file’s size to an equivalent CSV export:</p>
 <div id="parquet-size" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>parquet_size <span class="op">=</span> os.path.getsize(<span class="st">"data/indicators.parquet"</span>)</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -758,9 +826,9 @@ Schema({'country_code': String, 'short_name': String, 'region': String, 'income_
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"CSV:     </span><span class="sc">{</span>csv_size <span class="op">/</span> <span class="dv">1024</span><span class="sc">:&gt;8.1f}</span><span class="ss"> KB"</span>)</span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Ratio:   </span><span class="sc">{</span>csv_size <span class="op">/</span> parquet_size<span class="sc">:.1f}</span><span class="ss">× larger than Parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Parquet:    128.1 KB
-CSV:        501.9 KB
-Ratio:   3.9× larger than Parquet</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Parquet:    128.1 KB</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>CSV:        501.9 KB</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>Ratio:   3.9× larger than Parquet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Measuring a dataset this small in absolute terms may seem underwhelming because we’re only talking about a difference of a few hundred kilobytes. No big deal.</p>
@@ -771,24 +839,24 @@ Ratio:   3.9× larger than Parquet</code></pre>
 <h3 data-number="23.6.2" class="anchored" data-anchor-id="reading-a-subset-of-columns"><span class="header-section-number">23.6.2</span> Reading a Subset of Columns</h3>
 <p>Because Parquet stores columns independently, you can read only the columns you need without touching the rest of the file. This is called <em>column pruning</em>, and it is one of Parquet’s most important performance characteristics:</p>
 <div id="parquet-column-pruning" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>gdp_subset <span class="op">=</span> pl.read_parquet(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>gdp_subset <span class="op">=</span> pl.read_parquet(</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/indicators.parquet"</span>,</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">"country_code"</span>, <span class="st">"short_name"</span>, <span class="st">"year"</span>, <span class="st">"gdp_per_capita_usd"</span>]</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gdp_subset.head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (5, 4)
-┌──────────────┬────────────┬──────┬────────────────────┐
-│ country_code ┆ short_name ┆ year ┆ gdp_per_capita_usd │
-│ ---          ┆ ---        ┆ ---  ┆ ---                │
-│ str          ┆ str        ┆ i64  ┆ f64                │
-╞══════════════╪════════════╪══════╪════════════════════╡
-│ ABW          ┆ Aruba      ┆ 2000 ┆ 20681.02           │
-│ ABW          ┆ Aruba      ┆ 2001 ┆ 20740.13           │
-│ ABW          ┆ Aruba      ┆ 2002 ┆ 21307.25           │
-│ ABW          ┆ Aruba      ┆ 2003 ┆ 21949.49           │
-│ ABW          ┆ Aruba      ┆ 2004 ┆ 23700.63           │
-└──────────────┴────────────┴──────┴────────────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>shape: (5, 4)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>┌──────────────┬────────────┬──────┬────────────────────┐</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>│ country_code ┆ short_name ┆ year ┆ gdp_per_capita_usd │</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>│ ---          ┆ ---        ┆ ---  ┆ ---                │</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>│ str          ┆ str        ┆ i64  ┆ f64                │</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>╞══════════════╪════════════╪══════╪════════════════════╡</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>│ ABW          ┆ Aruba      ┆ 2000 ┆ 20681.02           │</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>│ ABW          ┆ Aruba      ┆ 2001 ┆ 20740.13           │</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>│ ABW          ┆ Aruba      ┆ 2002 ┆ 21307.25           │</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>│ ABW          ┆ Aruba      ┆ 2003 ┆ 21949.49           │</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>│ ABW          ┆ Aruba      ┆ 2004 ┆ 23700.63           │</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>└──────────────┴────────────┴──────┴────────────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>With a CSV file, you must read the entire file before you can select columns. With Parquet, the columns you omit are never read from disk at all.</p>
@@ -799,7 +867,7 @@ Ratio:   3.9× larger than Parquet</code></pre>
 <p>Many data sources are not files at all: they are web APIs that respond to HTTP requests with JSON. The Python <code>requests</code> library makes it straightforward to query these endpoints.</p>
 <p>The World Bank publishes a free, open API for the development indicators we have been working with throughout this book. The following example fetches the most recent five years of population data for four countries:</p>
 <div id="api-fetch" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">"https://api.worldbank.org/v2/country/US;GB;DE;JP/indicator/SP.POP.TOTL"</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
@@ -814,7 +882,7 @@ Ratio:   3.9× larger than Parquet</code></pre>
 <span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>envelope, records <span class="op">=</span> resp.json()</span>
 <span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total records: </span><span class="sc">{</span>envelope[<span class="st">'total'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Total records: 20</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Total records: 20</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The World Bank API returns a two-element list: the envelope (containing pagination metadata) followed by the array of records. We unpack them in a single assignment.</p>
@@ -825,7 +893,7 @@ Ratio:   3.9× larger than Parquet</code></pre>
 </ul>
 <p>Now build a DataFrame from the records:</p>
 <div id="api-dataframe" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>pop_df <span class="op">=</span> pl.DataFrame([</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>pop_df <span class="op">=</span> pl.DataFrame([</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"country"</span>: r[<span class="st">"country"</span>][<span class="st">"value"</span>],</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"year"</span>: <span class="bu">int</span>(r[<span class="st">"date"</span>]),</span>
@@ -837,31 +905,31 @@ Ratio:   3.9× larger than Parquet</code></pre>
 <span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pop_df.sort([<span class="st">"country"</span>, <span class="st">"year"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (20, 3)
-┌───────────────┬──────┬────────────┐
-│ country       ┆ year ┆ population │
-│ ---           ┆ ---  ┆ ---        │
-│ str           ┆ i64  ┆ i64        │
-╞═══════════════╪══════╪════════════╡
-│ Germany       ┆ 2021 ┆ 83196078   │
-│ Germany       ┆ 2022 ┆ 83177813   │
-│ Germany       ┆ 2023 ┆ 83287273   │
-│ Germany       ┆ 2024 ┆ 83516593   │
-│ Germany       ┆ 2025 ┆ 83491249   │
-│ …             ┆ …    ┆ …          │
-│ United States ┆ 2021 ┆ 332100166  │
-│ United States ┆ 2022 ┆ 333996304  │
-│ United States ┆ 2023 ┆ 336755052  │
-│ United States ┆ 2024 ┆ 340003797  │
-│ United States ┆ 2025 ┆ 341784857  │
-└───────────────┴──────┴────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>shape: (20, 3)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>┌───────────────┬──────┬────────────┐</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>│ country       ┆ year ┆ population │</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>│ ---           ┆ ---  ┆ ---        │</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>│ str           ┆ i64  ┆ i64        │</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>╞═══════════════╪══════╪════════════╡</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>│ Germany       ┆ 2021 ┆ 83196078   │</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>│ Germany       ┆ 2022 ┆ 83177813   │</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>│ Germany       ┆ 2023 ┆ 83287273   │</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>│ Germany       ┆ 2024 ┆ 83516593   │</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>│ Germany       ┆ 2025 ┆ 83491249   │</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>│ …             ┆ …    ┆ …          │</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>│ United States ┆ 2021 ┆ 332100166  │</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>│ United States ┆ 2022 ┆ 333996304  │</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>│ United States ┆ 2023 ┆ 336755052  │</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>│ United States ┆ 2024 ┆ 340003797  │</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>│ United States ┆ 2025 ┆ 341784857  │</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>└───────────────┴──────┴────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <section id="pagination" class="level3" data-number="23.7.1">
 <h3 data-number="23.7.1" class="anchored" data-anchor-id="pagination"><span class="header-section-number">23.7.1</span> Pagination</h3>
 <p>Most APIs cap the number of records returned per request and include a page count in the envelope. When you need all pages, check the envelope and loop:</p>
 <div id="api-pagination" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>all_records <span class="op">=</span> []</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>all_records <span class="op">=</span> []</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>page <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
@@ -886,8 +954,8 @@ Ratio:   3.9× larger than Parquet</code></pre>
 <span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Fetched </span><span class="sc">{</span><span class="bu">len</span>(all_records)<span class="sc">}</span><span class="ss"> records across </span><span class="sc">{</span>envelope[<span class="st">'pages'</span>]<span class="sc">}</span><span class="ss"> page(s)"</span>)</span>
 <span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Non-null populations: </span><span class="sc">{</span><span class="bu">len</span>(pop_all)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Fetched 265 records across 1 page(s)
-Non-null populations: 264</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Fetched 265 records across 1 page(s)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>Non-null populations: 264</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>This pattern works for any API that reports a page count. Adapt the stopping condition to match whatever field your API uses: <code>pages</code>, <code>next_page</code>, <code>has_more</code>, a cursor token, and so on.</p>
