@@ -426,10 +426,10 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#normalization-and-joins" id="toc-normalization-and-joins" class="nav-link" data-scroll-target="#normalization-and-joins"><span class="header-section-number">16.8</span> Normalization and Joins</a></li>
   <li><a href="#beyond-3nf" id="toc-beyond-3nf" class="nav-link" data-scroll-target="#beyond-3nf"><span class="header-section-number">16.9</span> Beyond 3NF</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">16.10</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">16.10.1</span> Reflection</a></li>
-  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis"><span class="header-section-number">16.10.2</span> Structural Analysis</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis">Structural Analysis</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/33-normal-forms.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -889,10 +889,10 @@ ul.task-list li input[type="checkbox"] {
 <p>There are also situations where <em>denormalization</em> (deliberately reintroducing redundancy) is appropriate. Data warehouses and analytical systems sometimes store pre-computed aggregates or flattened “wide” tables to support fast reporting queries. When you denormalize, you are making a deliberate trade: faster reads at the cost of more complex write logic and more disciplined maintenance. That trade is reasonable in specific contexts. The key is to make it deliberately, with a clear understanding of what you are giving up and why.</p>
 <p>The next chapter translates these design decisions into working SQL. You will implement the normalized orders schema from this chapter as <code>CREATE TABLE</code> statements in a PostgreSQL database running on your local Docker container, adding primary keys, foreign keys, and constraints that enforce the rules discussed here at the database level.</p>
 </section>
-<section id="exercises" class="level2" data-number="16.10">
-<h2 data-number="16.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">16.10</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="16.10.1">
-<h3 data-number="16.10.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">16.10.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <p><strong>1.</strong> Describe the three types of data anomalies that normalization is designed to prevent. For each type, give a concrete example using any scenario you can imagine (a school, a library, a retail store, etc.).</p>
 <hr>
 <p><strong>2.</strong> What is a functional dependency? Using a university registrar context (students, courses, instructors, grades, rooms), give two examples of functional dependencies and two examples of columns that are <em>not</em> functionally dependent on each other.</p>
@@ -907,8 +907,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <hr>
 </section>
-<section id="structural-analysis" class="level3" data-number="16.10.2">
-<h3 data-number="16.10.2" class="anchored" data-anchor-id="structural-analysis"><span class="header-section-number">16.10.2</span> Structural Analysis</h3>
+<section id="structural-analysis" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="structural-analysis">Structural Analysis</h3>
 <p><strong>5.</strong> Consider the following table, which tracks employee project assignments:</p>
 <table class="caption-top table">
 <colgroup>

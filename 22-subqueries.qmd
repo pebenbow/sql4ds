@@ -287,9 +287,9 @@ All three of these tools can express the same underlying logic; the choice betwe
 
 None of these tools change what a query is *capable* of expressing; a correlated subquery, a CTE, and a temporary table can all arrive at the same answer to the carrier-average-delay problem earlier in this chapter. The decision is about which structure best communicates intent, and, as that example showed, about avoiding the accidental performance cost of recomputing the same aggregate once per outer row when it could have been computed once and joined against instead.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 **1.** In your own words, explain the difference between a correlated and an uncorrelated subquery. What specifically makes a subquery correlated?
 
@@ -303,7 +303,7 @@ None of these tools change what a query is *capable* of expressing; a correlated
 
 ---
 
-### Practical
+### Practical {.unnumbered}
 
 **4.** Write a query against `flights` that adds a column showing each flight's `dep_delay` alongside the *maximum* `dep_delay` recorded anywhere in the table, using a scalar subquery in the `SELECT` list.
 

@@ -210,9 +210,9 @@ There are also situations where *denormalization* (deliberately reintroducing re
 
 The next chapter translates these design decisions into working SQL. You will implement the normalized orders schema from this chapter as `CREATE TABLE` statements in a PostgreSQL database running on your local Docker container, adding primary keys, foreign keys, and constraints that enforce the rules discussed here at the database level.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 **1.** Describe the three types of data anomalies that normalization is designed to prevent. For each type, give a concrete example using any scenario you can imagine (a school, a library, a retail store, etc.).
 
@@ -234,7 +234,7 @@ The next chapter translates these design decisions into working SQL. You will im
 
 ---
 
-### Structural Analysis
+### Structural Analysis {.unnumbered}
 
 **5.** Consider the following table, which tracks employee project assignments:
 

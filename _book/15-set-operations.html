@@ -443,10 +443,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#except" id="toc-except" class="nav-link" data-scroll-target="#except"><span class="header-section-number">8.6</span> EXCEPT</a></li>
   <li><a href="#ordering-the-combined-result" id="toc-ordering-the-combined-result" class="nav-link" data-scroll-target="#ordering-the-combined-result"><span class="header-section-number">8.7</span> Ordering the Combined Result</a></li>
   <li><a href="#chaining-set-operations" id="toc-chaining-set-operations" class="nav-link" data-scroll-target="#chaining-set-operations"><span class="header-section-number">8.8</span> Chaining Set Operations</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">8.9</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">8.9.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">8.9.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding">Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/15-set-operations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -1173,10 +1173,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> r.name <span class="op">=</span> <span class="st">'South Asia'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>When mixing operation types, be aware that <code>INTERSECT</code> binds more tightly than <code>UNION</code> and <code>EXCEPT</code>, similar to how multiplication binds before addition. The expression <code>A UNION B INTERSECT C</code> is evaluated as <code>A UNION (B INTERSECT C)</code>, not <code>(A UNION B) INTERSECT C</code>. Use parentheses to make the intended order explicit whenever you chain more than one type of set operation.</p>
 </section>
-<section id="exercises" class="level2" data-number="8.9">
-<h2 data-number="8.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">8.9</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="8.9.1">
-<h3 data-number="8.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">8.9.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <ol type="1">
 <li><p>Explain the difference between <code>UNION</code> and <code>UNION ALL</code>. When would you prefer one over the other?</p></li>
 <li><p>A colleague combines two queries with <code>UNION</code> and gets back fewer rows than expected. What could explain the lower row count?</p></li>
@@ -1184,8 +1184,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Why must both queries in a set operation return the same number of columns with compatible data types? What would go wrong if they did not?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="8.9.2">
-<h3 data-number="8.9.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">8.9.2</span> Coding</h3>
+<section id="coding" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="coding">Coding</h3>
 <ol start="5" type="1">
 <li><p>Write a query using <code>UNION ALL</code> that combines all high-income countries and all upper-middle-income countries into a single result set. Include <code>short_name</code> and the income group name (joined from the <code>income_groups</code> table). Sort alphabetically by <code>short_name</code>.</p></li>
 <li><p>Rewrite the query from exercise 5 using <code>UNION</code> instead of <code>UNION ALL</code>. Explain whether the row count changes and why.</p></li>

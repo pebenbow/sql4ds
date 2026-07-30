@@ -338,7 +338,7 @@ DROP COLUMN major;
 `ALTER TABLE` modifies the live table immediately. On large tables, some operations (particularly adding a `NOT NULL` constraint without a default, or building a new index) can lock the table and block reads and writes for seconds or longer. In a learning environment the tables are small enough that this does not matter, but it is worth knowing before working on production systems.
 :::
 
-## Exercises
+## Exercises {.unnumbered}
 
 **1.** Connect to your `university` database and run `\dt` in psql to list its tables. Confirm that `students` exists. Then query `information_schema.columns` to display the column names, data types, and nullability for the `students` table.
 

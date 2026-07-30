@@ -321,7 +321,7 @@ The `INSERT ... ON CONFLICT DO UPDATE` pattern is the workhorse of production ET
 
 In the final chapter of this section, you will combine extraction, transformation, and loading into a single end-to-end pipeline function.
 
-## Exercises
+## Exercises {.unnumbered}
 
 1. Run the countries upsert a second time without modifying any data. Verify that the row count in `countries_etl` does not change.
 

@@ -343,7 +343,7 @@ The four-stage pattern (extract, transform, load, verify) is the foundation of d
 | Load | SQLAlchemy + `INSERT ... ON CONFLICT` | Upsert for idempotency |
 | Verify | `pl.read_database()` + SQL queries | Trust but verify |
 
-## Exercises
+## Exercises {.unnumbered}
 
 1. Add a `validate` stage that runs after `extract` and before `transform`. It should assert that the countries DataFrame has at least 200 rows and that the indicators DataFrame has at least 4000 rows. If either assertion fails, raise a `ValueError` with a descriptive message.
 

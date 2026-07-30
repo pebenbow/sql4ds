@@ -492,9 +492,9 @@ With explicit syntax, omitting the `ON` clause is a syntax error that fails imme
 
 **Outer joins require explicit syntax.** There is no comma-table equivalent of `LEFT JOIN` or `FULL OUTER JOIN`. Some databases offered proprietary workarounds (Oracle's `(+)` operator, for example), but they were not portable and are now deprecated. Any query that needs to preserve unmatched rows must use explicit syntax.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 1. Explain the difference between a primary key and a foreign key. Why does a database need both?
 
@@ -506,7 +506,7 @@ With explicit syntax, omitting the `ON` clause is a syntax error that fails imme
 
 5. You find the following query in a legacy codebase: `SELECT c.short_name, i.population FROM countries c, indicators i WHERE c.id = i.country_id AND i.year = 2010`. Rewrite it using explicit join syntax. Does the rewrite change the result?
 
-### Coding
+### Coding {.unnumbered}
 
 5. Write a query that returns the `short_name`, region name (joined from the `regions` table), and 2022 `gdp_per_capita_usd` for every country that has 2022 data in the `indicators` table. Exclude aggregate entries (where `is_aggregate` is true). Sort by `gdp_per_capita_usd` descending, with NULLs last. Limit to 20 rows.
 

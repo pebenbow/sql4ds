@@ -371,7 +371,7 @@ print("Saved.")
 
 In the next chapter, you will load `countries_clean.parquet` and `indicators_clean.parquet` into PostgreSQL using SQLAlchemy, including proper upsert logic so the pipeline can be run repeatedly without creating duplicate rows.
 
-## Exercises
+## Exercises {.unnumbered}
 
 1. Filter `indicators` to the year 2000. How many countries have a non-null `pct_forest_area` value? How does that number compare to 2022?
 

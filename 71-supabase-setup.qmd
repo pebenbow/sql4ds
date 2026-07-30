@@ -107,7 +107,7 @@ Replace `[YOUR-PASSWORD]` with the database password you set during project crea
 
 Keep this connection string available. The next chapter uses it to link your local development environment to this remote database.
 
-## Exercises
+## Exercises {.unnumbered}
 
 1. Create a Supabase account and project following the steps in this chapter. Note the region you selected and the project reference ID shown in Project Settings.
 

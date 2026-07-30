@@ -457,10 +457,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#schema-level-access-control" id="toc-schema-level-access-control" class="nav-link" data-scroll-target="#schema-level-access-control"><span class="header-section-number">21.3.6</span> Schema-Level Access Control</a></li>
   </ul></li>
   <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together"><span class="header-section-number">21.4</span> Putting It All Together</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">21.5</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">21.5.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">21.5.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding">Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/38-security.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -817,10 +817,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">GRANT</span> <span class="kw">SELECT</span> <span class="kw">ON</span> <span class="kw">TABLES</span> <span class="kw">TO</span> reporting;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>After these four steps, members of <code>reporting</code> can connect, see tables in <code>public</code>, and query any current or future table, without being able to write or create objects.</p>
 </section>
-<section id="exercises" class="level2" data-number="21.5">
-<h2 data-number="21.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">21.5</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="21.5.1">
-<h3 data-number="21.5.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">21.5.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <ol type="1">
 <li><p>PostgreSQL has no separate concept of a “user” and a “group.” Explain how the <code>LOGIN</code> attribute is the only meaningful distinction, and describe when you would create a role without <code>LOGIN</code>.</p></li>
 <li><p>What is the difference between <code>GRANT reporting TO alice</code> and <code>SET ROLE reporting</code>? Under what circumstance would you use <code>SET ROLE</code>?</p></li>
@@ -828,8 +828,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Explain the two-layer requirement for schema access: why must a role have both <code>USAGE</code> on the schema and <code>SELECT</code> on the table? What error does each missing grant produce?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="21.5.2">
-<h3 data-number="21.5.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">21.5.2</span> Coding</h3>
+<section id="coding" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="coding">Coding</h3>
 <ol start="5" type="1">
 <li><p>Create a role named <code>data_analyst</code> with login access, a password of your choice, and a connection limit of 3. Verify it appears in <code>pg_roles</code>.</p></li>
 <li><p>Create a group role named <code>read_only</code> with no login. Then create two login roles, <code>alice</code> and <code>bob</code>, and add both as members of <code>read_only</code>. Query <code>pg_auth_members</code> to confirm the memberships.</p></li>

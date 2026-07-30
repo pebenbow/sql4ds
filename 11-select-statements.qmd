@@ -692,9 +692,9 @@ WHERE ROUND(height_cm / 2.54::numeric, 1) > 72;
 
 Keeping this logical order in mind will make otherwise cryptic error messages much easier to diagnose as your queries grow more complex.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 1. SQL is described in this chapter as a "declarative" programming language, while R and Python are "imperative." In your own words, explain what that distinction means. How does it change the way you approach writing a query compared to writing a data pipeline in R or Python?
 
@@ -716,7 +716,7 @@ Keeping this logical order in mind will make otherwise cryptic error messages mu
    WHERE birth_name = NULL;
    ```
 
-### Coding
+### Coding {.unnumbered}
 
 For each exercise below, write a SQL query against the `actors` database.
 

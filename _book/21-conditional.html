@@ -444,10 +444,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#coalesce-vs.-nullif" id="toc-coalesce-vs.-nullif" class="nav-link" data-scroll-target="#coalesce-vs.-nullif"><span class="header-section-number">9.7</span> COALESCE vs.&nbsp;NULLIF</a></li>
   <li><a href="#building-custom-categories-with-case-when-and-group-by" id="toc-building-custom-categories-with-case-when-and-group-by" class="nav-link" data-scroll-target="#building-custom-categories-with-case-when-and-group-by"><span class="header-section-number">9.8</span> Building Custom Categories with CASE WHEN and GROUP BY</a></li>
   <li><a href="#choosing-the-right-tool" id="toc-choosing-the-right-tool" class="nav-link" data-scroll-target="#choosing-the-right-tool"><span class="header-section-number">9.9</span> Choosing the Right Tool</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">9.10</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">9.10.1</span> Reflection</a></li>
-  <li><a href="#practical" id="toc-practical" class="nav-link" data-scroll-target="#practical"><span class="header-section-number">9.10.2</span> Practical</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#practical" id="toc-practical" class="nav-link" data-scroll-target="#practical">Practical</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/21-conditional.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -976,10 +976,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>In practice these tools compose. A <code>CASE WHEN</code> can contain a <code>COALESCE</code>, a <code>COALESCE</code> can wrap a <code>NULLIF</code>, and any of them can appear inside an aggregate function. Reading a complex expression from the inside out, and asking “what problem is this specific piece solving,” is the most reliable way to make sense of it.</p>
 </section>
-<section id="exercises" class="level2" data-number="9.10">
-<h2 data-number="9.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">9.10</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="9.10.1">
-<h3 data-number="9.10.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">9.10.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <p><strong>1.</strong> In your own words, explain why <code>COUNT(CASE WHEN condition THEN 1 END)</code> works without an <code>ELSE</code> clause, while <code>SUM(CASE WHEN condition THEN value ELSE 0 END)</code> requires one.</p>
 <hr>
 <p><strong>2.</strong> A classmate writes <code>NULLIF(price, 0)</code> and expects it to return <code>0</code> when <code>price</code> is <code>0</code>. Explain what it actually returns, and why.</p>
@@ -987,8 +987,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>3.</strong> Describe a scenario, not covered in this chapter, where you would use <code>COALESCE</code>, and a different scenario where you would use <code>NULLIF</code>. Explain what problem each one solves in your example.</p>
 <hr>
 </section>
-<section id="practical" class="level3" data-number="9.10.2">
-<h3 data-number="9.10.2" class="anchored" data-anchor-id="practical"><span class="header-section-number">9.10.2</span> Practical</h3>
+<section id="practical" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="practical">Practical</h3>
 <p><strong>4.</strong> Write a query against <code>flights</code> that uses a searched <code>CASE WHEN</code> to label each flight’s <code>arr_delay</code> as <code>'Early'</code> (less than 0), <code>'On Time'</code> (0), <code>'Late'</code> (greater than 0), or <code>'Unknown'</code> (<code>NULL</code>). Show <code>carrier</code>, <code>flight</code>, <code>arr_delay</code>, and the new label for 10 rows.</p>
 <hr>
 <p><strong>5.</strong> Using <code>planes</code>, write a query with a simple <code>CASE</code> expression that recodes the <code>engine</code> column into three friendlier categories of your choosing (for example, grouping several turbine variants together). Count how many planes fall into each category.</p>
