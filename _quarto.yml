@@ -78,6 +78,8 @@ book:
 filters:
   - quarto-dbml
   - at: pre-quarto
+    path: filters/skip-code-window-for-output.lua
+  - at: pre-quarto
     path: code-window
 
 dbml:

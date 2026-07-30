@@ -604,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> pl.read_csv(<span class="st">"data/countries.csv"</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries.head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>shape: (5, 9)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>shape: (5, 9)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>┌───────────┬───────────┬───────────┬───────────┬───┬───────────┬──────────┬───────────┬───────────┐</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>│ country_c ┆ iso2_code ┆ short_nam ┆ region    ┆ … ┆ longitude ┆ latitude ┆ income_gr ┆ lending_t │</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>│ ode       ┆ ---       ┆ e         ┆ ---       ┆   ┆ ---       ┆ ---      ┆ oup       ┆ ype       │</span>
@@ -633,7 +633,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="csv-schema" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries.schema)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Schema({'country_code': String, 'iso2_code': String, 'short_name': String, 'region': String, 'capital': String, 'longitude': Float64, 'latitude': Float64, 'income_group': String, 'lending_type': String})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Schema({'country_code': String, 'iso2_code': String, 'short_name': String, 'region': String, 'capital': String, 'longitude': Float64, 'latitude': Float64, 'income_group': String, 'lending_type': String})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>String columns were correctly identified as <code>String</code>. The <code>longitude</code> and <code>latitude</code> columns were inferred as <code>Float64</code> because they contain decimal values.</p>
@@ -644,7 +644,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>missing_coords <span class="op">=</span> countries.<span class="bu">filter</span>(pl.col(<span class="st">"longitude"</span>).is_null())</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(missing_coords.select([<span class="st">"short_name"</span>, <span class="st">"region"</span>, <span class="st">"capital"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>shape: (7, 3)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>shape: (7, 3)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>┌───────────────────────────┬────────────────────────────┬─────────────┐</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>│ short_name                ┆ region                     ┆ capital     │</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>│ ---                       ┆ ---                        ┆ ---         │</span>
@@ -674,7 +674,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries_slim.head(<span class="dv">8</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>shape: (8, 4)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>shape: (8, 4)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>┌──────────────┬─────────────────────┬────────────────────────────┬─────────────────────┐</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>│ country_code ┆ short_name          ┆ region                     ┆ income_group        │</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>│ ---          ┆ ---                 ┆ ---                        ┆ ---                 │</span>
@@ -707,7 +707,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(countries_typed.schema)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Schema({'country_code': String, 'iso2_code': String, 'short_name': String, 'region': Categorical, 'capital': String, 'longitude': Float64, 'latitude': Float64, 'income_group': Categorical, 'lending_type': Categorical})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Schema({'country_code': String, 'iso2_code': String, 'short_name': String, 'region': Categorical, 'capital': String, 'longitude': Float64, 'latitude': Float64, 'income_group': Categorical, 'lending_type': Categorical})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Notice that <code>region</code>, <code>income_group</code>, and <code>lending_type</code> now show as <code>Categorical</code> while all other columns remain as inferred.</p>
@@ -728,7 +728,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Page </span><span class="sc">{</span>response[<span class="st">'page'</span>]<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span>response[<span class="st">'pages'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Showing </span><span class="sc">{</span><span class="bu">len</span>(response[<span class="st">'indicators'</span>])<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span>response[<span class="st">'total'</span>]<span class="sc">}</span><span class="ss"> indicators"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>['page', 'pages', 'per_page', 'total', 'source', 'indicators']</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>['page', 'pages', 'per_page', 'total', 'source', 'indicators']</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>Page 1 of 1</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Showing 9 of 9 indicators</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -738,7 +738,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>indicators_meta <span class="op">=</span> pl.DataFrame(response[<span class="st">"indicators"</span>])</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators_meta.select([<span class="st">"id"</span>, <span class="st">"name"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>shape: (9, 2)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>shape: (9, 2)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>┌───────────────────┬─────────────────────────────────┐</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>│ id                ┆ name                            │</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>│ ---               ┆ ---                             │</span>
@@ -770,7 +770,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators_meta.select([<span class="st">"id"</span>, <span class="st">"name"</span>, <span class="st">"source_id"</span>, <span class="st">"source_name"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>shape: (9, 4)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>shape: (9, 4)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>┌───────────────────┬─────────────────────────────────┬───────────┬──────────────────────────────┐</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>│ id                ┆ name                            ┆ source_id ┆ source_name                  │</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>│ ---               ┆ ---                             ┆ ---       ┆ ---                          │</span>
@@ -800,7 +800,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators.shape)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indicators.schema)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>(4991, 10)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>(4991, 10)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Schema({'country_code': String, 'short_name': String, 'region': String, 'income_group': String, 'year': Int64, 'population': Int64, 'gdp_usd': Float64, 'gdp_per_capita_usd': Float64, 'pct_forest_area': Float64, 'land_area_km2': Float64})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
@@ -826,7 +826,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"CSV:     </span><span class="sc">{</span>csv_size <span class="op">/</span> <span class="dv">1024</span><span class="sc">:&gt;8.1f}</span><span class="ss"> KB"</span>)</span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Ratio:   </span><span class="sc">{</span>csv_size <span class="op">/</span> parquet_size<span class="sc">:.1f}</span><span class="ss">× larger than Parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Parquet:    128.1 KB</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Parquet:    128.1 KB</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>CSV:        501.9 KB</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>Ratio:   3.9× larger than Parquet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -845,7 +845,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gdp_subset.head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>shape: (5, 4)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>shape: (5, 4)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>┌──────────────┬────────────┬──────┬────────────────────┐</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>│ country_code ┆ short_name ┆ year ┆ gdp_per_capita_usd │</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>│ ---          ┆ ---        ┆ ---  ┆ ---                │</span>
@@ -882,7 +882,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>envelope, records <span class="op">=</span> resp.json()</span>
 <span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total records: </span><span class="sc">{</span>envelope[<span class="st">'total'</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Total records: 20</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Total records: 20</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The World Bank API returns a two-element list: the envelope (containing pagination metadata) followed by the array of records. We unpack them in a single assignment.</p>
@@ -905,7 +905,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pop_df.sort([<span class="st">"country"</span>, <span class="st">"year"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>shape: (20, 3)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>shape: (20, 3)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>┌───────────────┬──────┬────────────┐</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>│ country       ┆ year ┆ population │</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>│ ---           ┆ ---  ┆ ---        │</span>
@@ -954,7 +954,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Fetched </span><span class="sc">{</span><span class="bu">len</span>(all_records)<span class="sc">}</span><span class="ss"> records across </span><span class="sc">{</span>envelope[<span class="st">'pages'</span>]<span class="sc">}</span><span class="ss"> page(s)"</span>)</span>
 <span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Non-null populations: </span><span class="sc">{</span><span class="bu">len</span>(pop_all)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Fetched 265 records across 1 page(s)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Fetched 265 records across 1 page(s)</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>Non-null populations: 264</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
