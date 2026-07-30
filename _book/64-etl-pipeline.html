@@ -81,7 +81,75 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -510,7 +578,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="26.3" class="anchored" data-anchor-id="setting-up-logging"><span class="header-section-number">26.3</span> Setting Up Logging</h2>
 <p>Rather than sprinkling <code>print()</code> calls throughout, use Python’s standard <code>logging</code> module. It adds timestamps and severity levels to every message, and you can redirect output to a file without changing any pipeline code:</p>
 <div id="logging-setup" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>logging.basicConfig(</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    level<span class="op">=</span>logging.INFO,</span>
@@ -521,7 +589,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>log.info(<span class="st">"Pipeline initialized"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:28:07  INFO      Pipeline initialized</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>20:07:01  INFO      Pipeline initialized</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -529,7 +597,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="26.4" class="anchored" data-anchor-id="extract"><span class="header-section-number">26.4</span> Extract</h2>
 <p>The extract stage reads the source files and returns raw DataFrames. It does no transformation, just ingestion:</p>
 <div id="extract" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract(countries_path: <span class="bu">str</span>, indicators_path: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[pl.DataFrame, pl.DataFrame]:</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    log.info(<span class="st">"Extracting </span><span class="sc">%s</span><span class="st">"</span>, countries_path)</span>
@@ -550,7 +618,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="26.5" class="anchored" data-anchor-id="transform"><span class="header-section-number">26.5</span> Transform</h2>
 <p>The transform stage filters, selects, and cleans both DataFrames. It returns only the columns and rows the database expects:</p>
 <div id="transform" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transform(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> transform(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    countries_raw: pl.DataFrame,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    indicators_raw: pl.DataFrame</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[pl.DataFrame, pl.DataFrame]:</span>
@@ -587,7 +655,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="26.6" class="anchored" data-anchor-id="load"><span class="header-section-number">26.6</span> Load</h2>
 <p>The load stage writes both DataFrames to PostgreSQL using upsert. It accepts the database engine as a parameter so the pipeline can be pointed at different environments (development, staging, production) without code changes:</p>
 <div id="load" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine, text</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine, text</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>UPSERT_COUNTRIES <span class="op">=</span> text(<span class="st">"""</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">    INSERT INTO countries_etl</span></span>
@@ -673,7 +741,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="26.7" class="anchored" data-anchor-id="running-the-pipeline"><span class="header-section-number">26.7</span> Running the Pipeline</h2>
 <p>With the three stages defined, the pipeline is a straightforward composition:</p>
 <div id="run-pipeline" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>port <span class="op">=</span> os.environ.get(<span class="st">"PGPORT"</span>, <span class="st">"5432"</span>)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -698,24 +766,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(stats)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:28:07  INFO      Extracting data/countries.csv
-17:28:07  INFO      Extracting data/indicators.parquet
-17:28:07  INFO      Extracted 218 country rows, 4991 indicator rows
-17:28:07  INFO      Transforming countries
-17:28:07  INFO      Transforming indicators
-17:28:07  INFO      Transformed: 218 countries, 4991 indicator rows
-17:28:07  INFO      Ensuring target tables exist
-17:28:07  INFO      Loading countries
-17:28:07  INFO      Loading indicators
-17:28:07  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>20:07:01  INFO      Extracting data/countries.csv</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>20:07:01  INFO      Extracting data/indicators.parquet</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>20:07:01  INFO      Extracted 218 country rows, 4991 indicator rows</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>20:07:01  INFO      Transforming countries</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>20:07:01  INFO      Transforming indicators</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>20:07:01  INFO      Transformed: 218 countries, 4991 indicator rows</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>20:07:01  INFO      Ensuring target tables exist</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>20:07:01  INFO      Loading countries</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>20:07:01  INFO      Loading indicators</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Load complete: 218 countries, 4991 indicators</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{'countries': 218, 'indicators': 4991}</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>{'countries': 218, 'indicators': 4991}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Run it a second time to confirm idempotency:</p>
 <div id="run-pipeline-again" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>stats2 <span class="op">=</span> run_pipeline(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>stats2 <span class="op">=</span> run_pipeline(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    countries_path<span class="op">=</span><span class="st">"data/countries.csv"</span>,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    indicators_path<span class="op">=</span><span class="st">"data/indicators.parquet"</span>,</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    db_url<span class="op">=</span><span class="ss">f"postgresql+psycopg2://postgres:postgres@localhost:</span><span class="sc">{</span>port<span class="sc">}</span><span class="ss">/worldbank"</span></span>
@@ -723,19 +791,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(stats2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:28:08  INFO      Extracting data/countries.csv
-17:28:08  INFO      Extracting data/indicators.parquet
-17:28:08  INFO      Extracted 218 country rows, 4991 indicator rows
-17:28:08  INFO      Transforming countries
-17:28:08  INFO      Transforming indicators
-17:28:08  INFO      Transformed: 218 countries, 4991 indicator rows
-17:28:08  INFO      Ensuring target tables exist
-17:28:08  INFO      Loading countries
-17:28:08  INFO      Loading indicators
-17:28:08  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Extracting data/countries.csv</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Extracting data/indicators.parquet</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Extracted 218 country rows, 4991 indicator rows</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Transforming countries</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Transforming indicators</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Transformed: 218 countries, 4991 indicator rows</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Ensuring target tables exist</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Loading countries</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Loading indicators</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Load complete: 218 countries, 4991 indicators</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{'countries': 218, 'indicators': 4991}</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>{'countries': 218, 'indicators': 4991}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The row counts should be identical. The upsert logic ensures that running the pipeline twice produces the same database state as running it once.</p>
@@ -744,7 +812,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="26.8" class="anchored" data-anchor-id="verifying-the-result"><span class="header-section-number">26.8</span> Verifying the Result</h2>
 <p>After the pipeline runs, query PostgreSQL to confirm the data landed correctly:</p>
 <div id="verify" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"postgresql+psycopg2://postgres:postgres@localhost:</span><span class="sc">{</span>port<span class="sc">}</span><span class="ss">/worldbank"</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -762,18 +830,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> pl.read_database(summary_query, connection<span class="op">=</span>engine)</span>
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (1, 5)
-┌───────────┬────────────────┬───────────────┬─────────────┬────────────────────┐
-│ countries ┆ indicator_rows ┆ earliest_year ┆ latest_year ┆ avg_gdp_per_capita │
-│ ---       ┆ ---            ┆ ---           ┆ ---         ┆ ---                │
-│ i64       ┆ i64            ┆ i64           ┆ i64         ┆ decimal[38,0]      │
-╞═══════════╪════════════════╪═══════════════╪═════════════╪════════════════════╡
-│ 217       ┆ 4991           ┆ 2000          ┆ 2022        ┆ 15743              │
-└───────────┴────────────────┴───────────────┴─────────────┴────────────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>shape: (1, 5)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>┌───────────┬────────────────┬───────────────┬─────────────┬────────────────────┐</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>│ countries ┆ indicator_rows ┆ earliest_year ┆ latest_year ┆ avg_gdp_per_capita │</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>│ ---       ┆ ---            ┆ ---           ┆ ---         ┆ ---                │</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>│ i64       ┆ i64            ┆ i64           ┆ i64         ┆ decimal[38,0]      │</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>╞═══════════╪════════════════╪═══════════════╪═════════════╪════════════════════╡</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>│ 217       ┆ 4991           ┆ 2000          ┆ 2022        ┆ 15743              │</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>└───────────┴────────────────┴───────────────┴─────────────┴────────────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div id="verify-sample" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sample_query <span class="op">=</span> <span class="st">"""</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sample_query <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT c.short_name, c.region, i.year,</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">           i.gdp_per_capita_usd, i.population</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM countries_etl AS c</span></span>
@@ -786,23 +854,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pl.read_database(sample_query, connection<span class="op">=</span>engine))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>shape: (10, 5)
-┌────────────────┬────────────────────────────┬──────┬────────────────────┬────────────┐
-│ short_name     ┆ region                     ┆ year ┆ gdp_per_capita_usd ┆ population │
-│ ---            ┆ ---                        ┆ ---  ┆ ---                ┆ ---        │
-│ str            ┆ str                        ┆ i64  ┆ f64                ┆ f64        │
-╞════════════════╪════════════════════════════╪══════╪════════════════════╪════════════╡
-│ Monaco         ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 226052.0           ┆ 5.0        │
-│ Liechtenstein  ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 186400.23          ┆ 39493.0    │
-│ Luxembourg     ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 125006.02          ┆ 653103.0   │
-│ Bermuda        ┆ North America              ┆ 2022 ┆ 120897.31          ┆ 64749.0    │
-│ Norway         ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 108798.45          ┆ 5.457127e6 │
-│ Ireland        ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 106194.76          ┆ 5.1657e6   │
-│ Switzerland    ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 93245.8            ┆ 8.777088e6 │
-│ Cayman Islands ┆ Latin America &amp; Caribbean  ┆ 2022 ┆ 92202.15           ┆ 71591.0    │
-│ Qatar          ┆ Middle East &amp; North Africa ┆ 2022 ┆ 88701.46           ┆ 2.657333e6 │
-│ Singapore      ┆ East Asia &amp; Pacific        ┆ 2022 ┆ 88428.7            ┆ 5.637022e6 │
-└────────────────┴────────────────────────────┴──────┴────────────────────┴────────────┘</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>shape: (10, 5)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>┌────────────────┬────────────────────────────┬──────┬────────────────────┬────────────┐</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>│ short_name     ┆ region                     ┆ year ┆ gdp_per_capita_usd ┆ population │</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>│ ---            ┆ ---                        ┆ ---  ┆ ---                ┆ ---        │</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>│ str            ┆ str                        ┆ i64  ┆ f64                ┆ f64        │</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>╞════════════════╪════════════════════════════╪══════╪════════════════════╪════════════╡</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>│ Monaco         ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 226052.0           ┆ 5.0        │</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>│ Liechtenstein  ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 186400.23          ┆ 39493.0    │</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>│ Luxembourg     ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 125006.02          ┆ 653103.0   │</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>│ Bermuda        ┆ North America              ┆ 2022 ┆ 120897.31          ┆ 64749.0    │</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>│ Norway         ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 108798.45          ┆ 5.457127e6 │</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>│ Ireland        ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 106194.76          ┆ 5.1657e6   │</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>│ Switzerland    ┆ Europe &amp; Central Asia      ┆ 2022 ┆ 93245.8            ┆ 8.777088e6 │</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>│ Cayman Islands ┆ Latin America &amp; Caribbean  ┆ 2022 ┆ 92202.15           ┆ 71591.0    │</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>│ Qatar          ┆ Middle East &amp; North Africa ┆ 2022 ┆ 88701.46           ┆ 2.657333e6 │</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>│ Singapore      ┆ East Asia &amp; Pacific        ┆ 2022 ┆ 88428.7            ┆ 5.637022e6 │</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>└────────────────┴────────────────────────────┴──────┴────────────────────┴────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
@@ -811,7 +879,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The pipeline as written will raise an exception and stop if anything goes wrong. For a pipeline that runs unattended on a schedule, you want to catch errors, log them, and decide whether to retry or abort.</p>
 <p>A minimal error-handling wrapper:</p>
 <div id="error-handling" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_pipeline_safe(countries_path, indicators_path, db_url) <span class="op">-&gt;</span> <span class="bu">dict</span> <span class="op">|</span> <span class="va">None</span>:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" data-filename="python"><pre class="sourceCode python cw-auto code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_pipeline_safe(countries_path, indicators_path, db_url) <span class="op">-&gt;</span> <span class="bu">dict</span> <span class="op">|</span> <span class="va">None</span>:</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> run_pipeline(countries_path, indicators_path, db_url)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">FileNotFoundError</span> <span class="im">as</span> exc:</span>
@@ -831,17 +899,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    log.warning(<span class="st">"Pipeline did not complete"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>17:28:08  INFO      Extracting data/countries.csv
-17:28:08  INFO      Extracting data/indicators.parquet
-17:28:08  INFO      Extracted 218 country rows, 4991 indicator rows
-17:28:08  INFO      Transforming countries
-17:28:08  INFO      Transforming indicators
-17:28:08  INFO      Transformed: 218 countries, 4991 indicator rows
-17:28:08  INFO      Ensuring target tables exist
-17:28:08  INFO      Loading countries
-17:28:08  INFO      Loading indicators
-17:28:09  INFO      Load complete: 218 countries, 4991 indicators
-17:28:09  INFO      Pipeline succeeded: {'countries': 218, 'indicators': 4991}</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" data-filename="default"><pre class="sourceCode default cw-auto code-with-copy"><code class="sourceCode default"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Extracting data/countries.csv</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Extracting data/indicators.parquet</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Extracted 218 country rows, 4991 indicator rows</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Transforming countries</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Transforming indicators</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Transformed: 218 countries, 4991 indicator rows</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Ensuring target tables exist</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Loading countries</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>20:07:02  INFO      Loading indicators</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>20:07:03  INFO      Load complete: 218 countries, 4991 indicators</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>20:07:03  INFO      Pipeline succeeded: {'countries': 218, 'indicators': 4991}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p><code>exc_info=True</code> tells the logger to include the full stack trace in the error message, which is essential for diagnosing failures in production.</p>

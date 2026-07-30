@@ -65,7 +65,75 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e6c58db008e67c671a9a17c36dd9f758.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
+<script>document.addEventListener("DOMContentLoaded",function(){
+  var DEFAULT_COLLAPSE=null;
+  document.querySelectorAll("pre.cw-auto").forEach(function(pre){
+    var fn=pre.closest("[data-filename]");
+    if(!fn)return;
+    var name=fn.getAttribute("data-filename");
+    if(!name)return;
+    var scaffold=pre.closest(".code-copy-outer-scaffold")||pre.closest(".sourceCode");
+    if(!scaffold)return;
+    var w=document.createElement("div");
+    w.className="code-with-filename code-window-auto";
+    var tb=document.createElement("div");
+    tb.className="code-with-filename-file";
+    var tp=document.createElement("pre");
+    var ts=document.createElement("strong");
+    ts.textContent=name;
+    tp.appendChild(ts);tb.appendChild(tp);
+    scaffold.parentNode.insertBefore(w,scaffold);
+    w.appendChild(tb);w.appendChild(scaffold);
+    pre.classList.remove("cw-auto");
+  });
+  function findMarkerSource(el){
+    return el.querySelector('pre[class*="cw-style-"],pre[class*="cw-collapse-"],pre[data-code-window-lines-label]')
+      ||el.querySelector('[class*="cw-style-"],[class*="cw-collapse-"],[data-code-window-lines-label]');
+  }
+  document.querySelectorAll(".code-with-filename").forEach(function(el){
+    var marker=findMarkerSource(el);
+    var styleApplied=/\bcode-window-(macos|windows|default)\b/.test(el.className);
+    if(!styleApplied){
+      var sm=marker&&marker.className.match(/cw-style-(\w+)/);
+      if(sm){el.classList.add("code-window-"+sm[1]);marker.classList.remove(sm[0]);}
+      else{el.classList.add("code-window-macos");}
+    }
+    var collapse=null;
+    if(marker){
+      var cm=marker.className.match(/cw-collapse-(open|closed)/);
+      if(cm){collapse=cm[1];marker.classList.remove(cm[0]);}
+    }
+    if(collapse===null&&DEFAULT_COLLAPSE){collapse=DEFAULT_COLLAPSE;}
+    if(marker&&marker.hasAttribute("data-code-window-lines-label")){
+      var spec=marker.getAttribute("data-code-window-lines-label");
+      marker.removeAttribute("data-code-window-lines-label");
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar&&!titleBar.querySelector(".code-with-filename-lines")){
+        var chip=document.createElement("span");
+        chip.className="code-with-filename-lines";
+        chip.textContent="L"+spec;
+        titleBar.appendChild(chip);
+      }
+    }
+    if(collapse&&!el.classList.contains("code-window-collapsible")){
+      var titleBar=el.querySelector(".code-with-filename-file");
+      if(titleBar){
+        var details=document.createElement("details");
+        details.className=el.className+" code-window-collapsible";
+        if(collapse==="open"){details.open=true;}
+        var summaryEl=document.createElement("summary");
+        summaryEl.className="code-with-filename-file";
+        while(titleBar.firstChild){summaryEl.appendChild(titleBar.firstChild);}
+        titleBar.parentNode.removeChild(titleBar);
+        details.appendChild(summaryEl);
+        while(el.firstChild){details.appendChild(el.firstChild);}
+        el.parentNode.replaceChild(details,el);
+      }
+    }
+  });
+});</script>
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
