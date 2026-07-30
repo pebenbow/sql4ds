@@ -444,10 +444,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#recursive-ctes" id="toc-recursive-ctes" class="nav-link" data-scroll-target="#recursive-ctes"><span class="header-section-number">10.7</span> Recursive CTEs</a></li>
   <li><a href="#not-in-vs.-not-exists-the-null-trap" id="toc-not-in-vs.-not-exists-the-null-trap" class="nav-link" data-scroll-target="#not-in-vs.-not-exists-the-null-trap"><span class="header-section-number">10.8</span> NOT IN vs.&nbsp;NOT EXISTS: The NULL Trap</a></li>
   <li><a href="#choosing-between-a-subquery-a-cte-or-a-temporary-table" id="toc-choosing-between-a-subquery-a-cte-or-a-temporary-table" class="nav-link" data-scroll-target="#choosing-between-a-subquery-a-cte-or-a-temporary-table"><span class="header-section-number">10.9</span> Choosing Between a Subquery, a CTE, or a Temporary Table</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">10.10</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">10.10.1</span> Reflection</a></li>
-  <li><a href="#practical" id="toc-practical" class="nav-link" data-scroll-target="#practical"><span class="header-section-number">10.10.2</span> Practical</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#practical" id="toc-practical" class="nav-link" data-scroll-target="#practical">Practical</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/22-subqueries.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -984,10 +984,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>None of these tools change what a query is <em>capable</em> of expressing; a correlated subquery, a CTE, and a temporary table can all arrive at the same answer to the carrier-average-delay problem earlier in this chapter. The decision is about which structure best communicates intent, and, as that example showed, about avoiding the accidental performance cost of recomputing the same aggregate once per outer row when it could have been computed once and joined against instead.</p>
 </section>
-<section id="exercises" class="level2" data-number="10.10">
-<h2 data-number="10.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">10.10</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="10.10.1">
-<h3 data-number="10.10.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">10.10.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <p><strong>1.</strong> In your own words, explain the difference between a correlated and an uncorrelated subquery. What specifically makes a subquery correlated?</p>
 <hr>
 <p><strong>2.</strong> A classmate’s query using <code>NOT IN</code> unexpectedly returns zero rows, even though they are confident some rows should qualify. What is the most likely explanation, and how would you fix the query?</p>
@@ -995,8 +995,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>3.</strong> Explain, in your own words, what the base case and the recursive case of a recursive CTE each contribute, and why recursion stops automatically once no new rows are found.</p>
 <hr>
 </section>
-<section id="practical" class="level3" data-number="10.10.2">
-<h3 data-number="10.10.2" class="anchored" data-anchor-id="practical"><span class="header-section-number">10.10.2</span> Practical</h3>
+<section id="practical" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="practical">Practical</h3>
 <p><strong>4.</strong> Write a query against <code>flights</code> that adds a column showing each flight’s <code>dep_delay</code> alongside the <em>maximum</em> <code>dep_delay</code> recorded anywhere in the table, using a scalar subquery in the <code>SELECT</code> list.</p>
 <hr>
 <p><strong>5.</strong> Write a query that returns every airline from <code>airlines</code> whose <code>carrier</code> code never appears in <code>flights</code>, first using <code>NOT IN</code>, then using <code>NOT EXISTS</code>. Do the two versions agree in this case? Explain why or why not, referencing whether <code>flights.carrier</code> can be <code>NULL</code>.</p>

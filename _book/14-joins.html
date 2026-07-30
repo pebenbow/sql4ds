@@ -511,10 +511,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#joining-more-than-two-tables" id="toc-joining-more-than-two-tables" class="nav-link" data-scroll-target="#joining-more-than-two-tables"><span class="header-section-number">7.11</span> Joining More Than Two Tables</a></li>
   <li><a href="#implicit-vs.-explicit-join-syntax" id="toc-implicit-vs.-explicit-join-syntax" class="nav-link" data-scroll-target="#implicit-vs.-explicit-join-syntax"><span class="header-section-number">7.12</span> Implicit vs.&nbsp;Explicit Join Syntax</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">7.13</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">7.13.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">7.13.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding">Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/14-joins.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -1940,10 +1940,10 @@ window.Quarto = {
 <p>With explicit syntax, omitting the <code>ON</code> clause is a syntax error that fails immediately rather than quietly returning millions of rows.</p>
 <p><strong>Outer joins require explicit syntax.</strong> There is no comma-table equivalent of <code>LEFT JOIN</code> or <code>FULL OUTER JOIN</code>. Some databases offered proprietary workarounds (Oracle’s <code>(+)</code> operator, for example), but they were not portable and are now deprecated. Any query that needs to preserve unmatched rows must use explicit syntax.</p>
 </section>
-<section id="exercises" class="level2" data-number="7.13">
-<h2 data-number="7.13" class="anchored" data-anchor-id="exercises"><span class="header-section-number">7.13</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="7.13.1">
-<h3 data-number="7.13.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">7.13.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <ol type="1">
 <li><p>Explain the difference between a primary key and a foreign key. Why does a database need both?</p></li>
 <li><p>A data analyst runs an inner join between <code>countries</code> (299 rows) and <code>indicators</code> without filtering by year and gets back over 16,000 rows. They suspect something went wrong. Is this necessarily a problem? Explain what produces a result with many more rows than the starting table.</p></li>
@@ -1952,8 +1952,8 @@ window.Quarto = {
 <li><p>You find the following query in a legacy codebase: <code>SELECT c.short_name, i.population FROM countries c, indicators i WHERE c.id = i.country_id AND i.year = 2010</code>. Rewrite it using explicit join syntax. Does the rewrite change the result?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="7.13.2">
-<h3 data-number="7.13.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">7.13.2</span> Coding</h3>
+<section id="coding" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="coding">Coding</h3>
 <ol start="5" type="1">
 <li><p>Write a query that returns the <code>short_name</code>, region name (joined from the <code>regions</code> table), and 2022 <code>gdp_per_capita_usd</code> for every country that has 2022 data in the <code>indicators</code> table. Exclude aggregate entries (where <code>is_aggregate</code> is true). Sort by <code>gdp_per_capita_usd</code> descending, with NULLs last. Limit to 20 rows.</p></li>
 <li><p>Write a query that returns every country along with its 2010 <code>gdp_per_capita_usd</code>. Countries that have no 2010 data should still appear in the result, with NULL in the GDP column. Sort by <code>short_name</code>.</p></li>

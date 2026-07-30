@@ -430,10 +430,10 @@ div.csl-indent {
   <li><a href="#schemas-a-collection-of-related-tables" id="toc-schemas-a-collection-of-related-tables" class="nav-link" data-scroll-target="#schemas-a-collection-of-related-tables"><span class="header-section-number">3.9</span> Schemas: A Collection of Related Tables</a></li>
   <li><a href="#formal-terminology-the-relational-model" id="toc-formal-terminology-the-relational-model" class="nav-link" data-scroll-target="#formal-terminology-the-relational-model"><span class="header-section-number">3.10</span> Formal Terminology: The Relational Model</a></li>
   <li><a href="#putting-it-together" id="toc-putting-it-together" class="nav-link" data-scroll-target="#putting-it-together"><span class="header-section-number">3.11</span> Putting It Together</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">3.12</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">3.12.1</span> Reflection</a></li>
-  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis"><span class="header-section-number">3.12.2</span> Structural Analysis</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#structural-analysis" id="toc-structural-analysis" class="nav-link" data-scroll-target="#structural-analysis">Structural Analysis</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/03-database-organization.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -751,10 +751,10 @@ div.csl-indent {
 </ol>
 <p>Everything in the rest of this book builds on this structure. The next chapter starts writing queries against it with <code>SELECT</code>, and a later section of the book (starting with keys and integrity) returns to relationships and gives them the formal treatment only sketched here.</p>
 </section>
-<section id="exercises" class="level2" data-number="3.12">
-<h2 data-number="3.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.12</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="3.12.1">
-<h3 data-number="3.12.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">3.12.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <p><strong>1.</strong> In your own words, explain the difference between a row and a column. Use an example that does not appear in this chapter.</p>
 <hr>
 <p><strong>2.</strong> A friend keeps their reading list in a single spreadsheet with columns for <code>book_title</code>, <code>author_name</code>, <code>author_email</code>, and <code>date_finished</code>. Every time they log a new book by an author they have already read, the author’s name and email are retyped on a new row. What problem does this create, and how would you restructure it into two related tables?</p>
@@ -762,8 +762,8 @@ div.csl-indent {
 <p><strong>3.</strong> Why is it a problem for a single column to hold more than one kind of value, such as a <code>notes</code> column that sometimes contains a phone number and sometimes contains a free-text comment?</p>
 <hr>
 </section>
-<section id="structural-analysis" class="level3" data-number="3.12.2">
-<h3 data-number="3.12.2" class="anchored" data-anchor-id="structural-analysis"><span class="header-section-number">3.12.2</span> Structural Analysis</h3>
+<section id="structural-analysis" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="structural-analysis">Structural Analysis</h3>
 <p><strong>4.</strong> A small veterinary clinic tracks its data in one spreadsheet with these columns: <code>visit_id</code>, <code>pet_name</code>, <code>pet_species</code>, <code>owner_name</code>, <code>owner_phone</code>, <code>visit_date</code>, <code>reason_for_visit</code>. Sketch two or three related tables that would better organize this information. For each table, list its columns and identify which column(s) connect it to the other tables.</p>
 <hr>
 <p><strong>5.</strong> Consider a <code>products</code> table with columns <code>product_id</code>, <code>product_name</code>, <code>price</code>, and <code>category</code>. A colleague suggests adding a column called <code>details</code> that stores a mix of shipping weight, warehouse location, and supplier notes as a single text string, formatted differently depending on the product. Explain, using the ideas from this chapter, why this is a poor design choice, and propose an alternative.</p>

@@ -446,7 +446,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#error-handling" id="toc-error-handling" class="nav-link" data-scroll-target="#error-handling"><span class="header-section-number">26.9</span> Error Handling</a></li>
   <li><a href="#pipeline-patterns-in-practice" id="toc-pipeline-patterns-in-practice" class="nav-link" data-scroll-target="#pipeline-patterns-in-practice"><span class="header-section-number">26.10</span> Pipeline Patterns in Practice</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">26.11</span> Summary</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">26.12</span> Exercises</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/64-etl-pipeline.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -521,7 +521,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>log.info(<span class="st">"Pipeline initialized"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>16:57:06  INFO      Pipeline initialized</code></pre>
+<pre><code>17:28:07  INFO      Pipeline initialized</code></pre>
 </div>
 </div>
 </section>
@@ -698,16 +698,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(stats)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>16:57:06  INFO      Extracting data/countries.csv
-16:57:06  INFO      Extracting data/indicators.parquet
-16:57:06  INFO      Extracted 218 country rows, 4991 indicator rows
-16:57:06  INFO      Transforming countries
-16:57:06  INFO      Transforming indicators
-16:57:06  INFO      Transformed: 218 countries, 4991 indicator rows
-16:57:06  INFO      Ensuring target tables exist
-16:57:06  INFO      Loading countries
-16:57:06  INFO      Loading indicators
-16:57:07  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
+<pre><code>17:28:07  INFO      Extracting data/countries.csv
+17:28:07  INFO      Extracting data/indicators.parquet
+17:28:07  INFO      Extracted 218 country rows, 4991 indicator rows
+17:28:07  INFO      Transforming countries
+17:28:07  INFO      Transforming indicators
+17:28:07  INFO      Transformed: 218 countries, 4991 indicator rows
+17:28:07  INFO      Ensuring target tables exist
+17:28:07  INFO      Loading countries
+17:28:07  INFO      Loading indicators
+17:28:07  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'countries': 218, 'indicators': 4991}</code></pre>
@@ -723,16 +723,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(stats2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>16:57:07  INFO      Extracting data/countries.csv
-16:57:07  INFO      Extracting data/indicators.parquet
-16:57:07  INFO      Extracted 218 country rows, 4991 indicator rows
-16:57:07  INFO      Transforming countries
-16:57:07  INFO      Transforming indicators
-16:57:07  INFO      Transformed: 218 countries, 4991 indicator rows
-16:57:07  INFO      Ensuring target tables exist
-16:57:07  INFO      Loading countries
-16:57:07  INFO      Loading indicators
-16:57:08  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
+<pre><code>17:28:08  INFO      Extracting data/countries.csv
+17:28:08  INFO      Extracting data/indicators.parquet
+17:28:08  INFO      Extracted 218 country rows, 4991 indicator rows
+17:28:08  INFO      Transforming countries
+17:28:08  INFO      Transforming indicators
+17:28:08  INFO      Transformed: 218 countries, 4991 indicator rows
+17:28:08  INFO      Ensuring target tables exist
+17:28:08  INFO      Loading countries
+17:28:08  INFO      Loading indicators
+17:28:08  INFO      Load complete: 218 countries, 4991 indicators</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'countries': 218, 'indicators': 4991}</code></pre>
@@ -831,17 +831,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    log.warning(<span class="st">"Pipeline did not complete"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>16:57:08  INFO      Extracting data/countries.csv
-16:57:08  INFO      Extracting data/indicators.parquet
-16:57:08  INFO      Extracted 218 country rows, 4991 indicator rows
-16:57:08  INFO      Transforming countries
-16:57:08  INFO      Transforming indicators
-16:57:08  INFO      Transformed: 218 countries, 4991 indicator rows
-16:57:08  INFO      Ensuring target tables exist
-16:57:08  INFO      Loading countries
-16:57:08  INFO      Loading indicators
-16:57:08  INFO      Load complete: 218 countries, 4991 indicators
-16:57:08  INFO      Pipeline succeeded: {'countries': 218, 'indicators': 4991}</code></pre>
+<pre><code>17:28:08  INFO      Extracting data/countries.csv
+17:28:08  INFO      Extracting data/indicators.parquet
+17:28:08  INFO      Extracted 218 country rows, 4991 indicator rows
+17:28:08  INFO      Transforming countries
+17:28:08  INFO      Transforming indicators
+17:28:08  INFO      Transformed: 218 countries, 4991 indicator rows
+17:28:08  INFO      Ensuring target tables exist
+17:28:08  INFO      Loading countries
+17:28:08  INFO      Loading indicators
+17:28:09  INFO      Load complete: 218 countries, 4991 indicators
+17:28:09  INFO      Pipeline succeeded: {'countries': 218, 'indicators': 4991}</code></pre>
 </div>
 </div>
 <p><code>exc_info=True</code> tells the logger to include the full stack trace in the error message, which is essential for diagnosing failures in production.</p>
@@ -899,8 +899,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="exercises" class="level2" data-number="26.12">
-<h2 data-number="26.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">26.12</span> Exercises</h2>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
 <ol type="1">
 <li><p>Add a <code>validate</code> stage that runs after <code>extract</code> and before <code>transform</code>. It should assert that the countries DataFrame has at least 200 rows and that the indicators DataFrame has at least 4000 rows. If either assertion fails, raise a <code>ValueError</code> with a descriptive message.</p></li>
 <li><p>The <code>run_pipeline</code> function currently creates a new engine on every call. Refactor it so the engine is created once and passed in as a parameter, making it easier to reuse an existing connection pool.</p></li>

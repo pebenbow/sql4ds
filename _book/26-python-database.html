@@ -449,10 +449,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#mean-delay-by-carrier" id="toc-mean-delay-by-carrier" class="nav-link" data-scroll-target="#mean-delay-by-carrier"><span class="header-section-number">13.5.3</span> Mean Delay by Carrier</a></li>
   </ul></li>
   <li><a href="#parameterized-queries" id="toc-parameterized-queries" class="nav-link" data-scroll-target="#parameterized-queries"><span class="header-section-number">13.6</span> Parameterized Queries</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">13.7</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">13.7.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">13.7.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding">Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/26-python-database.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -1007,18 +1007,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="exercises" class="level2" data-number="13.7">
-<h2 data-number="13.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">13.7</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="13.7.1">
-<h3 data-number="13.7.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">13.7.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <ol type="1">
 <li><p>What is the role of SQLAlchemy in the Python database ecosystem? Why does using it as the connection layer allow you to switch between Polars and pandas without changing your connection code?</p></li>
 <li><p>Explain what is wrong with building a query string using an f-string to insert a user-supplied value. What does a parameterized query do differently, and why does it prevent SQL injection?</p></li>
 <li><p>Compare <code>plotnine</code> and <code>seaborn</code> as visualization libraries. In what way does <code>plotnine</code>’s API differ from <code>seaborn</code>’s, and what makes <code>plotnine</code> easier to learn for someone who already knows <code>ggplot2</code>?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="13.7.2">
-<h3 data-number="13.7.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">13.7.2</span> Coding</h3>
+<section id="coding" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="coding">Coding</h3>
 <ol start="4" type="1">
 <li><p>Connect to the <code>nycflights</code> database and use <code>pl.read_database()</code> to retrieve the average temperature (<code>temp</code>) and average wind speed (<code>wind_speed</code>) from the <code>weather</code> table, grouped by month. Print the result.</p></li>
 <li><p>Using <code>pl.read_database()</code>, retrieve the number of flights per destination (<code>dest</code>). Then use <code>plotnine</code> to create a horizontal bar chart of the top 15 destinations by flight count.</p></li>

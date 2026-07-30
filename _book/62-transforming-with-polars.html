@@ -448,7 +448,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#reshaping-long-to-wide" id="toc-reshaping-long-to-wide" class="nav-link" data-scroll-target="#reshaping-long-to-wide"><span class="header-section-number">24.11</span> Reshaping: Long to Wide</a></li>
   <li><a href="#preparing-the-clean-dataframes" id="toc-preparing-the-clean-dataframes" class="nav-link" data-scroll-target="#preparing-the-clean-dataframes"><span class="header-section-number">24.12</span> Preparing the Clean DataFrames</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">24.13</span> Summary</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">24.14</span> Exercises</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/62-transforming-with-polars.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1133,8 +1133,8 @@ shape: (5, 7)
 </table>
 <p>In the next chapter, you will load <code>countries_clean.parquet</code> and <code>indicators_clean.parquet</code> into PostgreSQL using SQLAlchemy, including proper upsert logic so the pipeline can be run repeatedly without creating duplicate rows.</p>
 </section>
-<section id="exercises" class="level2" data-number="24.14">
-<h2 data-number="24.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">24.14</span> Exercises</h2>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
 <ol type="1">
 <li><p>Filter <code>indicators</code> to the year 2000. How many countries have a non-null <code>pct_forest_area</code> value? How does that number compare to 2022?</p></li>
 <li><p>Compute a new column called <code>forest_area_km2</code> by multiplying <code>pct_forest_area</code> by <code>land_area_km2</code> and dividing by 100. Which 10 countries had the largest total forest area in 2022?</p></li>

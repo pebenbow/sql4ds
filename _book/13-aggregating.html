@@ -456,10 +456,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-logical-order-of-execution" id="toc-the-logical-order-of-execution" class="nav-link" data-scroll-target="#the-logical-order-of-execution"><span class="header-section-number">6.6</span> The Logical Order of Execution</a></li>
   <li><a href="#null-values-in-aggregation" id="toc-null-values-in-aggregation" class="nav-link" data-scroll-target="#null-values-in-aggregation"><span class="header-section-number">6.7</span> NULL Values in Aggregation</a></li>
   <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together"><span class="header-section-number">6.8</span> Putting It All Together</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.9</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">6.9.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">6.9.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding">Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/13-aggregating.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -1739,10 +1739,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="exercises" class="level2" data-number="6.9">
-<h2 data-number="6.9" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.9</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="6.9.1">
-<h3 data-number="6.9.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">6.9.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <p><strong>1.</strong> Explain the difference between <code>WHERE</code> and <code>HAVING</code>. Write an example of a condition that must go in <code>WHERE</code> and one that must go in <code>HAVING</code>, and explain why each belongs where it does.</p>
 <hr>
 <p><strong>2.</strong> A student writes the following query intending to find genres where the average number of Oscar nominations exceeds 2, but PostgreSQL returns an error. Identify the problem and fix it.</p>
@@ -1754,8 +1754,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>3.</strong> Explain why <code>COUNT(*)</code> and <code>COUNT(birth_name)</code> would return different values when used inside a <code>GROUP BY</code> query. In what situation would they return the same value for every group?</p>
 <hr>
 </section>
-<section id="coding" class="level3" data-number="6.9.2">
-<h3 data-number="6.9.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">6.9.2</span> Coding</h3>
+<section id="coding" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="coding">Coding</h3>
 <p><strong>4.</strong> Write a query that counts the number of actors from each birth country. Return only countries with at least two actors, sorted from most to fewest.</p>
 <hr>
 <p><strong>5.</strong> Write a query that shows, for each primary genre, the total number of Oscar nominations and the total number of Oscar wins. Include a third column that expresses wins as a percentage of nominations, rounded to one decimal place. Sort by total nominations descending.</p>

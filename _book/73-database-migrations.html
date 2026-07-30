@@ -456,10 +456,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#framework-integrated-migrations" id="toc-framework-integrated-migrations" class="nav-link" data-scroll-target="#framework-integrated-migrations"><span class="header-section-number">29.9.4</span> Framework-Integrated Migrations</a></li>
   <li><a href="#your-migration-files-are-portable" id="toc-your-migration-files-are-portable" class="nav-link" data-scroll-target="#your-migration-files-are-portable"><span class="header-section-number">29.9.5</span> Your Migration Files Are Portable</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">29.10</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
   <ul class="collapse">
-  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection"><span class="header-section-number">29.10.1</span> Reflection</a></li>
-  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding"><span class="header-section-number">29.10.2</span> Coding</a></li>
+  <li><a href="#reflection" id="toc-reflection" class="nav-link" data-scroll-target="#reflection">Reflection</a></li>
+  <li><a href="#coding" id="toc-coding" class="nav-link" data-scroll-target="#coding">Coding</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/73-database-migrations.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -684,10 +684,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The Supabase CLI adds the convenience of <code>supabase migration new</code> and <code>supabase db push</code>, and it integrates with the rest of the Supabase platform. But it is a thin layer over the same idea: ordered SQL files, applied in sequence, with a tracking table keeping record of what has been done.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="29.10">
-<h2 data-number="29.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">29.10</span> Exercises</h2>
-<section id="reflection" class="level3" data-number="29.10.1">
-<h3 data-number="29.10.1" class="anchored" data-anchor-id="reflection"><span class="header-section-number">29.10.1</span> Reflection</h3>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
+<section id="reflection" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="reflection">Reflection</h3>
 <ol type="1">
 <li><p>Explain the difference between running a <code>CREATE TABLE</code> statement directly in the Supabase SQL Editor versus creating a migration file and running <code>supabase db push</code>. What does the migration approach give you that the direct approach does not?</p></li>
 <li><p>Why is it important to commit migration files to version control before applying them to the remote database?</p></li>
@@ -695,8 +695,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Two developers, working on separate feature branches, both create migrations at roughly the same time. One creates <code>20250310120000_add_tags_table.sql</code> and the other creates <code>20250310130000_add_ratings_table.sql</code>. When both branches are merged, which migration will be applied first and why?</p></li>
 </ol>
 </section>
-<section id="coding" class="level3" data-number="29.10.2">
-<h3 data-number="29.10.2" class="anchored" data-anchor-id="coding"><span class="header-section-number">29.10.2</span> Coding</h3>
+<section id="coding" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="coding">Coding</h3>
 <ol start="5" type="1">
 <li><p>Add a migration to your project from the previous chapter that adds an <code>instructor_id</code> column (integer, nullable) to the <code>courses</code> table. Push it to your Supabase project and verify with a query to <code>information_schema.columns</code>.</p></li>
 <li><p>Write a second migration that creates an <code>instructors</code> table with columns for a surrogate primary key, <code>last_name</code> (text, not null), <code>first_name</code> (text, not null), and <code>department</code> (text). After applying it, add a foreign key constraint on <code>courses.instructor_id</code> referencing <code>instructors.id</code> in a third migration.</p></li>

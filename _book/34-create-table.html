@@ -456,7 +456,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#create-table-if-not-exists" id="toc-create-table-if-not-exists" class="nav-link" data-scroll-target="#create-table-if-not-exists"><span class="header-section-number">17.9</span> CREATE TABLE IF NOT EXISTS</a></li>
   <li><a href="#removing-tables" id="toc-removing-tables" class="nav-link" data-scroll-target="#removing-tables"><span class="header-section-number">17.10</span> Removing Tables</a></li>
   <li><a href="#modifying-existing-tables" id="toc-modifying-existing-tables" class="nav-link" data-scroll-target="#modifying-existing-tables"><span class="header-section-number">17.11</span> Modifying Existing Tables</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">17.12</span> Exercises</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/34-create-table.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -795,8 +795,8 @@ university=#</code></pre>
 </div>
 </div>
 </section>
-<section id="exercises" class="level2" data-number="17.12">
-<h2 data-number="17.12" class="anchored" data-anchor-id="exercises"><span class="header-section-number">17.12</span> Exercises</h2>
+<section id="exercises" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
 <p><strong>1.</strong> Connect to your <code>university</code> database and run <code>\dt</code> in psql to list its tables. Confirm that <code>students</code> exists. Then query <code>information_schema.columns</code> to display the column names, data types, and nullability for the <code>students</code> table.</p>
 <hr>
 <p><strong>2.</strong> Insert a row into <code>students</code> that violates the <code>gpa</code> CHECK constraint (for example, a GPA of 5.0). Observe the error message. Then insert a row with a NULL GPA and confirm it succeeds.</p>
