@@ -44,3 +44,9 @@ section#exercises > h2:first-child {
         padding: 1.25rem 1.25rem;
     }
 }
+
+/* Restore code block padding: disabling code-block-bg (for the code-window
+   extension's own background) also zeroes out Quarto's default padding. */
+pre.sourceCode {
+    padding: 0.85em 1em !important;
+}
