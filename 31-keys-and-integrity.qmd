@@ -150,9 +150,9 @@ The classic example is an employee reporting structure:
 
 Self-referencing foreign keys use the same cascade options as any other foreign key. `ON DELETE SET NULL` is a common choice: if a manager leaves, their reports become unmanaged (NULL) rather than being deleted.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 **1.** What is the difference between a superkey and a candidate key? Give an example of a superkey that is not a candidate key, using a table of your own design.
 
@@ -174,7 +174,7 @@ Self-referencing foreign keys use the same cascade options as any other foreign 
 
 ---
 
-### Structural Analysis
+### Structural Analysis {.unnumbered}
 
 **6.** Consider a database for a hospital with the following tables:
 

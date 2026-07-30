@@ -241,9 +241,9 @@ All three tools covered in this chapter branch on data, but they answer differen
 
 In practice these tools compose. A `CASE WHEN` can contain a `COALESCE`, a `COALESCE` can wrap a `NULLIF`, and any of them can appear inside an aggregate function. Reading a complex expression from the inside out, and asking "what problem is this specific piece solving," is the most reliable way to make sense of it.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 **1.** In your own words, explain why `COUNT(CASE WHEN condition THEN 1 END)` works without an `ELSE` clause, while `SUM(CASE WHEN condition THEN value ELSE 0 END)` requires one.
 
@@ -257,7 +257,7 @@ In practice these tools compose. A `CASE WHEN` can contain a `COALESCE`, a `COAL
 
 ---
 
-### Practical
+### Practical {.unnumbered}
 
 **4.** Write a query against `flights` that uses a searched `CASE WHEN` to label each flight's `arr_delay` as `'Early'` (less than 0), `'On Time'` (0), `'Late'` (greater than 0), or `'Unknown'` (`NULL`). Show `carrier`, `flight`, `arr_delay`, and the new label for 10 rows.
 

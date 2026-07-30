@@ -343,9 +343,9 @@ The value of `carrier_code` is sent to the database separately from the query te
 Always use parameterized queries whenever a query incorporates a value that originates from outside your own code, including user input, configuration files, or data from another source. SQLAlchemy's `text()` with named parameters is the right tool for raw SQL.
 :::
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 1. What is the role of SQLAlchemy in the Python database ecosystem? Why does using it as the connection layer allow you to switch between Polars and pandas without changing your connection code?
 
@@ -353,7 +353,7 @@ Always use parameterized queries whenever a query incorporates a value that orig
 
 3. Compare `plotnine` and `seaborn` as visualization libraries. In what way does `plotnine`'s API differ from `seaborn`'s, and what makes `plotnine` easier to learn for someone who already knows `ggplot2`?
 
-### Coding
+### Coding {.unnumbered}
 
 4. Connect to the `nycflights` database and use `pl.read_database()` to retrieve the average temperature (`temp`) and average wind speed (`wind_speed`) from the `weather` table, grouped by month. Print the result.
 

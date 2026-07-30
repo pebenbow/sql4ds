@@ -142,9 +142,9 @@ From smallest to largest, a relational database is organized as:
 
 Everything in the rest of this book builds on this structure. The next chapter starts writing queries against it with `SELECT`, and a later section of the book (starting with keys and integrity) returns to relationships and gives them the formal treatment only sketched here.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 **1.** In your own words, explain the difference between a row and a column. Use an example that does not appear in this chapter.
 
@@ -158,7 +158,7 @@ Everything in the rest of this book builds on this structure. The next chapter s
 
 ---
 
-### Structural Analysis
+### Structural Analysis {.unnumbered}
 
 **4.** A small veterinary clinic tracks its data in one spreadsheet with these columns: `visit_id`, `pet_name`, `pet_species`, `owner_name`, `owner_phone`, `visit_date`, `reason_for_visit`. Sketch two or three related tables that would better organize this information. For each table, list its columns and identify which column(s) connect it to the other tables.
 

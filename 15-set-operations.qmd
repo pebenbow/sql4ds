@@ -287,9 +287,9 @@ WHERE r.name = 'South Asia';
 
 When mixing operation types, be aware that `INTERSECT` binds more tightly than `UNION` and `EXCEPT`, similar to how multiplication binds before addition. The expression `A UNION B INTERSECT C` is evaluated as `A UNION (B INTERSECT C)`, not `(A UNION B) INTERSECT C`. Use parentheses to make the intended order explicit whenever you chain more than one type of set operation.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 1. Explain the difference between `UNION` and `UNION ALL`. When would you prefer one over the other?
 
@@ -299,7 +299,7 @@ When mixing operation types, be aware that `INTERSECT` binds more tightly than `
 
 4. Why must both queries in a set operation return the same number of columns with compatible data types? What would go wrong if they did not?
 
-### Coding
+### Coding {.unnumbered}
 
 5. Write a query using `UNION ALL` that combines all high-income countries and all upper-middle-income countries into a single result set. Include `short_name` and the income group name (joined from the `income_groups` table). Sort alphabetically by `short_name`.
 

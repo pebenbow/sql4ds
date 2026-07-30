@@ -242,9 +242,9 @@ An ER diagram and a `CREATE TABLE` script are two representations of the same de
 
 The next chapter walks through this translation in full.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 **1.** In DBML, what is the difference between a `>` and a `<` in a `Ref` declaration? Are they interchangeable, or do they mean different things?
 
@@ -258,7 +258,7 @@ The next chapter walks through this translation in full.
 
 ---
 
-### Design
+### Design {.unnumbered}
 
 **4.** A regional library system tracks books, borrowers, and loans. The business rules are:
 

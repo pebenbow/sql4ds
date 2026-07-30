@@ -373,9 +373,9 @@ ALTER DEFAULT PRIVILEGES
 
 After these four steps, members of `reporting` can connect, see tables in `public`, and query any current or future table, without being able to write or create objects.
 
-## Exercises
+## Exercises {.unnumbered}
 
-### Reflection
+### Reflection {.unnumbered}
 
 1. PostgreSQL has no separate concept of a "user" and a "group." Explain how the `LOGIN` attribute is the only meaningful distinction, and describe when you would create a role without `LOGIN`.
 
@@ -385,7 +385,7 @@ After these four steps, members of `reporting` can connect, see tables in `publi
 
 4. Explain the two-layer requirement for schema access: why must a role have both `USAGE` on the schema and `SELECT` on the table? What error does each missing grant produce?
 
-### Coding
+### Coding {.unnumbered}
 
 5. Create a role named `data_analyst` with login access, a password of your choice, and a connection limit of 3. Verify it appears in `pg_roles`.
 
