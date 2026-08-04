@@ -13,11 +13,39 @@ By the end of this chapter, students will be able to:
 - **Compare** relational databases to spreadsheets and flat files, explaining the limitations of each for managing structured data at scale.
 - **Explain** why SQL has remained relevant for decades despite the emergence of newer data technologies.
 
-![](images/stackoverflow-2024-most-popular-db.png)
+## SQL's popularity as a programming language
 
-![](images/stackoverflow-2024-most-popular-tech.png)
+Software developers, data scientists, and other tech professionals have strong opinions about different programming languages. This is no secret. Most people have a favorite language, and some languages that they hate.
 
-## How to pronounce Sequel
+SQL has long been my favorite programming language, and I'm not the only one. In its annual survey of professional developers, Stack Overflow finds SQL ranked in the top 3 most popular languages worlwide.  Here are the [2025 survey results](https://survey.stackoverflow.co/2025/technology#most-popular-technologies-language-language-prof){target="_blank"}:
+
+![](images\stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png)
+
+So, hey! By reading this textbook, you're taking your first steps toward learning (and hopefully eventually mastering) one of the most popular _and_ most ubiquitous programming languages on Earth. Good for you. Hopefully you like it as much as I do.
+
+## PostgreSQL's popularity as a database
+
+There are literally dozens of major SQL database engines on the market today, including open-source and commercial variants. Some of them are optimized for analytical workloads, others for mobile development, others that are designed specifically to be cloud-native.
+
+Even in that crowded field of competitors, PostgreSQL consistently stands out as the most popular database engine in the world according to Stack Overflow's annual survey of professional developers. The chart below is from the [2025 survey results](https://survey.stackoverflow.co/2025/technology#most-popular-technologies-database-database-prof){target="_blank"}:
+
+![](images\stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png)
+
+## The many flavors of SQL
+
+You might be wondering: are there differences in the SQL language between all these dozens of database engines? Actually, yes! There are many different SQL "dialects," and not every SQL database supports the same syntax or functions that others do. For example, the PostgreSQL databases we'll use in this textbook use PL/pgSQL, which means "Procedural Language/PostgreSQL." This language is based on PL/SQL (Procedural Language for SQL), which is the language spoken by Oracle's family of SQL databases. Microsoft databases, meanwhile, use T-SQL, or "Transact SQL," which was the first SQL variant I learned.
+
+What's the impact of this? Well, it's possible you can learn a function in one SQL dialect that does not work in all other dialects. As a matter of fact, two of my favorite SQL functions, `PIVOT` and `UNPIVOT`, don't exist in PostgreSQL at all (much to my chagrin). Instead, PostgreSQL uses its own bespoke `CROSSTAB` function, which has to be installed as an extension.
+
+Some SQL dialects also have their own syntactic shortcuts. PostgreSQL has one that I really like that you can use when converting data from one data type to another. While in most SQL languages this is done with the `CAST()` function, PostgreSQL actually has a shortcut where you can do it with a simple `::` operator. You'll find out more about this in our chapter on Data Types.
+
+Now, before you start freaking out about there being dozens of different SQL dialects and all these various shortcuts, the truth is that all SQL dialects share roughly 90-95% of the exact same core functions, and the skills you pick up in this textbook, whether that's running `SELECT` statements to extract data or building new databases with `CREATE TABLE` statements, are easily transportable to other SQL databases.
+
+SQL was actually standardized in the early 1990s by the American National Standards Institute (ANSI), and almost all SQL dialects in existence now are largely based off what is commonly referred to as "ANSI SQL." This includes a long list of functions and standards that carry over between this vast ecosystem of databases.
+
+The point is: if you can master one SQL dialect (like the PL/pgSQL we'll be learning in this textbook), you can confidently apply 90+% of what you learned in any other SQL databse engine you come across, whether that's Microsoft, Oracle, Snowflake, DuckDB, Google BigQuery, etc.
+
+## How to pronounce SQL
 
 The inevitable question: "Is it pronounced 'Sequel' or 'Ess-Que-Ell?'"
 
