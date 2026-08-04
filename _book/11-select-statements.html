@@ -177,6 +177,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 <link rel="stylesheet" href="custom.css">
@@ -619,134 +621,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>5 records</caption>
-<colgroup>
-<col style="width: 4%">
-<col style="width: 5%">
-<col style="width: 4%">
-<col style="width: 11%">
-<col style="width: 1%">
-<col style="width: 5%">
-<col style="width: 5%">
-<col style="width: 6%">
-<col style="width: 4%">
-<col style="width: 8%">
-<col style="width: 5%">
-<col style="width: 6%">
-<col style="width: 9%">
-<col style="width: 11%">
-<col style="width: 10%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">actor_id</th>
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_name</th>
-<th style="text-align: left;">sex</th>
-<th style="text-align: left;">birth_date</th>
-<th style="text-align: left;">death_date</th>
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: right;">height_cm</th>
-<th style="text-align: right;">oscar_nominations</th>
-<th style="text-align: right;">oscar_wins</th>
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: left;">has_honorary_oscar</th>
-<th style="text-align: left;">notable_role</th>
-<th style="text-align: right;">total_box_office_usd</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">Tom</td>
-<td style="text-align: left;">Hanks</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: left;">1956-07-09</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">183</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">Forrest Gump</td>
-<td style="text-align: right;">4.8e+09</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2</td>
-<td style="text-align: left;">Meryl</td>
-<td style="text-align: left;">Streep</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: left;">1949-06-22</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">168</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">The Devil Wears Prada</td>
-<td style="text-align: right;">2.1e+09</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">3</td>
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: left;">1969-05-14</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">174</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">Elizabeth</td>
-<td style="text-align: right;">5.1e+09</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">4</td>
-<td style="text-align: left;">Marlon</td>
-<td style="text-align: left;">Brando</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: left;">1924-04-03</td>
-<td style="text-align: left;">2004-07-01</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">175</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">FALSE</td>
-<td style="text-align: left;">The Godfather</td>
-<td style="text-align: right;">1.6e+09</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">5</td>
-<td style="text-align: left;">Audrey</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">Audrey Kathleen Ruston</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: left;">1929-05-04</td>
-<td style="text-align: left;">1993-01-20</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">170</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">Romance</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: left;">Breakfast at Tiffany’s</td>
-<td style="text-align: right;">9.2e+08</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["actor_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["first_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[3],"type":["chr"],"align":["left"]},{"label":["birth_name"],"name":[4],"type":["chr"],"align":["left"]},{"label":["sex"],"name":[5],"type":["chr"],"align":["left"]},{"label":["birth_date"],"name":[6],"type":["date"],"align":["right"]},{"label":["death_date"],"name":[7],"type":["date"],"align":["right"]},{"label":["birth_country"],"name":[8],"type":["chr"],"align":["left"]},{"label":["height_cm"],"name":[9],"type":["int"],"align":["right"]},{"label":["oscar_nominations"],"name":[10],"type":["int"],"align":["right"]},{"label":["oscar_wins"],"name":[11],"type":["int"],"align":["right"]},{"label":["primary_genre"],"name":[12],"type":["chr"],"align":["left"]},{"label":["has_honorary_oscar"],"name":[13],"type":["lgl"],"align":["right"]},{"label":["notable_role"],"name":[14],"type":["chr"],"align":["left"]},{"label":["total_box_office_usd"],"name":[15],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"Tom","3":"Hanks","4":"NA","5":"M","6":"1956-07-09","7":"<NA>","8":"USA","9":"183","10":"5","11":"2","12":"Drama","13":"FALSE","14":"Forrest Gump","15":"4.8e+09"},{"1":"2","2":"Meryl","3":"Streep","4":"NA","5":"F","6":"1949-06-22","7":"<NA>","8":"USA","9":"168","10":"21","11":"3","12":"Drama","13":"FALSE","14":"The Devil Wears Prada","15":"2.1e+09"},{"1":"3","2":"Cate","3":"Blanchett","4":"NA","5":"F","6":"1969-05-14","7":"<NA>","8":"Australia","9":"174","10":"8","11":"2","12":"Drama","13":"FALSE","14":"Elizabeth","15":"5.1e+09"},{"1":"4","2":"Marlon","3":"Brando","4":"NA","5":"M","6":"1924-04-03","7":"2004-07-01","8":"USA","9":"175","10":"8","11":"2","12":"Drama","13":"FALSE","14":"The Godfather","15":"1.6e+09"},{"1":"5","2":"Audrey","3":"Hepburn","4":"Audrey Kathleen Ruston","5":"F","6":"1929-05-04","7":"1993-01-20","8":"UK","9":"170","10":"5","11":"1","12":"Romance","13":"TRUE","14":"Breakfast at Tiffany's","15":"9.2e+08"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The <code>LIMIT 5</code> at the end restricts the output to five rows. Without it, the query would return all 200 rows in the table. This is similar to the <code>head()</code> function in R or Python. You will learn more about <code>LIMIT</code> later in this chapter, but getting into the habit of adding it while exploring an unfamiliar table is good practice.</p>
 </section>
@@ -756,171 +637,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, birth_country, primary_genre</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: left;">primary_genre</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Tom</td>
-<td style="text-align: left;">Hanks</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Meryl</td>
-<td style="text-align: left;">Streep</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marlon</td>
-<td style="text-align: left;">Brando</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Audrey</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Romance</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Humphrey</td>
-<td style="text-align: left;">Bogart</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Katharine</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Nicholson</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Denzel</td>
-<td style="text-align: left;">Washington</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ingrid</td>
-<td style="text-align: left;">Bergman</td>
-<td style="text-align: left;">Sweden</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">James</td>
-<td style="text-align: left;">Stewart</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bette</td>
-<td style="text-align: left;">Davis</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sidney</td>
-<td style="text-align: left;">Poitier</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jane</td>
-<td style="text-align: left;">Fonda</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Al</td>
-<td style="text-align: left;">Pacino</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">De Niro</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sophia</td>
-<td style="text-align: left;">Loren</td>
-<td style="text-align: left;">Italy</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marcello</td>
-<td style="text-align: left;">Mastroianni</td>
-<td style="text-align: left;">Italy</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jeanne</td>
-<td style="text-align: left;">Moreau</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jean-Paul</td>
-<td style="text-align: left;">Belmondo</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Catherine</td>
-<td style="text-align: left;">Deneuve</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Isabelle</td>
-<td style="text-align: left;">Huppert</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Gérard</td>
-<td style="text-align: left;">Depardieu</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Alec</td>
-<td style="text-align: left;">Guinness</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">Sellers</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_country"],"name":[3],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Tom","2":"Hanks","3":"USA","4":"Drama"},{"1":"Meryl","2":"Streep","3":"USA","4":"Drama"},{"1":"Cate","2":"Blanchett","3":"Australia","4":"Drama"},{"1":"Marlon","2":"Brando","3":"USA","4":"Drama"},{"1":"Audrey","2":"Hepburn","3":"UK","4":"Romance"},{"1":"Humphrey","2":"Bogart","3":"USA","4":"Drama"},{"1":"Katharine","2":"Hepburn","3":"USA","4":"Drama"},{"1":"Jack","2":"Nicholson","3":"USA","4":"Drama"},{"1":"Denzel","2":"Washington","3":"USA","4":"Drama"},{"1":"Ingrid","2":"Bergman","3":"Sweden","4":"Drama"},{"1":"James","2":"Stewart","3":"USA","4":"Drama"},{"1":"Bette","2":"Davis","3":"USA","4":"Drama"},{"1":"Sidney","2":"Poitier","3":"USA","4":"Drama"},{"1":"Jane","2":"Fonda","3":"USA","4":"Drama"},{"1":"Al","2":"Pacino","3":"USA","4":"Drama"},{"1":"Robert","2":"De Niro","3":"USA","4":"Drama"},{"1":"Sophia","2":"Loren","3":"Italy","4":"Drama"},{"1":"Marcello","2":"Mastroianni","3":"Italy","4":"Drama"},{"1":"Jeanne","2":"Moreau","3":"France","4":"Drama"},{"1":"Jean-Paul","2":"Belmondo","3":"France","4":"Action"},{"1":"Catherine","2":"Deneuve","3":"France","4":"Drama"},{"1":"Isabelle","2":"Huppert","3":"France","4":"Drama"},{"1":"Gérard","2":"Depardieu","3":"France","4":"Drama"},{"1":"Alec","2":"Guinness","3":"UK","4":"Drama"},{"1":"Peter","2":"Sellers","3":"UK","4":"Comedy"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Column names are listed after <code>SELECT</code>, separated by commas. The database returns them in exactly the order you specify, regardless of how they are arranged inside the table.</p>
 <div class="callout callout-style-simple callout-tip">
@@ -949,197 +672,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    primary_genre     <span class="kw">AS</span> genre,</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    oscar_nominations <span class="kw">AS</span> nominations</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">given_name</th>
-<th style="text-align: left;">surname</th>
-<th style="text-align: left;">country</th>
-<th style="text-align: left;">genre</th>
-<th style="text-align: right;">nominations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Tom</td>
-<td style="text-align: left;">Hanks</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Meryl</td>
-<td style="text-align: left;">Streep</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">21</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marlon</td>
-<td style="text-align: left;">Brando</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Audrey</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Romance</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Humphrey</td>
-<td style="text-align: left;">Bogart</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Katharine</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Nicholson</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Denzel</td>
-<td style="text-align: left;">Washington</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ingrid</td>
-<td style="text-align: left;">Bergman</td>
-<td style="text-align: left;">Sweden</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">James</td>
-<td style="text-align: left;">Stewart</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bette</td>
-<td style="text-align: left;">Davis</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sidney</td>
-<td style="text-align: left;">Poitier</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jane</td>
-<td style="text-align: left;">Fonda</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Al</td>
-<td style="text-align: left;">Pacino</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">De Niro</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sophia</td>
-<td style="text-align: left;">Loren</td>
-<td style="text-align: left;">Italy</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marcello</td>
-<td style="text-align: left;">Mastroianni</td>
-<td style="text-align: left;">Italy</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jeanne</td>
-<td style="text-align: left;">Moreau</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jean-Paul</td>
-<td style="text-align: left;">Belmondo</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Catherine</td>
-<td style="text-align: left;">Deneuve</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Isabelle</td>
-<td style="text-align: left;">Huppert</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Gérard</td>
-<td style="text-align: left;">Depardieu</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Alec</td>
-<td style="text-align: left;">Guinness</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">Sellers</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">3</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["given_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["surname"],"name":[2],"type":["chr"],"align":["left"]},{"label":["country"],"name":[3],"type":["chr"],"align":["left"]},{"label":["genre"],"name":[4],"type":["chr"],"align":["left"]},{"label":["nominations"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"Tom","2":"Hanks","3":"USA","4":"Drama","5":"5"},{"1":"Meryl","2":"Streep","3":"USA","4":"Drama","5":"21"},{"1":"Cate","2":"Blanchett","3":"Australia","4":"Drama","5":"8"},{"1":"Marlon","2":"Brando","3":"USA","4":"Drama","5":"8"},{"1":"Audrey","2":"Hepburn","3":"UK","4":"Romance","5":"5"},{"1":"Humphrey","2":"Bogart","3":"USA","4":"Drama","5":"3"},{"1":"Katharine","2":"Hepburn","3":"USA","4":"Drama","5":"12"},{"1":"Jack","2":"Nicholson","3":"USA","4":"Drama","5":"12"},{"1":"Denzel","2":"Washington","3":"USA","4":"Drama","5":"9"},{"1":"Ingrid","2":"Bergman","3":"Sweden","4":"Drama","5":"7"},{"1":"James","2":"Stewart","3":"USA","4":"Drama","5":"5"},{"1":"Bette","2":"Davis","3":"USA","4":"Drama","5":"10"},{"1":"Sidney","2":"Poitier","3":"USA","4":"Drama","5":"2"},{"1":"Jane","2":"Fonda","3":"USA","4":"Drama","5":"7"},{"1":"Al","2":"Pacino","3":"USA","4":"Drama","5":"9"},{"1":"Robert","2":"De Niro","3":"USA","4":"Drama","5":"8"},{"1":"Sophia","2":"Loren","3":"Italy","4":"Drama","5":"5"},{"1":"Marcello","2":"Mastroianni","3":"Italy","4":"Drama","5":"3"},{"1":"Jeanne","2":"Moreau","3":"France","4":"Drama","5":"0"},{"1":"Jean-Paul","2":"Belmondo","3":"France","4":"Action","5":"0"},{"1":"Catherine","2":"Deneuve","3":"France","4":"Drama","5":"2"},{"1":"Isabelle","2":"Huppert","3":"France","4":"Drama","5":"2"},{"1":"Gérard","2":"Depardieu","3":"France","4":"Drama","5":"1"},{"1":"Alec","2":"Guinness","3":"UK","4":"Drama","5":"5"},{"1":"Peter","2":"Sellers","3":"UK","4":"Comedy","5":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The <code>AS</code> keyword is optional in PostgreSQL; you can write the alias directly after the column name without it. Using <code>AS</code> explicitly is recommended, however, because it makes the intent of the query immediately clear to anyone reading it.</p>
 </section>
@@ -1152,145 +691,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    birth_country,</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    primary_genre</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">full_name</th>
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: left;">primary_genre</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Tom Hanks</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Meryl Streep</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Cate Blanchett</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marlon Brando</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Audrey Hepburn</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Romance</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Humphrey Bogart</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Katharine Hepburn</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jack Nicholson</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Denzel Washington</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ingrid Bergman</td>
-<td style="text-align: left;">Sweden</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">James Stewart</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bette Davis</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sidney Poitier</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jane Fonda</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Al Pacino</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Robert De Niro</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sophia Loren</td>
-<td style="text-align: left;">Italy</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marcello Mastroianni</td>
-<td style="text-align: left;">Italy</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jeanne Moreau</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jean-Paul Belmondo</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Catherine Deneuve</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Isabelle Huppert</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Gérard Depardieu</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Alec Guinness</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Peter Sellers</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["full_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["birth_country"],"name":[2],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Tom Hanks","2":"USA","3":"Drama"},{"1":"Meryl Streep","2":"USA","3":"Drama"},{"1":"Cate Blanchett","2":"Australia","3":"Drama"},{"1":"Marlon Brando","2":"USA","3":"Drama"},{"1":"Audrey Hepburn","2":"UK","3":"Romance"},{"1":"Humphrey Bogart","2":"USA","3":"Drama"},{"1":"Katharine Hepburn","2":"USA","3":"Drama"},{"1":"Jack Nicholson","2":"USA","3":"Drama"},{"1":"Denzel Washington","2":"USA","3":"Drama"},{"1":"Ingrid Bergman","2":"Sweden","3":"Drama"},{"1":"James Stewart","2":"USA","3":"Drama"},{"1":"Bette Davis","2":"USA","3":"Drama"},{"1":"Sidney Poitier","2":"USA","3":"Drama"},{"1":"Jane Fonda","2":"USA","3":"Drama"},{"1":"Al Pacino","2":"USA","3":"Drama"},{"1":"Robert De Niro","2":"USA","3":"Drama"},{"1":"Sophia Loren","2":"Italy","3":"Drama"},{"1":"Marcello Mastroianni","2":"Italy","3":"Drama"},{"1":"Jeanne Moreau","2":"France","3":"Drama"},{"1":"Jean-Paul Belmondo","2":"France","3":"Action"},{"1":"Catherine Deneuve","2":"France","3":"Drama"},{"1":"Isabelle Huppert","2":"France","3":"Drama"},{"1":"Gérard Depardieu","2":"France","3":"Drama"},{"1":"Alec Guinness","2":"UK","3":"Drama"},{"1":"Peter Sellers","2":"UK","3":"Comedy"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>You can add as many literal strings as you like. Here, a comma and space are inserted between the last name and the birth country to produce a compact bio label:</p>
 <div class="cell">
@@ -1298,119 +705,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name <span class="op">||</span> <span class="st">', '</span> <span class="op">||</span> birth_country <span class="kw">AS</span> bio_label,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    primary_genre</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">bio_label</th>
-<th style="text-align: left;">primary_genre</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Tom Hanks, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Meryl Streep, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Cate Blanchett, Australia</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marlon Brando, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Audrey Hepburn, UK</td>
-<td style="text-align: left;">Romance</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Humphrey Bogart, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Katharine Hepburn, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jack Nicholson, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Denzel Washington, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ingrid Bergman, Sweden</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">James Stewart, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bette Davis, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sidney Poitier, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jane Fonda, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Al Pacino, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Robert De Niro, USA</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sophia Loren, Italy</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marcello Mastroianni, Italy</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jeanne Moreau, France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jean-Paul Belmondo, France</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Catherine Deneuve, France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Isabelle Huppert, France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Gérard Depardieu, France</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Alec Guinness, UK</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Peter Sellers, UK</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["bio_label"],"name":[1],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"Tom Hanks, USA","2":"Drama"},{"1":"Meryl Streep, USA","2":"Drama"},{"1":"Cate Blanchett, Australia","2":"Drama"},{"1":"Marlon Brando, USA","2":"Drama"},{"1":"Audrey Hepburn, UK","2":"Romance"},{"1":"Humphrey Bogart, USA","2":"Drama"},{"1":"Katharine Hepburn, USA","2":"Drama"},{"1":"Jack Nicholson, USA","2":"Drama"},{"1":"Denzel Washington, USA","2":"Drama"},{"1":"Ingrid Bergman, Sweden","2":"Drama"},{"1":"James Stewart, USA","2":"Drama"},{"1":"Bette Davis, USA","2":"Drama"},{"1":"Sidney Poitier, USA","2":"Drama"},{"1":"Jane Fonda, USA","2":"Drama"},{"1":"Al Pacino, USA","2":"Drama"},{"1":"Robert De Niro, USA","2":"Drama"},{"1":"Sophia Loren, Italy","2":"Drama"},{"1":"Marcello Mastroianni, Italy","2":"Drama"},{"1":"Jeanne Moreau, France","2":"Drama"},{"1":"Jean-Paul Belmondo, France","2":"Action"},{"1":"Catherine Deneuve, France","2":"Drama"},{"1":"Isabelle Huppert, France","2":"Drama"},{"1":"Gérard Depardieu, France","2":"Drama"},{"1":"Alec Guinness, UK","2":"Drama"},{"1":"Peter Sellers, UK","2":"Comedy"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -1435,70 +736,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> height_cm <span class="kw">DESC</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">full_name</th>
-<th style="text-align: right;">height_cm</th>
-<th style="text-align: right;">height_in</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Max von Sydow</td>
-<td style="text-align: right;">196</td>
-<td style="text-align: right;">77.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Clint Eastwood</td>
-<td style="text-align: right;">193</td>
-<td style="text-align: right;">76.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Gregory Peck</td>
-<td style="text-align: right;">191</td>
-<td style="text-align: right;">75.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Charlton Heston</td>
-<td style="text-align: right;">191</td>
-<td style="text-align: right;">75.2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Chris Hemsworth</td>
-<td style="text-align: right;">190</td>
-<td style="text-align: right;">74.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">James Stewart</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Idris Elba</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sidney Poitier</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Hugh Jackman</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Henry Fonda</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["full_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height_cm"],"name":[2],"type":["int"],"align":["right"]},{"label":["height_in"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Max von Sydow","2":"196","3":"77.2"},{"1":"Clint Eastwood","2":"193","3":"76.0"},{"1":"Gregory Peck","2":"191","3":"75.2"},{"1":"Charlton Heston","2":"191","3":"75.2"},{"1":"Chris Hemsworth","2":"190","3":"74.8"},{"1":"James Stewart","2":"188","3":"74.0"},{"1":"Idris Elba","2":"188","3":"74.0"},{"1":"Sidney Poitier","2":"188","3":"74.0"},{"1":"Hugh Jackman","2":"188","3":"74.0"},{"1":"Henry Fonda","2":"188","3":"74.0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><code>ROUND(value, 1)</code> rounds the result to one decimal place. The <code>::numeric</code> cast converts the <code>2.54</code> literal to a decimal type before dividing, which ensures a decimal result rather than integer division.</p>
 </section>
@@ -1514,42 +758,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> primary_genre</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> primary_genre;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>8 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">primary_genre</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Horror</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Musical</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Romance</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sci-Fi</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Thriller</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["primary_genre"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"Action"},{"1":"Comedy"},{"1":"Drama"},{"1":"Horror"},{"1":"Musical"},{"1":"Romance"},{"1":"Sci-Fi"},{"1":"Thriller"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><code>DISTINCT</code> applies to the full combination of columns listed, not just the first one. If you write <code>SELECT DISTINCT primary_genre, birth_country</code>, the result contains each unique pairing of those two values rather than unique genres alone.</p>
 <div class="callout callout-style-simple callout-tip">
@@ -1569,42 +784,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> total_actors</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">total_actors</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">200</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["total_actors"],"name":[1],"type":["int64"],"align":["right"]}],"data":[{"1":"200"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Paired with a <code>WHERE</code> clause, <code>COUNT(*)</code> counts only the rows that satisfy the filter:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> drama_actors</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> primary_genre <span class="op">=</span> <span class="st">'Drama'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">drama_actors</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">135</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["drama_actors"],"name":[1],"type":["int64"],"align":["right"]}],"data":[{"1":"135"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><code>COUNT(column_name)</code>, with a specific column instead of <code>*</code>, counts only rows where that column is not NULL. This makes it a convenient way to measure how complete your data is:</p>
 <div class="cell">
@@ -1613,46 +812,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(birth_name) <span class="kw">AS</span> rows_with_birth_name,</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(death_date) <span class="kw">AS</span> rows_with_death_date</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">total_rows</th>
-<th style="text-align: right;">rows_with_birth_name</th>
-<th style="text-align: right;">rows_with_death_date</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">200</td>
-<td style="text-align: right;">70</td>
-<td style="text-align: right;">82</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["total_rows"],"name":[1],"type":["int64"],"align":["right"]},{"label":["rows_with_birth_name"],"name":[2],"type":["int64"],"align":["right"]},{"label":["rows_with_death_date"],"name":[3],"type":["int64"],"align":["right"]}],"data":[{"1":"200","2":"70","3":"82"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The <code>birth_name</code> column records an actor’s legal name when they perform under a stage name. The result shows that only 70 of the 200 actors have a recorded birth name, meaning 130 either perform under their real name or have no birth name on record. Similarly, <code>death_date</code> is NULL for living actors, so <code>COUNT(death_date)</code> reveals how many actors in the table are deceased.</p>
 <p><code>COUNT(DISTINCT column)</code> combines both ideas, counting how many unique values appear in a column:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> birth_country) <span class="kw">AS</span> num_countries</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">num_countries</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">19</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["num_countries"],"name":[1],"type":["int64"],"align":["right"]}],"data":[{"1":"19"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -1680,171 +859,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> primary_genre <span class="op">=</span> <span class="st">'Drama'</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> oscar_nominations <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: right;">oscar_nominations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Meryl</td>
-<td style="text-align: left;">Streep</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">21</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Katharine</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Nicholson</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Paul</td>
-<td style="text-align: left;">Newman</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Laurence</td>
-<td style="text-align: left;">Olivier</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bette</td>
-<td style="text-align: left;">Davis</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Al</td>
-<td style="text-align: left;">Pacino</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Denzel</td>
-<td style="text-align: left;">Washington</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Spencer</td>
-<td style="text-align: left;">Tracy</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Geraldine</td>
-<td style="text-align: left;">Page</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">O’Toole</td>
-<td style="text-align: left;">Ireland</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">De Niro</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Glenn</td>
-<td style="text-align: left;">Close</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Marlon</td>
-<td style="text-align: left;">Brando</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ingrid</td>
-<td style="text-align: left;">Bergman</td>
-<td style="text-align: left;">Sweden</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Kate</td>
-<td style="text-align: left;">Winslet</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Dustin</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jane</td>
-<td style="text-align: left;">Fonda</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Richard</td>
-<td style="text-align: left;">Burton</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Judi</td>
-<td style="text-align: left;">Dench</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Daniel</td>
-<td style="text-align: left;">Day-Lewis</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sissy</td>
-<td style="text-align: left;">Spacek</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Amy</td>
-<td style="text-align: left;">Adams</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Anthony</td>
-<td style="text-align: left;">Hopkins</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">6</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_country"],"name":[3],"type":["chr"],"align":["left"]},{"label":["oscar_nominations"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Meryl","2":"Streep","3":"USA","4":"21"},{"1":"Katharine","2":"Hepburn","3":"USA","4":"12"},{"1":"Jack","2":"Nicholson","3":"USA","4":"12"},{"1":"Paul","2":"Newman","3":"USA","4":"10"},{"1":"Laurence","2":"Olivier","3":"UK","4":"10"},{"1":"Bette","2":"Davis","3":"USA","4":"10"},{"1":"Al","2":"Pacino","3":"USA","4":"9"},{"1":"Denzel","2":"Washington","3":"USA","4":"9"},{"1":"Spencer","2":"Tracy","3":"USA","4":"9"},{"1":"Geraldine","2":"Page","3":"USA","4":"8"},{"1":"Peter","2":"O'Toole","3":"Ireland","4":"8"},{"1":"Robert","2":"De Niro","3":"USA","4":"8"},{"1":"Glenn","2":"Close","3":"USA","4":"8"},{"1":"Cate","2":"Blanchett","3":"Australia","4":"8"},{"1":"Marlon","2":"Brando","3":"USA","4":"8"},{"1":"Ingrid","2":"Bergman","3":"Sweden","4":"7"},{"1":"Kate","2":"Winslet","3":"UK","4":"7"},{"1":"Dustin","2":"Hoffman","3":"USA","4":"7"},{"1":"Jane","2":"Fonda","3":"USA","4":"7"},{"1":"Richard","2":"Burton","3":"UK","4":"7"},{"1":"Judi","2":"Dench","3":"UK","4":"7"},{"1":"Daniel","2":"Day-Lewis","3":"UK","4":"6"},{"1":"Sissy","2":"Spacek","3":"USA","4":"6"},{"1":"Amy","2":"Adams","3":"USA","4":"6"},{"1":"Anthony","2":"Hopkins","3":"UK","4":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>To exclude a value instead of matching it, use <code>&lt;&gt;</code> (or the equivalent <code>!=</code>):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, primary_genre</span>
@@ -1859,171 +880,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> oscar_nominations <span class="op">&gt;=</span> <span class="dv">5</span></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> oscar_nominations <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: right;">oscar_nominations</th>
-<th style="text-align: right;">oscar_wins</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Meryl</td>
-<td style="text-align: left;">Streep</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Katharine</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Nicholson</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Paul</td>
-<td style="text-align: left;">Newman</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Bette</td>
-<td style="text-align: left;">Davis</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Laurence</td>
-<td style="text-align: left;">Olivier</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Spencer</td>
-<td style="text-align: left;">Tracy</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Denzel</td>
-<td style="text-align: left;">Washington</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Al</td>
-<td style="text-align: left;">Pacino</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">O’Toole</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Lemmon</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Glenn</td>
-<td style="text-align: left;">Close</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">De Niro</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Marlon</td>
-<td style="text-align: left;">Brando</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Geraldine</td>
-<td style="text-align: left;">Page</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Dustin</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ingrid</td>
-<td style="text-align: left;">Bergman</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jane</td>
-<td style="text-align: left;">Fonda</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Richard</td>
-<td style="text-align: left;">Burton</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Judi</td>
-<td style="text-align: left;">Dench</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Kate</td>
-<td style="text-align: left;">Winslet</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Michael</td>
-<td style="text-align: left;">Caine</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Anthony</td>
-<td style="text-align: left;">Hopkins</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Daniel</td>
-<td style="text-align: left;">Day-Lewis</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">3</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["oscar_nominations"],"name":[3],"type":["int"],"align":["right"]},{"label":["oscar_wins"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Meryl","2":"Streep","3":"21","4":"3"},{"1":"Katharine","2":"Hepburn","3":"12","4":"4"},{"1":"Jack","2":"Nicholson","3":"12","4":"3"},{"1":"Paul","2":"Newman","3":"10","4":"1"},{"1":"Bette","2":"Davis","3":"10","4":"2"},{"1":"Laurence","2":"Olivier","3":"10","4":"1"},{"1":"Spencer","2":"Tracy","3":"9","4":"2"},{"1":"Denzel","2":"Washington","3":"9","4":"2"},{"1":"Al","2":"Pacino","3":"9","4":"1"},{"1":"Peter","2":"O'Toole","3":"8","4":"0"},{"1":"Jack","2":"Lemmon","3":"8","4":"2"},{"1":"Cate","2":"Blanchett","3":"8","4":"2"},{"1":"Glenn","2":"Close","3":"8","4":"0"},{"1":"Robert","2":"De Niro","3":"8","4":"2"},{"1":"Marlon","2":"Brando","3":"8","4":"2"},{"1":"Geraldine","2":"Page","3":"8","4":"1"},{"1":"Dustin","2":"Hoffman","3":"7","4":"2"},{"1":"Ingrid","2":"Bergman","3":"7","4":"3"},{"1":"Jane","2":"Fonda","3":"7","4":"2"},{"1":"Richard","2":"Burton","3":"7","4":"0"},{"1":"Judi","2":"Dench","3":"7","4":"1"},{"1":"Kate","2":"Winslet","3":"7","4":"1"},{"1":"Michael","2":"Caine","3":"6","4":"2"},{"1":"Anthony","2":"Hopkins","3":"6","4":"1"},{"1":"Daniel","2":"Day-Lewis","3":"6","4":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Fifteen actors in the table have received five or more Oscar nominations. Meryl Streep leads with 21 nominations, more than any other actor in the dataset.</p>
 </section>
@@ -2035,111 +898,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth_date <span class="op">&gt;=</span> <span class="st">'1980-01-01'</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_date;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>15 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_date</th>
-<th style="text-align: left;">birth_country</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Rinko</td>
-<td style="text-align: left;">Kikuchi</td>
-<td style="text-align: left;">1981-01-06</td>
-<td style="text-align: left;">Japan</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Rami</td>
-<td style="text-align: left;">Malek</td>
-<td style="text-align: left;">1981-05-12</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Natalie</td>
-<td style="text-align: left;">Portman</td>
-<td style="text-align: left;">1981-06-09</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Priyanka</td>
-<td style="text-align: left;">Chopra</td>
-<td style="text-align: left;">1982-07-18</td>
-<td style="text-align: left;">India</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Lupita</td>
-<td style="text-align: left;">Nyong’o</td>
-<td style="text-align: left;">1983-03-01</td>
-<td style="text-align: left;">Mexico</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Chris</td>
-<td style="text-align: left;">Hemsworth</td>
-<td style="text-align: left;">1983-08-11</td>
-<td style="text-align: left;">Australia</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Keira</td>
-<td style="text-align: left;">Knightley</td>
-<td style="text-align: left;">1985-03-26</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ana</td>
-<td style="text-align: left;">de Armas</td>
-<td style="text-align: left;">1988-04-30</td>
-<td style="text-align: left;">Cuba</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Alicia</td>
-<td style="text-align: left;">Vikander</td>
-<td style="text-align: left;">1988-10-03</td>
-<td style="text-align: left;">Sweden</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Emma</td>
-<td style="text-align: left;">Stone</td>
-<td style="text-align: left;">1988-11-06</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Brie</td>
-<td style="text-align: left;">Larson</td>
-<td style="text-align: left;">1989-10-01</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jennifer</td>
-<td style="text-align: left;">Lawrence</td>
-<td style="text-align: left;">1990-08-15</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Saoirse</td>
-<td style="text-align: left;">Ronan</td>
-<td style="text-align: left;">1994-04-12</td>
-<td style="text-align: left;">Ireland</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Florence</td>
-<td style="text-align: left;">Pugh</td>
-<td style="text-align: left;">1996-01-03</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Timothée</td>
-<td style="text-align: left;">Chalamet</td>
-<td style="text-align: left;">2000-12-27</td>
-<td style="text-align: left;">USA</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_date"],"name":[3],"type":["date"],"align":["right"]},{"label":["birth_country"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Rinko","2":"Kikuchi","3":"1981-01-06","4":"Japan"},{"1":"Rami","2":"Malek","3":"1981-05-12","4":"USA"},{"1":"Natalie","2":"Portman","3":"1981-06-09","4":"USA"},{"1":"Priyanka","2":"Chopra","3":"1982-07-18","4":"India"},{"1":"Lupita","2":"Nyong'o","3":"1983-03-01","4":"Mexico"},{"1":"Chris","2":"Hemsworth","3":"1983-08-11","4":"Australia"},{"1":"Keira","2":"Knightley","3":"1985-03-26","4":"UK"},{"1":"Ana","2":"de Armas","3":"1988-04-30","4":"Cuba"},{"1":"Alicia","2":"Vikander","3":"1988-10-03","4":"Sweden"},{"1":"Emma","2":"Stone","3":"1988-11-06","4":"USA"},{"1":"Brie","2":"Larson","3":"1989-10-01","4":"USA"},{"1":"Jennifer","2":"Lawrence","3":"1990-08-15","4":"USA"},{"1":"Saoirse","2":"Ronan","3":"1994-04-12","4":"Ireland"},{"1":"Florence","2":"Pugh","3":"1996-01-03","4":"UK"},{"1":"Timothée","2":"Chalamet","3":"2000-12-27","4":"USA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>This query returns actors born in 1980 or later, representing the youngest generation in the dataset.</p>
 </section>
@@ -2157,171 +922,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth_date <span class="kw">BETWEEN</span> <span class="st">'1950-01-01'</span> <span class="kw">AND</span> <span class="st">'1969-12-31'</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_date;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_date</th>
-<th style="text-align: right;">oscar_nominations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Geoffrey</td>
-<td style="text-align: left;">Rush</td>
-<td style="text-align: left;">1951-07-06</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Roberto</td>
-<td style="text-align: left;">Benigni</td>
-<td style="text-align: left;">1952-10-27</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Isabelle</td>
-<td style="text-align: left;">Huppert</td>
-<td style="text-align: left;">1953-03-16</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Denzel</td>
-<td style="text-align: left;">Washington</td>
-<td style="text-align: left;">1954-12-28</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Whoopi</td>
-<td style="text-align: left;">Goldberg</td>
-<td style="text-align: left;">1955-11-13</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Koji</td>
-<td style="text-align: left;">Yakusho</td>
-<td style="text-align: left;">1956-01-02</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Mel</td>
-<td style="text-align: left;">Gibson</td>
-<td style="text-align: left;">1956-01-03</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Tom</td>
-<td style="text-align: left;">Hanks</td>
-<td style="text-align: left;">1956-07-09</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Christoph</td>
-<td style="text-align: left;">Waltz</td>
-<td style="text-align: left;">1956-10-04</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Daniel</td>
-<td style="text-align: left;">Day-Lewis</td>
-<td style="text-align: left;">1957-04-29</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sharon</td>
-<td style="text-align: left;">Stone</td>
-<td style="text-align: left;">1958-03-10</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gary</td>
-<td style="text-align: left;">Oldman</td>
-<td style="text-align: left;">1958-03-21</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Michelle</td>
-<td style="text-align: left;">Pfeiffer</td>
-<td style="text-align: left;">1958-04-29</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Kevin</td>
-<td style="text-align: left;">Bacon</td>
-<td style="text-align: left;">1958-07-08</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Angela</td>
-<td style="text-align: left;">Bassett</td>
-<td style="text-align: left;">1958-08-16</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Emma</td>
-<td style="text-align: left;">Thompson</td>
-<td style="text-align: left;">1959-04-15</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Victoria</td>
-<td style="text-align: left;">Abril</td>
-<td style="text-align: left;">1959-07-04</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marcia Gay</td>
-<td style="text-align: left;">Harden</td>
-<td style="text-align: left;">1959-08-14</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Ken</td>
-<td style="text-align: left;">Watanabe</td>
-<td style="text-align: left;">1959-10-21</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Antonio</td>
-<td style="text-align: left;">Banderas</td>
-<td style="text-align: left;">1960-08-10</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Colin</td>
-<td style="text-align: left;">Firth</td>
-<td style="text-align: left;">1960-09-10</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Melissa</td>
-<td style="text-align: left;">Leo</td>
-<td style="text-align: left;">1960-09-14</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Forest</td>
-<td style="text-align: left;">Whitaker</td>
-<td style="text-align: left;">1961-07-15</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jodie</td>
-<td style="text-align: left;">Foster</td>
-<td style="text-align: left;">1962-11-19</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Ralph</td>
-<td style="text-align: left;">Fiennes</td>
-<td style="text-align: left;">1962-12-22</td>
-<td style="text-align: right;">2</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_date"],"name":[3],"type":["date"],"align":["right"]},{"label":["oscar_nominations"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Geoffrey","2":"Rush","3":"1951-07-06","4":"4"},{"1":"Roberto","2":"Benigni","3":"1952-10-27","4":"3"},{"1":"Isabelle","2":"Huppert","3":"1953-03-16","4":"2"},{"1":"Denzel","2":"Washington","3":"1954-12-28","4":"9"},{"1":"Whoopi","2":"Goldberg","3":"1955-11-13","4":"2"},{"1":"Koji","2":"Yakusho","3":"1956-01-02","4":"0"},{"1":"Mel","2":"Gibson","3":"1956-01-03","4":"2"},{"1":"Tom","2":"Hanks","3":"1956-07-09","4":"5"},{"1":"Christoph","2":"Waltz","3":"1956-10-04","4":"4"},{"1":"Daniel","2":"Day-Lewis","3":"1957-04-29","4":"6"},{"1":"Sharon","2":"Stone","3":"1958-03-10","4":"1"},{"1":"Gary","2":"Oldman","3":"1958-03-21","4":"2"},{"1":"Michelle","2":"Pfeiffer","3":"1958-04-29","4":"3"},{"1":"Kevin","2":"Bacon","3":"1958-07-08","4":"0"},{"1":"Angela","2":"Bassett","3":"1958-08-16","4":"1"},{"1":"Emma","2":"Thompson","3":"1959-04-15","4":"5"},{"1":"Victoria","2":"Abril","3":"1959-07-04","4":"0"},{"1":"Marcia Gay","2":"Harden","3":"1959-08-14","4":"2"},{"1":"Ken","2":"Watanabe","3":"1959-10-21","4":"1"},{"1":"Antonio","2":"Banderas","3":"1960-08-10","4":"0"},{"1":"Colin","2":"Firth","3":"1960-09-10","4":"2"},{"1":"Melissa","2":"Leo","3":"1960-09-14","4":"2"},{"1":"Forest","2":"Whitaker","3":"1961-07-15","4":"2"},{"1":"Jodie","2":"Foster","3":"1962-11-19","4":"4"},{"1":"Ralph","2":"Fiennes","3":"1962-12-22","4":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The same syntax applies to integer columns:</p>
 <div class="cell">
@@ -2329,171 +936,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> oscar_nominations <span class="kw">BETWEEN</span> <span class="dv">3</span> <span class="kw">AND</span> <span class="dv">8</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> oscar_nominations <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: right;">oscar_nominations</th>
-<th style="text-align: right;">oscar_wins</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Lemmon</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">De Niro</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marlon</td>
-<td style="text-align: left;">Brando</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">O’Toole</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Geraldine</td>
-<td style="text-align: left;">Page</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Glenn</td>
-<td style="text-align: left;">Close</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Kate</td>
-<td style="text-align: left;">Winslet</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Dustin</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jane</td>
-<td style="text-align: left;">Fonda</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Judi</td>
-<td style="text-align: left;">Dench</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ingrid</td>
-<td style="text-align: left;">Bergman</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Richard</td>
-<td style="text-align: left;">Burton</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Thelma</td>
-<td style="text-align: left;">Ritter</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Anthony</td>
-<td style="text-align: left;">Hopkins</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Daniel</td>
-<td style="text-align: left;">Day-Lewis</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Michael</td>
-<td style="text-align: left;">Caine</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Shirley</td>
-<td style="text-align: left;">MacLaine</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sissy</td>
-<td style="text-align: left;">Spacek</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Amy</td>
-<td style="text-align: left;">Adams</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Simone</td>
-<td style="text-align: left;">Signoret</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Audrey</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">James</td>
-<td style="text-align: left;">Stewart</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sophia</td>
-<td style="text-align: left;">Loren</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Alec</td>
-<td style="text-align: left;">Guinness</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["oscar_nominations"],"name":[3],"type":["int"],"align":["right"]},{"label":["oscar_wins"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Jack","2":"Lemmon","3":"8","4":"2"},{"1":"Robert","2":"De Niro","3":"8","4":"2"},{"1":"Cate","2":"Blanchett","3":"8","4":"2"},{"1":"Marlon","2":"Brando","3":"8","4":"2"},{"1":"Peter","2":"O'Toole","3":"8","4":"0"},{"1":"Geraldine","2":"Page","3":"8","4":"1"},{"1":"Glenn","2":"Close","3":"8","4":"0"},{"1":"Kate","2":"Winslet","3":"7","4":"1"},{"1":"Dustin","2":"Hoffman","3":"7","4":"2"},{"1":"Jane","2":"Fonda","3":"7","4":"2"},{"1":"Judi","2":"Dench","3":"7","4":"1"},{"1":"Ingrid","2":"Bergman","3":"7","4":"3"},{"1":"Richard","2":"Burton","3":"7","4":"0"},{"1":"Thelma","2":"Ritter","3":"6","4":"0"},{"1":"Anthony","2":"Hopkins","3":"6","4":"1"},{"1":"Daniel","2":"Day-Lewis","3":"6","4":"3"},{"1":"Michael","2":"Caine","3":"6","4":"2"},{"1":"Shirley","2":"MacLaine","3":"6","4":"1"},{"1":"Sissy","2":"Spacek","3":"6","4":"1"},{"1":"Amy","2":"Adams","3":"6","4":"0"},{"1":"Simone","2":"Signoret","3":"5","4":"1"},{"1":"Audrey","2":"Hepburn","3":"5","4":"1"},{"1":"James","2":"Stewart","3":"5","4":"1"},{"1":"Sophia","2":"Loren","3":"5","4":"1"},{"1":"Alec","2":"Guinness","3":"5","4":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>With strings, <code>BETWEEN</code> uses alphabetical (lexicographic) order. The boundary behavior is the same (both ends are inclusive), but the upper boundary catches only that exact string, not everything that begins with it. <code>last_name BETWEEN 'D' AND 'H'</code> would miss <code>Hanks</code>, <code>Hepburn</code>, and every other name that starts with H but sorts after the bare letter <code>H</code>. The correct way to express “last names beginning with D through H” is a half-open range using explicit operators:</p>
 <div class="cell">
@@ -2501,145 +950,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="op">&gt;=</span> <span class="st">'D'</span> <span class="kw">AND</span> last_name <span class="op">&lt;</span> <span class="st">'I'</span></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> last_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">primary_genre</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Bette</td>
-<td style="text-align: left;">Davis</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Viola</td>
-<td style="text-align: left;">Davis</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Doris</td>
-<td style="text-align: left;">Day</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Daniel</td>
-<td style="text-align: left;">Day-Lewis</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">De Niro</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">James</td>
-<td style="text-align: left;">Dean</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Alain</td>
-<td style="text-align: left;">Delon</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Judi</td>
-<td style="text-align: left;">Dench</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Catherine</td>
-<td style="text-align: left;">Deneuve</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gérard</td>
-<td style="text-align: left;">Depardieu</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Kirk</td>
-<td style="text-align: left;">Douglas</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Faye</td>
-<td style="text-align: left;">Dunaway</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clint</td>
-<td style="text-align: left;">Eastwood</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Chiwetel</td>
-<td style="text-align: left;">Ejiofor</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Idris</td>
-<td style="text-align: left;">Elba</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Michael</td>
-<td style="text-align: left;">Fassbender</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Ralph</td>
-<td style="text-align: left;">Fiennes</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Albert</td>
-<td style="text-align: left;">Finney</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Colin</td>
-<td style="text-align: left;">Firth</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Henry</td>
-<td style="text-align: left;">Fonda</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jane</td>
-<td style="text-align: left;">Fonda</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jodie</td>
-<td style="text-align: left;">Foster</td>
-<td style="text-align: left;">Thriller</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jamie</td>
-<td style="text-align: left;">Foxx</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gael</td>
-<td style="text-align: left;">García Bernal</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Giancarlo</td>
-<td style="text-align: left;">Giannini</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Bette","2":"Davis","3":"Drama"},{"1":"Viola","2":"Davis","3":"Drama"},{"1":"Doris","2":"Day","3":"Comedy"},{"1":"Daniel","2":"Day-Lewis","3":"Drama"},{"1":"Robert","2":"De Niro","3":"Drama"},{"1":"James","2":"Dean","3":"Drama"},{"1":"Alain","2":"Delon","3":"Action"},{"1":"Judi","2":"Dench","3":"Drama"},{"1":"Catherine","2":"Deneuve","3":"Drama"},{"1":"Gérard","2":"Depardieu","3":"Drama"},{"1":"Kirk","2":"Douglas","3":"Drama"},{"1":"Faye","2":"Dunaway","3":"Drama"},{"1":"Clint","2":"Eastwood","3":"Action"},{"1":"Chiwetel","2":"Ejiofor","3":"Drama"},{"1":"Idris","2":"Elba","3":"Action"},{"1":"Michael","2":"Fassbender","3":"Drama"},{"1":"Ralph","2":"Fiennes","3":"Drama"},{"1":"Albert","2":"Finney","3":"Drama"},{"1":"Colin","2":"Firth","3":"Drama"},{"1":"Henry","2":"Fonda","3":"Drama"},{"1":"Jane","2":"Fonda","3":"Drama"},{"1":"Jodie","2":"Foster","3":"Thriller"},{"1":"Jamie","2":"Foxx","3":"Drama"},{"1":"Gael","2":"García Bernal","3":"Drama"},{"1":"Giancarlo","2":"Giannini","3":"Drama"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The lower bound <code>&gt;= 'D'</code> is inclusive and works as expected. The upper bound uses <code>&lt; 'I'</code> rather than <code>&lt;= 'H'</code> precisely because <code>'H'</code> alone would exclude names like <code>Hanks</code> and <code>Hoffman</code> that sort after the single character <code>H</code>.</p>
 <div class="callout callout-style-simple callout-warning">
@@ -2662,171 +979,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> death_date <span class="kw">IS</span> <span class="kw">NULL</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_date;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_date</th>
-<th style="text-align: left;">birth_country</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Eva Marie</td>
-<td style="text-align: left;">Saint</td>
-<td style="text-align: left;">1924-07-04</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gene</td>
-<td style="text-align: left;">Hackman</td>
-<td style="text-align: left;">1930-01-30</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clint</td>
-<td style="text-align: left;">Eastwood</td>
-<td style="text-align: left;">1930-05-31</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Harriet</td>
-<td style="text-align: left;">Andersson</td>
-<td style="text-align: left;">1932-02-14</td>
-<td style="text-align: left;">Sweden</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Kim</td>
-<td style="text-align: left;">Novak</td>
-<td style="text-align: left;">1933-02-13</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Michael</td>
-<td style="text-align: left;">Caine</td>
-<td style="text-align: left;">1933-03-14</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Shirley</td>
-<td style="text-align: left;">MacLaine</td>
-<td style="text-align: left;">1934-04-24</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sophia</td>
-<td style="text-align: left;">Loren</td>
-<td style="text-align: left;">1934-09-20</td>
-<td style="text-align: left;">Italy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Brigitte</td>
-<td style="text-align: left;">Bardot</td>
-<td style="text-align: left;">1934-09-28</td>
-<td style="text-align: left;">France</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Judi</td>
-<td style="text-align: left;">Dench</td>
-<td style="text-align: left;">1934-12-09</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Julie</td>
-<td style="text-align: left;">Andrews</td>
-<td style="text-align: left;">1935-10-01</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Warren</td>
-<td style="text-align: left;">Beatty</td>
-<td style="text-align: left;">1937-03-30</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Nicholson</td>
-<td style="text-align: left;">1937-04-22</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Dustin</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: left;">1937-08-08</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jane</td>
-<td style="text-align: left;">Fonda</td>
-<td style="text-align: left;">1937-12-21</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Anthony</td>
-<td style="text-align: left;">Hopkins</td>
-<td style="text-align: left;">1937-12-31</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Liv</td>
-<td style="text-align: left;">Ullmann</td>
-<td style="text-align: left;">1938-12-16</td>
-<td style="text-align: left;">Norway</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Al</td>
-<td style="text-align: left;">Pacino</td>
-<td style="text-align: left;">1940-04-25</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Faye</td>
-<td style="text-align: left;">Dunaway</td>
-<td style="text-align: left;">1941-01-14</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Barbra</td>
-<td style="text-align: left;">Streisand</td>
-<td style="text-align: left;">1942-04-24</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Giancarlo</td>
-<td style="text-align: left;">Giannini</td>
-<td style="text-align: left;">1942-08-01</td>
-<td style="text-align: left;">Italy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Amitabh</td>
-<td style="text-align: left;">Bachchan</td>
-<td style="text-align: left;">1942-10-11</td>
-<td style="text-align: left;">India</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">De Niro</td>
-<td style="text-align: left;">1943-08-17</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Catherine</td>
-<td style="text-align: left;">Deneuve</td>
-<td style="text-align: left;">1943-10-22</td>
-<td style="text-align: left;">France</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Carmen</td>
-<td style="text-align: left;">Maura</td>
-<td style="text-align: left;">1945-09-15</td>
-<td style="text-align: left;">Spain</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_date"],"name":[3],"type":["date"],"align":["right"]},{"label":["birth_country"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Eva Marie","2":"Saint","3":"1924-07-04","4":"USA"},{"1":"Gene","2":"Hackman","3":"1930-01-30","4":"USA"},{"1":"Clint","2":"Eastwood","3":"1930-05-31","4":"USA"},{"1":"Harriet","2":"Andersson","3":"1932-02-14","4":"Sweden"},{"1":"Kim","2":"Novak","3":"1933-02-13","4":"USA"},{"1":"Michael","2":"Caine","3":"1933-03-14","4":"UK"},{"1":"Shirley","2":"MacLaine","3":"1934-04-24","4":"USA"},{"1":"Sophia","2":"Loren","3":"1934-09-20","4":"Italy"},{"1":"Brigitte","2":"Bardot","3":"1934-09-28","4":"France"},{"1":"Judi","2":"Dench","3":"1934-12-09","4":"UK"},{"1":"Julie","2":"Andrews","3":"1935-10-01","4":"UK"},{"1":"Warren","2":"Beatty","3":"1937-03-30","4":"USA"},{"1":"Jack","2":"Nicholson","3":"1937-04-22","4":"USA"},{"1":"Dustin","2":"Hoffman","3":"1937-08-08","4":"USA"},{"1":"Jane","2":"Fonda","3":"1937-12-21","4":"USA"},{"1":"Anthony","2":"Hopkins","3":"1937-12-31","4":"UK"},{"1":"Liv","2":"Ullmann","3":"1938-12-16","4":"Norway"},{"1":"Al","2":"Pacino","3":"1940-04-25","4":"USA"},{"1":"Faye","2":"Dunaway","3":"1941-01-14","4":"USA"},{"1":"Barbra","2":"Streisand","3":"1942-04-24","4":"USA"},{"1":"Giancarlo","2":"Giannini","3":"1942-08-01","4":"Italy"},{"1":"Amitabh","2":"Bachchan","3":"1942-10-11","4":"India"},{"1":"Robert","2":"De Niro","3":"1943-08-17","4":"USA"},{"1":"Catherine","2":"Deneuve","3":"1943-10-22","4":"France"},{"1":"Carmen","2":"Maura","3":"1945-09-15","4":"Spain"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>To find rows where a value <em>is</em> present, use <code>IS NOT NULL</code>. The following query returns only deceased actors by requiring that <code>death_date</code> has been recorded:</p>
 <div class="cell">
@@ -2834,171 +993,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> death_date <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> death_date <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_date</th>
-<th style="text-align: left;">death_date</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Alain</td>
-<td style="text-align: left;">Delon</td>
-<td style="text-align: left;">1935-11-08</td>
-<td style="text-align: left;">2024-08-18</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gina</td>
-<td style="text-align: left;">Lollobrigida</td>
-<td style="text-align: left;">1927-07-04</td>
-<td style="text-align: left;">2023-01-16</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sidney</td>
-<td style="text-align: left;">Poitier</td>
-<td style="text-align: left;">1927-02-20</td>
-<td style="text-align: left;">2022-01-06</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jean-Paul</td>
-<td style="text-align: left;">Belmondo</td>
-<td style="text-align: left;">1933-04-09</td>
-<td style="text-align: left;">2021-09-06</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sean</td>
-<td style="text-align: left;">Connery</td>
-<td style="text-align: left;">1930-08-25</td>
-<td style="text-align: left;">2020-10-31</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Max</td>
-<td style="text-align: left;">von Sydow</td>
-<td style="text-align: left;">1929-04-10</td>
-<td style="text-align: left;">2020-03-08</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Kirk</td>
-<td style="text-align: left;">Douglas</td>
-<td style="text-align: left;">1916-12-09</td>
-<td style="text-align: left;">2020-02-05</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Doris</td>
-<td style="text-align: left;">Day</td>
-<td style="text-align: left;">1922-04-03</td>
-<td style="text-align: left;">2019-05-13</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Bibi</td>
-<td style="text-align: left;">Andersson</td>
-<td style="text-align: left;">1935-11-11</td>
-<td style="text-align: left;">2019-04-14</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Albert</td>
-<td style="text-align: left;">Finney</td>
-<td style="text-align: left;">1936-05-09</td>
-<td style="text-align: left;">2019-02-07</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jeanne</td>
-<td style="text-align: left;">Moreau</td>
-<td style="text-align: left;">1928-01-23</td>
-<td style="text-align: left;">2017-07-31</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Roger</td>
-<td style="text-align: left;">Moore</td>
-<td style="text-align: left;">1927-10-14</td>
-<td style="text-align: left;">2017-05-23</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Debbie</td>
-<td style="text-align: left;">Reynolds</td>
-<td style="text-align: left;">1932-04-01</td>
-<td style="text-align: left;">2016-12-28</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Omar</td>
-<td style="text-align: left;">Sharif</td>
-<td style="text-align: left;">1932-04-10</td>
-<td style="text-align: left;">2015-07-10</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Philip</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: left;">1967-07-23</td>
-<td style="text-align: left;">2014-02-02</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">O’Toole</td>
-<td style="text-align: left;">1932-08-02</td>
-<td style="text-align: left;">2013-12-14</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Celeste</td>
-<td style="text-align: left;">Holm</td>
-<td style="text-align: left;">1917-04-29</td>
-<td style="text-align: left;">2012-07-15</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ernest</td>
-<td style="text-align: left;">Borgnine</td>
-<td style="text-align: left;">1917-01-24</td>
-<td style="text-align: left;">2012-07-08</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Elizabeth</td>
-<td style="text-align: left;">Taylor</td>
-<td style="text-align: left;">1932-02-27</td>
-<td style="text-align: left;">2011-03-23</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Tony</td>
-<td style="text-align: left;">Curtis</td>
-<td style="text-align: left;">1925-06-03</td>
-<td style="text-align: left;">2010-09-29</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Karl</td>
-<td style="text-align: left;">Malden</td>
-<td style="text-align: left;">1912-03-22</td>
-<td style="text-align: left;">2009-07-01</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Paul</td>
-<td style="text-align: left;">Newman</td>
-<td style="text-align: left;">1925-01-26</td>
-<td style="text-align: left;">2008-09-26</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Charlton</td>
-<td style="text-align: left;">Heston</td>
-<td style="text-align: left;">1923-10-04</td>
-<td style="text-align: left;">2008-04-05</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Heath</td>
-<td style="text-align: left;">Ledger</td>
-<td style="text-align: left;">1979-04-04</td>
-<td style="text-align: left;">2008-01-22</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Shelley</td>
-<td style="text-align: left;">Winters</td>
-<td style="text-align: left;">1920-08-18</td>
-<td style="text-align: left;">2006-01-14</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_date"],"name":[3],"type":["date"],"align":["right"]},{"label":["death_date"],"name":[4],"type":["date"],"align":["right"]}],"data":[{"1":"Alain","2":"Delon","3":"1935-11-08","4":"2024-08-18"},{"1":"Gina","2":"Lollobrigida","3":"1927-07-04","4":"2023-01-16"},{"1":"Sidney","2":"Poitier","3":"1927-02-20","4":"2022-01-06"},{"1":"Jean-Paul","2":"Belmondo","3":"1933-04-09","4":"2021-09-06"},{"1":"Sean","2":"Connery","3":"1930-08-25","4":"2020-10-31"},{"1":"Max","2":"von Sydow","3":"1929-04-10","4":"2020-03-08"},{"1":"Kirk","2":"Douglas","3":"1916-12-09","4":"2020-02-05"},{"1":"Doris","2":"Day","3":"1922-04-03","4":"2019-05-13"},{"1":"Bibi","2":"Andersson","3":"1935-11-11","4":"2019-04-14"},{"1":"Albert","2":"Finney","3":"1936-05-09","4":"2019-02-07"},{"1":"Jeanne","2":"Moreau","3":"1928-01-23","4":"2017-07-31"},{"1":"Roger","2":"Moore","3":"1927-10-14","4":"2017-05-23"},{"1":"Debbie","2":"Reynolds","3":"1932-04-01","4":"2016-12-28"},{"1":"Omar","2":"Sharif","3":"1932-04-10","4":"2015-07-10"},{"1":"Philip","2":"Hoffman","3":"1967-07-23","4":"2014-02-02"},{"1":"Peter","2":"O'Toole","3":"1932-08-02","4":"2013-12-14"},{"1":"Celeste","2":"Holm","3":"1917-04-29","4":"2012-07-15"},{"1":"Ernest","2":"Borgnine","3":"1917-01-24","4":"2012-07-08"},{"1":"Elizabeth","2":"Taylor","3":"1932-02-27","4":"2011-03-23"},{"1":"Tony","2":"Curtis","3":"1925-06-03","4":"2010-09-29"},{"1":"Karl","2":"Malden","3":"1912-03-22","4":"2009-07-01"},{"1":"Paul","2":"Newman","3":"1925-01-26","4":"2008-09-26"},{"1":"Charlton","2":"Heston","3":"1923-10-04","4":"2008-04-05"},{"1":"Heath","2":"Ledger","3":"1979-04-04","4":"2008-01-22"},{"1":"Shelley","2":"Winters","3":"1920-08-18","4":"2006-01-14"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <div class="callout callout-style-simple callout-warning">
 <div class="callout-body d-flex">
@@ -3024,197 +1025,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> primary_genre <span class="op">=</span> <span class="st">'Drama'</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> oscar_wins <span class="op">&gt;</span> <span class="dv">0</span></span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> oscar_wins <span class="kw">DESC</span>, oscar_nominations <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: right;">oscar_nominations</th>
-<th style="text-align: right;">oscar_wins</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Katharine</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Meryl</td>
-<td style="text-align: left;">Streep</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Nicholson</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ingrid</td>
-<td style="text-align: left;">Bergman</td>
-<td style="text-align: left;">Sweden</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Daniel</td>
-<td style="text-align: left;">Day-Lewis</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Walter</td>
-<td style="text-align: left;">Brennan</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Bette</td>
-<td style="text-align: left;">Davis</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Denzel</td>
-<td style="text-align: left;">Washington</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Spencer</td>
-<td style="text-align: left;">Tracy</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marlon</td>
-<td style="text-align: left;">Brando</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">De Niro</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jane</td>
-<td style="text-align: left;">Fonda</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Dustin</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Tom</td>
-<td style="text-align: left;">Hanks</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jessica</td>
-<td style="text-align: left;">Lange</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Elizabeth</td>
-<td style="text-align: left;">Taylor</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Vivien</td>
-<td style="text-align: left;">Leigh</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Emma</td>
-<td style="text-align: left;">Thompson</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gene</td>
-<td style="text-align: left;">Hackman</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Christoph</td>
-<td style="text-align: left;">Waltz</td>
-<td style="text-align: left;">Germany</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Shelley</td>
-<td style="text-align: left;">Winters</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Mahershala</td>
-<td style="text-align: left;">Ali</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hilary</td>
-<td style="text-align: left;">Swank</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Paul</td>
-<td style="text-align: left;">Newman</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_country"],"name":[3],"type":["chr"],"align":["left"]},{"label":["oscar_nominations"],"name":[4],"type":["int"],"align":["right"]},{"label":["oscar_wins"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"Katharine","2":"Hepburn","3":"USA","4":"12","5":"4"},{"1":"Meryl","2":"Streep","3":"USA","4":"21","5":"3"},{"1":"Jack","2":"Nicholson","3":"USA","4":"12","5":"3"},{"1":"Ingrid","2":"Bergman","3":"Sweden","4":"7","5":"3"},{"1":"Daniel","2":"Day-Lewis","3":"UK","4":"6","5":"3"},{"1":"Walter","2":"Brennan","3":"USA","4":"4","5":"3"},{"1":"Bette","2":"Davis","3":"USA","4":"10","5":"2"},{"1":"Denzel","2":"Washington","3":"USA","4":"9","5":"2"},{"1":"Spencer","2":"Tracy","3":"USA","4":"9","5":"2"},{"1":"Marlon","2":"Brando","3":"USA","4":"8","5":"2"},{"1":"Cate","2":"Blanchett","3":"Australia","4":"8","5":"2"},{"1":"Robert","2":"De Niro","3":"USA","4":"8","5":"2"},{"1":"Jane","2":"Fonda","3":"USA","4":"7","5":"2"},{"1":"Dustin","2":"Hoffman","3":"USA","4":"7","5":"2"},{"1":"Tom","2":"Hanks","3":"USA","4":"5","5":"2"},{"1":"Jessica","2":"Lange","3":"USA","4":"5","5":"2"},{"1":"Elizabeth","2":"Taylor","3":"UK","4":"5","5":"2"},{"1":"Vivien","2":"Leigh","3":"UK","4":"5","5":"2"},{"1":"Emma","2":"Thompson","3":"UK","4":"5","5":"2"},{"1":"Gene","2":"Hackman","3":"USA","4":"5","5":"2"},{"1":"Christoph","2":"Waltz","3":"Germany","4":"4","5":"2"},{"1":"Shelley","2":"Winters","3":"USA","4":"4","5":"2"},{"1":"Mahershala","2":"Ali","3":"USA","4":"2","5":"2"},{"1":"Hilary","2":"Swank","3":"USA","4":"2","5":"2"},{"1":"Paul","2":"Newman","3":"USA","4":"10","5":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>This query returns Drama actors who have won at least one Oscar, sorted by wins and then by total nominations to break ties.</p>
 <div class="callout callout-style-simple callout-tip">
@@ -3244,105 +1061,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> last_name <span class="kw">LIKE</span> <span class="st">'H%'</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> last_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>14 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: left;">birth_country</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Gene</td>
-<td style="text-align: left;">Hackman</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Tom</td>
-<td style="text-align: left;">Hanks</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Marcia Gay</td>
-<td style="text-align: left;">Harden</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Rex</td>
-<td style="text-align: left;">Harrison</td>
-<td style="text-align: left;">Musical</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Salma</td>
-<td style="text-align: left;">Hayek</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">Mexico</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Chris</td>
-<td style="text-align: left;">Hemsworth</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: left;">Australia</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Katharine</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Audrey</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">Romance</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Charlton</td>
-<td style="text-align: left;">Heston</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Dustin</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Philip</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Celeste</td>
-<td style="text-align: left;">Holm</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Anthony</td>
-<td style="text-align: left;">Hopkins</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Isabelle</td>
-<td style="text-align: left;">Huppert</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">France</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[3],"type":["chr"],"align":["left"]},{"label":["birth_country"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Gene","2":"Hackman","3":"Drama","4":"USA"},{"1":"Tom","2":"Hanks","3":"Drama","4":"USA"},{"1":"Marcia Gay","2":"Harden","3":"Drama","4":"USA"},{"1":"Rex","2":"Harrison","3":"Musical","4":"UK"},{"1":"Salma","2":"Hayek","3":"Drama","4":"Mexico"},{"1":"Chris","2":"Hemsworth","3":"Action","4":"Australia"},{"1":"Katharine","2":"Hepburn","3":"Drama","4":"USA"},{"1":"Audrey","2":"Hepburn","3":"Romance","4":"UK"},{"1":"Charlton","2":"Heston","3":"Action","4":"USA"},{"1":"Dustin","2":"Hoffman","3":"Drama","4":"USA"},{"1":"Philip","2":"Hoffman","3":"Drama","4":"USA"},{"1":"Celeste","2":"Holm","3":"Comedy","4":"USA"},{"1":"Anthony","2":"Hopkins","3":"Drama","4":"UK"},{"1":"Isabelle","2":"Huppert","3":"Drama","4":"France"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Lowercase <code>'h%'</code> would return no results here because text matching with <code>LIKE</code> is case-sensitive, and no last names in this table begin with a lower-case h. <code>ILIKE</code> works identically to <code>LIKE</code> but ignores case. Replacing <code>LIKE</code> with <code>ILIKE</code> makes the same pattern work regardless of how the value is capitalized:</p>
 <div class="cell">
@@ -3350,105 +1075,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> last_name ILIKE <span class="st">'h%'</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> last_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>14 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: left;">birth_country</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Gene</td>
-<td style="text-align: left;">Hackman</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Tom</td>
-<td style="text-align: left;">Hanks</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Marcia Gay</td>
-<td style="text-align: left;">Harden</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Rex</td>
-<td style="text-align: left;">Harrison</td>
-<td style="text-align: left;">Musical</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Salma</td>
-<td style="text-align: left;">Hayek</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">Mexico</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Chris</td>
-<td style="text-align: left;">Hemsworth</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: left;">Australia</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Katharine</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Audrey</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">Romance</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Charlton</td>
-<td style="text-align: left;">Heston</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Dustin</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Philip</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Celeste</td>
-<td style="text-align: left;">Holm</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: left;">USA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Anthony</td>
-<td style="text-align: left;">Hopkins</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">UK</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Isabelle</td>
-<td style="text-align: left;">Huppert</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">France</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[3],"type":["chr"],"align":["left"]},{"label":["birth_country"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Gene","2":"Hackman","3":"Drama","4":"USA"},{"1":"Tom","2":"Hanks","3":"Drama","4":"USA"},{"1":"Marcia Gay","2":"Harden","3":"Drama","4":"USA"},{"1":"Rex","2":"Harrison","3":"Musical","4":"UK"},{"1":"Salma","2":"Hayek","3":"Drama","4":"Mexico"},{"1":"Chris","2":"Hemsworth","3":"Action","4":"Australia"},{"1":"Katharine","2":"Hepburn","3":"Drama","4":"USA"},{"1":"Audrey","2":"Hepburn","3":"Romance","4":"UK"},{"1":"Charlton","2":"Heston","3":"Action","4":"USA"},{"1":"Dustin","2":"Hoffman","3":"Drama","4":"USA"},{"1":"Philip","2":"Hoffman","3":"Drama","4":"USA"},{"1":"Celeste","2":"Holm","3":"Comedy","4":"USA"},{"1":"Anthony","2":"Hopkins","3":"Drama","4":"UK"},{"1":"Isabelle","2":"Huppert","3":"Drama","4":"France"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Both queries return the same fourteen rows because the data happens to be consistently capitalized. The difference becomes meaningful when data entry is inconsistent: for example, if <code>primary_genre</code> values were stored as a mix of <code>'drama'</code>, <code>'Drama'</code>, and <code>'DRAMA'</code>, a <code>LIKE</code> filter for <code>'drama'</code> would miss the capitalized variants while <code>ILIKE</code> would catch all of them.</p>
 <p>With <code>%</code> wildcards on both sides of a search term, you can find text that occurs anywhere in a column. The following query finds actors whose birth names contain the word “Schwartz” or any other substring:</p>
@@ -3456,25 +1089,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, birth_name</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth_name <span class="kw">LIKE</span> <span class="st">'%Bernard%'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_name</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Tony</td>
-<td style="text-align: left;">Curtis</td>
-<td style="text-align: left;">Bernard Schwartz</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_name"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Tony","2":"Curtis","3":"Bernard Schwartz"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 </section>
 <section id="matching-a-list-of-values-with-in" class="level3" data-number="4.5.8">
@@ -3485,171 +1106,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth_country <span class="kw">IN</span> (<span class="st">'UK'</span>, <span class="st">'Australia'</span>, <span class="st">'Ireland'</span>)</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_country, oscar_nominations <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: right;">oscar_nominations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Nicole</td>
-<td style="text-align: left;">Kidman</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Geoffrey</td>
-<td style="text-align: left;">Rush</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Heath</td>
-<td style="text-align: left;">Ledger</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Hugh</td>
-<td style="text-align: left;">Jackman</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Toni</td>
-<td style="text-align: left;">Collette</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Eric</td>
-<td style="text-align: left;">Bana</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Chris</td>
-<td style="text-align: left;">Hemsworth</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">O’Toole</td>
-<td style="text-align: left;">Ireland</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Saoirse</td>
-<td style="text-align: left;">Ronan</td>
-<td style="text-align: left;">Ireland</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Laurence</td>
-<td style="text-align: left;">Olivier</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Kate</td>
-<td style="text-align: left;">Winslet</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Judi</td>
-<td style="text-align: left;">Dench</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Richard</td>
-<td style="text-align: left;">Burton</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Anthony</td>
-<td style="text-align: left;">Hopkins</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Michael</td>
-<td style="text-align: left;">Caine</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Daniel</td>
-<td style="text-align: left;">Day-Lewis</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Vivien</td>
-<td style="text-align: left;">Leigh</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Audrey</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Alec</td>
-<td style="text-align: left;">Guinness</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Emma</td>
-<td style="text-align: left;">Thompson</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Elizabeth</td>
-<td style="text-align: left;">Taylor</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Albert</td>
-<td style="text-align: left;">Finney</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Rex</td>
-<td style="text-align: left;">Harrison</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">Sellers</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">3</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_country"],"name":[3],"type":["chr"],"align":["left"]},{"label":["oscar_nominations"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Cate","2":"Blanchett","3":"Australia","4":"8"},{"1":"Nicole","2":"Kidman","3":"Australia","4":"5"},{"1":"Geoffrey","2":"Rush","3":"Australia","4":"4"},{"1":"Heath","2":"Ledger","3":"Australia","4":"2"},{"1":"Hugh","2":"Jackman","3":"Australia","4":"1"},{"1":"Toni","2":"Collette","3":"Australia","4":"1"},{"1":"Eric","2":"Bana","3":"Australia","4":"0"},{"1":"Chris","2":"Hemsworth","3":"Australia","4":"0"},{"1":"Peter","2":"O'Toole","3":"Ireland","4":"8"},{"1":"Saoirse","2":"Ronan","3":"Ireland","4":"4"},{"1":"Laurence","2":"Olivier","3":"UK","4":"10"},{"1":"Kate","2":"Winslet","3":"UK","4":"7"},{"1":"Judi","2":"Dench","3":"UK","4":"7"},{"1":"Richard","2":"Burton","3":"UK","4":"7"},{"1":"Anthony","2":"Hopkins","3":"UK","4":"6"},{"1":"Michael","2":"Caine","3":"UK","4":"6"},{"1":"Daniel","2":"Day-Lewis","3":"UK","4":"6"},{"1":"Vivien","2":"Leigh","3":"UK","4":"5"},{"1":"Audrey","2":"Hepburn","3":"UK","4":"5"},{"1":"Alec","2":"Guinness","3":"UK","4":"5"},{"1":"Emma","2":"Thompson","3":"UK","4":"5"},{"1":"Elizabeth","2":"Taylor","3":"UK","4":"5"},{"1":"Albert","2":"Finney","3":"UK","4":"5"},{"1":"Rex","2":"Harrison","3":"UK","4":"5"},{"1":"Peter","2":"Sellers","3":"UK","4":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 </section>
 <section id="negating-conditions-with-not" class="level3" data-number="4.5.9">
@@ -3665,145 +1128,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> last_name <span class="kw">NOT</span> <span class="kw">LIKE</span> <span class="st">'O%'</span></span>
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> last_name <span class="kw">NOT</span> <span class="kw">LIKE</span> <span class="st">'U%'</span></span>
 <span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> last_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">primary_genre</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Amitabh</td>
-<td style="text-align: left;">Bachchan</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Kevin</td>
-<td style="text-align: left;">Bacon</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Eric</td>
-<td style="text-align: left;">Bana</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Anne</td>
-<td style="text-align: left;">Bancroft</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Antonio</td>
-<td style="text-align: left;">Banderas</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Javier</td>
-<td style="text-align: left;">Bardem</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Brigitte</td>
-<td style="text-align: left;">Bardot</td>
-<td style="text-align: left;">Romance</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Angela</td>
-<td style="text-align: left;">Bassett</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Warren</td>
-<td style="text-align: left;">Beatty</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Monica</td>
-<td style="text-align: left;">Bellucci</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jean-Paul</td>
-<td style="text-align: left;">Belmondo</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Roberto</td>
-<td style="text-align: left;">Benigni</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Ingrid</td>
-<td style="text-align: left;">Bergman</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Halle</td>
-<td style="text-align: left;">Berry</td>
-<td style="text-align: left;">Action</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Juliette</td>
-<td style="text-align: left;">Binoche</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Dirk</td>
-<td style="text-align: left;">Bogarde</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Humphrey</td>
-<td style="text-align: left;">Bogart</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Helena</td>
-<td style="text-align: left;">Bonham Carter</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ernest</td>
-<td style="text-align: left;">Borgnine</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Marlon</td>
-<td style="text-align: left;">Brando</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Walter</td>
-<td style="text-align: left;">Brennan</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sandra</td>
-<td style="text-align: left;">Bullock</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Richard</td>
-<td style="text-align: left;">Burton</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Nicolas</td>
-<td style="text-align: left;">Cage</td>
-<td style="text-align: left;">Drama</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Amitabh","2":"Bachchan","3":"Drama"},{"1":"Kevin","2":"Bacon","3":"Drama"},{"1":"Eric","2":"Bana","3":"Action"},{"1":"Anne","2":"Bancroft","3":"Drama"},{"1":"Antonio","2":"Banderas","3":"Action"},{"1":"Javier","2":"Bardem","3":"Drama"},{"1":"Brigitte","2":"Bardot","3":"Romance"},{"1":"Angela","2":"Bassett","3":"Drama"},{"1":"Warren","2":"Beatty","3":"Drama"},{"1":"Monica","2":"Bellucci","3":"Action"},{"1":"Jean-Paul","2":"Belmondo","3":"Action"},{"1":"Roberto","2":"Benigni","3":"Comedy"},{"1":"Ingrid","2":"Bergman","3":"Drama"},{"1":"Halle","2":"Berry","3":"Action"},{"1":"Juliette","2":"Binoche","3":"Drama"},{"1":"Cate","2":"Blanchett","3":"Drama"},{"1":"Dirk","2":"Bogarde","3":"Drama"},{"1":"Humphrey","2":"Bogart","3":"Drama"},{"1":"Helena","2":"Bonham Carter","3":"Drama"},{"1":"Ernest","2":"Borgnine","3":"Drama"},{"1":"Marlon","2":"Brando","3":"Drama"},{"1":"Walter","2":"Brennan","3":"Drama"},{"1":"Sandra","2":"Bullock","3":"Comedy"},{"1":"Richard","2":"Burton","3":"Drama"},{"1":"Nicolas","2":"Cage","3":"Drama"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><code>NOT IN</code> excludes rows whose column value matches any entry in the list:</p>
 <div class="cell">
@@ -3811,171 +1142,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> primary_genre <span class="kw">NOT</span> <span class="kw">IN</span> (<span class="st">'Drama'</span>, <span class="st">'Action'</span>)</span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> primary_genre, last_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: left;">primary_genre</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Roberto</td>
-<td style="text-align: left;">Benigni</td>
-<td style="text-align: left;">Italy</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sandra</td>
-<td style="text-align: left;">Bullock</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Tony</td>
-<td style="text-align: left;">Curtis</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Doris</td>
-<td style="text-align: left;">Day</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Whoopi</td>
-<td style="text-align: left;">Goldberg</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Cary</td>
-<td style="text-align: left;">Grant</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Celeste</td>
-<td style="text-align: left;">Holm</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Diane</td>
-<td style="text-align: left;">Keaton</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Lemmon</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Shirley</td>
-<td style="text-align: left;">MacLaine</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Walter</td>
-<td style="text-align: left;">Matthau</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bette</td>
-<td style="text-align: left;">Midler</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Marilyn</td>
-<td style="text-align: left;">Monroe</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Thelma</td>
-<td style="text-align: left;">Ritter</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">Sellers</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Alastair</td>
-<td style="text-align: left;">Sim</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Alberto</td>
-<td style="text-align: left;">Sordi</td>
-<td style="text-align: left;">Italy</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Mira</td>
-<td style="text-align: left;">Sorvino</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Emma</td>
-<td style="text-align: left;">Stone</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Louis</td>
-<td style="text-align: left;">de Funès</td>
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Comedy</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Toni</td>
-<td style="text-align: left;">Collette</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: left;">Horror</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ruth</td>
-<td style="text-align: left;">Gordon</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Horror</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Janet</td>
-<td style="text-align: left;">Leigh</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Horror</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Julie</td>
-<td style="text-align: left;">Andrews</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Musical</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Fred</td>
-<td style="text-align: left;">Astaire</td>
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Musical</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_country"],"name":[3],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"Roberto","2":"Benigni","3":"Italy","4":"Comedy"},{"1":"Sandra","2":"Bullock","3":"USA","4":"Comedy"},{"1":"Tony","2":"Curtis","3":"USA","4":"Comedy"},{"1":"Doris","2":"Day","3":"USA","4":"Comedy"},{"1":"Whoopi","2":"Goldberg","3":"USA","4":"Comedy"},{"1":"Cary","2":"Grant","3":"UK","4":"Comedy"},{"1":"Celeste","2":"Holm","3":"USA","4":"Comedy"},{"1":"Diane","2":"Keaton","3":"USA","4":"Comedy"},{"1":"Jack","2":"Lemmon","3":"USA","4":"Comedy"},{"1":"Shirley","2":"MacLaine","3":"USA","4":"Comedy"},{"1":"Walter","2":"Matthau","3":"USA","4":"Comedy"},{"1":"Bette","2":"Midler","3":"USA","4":"Comedy"},{"1":"Marilyn","2":"Monroe","3":"USA","4":"Comedy"},{"1":"Thelma","2":"Ritter","3":"USA","4":"Comedy"},{"1":"Peter","2":"Sellers","3":"UK","4":"Comedy"},{"1":"Alastair","2":"Sim","3":"UK","4":"Comedy"},{"1":"Alberto","2":"Sordi","3":"Italy","4":"Comedy"},{"1":"Mira","2":"Sorvino","3":"USA","4":"Comedy"},{"1":"Emma","2":"Stone","3":"USA","4":"Comedy"},{"1":"Louis","2":"de Funès","3":"France","4":"Comedy"},{"1":"Toni","2":"Collette","3":"Australia","4":"Horror"},{"1":"Ruth","2":"Gordon","3":"USA","4":"Horror"},{"1":"Janet","2":"Leigh","3":"USA","4":"Horror"},{"1":"Julie","2":"Andrews","3":"UK","4":"Musical"},{"1":"Fred","2":"Astaire","3":"USA","4":"Musical"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><code>IS NOT NULL</code>, introduced in the previous section, follows the same pattern and is technically a <code>NOT</code> form as well.</p>
 <div class="callout callout-style-simple callout-tip">
@@ -3998,20 +1171,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, primary_genre</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> primary_genre <span class="kw">NOT</span> <span class="kw">IN</span> (<span class="st">'Drama'</span>, <span class="st">'Action'</span>, <span class="kw">NULL</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top">
-<caption>0 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">primary_genre</th>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[3],"type":["chr"],"align":["left"]}],"data":[],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>This returns zero rows despite the fact that most actors in the table are neither Drama nor Action performers. The reason comes down to how SQL evaluates NULL comparisons. The expression <code>primary_genre NOT IN ('Drama', 'Action', NULL)</code> expands internally to:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>primary_genre <span class="op">&lt;&gt;</span> <span class="st">'Drama'</span></span>
@@ -4042,171 +1208,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, oscar_nominations, oscar_wins</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> oscar_nominations <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: right;">oscar_nominations</th>
-<th style="text-align: right;">oscar_wins</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Meryl</td>
-<td style="text-align: left;">Streep</td>
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Katharine</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Nicholson</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Laurence</td>
-<td style="text-align: left;">Olivier</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Paul</td>
-<td style="text-align: left;">Newman</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bette</td>
-<td style="text-align: left;">Davis</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Spencer</td>
-<td style="text-align: left;">Tracy</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Denzel</td>
-<td style="text-align: left;">Washington</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Al</td>
-<td style="text-align: left;">Pacino</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Glenn</td>
-<td style="text-align: left;">Close</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Geraldine</td>
-<td style="text-align: left;">Page</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Lemmon</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Marlon</td>
-<td style="text-align: left;">Brando</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">De Niro</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">O’Toole</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Ingrid</td>
-<td style="text-align: left;">Bergman</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jane</td>
-<td style="text-align: left;">Fonda</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Dustin</td>
-<td style="text-align: left;">Hoffman</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Judi</td>
-<td style="text-align: left;">Dench</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Richard</td>
-<td style="text-align: left;">Burton</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Kate</td>
-<td style="text-align: left;">Winslet</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Shirley</td>
-<td style="text-align: left;">MacLaine</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Daniel</td>
-<td style="text-align: left;">Day-Lewis</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sissy</td>
-<td style="text-align: left;">Spacek</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["oscar_nominations"],"name":[3],"type":["int"],"align":["right"]},{"label":["oscar_wins"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Meryl","2":"Streep","3":"21","4":"3"},{"1":"Katharine","2":"Hepburn","3":"12","4":"4"},{"1":"Jack","2":"Nicholson","3":"12","4":"3"},{"1":"Laurence","2":"Olivier","3":"10","4":"1"},{"1":"Paul","2":"Newman","3":"10","4":"1"},{"1":"Bette","2":"Davis","3":"10","4":"2"},{"1":"Spencer","2":"Tracy","3":"9","4":"2"},{"1":"Denzel","2":"Washington","3":"9","4":"2"},{"1":"Al","2":"Pacino","3":"9","4":"1"},{"1":"Glenn","2":"Close","3":"8","4":"0"},{"1":"Cate","2":"Blanchett","3":"8","4":"2"},{"1":"Geraldine","2":"Page","3":"8","4":"1"},{"1":"Jack","2":"Lemmon","3":"8","4":"2"},{"1":"Marlon","2":"Brando","3":"8","4":"2"},{"1":"Robert","2":"De Niro","3":"8","4":"2"},{"1":"Peter","2":"O'Toole","3":"8","4":"0"},{"1":"Ingrid","2":"Bergman","3":"7","4":"3"},{"1":"Jane","2":"Fonda","3":"7","4":"2"},{"1":"Dustin","2":"Hoffman","3":"7","4":"2"},{"1":"Judi","2":"Dench","3":"7","4":"1"},{"1":"Richard","2":"Burton","3":"7","4":"0"},{"1":"Kate","2":"Winslet","3":"7","4":"1"},{"1":"Shirley","2":"MacLaine","3":"6","4":"1"},{"1":"Daniel","2":"Day-Lewis","3":"6","4":"3"},{"1":"Sissy","2":"Spacek","3":"6","4":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <section id="sorting-by-multiple-columns" class="level3" data-number="4.6.1">
 <h3 data-number="4.6.1" class="anchored" data-anchor-id="sorting-by-multiple-columns"><span class="header-section-number">4.6.1</span> Sorting by Multiple Columns</h3>
@@ -4215,171 +1223,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name, last_name, primary_genre, oscar_nominations</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> primary_genre <span class="kw">ASC</span>, oscar_nominations <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Displaying records 1 - 25</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: right;">oscar_nominations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Clint</td>
-<td style="text-align: left;">Eastwood</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Russell</td>
-<td style="text-align: left;">Crowe</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Mel</td>
-<td style="text-align: left;">Gibson</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Charlton</td>
-<td style="text-align: left;">Heston</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Lee</td>
-<td style="text-align: left;">Marvin</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hugh</td>
-<td style="text-align: left;">Jackman</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sean</td>
-<td style="text-align: left;">Connery</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Steve</td>
-<td style="text-align: left;">McQueen</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Halle</td>
-<td style="text-align: left;">Berry</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Telly</td>
-<td style="text-align: left;">Savalas</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Priyanka</td>
-<td style="text-align: left;">Chopra</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Chris</td>
-<td style="text-align: left;">Hemsworth</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jean</td>
-<td style="text-align: left;">Reno</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Monica</td>
-<td style="text-align: left;">Bellucci</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Toshiro</td>
-<td style="text-align: left;">Mifune</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Idris</td>
-<td style="text-align: left;">Elba</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Alain</td>
-<td style="text-align: left;">Delon</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Roger</td>
-<td style="text-align: left;">Moore</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Eric</td>
-<td style="text-align: left;">Bana</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jean-Paul</td>
-<td style="text-align: left;">Belmondo</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">Mitchum</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Antonio</td>
-<td style="text-align: left;">Banderas</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Lemmon</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Thelma</td>
-<td style="text-align: left;">Ritter</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Shirley</td>
-<td style="text-align: left;">MacLaine</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">6</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[3],"type":["chr"],"align":["left"]},{"label":["oscar_nominations"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Clint","2":"Eastwood","3":"Action","4":"4"},{"1":"Russell","2":"Crowe","3":"Action","4":"3"},{"1":"Mel","2":"Gibson","3":"Action","4":"2"},{"1":"Charlton","2":"Heston","3":"Action","4":"1"},{"1":"Lee","2":"Marvin","3":"Action","4":"1"},{"1":"Hugh","2":"Jackman","3":"Action","4":"1"},{"1":"Sean","2":"Connery","3":"Action","4":"1"},{"1":"Steve","2":"McQueen","3":"Action","4":"1"},{"1":"Halle","2":"Berry","3":"Action","4":"1"},{"1":"Telly","2":"Savalas","3":"Action","4":"1"},{"1":"Priyanka","2":"Chopra","3":"Action","4":"0"},{"1":"Chris","2":"Hemsworth","3":"Action","4":"0"},{"1":"Jean","2":"Reno","3":"Action","4":"0"},{"1":"Monica","2":"Bellucci","3":"Action","4":"0"},{"1":"Toshiro","2":"Mifune","3":"Action","4":"0"},{"1":"Idris","2":"Elba","3":"Action","4":"0"},{"1":"Alain","2":"Delon","3":"Action","4":"0"},{"1":"Roger","2":"Moore","3":"Action","4":"0"},{"1":"Eric","2":"Bana","3":"Action","4":"0"},{"1":"Jean-Paul","2":"Belmondo","3":"Action","4":"0"},{"1":"Robert","2":"Mitchum","3":"Action","4":"0"},{"1":"Antonio","2":"Banderas","3":"Action","4":"0"},{"1":"Jack","2":"Lemmon","3":"Comedy","4":"8"},{"1":"Thelma","2":"Ritter","3":"Comedy","4":"6"},{"1":"Shirley","2":"MacLaine","3":"Comedy","4":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>This query first groups rows by genre alphabetically, then within each genre sorts actors from most nominated to least. The result lets you compare the most decorated actors within each genre at a glance.</p>
 </section>
@@ -4392,81 +1242,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> oscar_nominations <span class="kw">DESC</span></span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: right;">oscar_nominations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Meryl</td>
-<td style="text-align: left;">Streep</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">21</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Nicholson</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Katharine</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Laurence</td>
-<td style="text-align: left;">Olivier</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Paul</td>
-<td style="text-align: left;">Newman</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bette</td>
-<td style="text-align: left;">Davis</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Al</td>
-<td style="text-align: left;">Pacino</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Denzel</td>
-<td style="text-align: left;">Washington</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Spencer</td>
-<td style="text-align: left;">Tracy</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">8</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[3],"type":["chr"],"align":["left"]},{"label":["oscar_nominations"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Meryl","2":"Streep","3":"Drama","4":"21"},{"1":"Jack","2":"Nicholson","3":"Drama","4":"12"},{"1":"Katharine","2":"Hepburn","3":"Drama","4":"12"},{"1":"Laurence","2":"Olivier","3":"Drama","4":"10"},{"1":"Paul","2":"Newman","3":"Drama","4":"10"},{"1":"Bette","2":"Davis","3":"Drama","4":"10"},{"1":"Al","2":"Pacino","3":"Drama","4":"9"},{"1":"Denzel","2":"Washington","3":"Drama","4":"9"},{"1":"Spencer","2":"Tracy","3":"Drama","4":"9"},{"1":"Cate","2":"Blanchett","3":"Drama","4":"8"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <div class="callout callout-style-simple callout-warning">
 <div class="callout-body d-flex">
@@ -4501,81 +1283,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> death_date <span class="kw">IS</span> <span class="kw">NULL</span></span>
 <span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> oscar_nominations <span class="kw">DESC</span></span>
 <span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">full_name</th>
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: right;">oscar_nominations</th>
-<th style="text-align: right;">oscar_wins</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Cate Blanchett</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Kate Winslet</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Judi Dench</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Daniel Day-Lewis</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Michael Caine</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Anthony Hopkins</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sophia Loren</td>
-<td style="text-align: left;">Italy</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Emma Thompson</td>
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Nicole Kidman</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Geoffrey Rush</td>
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["full_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["birth_country"],"name":[2],"type":["chr"],"align":["left"]},{"label":["oscar_nominations"],"name":[3],"type":["int"],"align":["right"]},{"label":["oscar_wins"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Cate Blanchett","2":"Australia","3":"8","4":"2"},{"1":"Kate Winslet","2":"UK","3":"7","4":"1"},{"1":"Judi Dench","2":"UK","3":"7","4":"1"},{"1":"Daniel Day-Lewis","2":"UK","3":"6","4":"3"},{"1":"Michael Caine","2":"UK","3":"6","4":"2"},{"1":"Anthony Hopkins","2":"UK","3":"6","4":"1"},{"1":"Sophia Loren","2":"Italy","3":"5","4":"1"},{"1":"Emma Thompson","2":"UK","3":"5","4":"2"},{"1":"Nicole Kidman","2":"Australia","3":"5","4":"1"},{"1":"Geoffrey Rush","2":"Australia","3":"4","4":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Reading a query like this from top to bottom is natural once you understand what each clause contributes. As you move through subsequent chapters and your queries grow more complex, this structured way of thinking about each clause separately will continue to serve as a reliable foundation.</p>
 </section>

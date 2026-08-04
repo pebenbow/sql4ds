@@ -177,6 +177,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 <link rel="stylesheet" href="custom.css">
@@ -741,69 +743,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> students</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>4 records</caption>
-<colgroup>
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 12%">
-<col style="width: 28%">
-<col style="width: 14%">
-<col style="width: 12%">
-<col style="width: 6%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">student_id</th>
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">email</th>
-<th style="text-align: left;">enrolled_on</th>
-<th style="text-align: left;">is_active</th>
-<th style="text-align: right;">gpa</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">Maria</td>
-<td style="text-align: left;">Santos</td>
-<td style="text-align: left;">msantos@university.edu</td>
-<td style="text-align: left;">2023-08-28</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">3.85</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2</td>
-<td style="text-align: left;">James</td>
-<td style="text-align: left;">Okafor</td>
-<td style="text-align: left;">jokafor@university.edu</td>
-<td style="text-align: left;">2023-08-28</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">3.41</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">3</td>
-<td style="text-align: left;">Priya</td>
-<td style="text-align: left;">Nair</td>
-<td style="text-align: left;">pnair@university.edu</td>
-<td style="text-align: left;">2024-01-15</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">4</td>
-<td style="text-align: left;">Connor</td>
-<td style="text-align: left;">Walsh</td>
-<td style="text-align: left;">cwalsh@university.edu</td>
-<td style="text-align: left;">2024-01-15</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">2.97</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["student_id"],"name":[1],"type":["int"],"align":["right"]},{"label":["first_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[3],"type":["chr"],"align":["left"]},{"label":["email"],"name":[4],"type":["chr"],"align":["left"]},{"label":["enrolled_on"],"name":[5],"type":["date"],"align":["right"]},{"label":["is_active"],"name":[6],"type":["lgl"],"align":["right"]},{"label":["gpa"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"Maria","3":"Santos","4":"msantos@university.edu","5":"2023-08-28","6":"TRUE","7":"3.85"},{"1":"2","2":"James","3":"Okafor","4":"jokafor@university.edu","5":"2023-08-28","6":"TRUE","7":"3.41"},{"1":"3","2":"Priya","3":"Nair","4":"pnair@university.edu","5":"2024-01-15","6":"TRUE","7":"NA"},{"1":"4","2":"Connor","3":"Walsh","4":"cwalsh@university.edu","5":"2024-01-15","6":"TRUE","7":"2.97"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Priya’s GPA is NULL: she enrolled mid-year and has not yet completed any graded coursework. The CHECK constraint permits this because it was written to allow NULLs explicitly.</p>
 </section>

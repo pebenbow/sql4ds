@@ -180,6 +180,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 <link rel="stylesheet" href="custom.css">
@@ -908,14 +910,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aa_flights)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>  flight dep_delay arr_delay dest</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>1   2019       803       802  STL</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>2   2437       660       648  MIA</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>3    731       613       598  DFW</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>4    753       533       499  DFW</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>5    731       504       493  DFW</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>6    745       502       495  DFW</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["flight"],"name":[1],"type":["int"],"align":["right"]},{"label":["dep_delay"],"name":[2],"type":["int"],"align":["right"]},{"label":["arr_delay"],"name":[3],"type":["int"],"align":["right"]},{"label":["dest"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"2019","2":"803","3":"802","4":"STL","_rn_":"1"},{"1":"2437","2":"660","3":"648","4":"MIA","_rn_":"2"},{"1":"731","2":"613","3":"598","4":"DFW","_rn_":"3"},{"1":"753","2":"533","3":"499","4":"DFW","_rn_":"4"},{"1":"731","2":"504","3":"493","4":"DFW","_rn_":"5"},{"1":"745","2":"502","3":"495","4":"DFW","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 </div>
 </div>
 <p>The value of <code>carrier_code</code> is sent to the database separately. No matter what string is in <code>carrier_code</code>, it is treated as a literal value to compare against the <code>carrier</code> column, not as SQL to execute. Multiple parameters follow the same pattern: add more <code>$n</code> placeholders and extend the <code>params</code> list.</p>
@@ -934,15 +934,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="12.7" class="anchored" data-anchor-id="closing-the-connection"><span class="header-section-number">12.7</span> Closing the Connection</h2>
 <p>A database connection holds resources on both the R side and the database server side. Close it explicitly when you are done:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" data-filename="r"><pre class="sourceCode r cw-auto code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" data-filename="r"><pre class="sourceCode r cw-auto code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In a script that opens a connection at the top and closes it at the bottom, it is good practice to use <code>on.exit()</code> to ensure the connection closes even if an error occurs partway through:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" data-filename="r"><pre class="sourceCode r cw-auto code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">Postgres</span>(), <span class="at">host =</span> <span class="st">"localhost"</span>, <span class="at">port =</span> <span class="dv">5433</span>,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dbname =</span> <span class="st">"nycflights"</span>, <span class="at">user =</span> <span class="st">"postgres"</span>, <span class="at">password =</span> <span class="st">"postgres"</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on.exit</span>(<span class="fu">dbDisconnect</span>(con), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ... rest of your analysis ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" data-filename="r"><pre class="sourceCode r cw-auto code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">Postgres</span>(), <span class="at">host =</span> <span class="st">"localhost"</span>, <span class="at">port =</span> <span class="dv">5433</span>,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dbname =</span> <span class="st">"nycflights"</span>, <span class="at">user =</span> <span class="st">"postgres"</span>, <span class="at">password =</span> <span class="st">"postgres"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on.exit</span>(<span class="fu">dbDisconnect</span>(con), <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ... rest of your analysis ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>on.exit(..., add = TRUE)</code> schedules <code>dbDisconnect(con)</code> to run when the surrounding function or script exits, regardless of whether it exits normally or with an error.</p>
 </section>

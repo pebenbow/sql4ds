@@ -177,6 +177,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 <link rel="stylesheet" href="custom.css">
@@ -628,33 +630,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ROUND</span>(<span class="fu">AVG</span>(oscar_nominations), <span class="dv">1</span>)      <span class="kw">AS</span> avg_nominations,</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">MAX</span>(total_box_office_usd) <span class="op">/</span> <span class="dv">1000000</span>   <span class="kw">AS</span> highest_box_office_millions</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<colgroup>
-<col style="width: 19%">
-<col style="width: 16%">
-<col style="width: 23%">
-<col style="width: 41%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: right;">total_actors</th>
-<th style="text-align: right;">total_wins</th>
-<th style="text-align: right;">avg_nominations</th>
-<th style="text-align: right;">highest_box_office_millions</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">200</td>
-<td style="text-align: right;">142</td>
-<td style="text-align: right;">2.9</td>
-<td style="text-align: right;">9200</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["total_actors"],"name":[1],"type":["int64"],"align":["right"]},{"label":["total_wins"],"name":[2],"type":["int64"],"align":["right"]},{"label":["avg_nominations"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["highest_box_office_millions"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"200","2":"142","3":"2.9","4":"9200"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>This returns a single row summarizing all 200 actors. <code>GROUP BY</code> lets you compute that same summary separately for each value of a categorical column.</p>
 </section>
@@ -673,60 +655,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> actor_count <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>8 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: right;">actor_count</th>
-<th style="text-align: right;">total_wins</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">135</td>
-<td style="text-align: right;">115</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">11</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Musical</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Romance</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Horror</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sci-Fi</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["primary_genre"],"name":[1],"type":["chr"],"align":["left"]},{"label":["actor_count"],"name":[2],"type":["int64"],"align":["right"]},{"label":["total_wins"],"name":[3],"type":["int64"],"align":["right"]}],"data":[{"1":"Drama","2":"135","3":"115"},{"1":"Action","2":"22","3":"5"},{"1":"Comedy","2":"20","3":"11"},{"1":"Musical","2":"7","3":"5"},{"1":"Thriller","2":"7","3":"4"},{"1":"Romance","2":"5","3":"1"},{"1":"Horror","2":"3","3":"1"},{"1":"Sci-Fi","2":"1","3":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The result has one row per genre. Drama dominates with 135 actors and 115 wins. Action comes second by count but its wins are comparatively low, a reflection of the Academy’s historical preference for dramatic performances over action roles.</p>
 <section id="grouping-by-multiple-columns" class="level3" data-number="6.3.1">
@@ -741,105 +676,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre, sex</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> primary_genre, sex;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>14 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: left;">sex</th>
-<th style="text-align: right;">actor_count</th>
-<th style="text-align: right;">avg_nominations</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Action</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0.3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Action</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: right;">19</td>
-<td style="text-align: right;">0.8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">2.7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">2.2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">70</td>
-<td style="text-align: right;">3.5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: right;">65</td>
-<td style="text-align: right;">3.6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Horror</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2.3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Musical</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">2.3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Musical</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Romance</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">1.3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Romance</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sci-Fi</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">1.8</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["primary_genre"],"name":[1],"type":["chr"],"align":["left"]},{"label":["sex"],"name":[2],"type":["chr"],"align":["left"]},{"label":["actor_count"],"name":[3],"type":["int64"],"align":["right"]},{"label":["avg_nominations"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Action","2":"F","3":"3","4":"0.3"},{"1":"Action","2":"M","3":"19","4":"0.8"},{"1":"Comedy","2":"F","3":"11","4":"2.7"},{"1":"Comedy","2":"M","3":"9","4":"2.2"},{"1":"Drama","2":"F","3":"70","4":"3.5"},{"1":"Drama","2":"M","3":"65","4":"3.6"},{"1":"Horror","2":"F","3":"3","4":"2.3"},{"1":"Musical","2":"F","3":"4","4":"2.3"},{"1":"Musical","2":"M","3":"3","4":"2.0"},{"1":"Romance","2":"F","3":"4","4":"1.3"},{"1":"Romance","2":"M","3":"1","4":"0.0"},{"1":"Sci-Fi","2":"F","3":"1","4":"3.0"},{"1":"Thriller","2":"F","3":"3","4":"2.0"},{"1":"Thriller","2":"M","3":"4","4":"1.8"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Each row now represents a unique genre-sex pairing. This lets you compare, for example, whether male and female Drama actors differ in their average nomination counts.</p>
 </section>
@@ -858,85 +701,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> total_actors <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>8 records</caption>
-<colgroup>
-<col style="width: 17%">
-<col style="width: 16%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 16%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: right;">total_actors</th>
-<th style="text-align: right;">competitive_winners</th>
-<th style="text-align: right;">honorary_recipients</th>
-<th style="text-align: right;">still_living</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">135</td>
-<td style="text-align: right;">84</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">82</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">22</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Musical</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Romance</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Horror</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sci-Fi</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["primary_genre"],"name":[1],"type":["chr"],"align":["left"]},{"label":["total_actors"],"name":[2],"type":["int64"],"align":["right"]},{"label":["competitive_winners"],"name":[3],"type":["int64"],"align":["right"]},{"label":["honorary_recipients"],"name":[4],"type":["int64"],"align":["right"]},{"label":["still_living"],"name":[5],"type":["int64"],"align":["right"]}],"data":[{"1":"Drama","2":"135","3":"84","4":"10","5":"82"},{"1":"Action","2":"22","3":"5","4":"2","5":"12"},{"1":"Comedy","2":"20","3":"10","4":"2","5":"8"},{"1":"Musical","2":"7","3":"4","4":"2","5":"3"},{"1":"Thriller","2":"7","3":"2","4":"0","5":"7"},{"1":"Romance","2":"5","3":"1","4":"1","5":"4"},{"1":"Horror","2":"3","3":"1","4":"0","5":"1"},{"1":"Sci-Fi","2":"1","3":"0","4":"0","5":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Each <code>FILTER</code> condition is evaluated independently. An actor can satisfy multiple conditions and be counted in multiple filtered columns simultaneously.</p>
 <div class="callout callout-style-simple callout-note">
@@ -968,55 +739,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> birth_country</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;=</span> <span class="dv">5</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> actor_count <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>7 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: right;">actor_count</th>
-<th style="text-align: right;">total_wins</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">96</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">35</td>
-<td style="text-align: right;">24</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">France</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Italy</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sweden</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Spain</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["birth_country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["actor_count"],"name":[2],"type":["int64"],"align":["right"]},{"label":["total_wins"],"name":[3],"type":["int64"],"align":["right"]}],"data":[{"1":"USA","2":"100","3":"96"},{"1":"UK","2":"35","3":"24"},{"1":"France","2":"14","3":"3"},{"1":"Italy","2":"9","3":"3"},{"1":"Australia","2":"8","3":"5"},{"1":"Sweden","2":"6","3":"4"},{"1":"Spain","2":"5","3":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Without <code>HAVING COUNT(*) &gt;= 5</code>, this query would return all 19 birth countries, including several with only one or two actors. <code>HAVING</code> lets you focus on groups that meet a meaningful threshold.</p>
 <div class="callout callout-style-simple callout-tip">
@@ -1043,65 +772,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> birth_country</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;=</span> <span class="dv">3</span></span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> combined_box_office_millions <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>9 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: right;">living_actors</th>
-<th style="text-align: right;">combined_box_office_millions</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: right;">54</td>
-<td style="text-align: right;">95160</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">39630</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Australia</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">26470</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">India</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">7540</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Spain</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5463</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">5000</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Mexico</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3060</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Japan</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">1560</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Italy</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">1125</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["birth_country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["living_actors"],"name":[2],"type":["int64"],"align":["right"]},{"label":["combined_box_office_millions"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"USA","2":"54","3":"95160"},{"1":"UK","2":"20","3":"39630"},{"1":"Australia","2":"7","3":"26470"},{"1":"India","2":"4","3":"7540"},{"1":"Spain","2":"5","3":"5463"},{"1":"France","2":"9","3":"5000"},{"1":"Mexico","2":"3","3":"3060"},{"1":"Japan","2":"3","3":"1560"},{"1":"Italy","2":"4","3":"1125"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The <code>WHERE death_date IS NULL</code> clause excludes deceased actors before any grouping occurs. <code>HAVING COUNT(*) &gt;= 3</code> then keeps only countries where at least three living actors remain.</p>
 </section>
@@ -1128,130 +805,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> birth_country <span class="kw">IN</span> (<span class="st">'USA'</span>, <span class="st">'UK'</span>, <span class="st">'France'</span>)</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">ROLLUP</span> (birth_country, primary_genre)</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_country <span class="kw">NULLS</span> <span class="fu">LAST</span>, primary_genre <span class="kw">NULLS</span> <span class="fu">LAST</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>22 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: right;">actors</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Romance</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">23</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Musical</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Romance</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: right;">35</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">68</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Horror</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Musical</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Sci-Fi</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: right;">100</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: right;">149</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["birth_country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[2],"type":["chr"],"align":["left"]},{"label":["actors"],"name":[3],"type":["int64"],"align":["right"]}],"data":[{"1":"France","2":"Action","3":"3"},{"1":"France","2":"Comedy","3":"1"},{"1":"France","2":"Drama","3":"7"},{"1":"France","2":"Romance","3":"2"},{"1":"France","2":"Thriller","3":"1"},{"1":"France","2":"NA","3":"14"},{"1":"UK","2":"Action","3":"3"},{"1":"UK","2":"Comedy","3":"3"},{"1":"UK","2":"Drama","3":"23"},{"1":"UK","2":"Musical","3":"2"},{"1":"UK","2":"Romance","3":"1"},{"1":"UK","2":"Thriller","3":"3"},{"1":"UK","2":"NA","3":"35"},{"1":"USA","2":"Action","3":"8"},{"1":"USA","2":"Comedy","3":"14"},{"1":"USA","2":"Drama","3":"68"},{"1":"USA","2":"Horror","3":"2"},{"1":"USA","2":"Musical","3":"5"},{"1":"USA","2":"Sci-Fi","3":"1"},{"1":"USA","2":"Thriller","3":"2"},{"1":"USA","2":"NA","3":"100"},{"1":"NA","2":"NA","3":"149"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The rows where <code>primary_genre</code> is NULL are the per-country subtotals: for example, the row with <code>birth_country = 'UK'</code> and <code>primary_genre = NULL</code> shows the total actor count across all genres for UK actors. The final row where both columns are NULL is the grand total.</p>
 <div class="callout callout-style-simple callout-warning">
@@ -1279,80 +839,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> primary_genre <span class="kw">IN</span> (<span class="st">'Drama'</span>, <span class="st">'Action'</span>, <span class="st">'Comedy'</span>)</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">CUBE</span> (birth_country, primary_genre)</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_country <span class="kw">NULLS</span> <span class="fu">LAST</span>, primary_genre <span class="kw">NULLS</span> <span class="fu">LAST</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>12 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: right;">actors</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">23</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: right;">29</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">68</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: right;">90</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">11</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">17</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">91</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: right;">119</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["birth_country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[2],"type":["chr"],"align":["left"]},{"label":["actors"],"name":[3],"type":["int64"],"align":["right"]}],"data":[{"1":"UK","2":"Action","3":"3"},{"1":"UK","2":"Comedy","3":"3"},{"1":"UK","2":"Drama","3":"23"},{"1":"UK","2":"NA","3":"29"},{"1":"USA","2":"Action","3":"8"},{"1":"USA","2":"Comedy","3":"14"},{"1":"USA","2":"Drama","3":"68"},{"1":"USA","2":"NA","3":"90"},{"1":"NA","2":"Action","3":"11"},{"1":"NA","2":"Comedy","3":"17"},{"1":"NA","2":"Drama","3":"91"},{"1":"NA","2":"NA","3":"119"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Compared to <code>ROLLUP</code>, the result includes two additional rows: one per genre summing across both countries (where <code>birth_country</code> is NULL but <code>primary_genre</code> is not), and one grand total. <code>CUBE</code> is most useful when there is no natural hierarchy and you want to slice the data every possible way in a single query.</p>
 </section>
@@ -1372,130 +865,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">ROLLUP</span> (birth_country, primary_genre)</span>
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">GROUPING</span>(birth_country), birth_country,</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>         <span class="fu">GROUPING</span>(primary_genre), primary_genre;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>22 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: right;">actors</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Romance</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">23</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Musical</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Romance</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">35</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">68</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Horror</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Musical</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Sci-Fi</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">100</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Grand Total</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">149</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["birth_country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[2],"type":["chr"],"align":["left"]},{"label":["actors"],"name":[3],"type":["int64"],"align":["right"]}],"data":[{"1":"France","2":"Action","3":"3"},{"1":"France","2":"Comedy","3":"1"},{"1":"France","2":"Drama","3":"7"},{"1":"France","2":"Romance","3":"2"},{"1":"France","2":"Thriller","3":"1"},{"1":"France","2":"All Genres","3":"14"},{"1":"UK","2":"Action","3":"3"},{"1":"UK","2":"Comedy","3":"3"},{"1":"UK","2":"Drama","3":"23"},{"1":"UK","2":"Musical","3":"2"},{"1":"UK","2":"Romance","3":"1"},{"1":"UK","2":"Thriller","3":"3"},{"1":"UK","2":"All Genres","3":"35"},{"1":"USA","2":"Action","3":"8"},{"1":"USA","2":"Comedy","3":"14"},{"1":"USA","2":"Drama","3":"68"},{"1":"USA","2":"Horror","3":"2"},{"1":"USA","2":"Musical","3":"5"},{"1":"USA","2":"Sci-Fi","3":"1"},{"1":"USA","2":"Thriller","3":"2"},{"1":"USA","2":"All Genres","3":"100"},{"1":"Grand Total","2":"All Genres","3":"149"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>For each country, <code>GROUPING(primary_genre)</code> is <code>0</code> for the detail rows and <code>1</code> for the per-country subtotal row, so the subtotal always appears after the genres it summarizes. <code>GROUPING(birth_country)</code> is <code>1</code> only for the grand total row, pushing it to the very end. <code>COALESCE</code> then handles the display without interfering with the ordering.</p>
 <p>To reverse that arrangement and place each subtotal row before its detail rows, sort <code>GROUPING(primary_genre)</code> descending. Everything else stays the same:</p>
@@ -1509,130 +885,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">ROLLUP</span> (birth_country, primary_genre)</span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="fu">GROUPING</span>(birth_country), birth_country,</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>         <span class="fu">GROUPING</span>(primary_genre) <span class="kw">DESC</span>, primary_genre;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>22 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">birth_country</th>
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: right;">actors</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Romance</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">France</td>
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">35</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">23</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Musical</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Romance</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">UK</td>
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">100</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">68</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Horror</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Musical</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Sci-Fi</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">USA</td>
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Grand Total</td>
-<td style="text-align: left;">All Genres</td>
-<td style="text-align: right;">149</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["birth_country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["primary_genre"],"name":[2],"type":["chr"],"align":["left"]},{"label":["actors"],"name":[3],"type":["int64"],"align":["right"]}],"data":[{"1":"France","2":"All Genres","3":"14"},{"1":"France","2":"Action","3":"3"},{"1":"France","2":"Comedy","3":"1"},{"1":"France","2":"Drama","3":"7"},{"1":"France","2":"Romance","3":"2"},{"1":"France","2":"Thriller","3":"1"},{"1":"UK","2":"All Genres","3":"35"},{"1":"UK","2":"Action","3":"3"},{"1":"UK","2":"Comedy","3":"3"},{"1":"UK","2":"Drama","3":"23"},{"1":"UK","2":"Musical","3":"2"},{"1":"UK","2":"Romance","3":"1"},{"1":"UK","2":"Thriller","3":"3"},{"1":"USA","2":"All Genres","3":"100"},{"1":"USA","2":"Action","3":"8"},{"1":"USA","2":"Comedy","3":"14"},{"1":"USA","2":"Drama","3":"68"},{"1":"USA","2":"Horror","3":"2"},{"1":"USA","2":"Musical","3":"5"},{"1":"USA","2":"Sci-Fi","3":"1"},{"1":"USA","2":"Thriller","3":"2"},{"1":"Grand Total","2":"All Genres","3":"149"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The <code>All Genres</code> subtotal for each country now leads that country’s block, followed by its individual genre rows. Which layout to use depends on how the report will be read; leading with the subtotal works well when readers care primarily about the summary and scan the detail rows only for context.</p>
 <p><code>COALESCE</code> is not limited to ROLLUP and CUBE output. It is useful anywhere a column may contain NULLs and a default value is preferable in the result: substituting <code>0</code> for a NULL box office figure, <code>'Living'</code> for a NULL death date, or a placeholder string for any optional text field.</p>
@@ -1662,55 +921,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    ()</span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> primary_genre <span class="kw">NULLS</span> <span class="fu">LAST</span>, sex <span class="kw">NULLS</span> <span class="fu">LAST</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>7 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: left;">sex</th>
-<th style="text-align: right;">actors</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Action</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Action</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: right;">19</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">11</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">F</td>
-<td style="text-align: right;">70</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Drama</td>
-<td style="text-align: left;">M</td>
-<td style="text-align: right;">65</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">NULL</td>
-<td style="text-align: left;">NULL</td>
-<td style="text-align: right;">177</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["primary_genre"],"name":[1],"type":["chr"],"align":["left"]},{"label":["sex"],"name":[2],"type":["chr"],"align":["left"]},{"label":["actors"],"name":[3],"type":["int64"],"align":["right"]}],"data":[{"1":"Action","2":"F","3":"3"},{"1":"Action","2":"M","3":"19"},{"1":"Comedy","2":"F","3":"11"},{"1":"Comedy","2":"M","3":"9"},{"1":"Drama","2":"F","3":"70"},{"1":"Drama","2":"M","3":"65"},{"1":"NA","2":"NA","3":"177"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The row where both columns are NULL is the grand total. Every other row is a specific genre-sex pairing. There are no per-genre or per-sex subtotals, because those sets were not listed. <code>CUBE</code> on these two columns would have produced eight additional rows; <code>GROUPING SETS</code> produces exactly what was requested.</p>
 </section>
@@ -1760,51 +977,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> primary_genre</span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">2</span></span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> actor_count <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>5 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">primary_genre</th>
-<th style="text-align: right;">actor_count</th>
-<th style="text-align: right;">total_wins</th>
-<th style="text-align: right;">avg_box_office_millions</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Drama</td>
-<td style="text-align: right;">67</td>
-<td style="text-align: right;">38</td>
-<td style="text-align: right;">1080</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Action</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2099</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Comedy</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">388</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Romance</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1114</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Thriller</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2110</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["primary_genre"],"name":[1],"type":["chr"],"align":["left"]},{"label":["actor_count"],"name":[2],"type":["int64"],"align":["right"]},{"label":["total_wins"],"name":[3],"type":["int64"],"align":["right"]},{"label":["avg_box_office_millions"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Drama","2":"67","3":"38","4":"1080"},{"1":"Action","2":"14","3":"2","4":"2099"},{"1":"Comedy","2":"6","3":"1","4":"388"},{"1":"Romance","2":"5","3":"1","4":"1114"},{"1":"Thriller","2":"5","3":"2","4":"2110"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 </section>
 <section id="exercises" class="level2 unnumbered">
