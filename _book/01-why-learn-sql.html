@@ -115,6 +115,9 @@ ul.task-list li input[type="checkbox"] {
     }
   });
 });</script>
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -469,6 +472,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">1.1</span> Learning Objectives</a></li>
+  <li><a href="#how-to-pronounce-sequel" id="toc-how-to-pronounce-sequel" class="nav-link" data-scroll-target="#how-to-pronounce-sequel"><span class="header-section-number">1.2</span> How to pronounce Sequel</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/01-why-learn-sql.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -515,6 +519,25 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Compare</strong> relational databases to spreadsheets and flat files, explaining the limitations of each for managing structured data at scale.</li>
 <li><strong>Explain</strong> why SQL has remained relevant for decades despite the emergence of newer data technologies.</li>
 </ul>
+<p><a href="images/stackoverflow-2024-most-popular-db.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="images/stackoverflow-2024-most-popular-db.png" class="img-fluid"></a></p>
+<p><a href="images/stackoverflow-2024-most-popular-tech.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="images/stackoverflow-2024-most-popular-tech.png" class="img-fluid"></a></p>
+</section>
+<section id="how-to-pronounce-sequel" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="how-to-pronounce-sequel"><span class="header-section-number">1.2</span> How to pronounce Sequel</h2>
+<p>The inevitable question: “Is it pronounced ‘Sequel’ or ‘Ess-Que-Ell?’”</p>
+<p>Honest answer: it doesn’t matter. Both pronuniciations are fine, and they’re both in common usage.</p>
+<p>Anecdotally, I do think it’s more common for the “ess-que-ell” pronunciation to be used outside the United States. This is only my observation from attending conferences and conversing with fellow data professionals around the world, but it seems that the “sequel” pronunication is more popular to Americans than it is to the rest of the world. But I have zero data to support that.</p>
+<p>I’ve also found it can depend on which variant of SQL you’re using. When I was first learning databases, I cut my teeth on Microsoft SQL Server, and Microsoft pretty much universally uses the “sequel” pronunciation. Watch any of their YouTube videos or other content, or go to any of their conferences, and you’ll hear “sequel” a billion times. Their employees almost never say “ess-que-ell.” And because that’s the platform I first learned, that’s the pronunciation I normally use.</p>
+<p>Other companies with their own products feel differently. MySQL, for example, actually has specifically stated:</p>
+<blockquote class="blockquote">
+<p>The official way to pronounce “MySQL” is “My Ess Que Ell” (not “my sequel”), but we do not mind if you pronounce it as “my sequel” or in some other localized way.</p>
+<p>Source: <a href="https://dev.mysql.com/doc/refman/8.0/en/what-is-mysql.html" target="_blank">MySQL 8.0 Reference Manual</a></p>
+</blockquote>
+<p>Fair enough.</p>
+<p>Here’s a fun historical fact, though: when SQL was first being written in the 1970s, the developers at IBM gave it the name SEQUEL, which stood for “Structured English Query Language.” However, they soon found out that another company had already trademarked “SEQUEL,” so IBM shortened it to “SQL.”</p>
+<p>So you could actually make the argument that it was always <em>meant</em> to be pronounced as “sequel.”</p>
+<p>But the truth is that it really does not matter. The vast majority of people know that “how to pronounce SQL” is not a hill worth dying on. If you’re talking to a data person and they pronounce it “ess-que-ell,” you will know exactly what they’re talking about. And vice versa if you pronounce it back to them as “sequel.”</p>
+<p>If somebody berates you because they think you’re pronouncing it the “wrong” way, you should tell that person to go touch some grass.</p>
 
 
 </section>
@@ -951,6 +974,38 @@ ul.task-list li input[type="checkbox"] {
 </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
