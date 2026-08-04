@@ -13,6 +13,7 @@ library(RPostgres)
 
 options(knitr.kable.NA = "NULL")
 knitr::opts_chunk$set(max.print = 25)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
 
 # Adjust PGPORT if you mapped the container to an alternate host port (e.g., 5433).
 PGPORT <- Sys.getenv("PGPORT", unset = "5432")
