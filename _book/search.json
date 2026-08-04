@@ -1131,7 +1131,7 @@
     "href": "23-window-functions.html",
     "title": "11  Window Functions",
     "section": "",
-    "text": "11.1 Learning Objectives\nBy the end of this chapter, students will be able to:\nStub: OVER, PARTITION BY, ORDER BY in window context, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD, running totals.",
+    "text": "11.1 Learning Objectives\nBy the end of this chapter, students will be able to:\nGROUP BY has one significant limitation: it collapses every row in a group down to a single summary row, discarding the individual rows that went into it. Often you want the opposite: keep every row, but attach a calculation to each one that considers the other rows around it, a running total, a rank, a comparison to the row before it. That is exactly what a window function does. This chapter uses the flights table from the nycflights database throughout.",
     "crumbs": [
       "Analyze",
       "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
@@ -1143,6 +1143,105 @@
     "title": "11  Window Functions",
     "section": "",
     "text": "Explain the difference between window functions and aggregate functions in terms of how output rows are produced.\nWrite a window function using the OVER() clause with PARTITION BY and ORDER BY.\nApply ROW_NUMBER(), RANK(), and DENSE_RANK() to assign row rankings within partitions.\nCompare the behavior of RANK() and DENSE_RANK() when rows share the same value, predicting the output of each.\nUse LAG() and LEAD() to access values from preceding and following rows within a result set.\nCompute a running total or cumulative sum using SUM() with an ORDER BY inside OVER().\nDefine a custom window frame using ROWS BETWEEN or RANGE BETWEEN to control which rows each calculation includes.\nCompute a moving average by combining AVG() with a ROWS BETWEEN N PRECEDING AND CURRENT ROW frame.\nApply window functions within a CTE to perform multi-step analyses that reference ranked or lagged values in subsequent steps.",
+    "crumbs": [
+      "Analyze",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
+    ]
+  },
+  {
+    "objectID": "23-window-functions.html#window-functions-vs.-aggregate-functions",
+    "href": "23-window-functions.html#window-functions-vs.-aggregate-functions",
+    "title": "11  Window Functions",
+    "section": "11.2 Window Functions vs. Aggregate Functions",
+    "text": "11.2 Window Functions vs. Aggregate Functions\nAn aggregate function used with GROUP BY turns many rows into few: one output row per group. A window function turns many rows into the same number of rows, each one annotated with a value computed from a “window” of related rows, without collapsing anything. Compare the shape of the two directly. First, a familiar GROUP BY aggregate:\n\nSELECT carrier, ROUND(AVG(dep_delay), 1) AS carrier_avg_delay\nFROM flights\nWHERE month = 1 AND day = 1\nGROUP BY carrier\nORDER BY carrier\nLIMIT 5;\n\n\n5 records\n\n\ncarrier\ncarrier_avg_delay\n\n\n\n\nAA\n1.6\n\n\nB6\n6.2\n\n\nDL\n-1.8\n\n\nEV\n7.6\n\n\nF9\n-8.0\n\n\n\n\n\nThis collapses every flight down to one row per carrier. Now the same average, computed as a window function instead:\n\nSELECT carrier, flight, dep_delay,\n       ROUND(AVG(dep_delay) OVER (PARTITION BY carrier), 1) AS carrier_avg_delay\nFROM flights\nWHERE month = 1 AND day = 1\nORDER BY carrier, dep_delay DESC NULLS LAST\nLIMIT 10;\n\n\n10 records\n\n\ncarrier\nflight\ndep_delay\ncarrier_avg_delay\n\n\n\n\nAA\n785\n61\n1.6\n\n\nAA\n763\n33\n1.6\n\n\nAA\n1611\n16\n1.6\n\n\nAA\n753\n13\n1.6\n\n\nAA\n1837\n13\n1.6\n\n\nAA\n773\n12\n1.6\n\n\nAA\n1467\n8\n1.6\n\n\nAA\n321\n7\n1.6\n\n\nAA\n1709\n7\n1.6\n\n\nAA\n745\n7\n1.6\n\n\n\n\n\nEvery individual flight row survives, and every row belonging to the same carrier shows that carrier’s average delay sitting right alongside its own. Nothing was collapsed; the average was simply attached to each row that contributed to it. That is the defining trait of a window function: it looks across a set of related rows to compute something, but it never reduces the row count.",
+    "crumbs": [
+      "Analyze",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
+    ]
+  },
+  {
+    "objectID": "23-window-functions.html#the-over-clause-partition-by-and-order-by",
+    "href": "23-window-functions.html#the-over-clause-partition-by-and-order-by",
+    "title": "11  Window Functions",
+    "section": "11.3 The OVER Clause: PARTITION BY and ORDER BY",
+    "text": "11.3 The OVER Clause: PARTITION BY and ORDER BY\nEvery window function is written as function() OVER (...). The OVER clause defines the “window”, the set of rows the function is allowed to look at for each row of output:\nfunction_name(expression) OVER (\n    PARTITION BY partition_column\n    ORDER BY sort_column\n)\nPARTITION BY divides the rows into independent groups, just like GROUP BY does, except no rows disappear. Each group is processed separately: a window function never mixes rows from different partitions together. Omitting PARTITION BY entirely treats the whole result set as a single partition, as the COUNT/ROWS BETWEEN examples later in this chapter do.\nORDER BY inside OVER() establishes the order the function should process rows in within each partition. This is completely independent of any ORDER BY at the end of the query, which only controls the order of the final displayed output. Some window functions, like the ranking functions below, are meaningless without an ORDER BY inside OVER(), since rank depends entirely on a defined order.",
+    "crumbs": [
+      "Analyze",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
+    ]
+  },
+  {
+    "objectID": "23-window-functions.html#ranking-rows-row_number-rank-and-dense_rank",
+    "href": "23-window-functions.html#ranking-rows-row_number-rank-and-dense_rank",
+    "title": "11  Window Functions",
+    "section": "11.4 Ranking Rows: ROW_NUMBER, RANK, and DENSE_RANK",
+    "text": "11.4 Ranking Rows: ROW_NUMBER, RANK, and DENSE_RANK\nThree closely related functions assign a rank to each row within its partition, based on the ORDER BY inside OVER(). They only differ in how they handle ties, rows that share the exact same value in the ranking column:\n\nSELECT flight, dep_delay,\n       ROW_NUMBER() OVER (ORDER BY dep_delay DESC) AS row_num,\n       RANK()       OVER (ORDER BY dep_delay DESC) AS rank_val,\n       DENSE_RANK() OVER (ORDER BY dep_delay DESC) AS dense_rank_val\nFROM flights\nWHERE month = 1 AND day = 1 AND carrier = 'AA' AND dep_delay IS NOT NULL\nORDER BY dep_delay DESC\nLIMIT 8;\n\n\n8 records\n\n\nflight\ndep_delay\nrow_num\nrank_val\ndense_rank_val\n\n\n\n\n785\n61\n1\n1\n1\n\n\n763\n33\n2\n2\n2\n\n\n1611\n16\n3\n3\n3\n\n\n1837\n13\n4\n4\n4\n\n\n753\n13\n5\n4\n4\n\n\n773\n12\n6\n6\n5\n\n\n1467\n8\n7\n7\n6\n\n\n321\n7\n8\n8\n7\n\n\n\n\n\nFlights 1837 and 753 are tied at a 13-minute delay, and the three functions handle that tie three different ways:\n\nROW_NUMBER() never ties: it assigns 4 and 5, arbitrarily breaking the tie by whatever order the tied rows happen to come out in. Two runs of the same query could assign the tied rows in a different order relative to each other unless the ORDER BY fully disambiguates them.\nRANK() gives both tied rows the same rank, 4, then skips rank 5 entirely: the next distinct value gets rank 6. This matches how ranks work in a race with a dead heat: two rows share second place, and there is no third place.\nDENSE_RANK() also gives both tied rows the same rank, 4, but does not skip the next rank: the next distinct value gets rank 5. Dense rank counts the number of distinct values seen so far, with no gaps.\n\nChoosing between them depends on what the rank is meant to represent. Use ROW_NUMBER() when you need a genuinely unique sequence number regardless of ties (for example, to pick exactly one row per group). Use RANK() when ties should be visible as ties, and later ranks should reflect how many rows came before. Use DENSE_RANK() when you want a compact, gap-free scale, such as when the rank itself will be displayed as a category (1st tier, 2nd tier, and so on).",
+    "crumbs": [
+      "Analyze",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
+    ]
+  },
+  {
+    "objectID": "23-window-functions.html#looking-ahead-and-behind-lag-and-lead",
+    "href": "23-window-functions.html#looking-ahead-and-behind-lag-and-lead",
+    "title": "11  Window Functions",
+    "section": "11.5 Looking Ahead and Behind: LAG and LEAD",
+    "text": "11.5 Looking Ahead and Behind: LAG and LEAD\nLAG() retrieves a value from a preceding row within the same partition; LEAD() retrieves a value from a following row. Both take the column to retrieve and, optionally, how many rows back or forward to look (the default is one row).\nA natural use is comparing each period to the one before it. This computes each carrier’s average delay per month, then uses LAG() to pull in the previous month’s average for comparison:\n\nWITH monthly_avg AS (\n    SELECT carrier, month, ROUND(AVG(dep_delay), 1) AS avg_delay\n    FROM flights\n    WHERE carrier IN ('AA', 'DL')\n    GROUP BY carrier, month\n)\nSELECT carrier, month, avg_delay,\n       LAG(avg_delay) OVER (PARTITION BY carrier ORDER BY month) AS prev_month_avg,\n       ROUND(avg_delay - LAG(avg_delay) OVER (PARTITION BY carrier ORDER BY month), 1) AS change\nFROM monthly_avg\nORDER BY carrier, month\nLIMIT 8;\n\n\n8 records\n\n\ncarrier\nmonth\navg_delay\nprev_month_avg\nchange\n\n\n\n\nAA\n1\n4.7\nNULL\nNULL\n\n\nAA\n2\n6.7\n4.7\n2.0\n\n\nAA\n3\n6.2\n6.7\n-0.5\n\n\nAA\n4\n9.7\n6.2\n3.5\n\n\nAA\n5\n9.4\n9.7\n-0.3\n\n\nAA\n6\n14.7\n9.4\n5.3\n\n\nAA\n7\n9.5\n14.7\n-5.2\n\n\nAA\n8\n5.6\n9.5\n-3.9\n\n\n\n\n\nPARTITION BY carrier keeps each carrier’s month-to-month comparison separate from every other carrier’s, and ORDER BY month tells LAG() which row counts as “before.” January has no preceding month within its partition, so prev_month_avg and change are both NULL for the first row of each carrier, exactly as you would expect: there is nothing to look back to. LEAD() works identically but looks forward instead of backward, useful for questions phrased the other way around, such as “how much did next month improve on this one?”",
+    "crumbs": [
+      "Analyze",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
+    ]
+  },
+  {
+    "objectID": "23-window-functions.html#running-totals-with-sum-over",
+    "href": "23-window-functions.html#running-totals-with-sum-over",
+    "title": "11  Window Functions",
+    "section": "11.6 Running Totals with SUM() OVER",
+    "text": "11.6 Running Totals with SUM() OVER\nAdding an ORDER BY to an aggregate function’s OVER() clause changes its meaning from “summarize the whole partition” to “summarize everything from the start of the partition up through the current row”, a running total. Applied to a per-month flight count, this produces a cumulative count across the year:\n\nWITH monthly_counts AS (\n    SELECT carrier, month, COUNT(*) AS num_flights\n    FROM flights\n    WHERE carrier = 'DL'\n    GROUP BY carrier, month\n)\nSELECT carrier, month, num_flights,\n       SUM(num_flights) OVER (PARTITION BY carrier ORDER BY month) AS running_total\nFROM monthly_counts\nORDER BY month\nLIMIT 6;\n\n\n6 records\n\n\ncarrier\nmonth\nnum_flights\nrunning_total\n\n\n\n\nDL\n1\n1889\n1889\n\n\nDL\n2\n1797\n3686\n\n\nDL\n3\n2133\n5819\n\n\nDL\n4\n2029\n7848\n\n\nDL\n5\n1963\n9811\n\n\nDL\n6\n1952\n11763\n\n\n\n\n\nBy month 6, running_total reflects every Delta flight recorded from January through June, while num_flights still shows only that individual month’s count. This same pattern, an aggregate function combined with ORDER BY inside OVER(), works for AVG(), MIN(), MAX(), and any other aggregate: each becomes a “running” version of itself.",
+    "crumbs": [
+      "Analyze",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
+    ]
+  },
+  {
+    "objectID": "23-window-functions.html#custom-window-frames-rows-between-and-range-between",
+    "href": "23-window-functions.html#custom-window-frames-rows-between-and-range-between",
+    "title": "11  Window Functions",
+    "section": "11.7 Custom Window Frames: ROWS BETWEEN and RANGE BETWEEN",
+    "text": "11.7 Custom Window Frames: ROWS BETWEEN and RANGE BETWEEN\nORDER BY inside OVER() implicitly defines a frame: the specific slice of the partition a function considers for each row. By default, that frame runs from the start of the partition through the current row, which is exactly what produced the running total above. The frame can be made explicit, and customized, with ROWS BETWEEN:\nfunction_name(expression) OVER (\n    ORDER BY sort_column\n    ROWS BETWEEN start_bound AND end_bound\n)\nCommon bounds are UNBOUNDED PRECEDING (the start of the partition), N PRECEDING (N rows before the current one), CURRENT ROW, and N FOLLOWING.\nROWS counts physical rows. A related option, RANGE, instead groups rows that tie on the ORDER BY value into the same logical position, treating them as a single peer group rather than counting them individually. The difference only shows up when ties exist:\n\nSELECT flight, dep_delay,\n       COUNT(*) OVER (\n           ORDER BY dep_delay DESC\n           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS rows_count,\n       COUNT(*) OVER (\n           ORDER BY dep_delay DESC\n           RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW\n       ) AS range_count\nFROM flights\nWHERE month = 1 AND day = 1 AND carrier = 'AA' AND dep_delay IS NOT NULL\nORDER BY dep_delay DESC\nLIMIT 8;\n\n\n8 records\n\n\nflight\ndep_delay\nrows_count\nrange_count\n\n\n\n\n785\n61\n1\n1\n\n\n763\n33\n2\n2\n\n\n1611\n16\n3\n3\n\n\n1837\n13\n4\n5\n\n\n753\n13\n5\n5\n\n\n773\n12\n6\n6\n\n\n1467\n8\n7\n7\n\n\n321\n7\n8\n10\n\n\n\n\n\nThe two flights tied at a 13-minute delay get rows_count values of 4 and 5, one per physical row, but both get a range_count of 5: RANGE treats every row with the same dep_delay as occupying the same position, so both tied rows see the entire tied group included in their frame, not just themselves. ROWS is the more commonly used and more intuitive option, and is what this book uses by default; reach for RANGE specifically when ties in the ordering column should be treated as a single unit rather than processed one at a time.",
+    "crumbs": [
+      "Analyze",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
+    ]
+  },
+  {
+    "objectID": "23-window-functions.html#moving-averages",
+    "href": "23-window-functions.html#moving-averages",
+    "title": "11  Window Functions",
+    "section": "11.8 Moving Averages",
+    "text": "11.8 Moving Averages\nA moving average (or rolling average) smooths out short-term noise by averaging each point together with a fixed number of the points immediately before it. ROWS BETWEEN N PRECEDING AND CURRENT ROW expresses exactly that frame:\n\nWITH monthly_avg AS (\n    SELECT carrier, month, ROUND(AVG(dep_delay), 1) AS avg_delay\n    FROM flights\n    WHERE carrier = 'DL'\n    GROUP BY carrier, month\n)\nSELECT carrier, month, avg_delay,\n       ROUND(AVG(avg_delay) OVER (\n           ORDER BY month\n           ROWS BETWEEN 2 PRECEDING AND CURRENT ROW\n       ), 1) AS moving_avg_3mo\nFROM monthly_avg\nORDER BY month\nLIMIT 6;\n\n\n6 records\n\n\ncarrier\nmonth\navg_delay\nmoving_avg_3mo\n\n\n\n\nDL\n1\n3.4\n3.4\n\n\nDL\n2\n6.5\n5.0\n\n\nDL\n3\n13.5\n7.8\n\n\nDL\n4\n10.3\n10.1\n\n\nDL\n5\n10.7\n11.5\n\n\nDL\n6\n18.0\n13.0\n\n\n\n\n\nmoving_avg_3mo for month 3 averages months 1 through 3; for month 4, it averages months 2 through 4, dropping January out of the window as April enters it. Each row’s moving average only ever considers itself and the two months immediately before it, sliding forward one month at a time. Moving averages like this are a standard way to visualize a trend (delay is generally worsening or improving over the year) without the month-to-month noise of the raw values obscuring it.",
+    "crumbs": [
+      "Analyze",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
+    ]
+  },
+  {
+    "objectID": "23-window-functions.html#window-functions-inside-ctes",
+    "href": "23-window-functions.html#window-functions-inside-ctes",
+    "title": "11  Window Functions",
+    "section": "11.9 Window Functions Inside CTEs",
+    "text": "11.9 Window Functions Inside CTEs\nWindow function results cannot be filtered directly in the same query’s WHERE clause, because WHERE runs before window functions are evaluated. Wrapping the window function in a CTE, then filtering or sorting in a query that reads from that CTE, is the standard way around this. Building on the LAG() example from earlier in this chapter, here is every carrier’s single best month-over-month improvement in average delay, across the entire dataset:\n\nWITH monthly_avg AS (\n    SELECT carrier, month, ROUND(AVG(dep_delay), 1) AS avg_delay\n    FROM flights\n    GROUP BY carrier, month\n),\nmonth_over_month AS (\n    SELECT carrier, month, avg_delay,\n           ROUND(avg_delay - LAG(avg_delay) OVER (PARTITION BY carrier ORDER BY month), 1) AS change\n    FROM monthly_avg\n)\nSELECT carrier, month, avg_delay, change\nFROM month_over_month\nWHERE change IS NOT NULL\nORDER BY change ASC\nLIMIT 5;\n\n\n5 records\n\n\ncarrier\nmonth\navg_delay\nchange\n\n\n\n\nOO\n9\n-4.9\n-68.9\n\n\nYV\n7\n22.4\n-20.4\n\n\nFL\n8\n23.4\n-17.8\n\n\nF9\n9\n8.3\n-13.9\n\n\nEV\n9\n11.8\n-13.7\n\n\n\n\n\nThree steps, each in its own named CTE, build on one another: monthly_avg aggregates delay per carrier and month; month_over_month computes each month’s change from the previous one using LAG(); the final query filters out the NULL change values (January has no prior month to compare against) and sorts to find the largest improvements, the most negative change values. Attempting to write WHERE change IS NOT NULL directly against a raw LAG(...) OVER (...) expression in a single ungrouped query would fail, since a WHERE clause cannot reference a window function by definition. Splitting the work into CTEs is what makes filtering and sorting on a window function’s result possible at all, not just more readable.",
+    "crumbs": [
+      "Analyze",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
+    ]
+  },
+  {
+    "objectID": "23-window-functions.html#exercises",
+    "href": "23-window-functions.html#exercises",
+    "title": "11  Window Functions",
+    "section": "11.10 Exercises",
+    "text": "11.10 Exercises\n\n11.10.1 Reflection\n1. In your own words, explain why a window function does not reduce the number of rows in a result set, while GROUP BY does. Use an example that does not appear in this chapter.\n\n2. Two rows are tied for the highest value in a partition. Explain what row number, rank, and dense rank each of those two rows would receive, and what the row immediately after them would receive under RANK() versus DENSE_RANK().\n\n3. Why does WHERE change IS NOT NULL fail if written directly against a query that computes change using LAG(), without a CTE? What does this reveal about the order operations happen in within a SQL query?\n\n\n\n11.10.2 Practical\n4. Write a query that ranks flights by air_time (longest first) within each dest, using RANK(). Show dest, flight, air_time, and the rank. Limit to dest values 'ORD' and 'ATL'.\n\n5. Write a query that computes each carrier’s total flight count per month, then uses LEAD() to show the following month’s count alongside it, and the change between them. Which carrier had the single largest month-to-month increase in flight count?\n\n6. Using a CTE that computes each carrier’s average arr_delay per month, write a query with a 3-month moving average of that value (current month plus the two before it). Which carrier has the smoothest (least varying) moving average across the year, based on eyeballing the results?\n\n7. Write a query that computes a running total of distance flown, per carrier, ordered by month. By which month does each carrier cross 1,000,000 total miles, if it does at all within the year?\n\n8. A colleague writes ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING for a 3-point moving average and gets different results near the start and end of their data than in the middle. Explain why, and what happens at the very first and very last row of a partition under this frame.",
     "crumbs": [
       "Analyze",
       "<span class='chapter-number'>11</span>  <span class='chapter-title'>Window Functions</span>"
