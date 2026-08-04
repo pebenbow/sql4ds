@@ -19,7 +19,7 @@ Software developers, data scientists, and other tech professionals have strong o
 
 SQL has long been my favorite programming language, and I'm not the only one. In its annual survey of professional developers, Stack Overflow finds SQL ranked in the top 3 most popular languages worlwide.  Here are the [2025 survey results](https://survey.stackoverflow.co/2025/technology#most-popular-technologies-language-language-prof){target="_blank"}:
 
-![](images\stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png)
+![](images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png)
 
 So, hey! By reading this textbook, you're taking your first steps toward learning (and hopefully eventually mastering) one of the most popular _and_ most ubiquitous programming languages on Earth. Good for you. Hopefully you like it as much as I do.
 
@@ -29,7 +29,7 @@ There are literally dozens of major SQL database engines on the market today, in
 
 Even in that crowded field of competitors, PostgreSQL consistently stands out as the most popular database engine in the world according to Stack Overflow's annual survey of professional developers. The chart below is from the [2025 survey results](https://survey.stackoverflow.co/2025/technology#most-popular-technologies-database-database-prof){target="_blank"}:
 
-![](images\stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png)
+![](images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png)
 
 ## The many flavors of SQL
 
