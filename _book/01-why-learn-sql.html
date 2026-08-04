@@ -472,7 +472,10 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">1.1</span> Learning Objectives</a></li>
-  <li><a href="#how-to-pronounce-sequel" id="toc-how-to-pronounce-sequel" class="nav-link" data-scroll-target="#how-to-pronounce-sequel"><span class="header-section-number">1.2</span> How to pronounce Sequel</a></li>
+  <li><a href="#sqls-popularity-as-a-programming-language" id="toc-sqls-popularity-as-a-programming-language" class="nav-link" data-scroll-target="#sqls-popularity-as-a-programming-language"><span class="header-section-number">1.2</span> SQL’s popularity as a programming language</a></li>
+  <li><a href="#postgresqls-popularity-as-a-database" id="toc-postgresqls-popularity-as-a-database" class="nav-link" data-scroll-target="#postgresqls-popularity-as-a-database"><span class="header-section-number">1.3</span> PostgreSQL’s popularity as a database</a></li>
+  <li><a href="#the-many-flavors-of-sql" id="toc-the-many-flavors-of-sql" class="nav-link" data-scroll-target="#the-many-flavors-of-sql"><span class="header-section-number">1.4</span> The many flavors of SQL</a></li>
+  <li><a href="#how-to-pronounce-sql" id="toc-how-to-pronounce-sql" class="nav-link" data-scroll-target="#how-to-pronounce-sql"><span class="header-section-number">1.5</span> How to pronounce SQL</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/01-why-learn-sql.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -519,11 +522,31 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Compare</strong> relational databases to spreadsheets and flat files, explaining the limitations of each for managing structured data at scale.</li>
 <li><strong>Explain</strong> why SQL has remained relevant for decades despite the emergence of newer data technologies.</li>
 </ul>
-<p><a href="images/stackoverflow-2024-most-popular-db.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="images/stackoverflow-2024-most-popular-db.png" class="img-fluid"></a></p>
-<p><a href="images/stackoverflow-2024-most-popular-tech.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="images/stackoverflow-2024-most-popular-tech.png" class="img-fluid"></a></p>
 </section>
-<section id="how-to-pronounce-sequel" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="how-to-pronounce-sequel"><span class="header-section-number">1.2</span> How to pronounce Sequel</h2>
+<section id="sqls-popularity-as-a-programming-language" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="sqls-popularity-as-a-programming-language"><span class="header-section-number">1.2</span> SQL’s popularity as a programming language</h2>
+<p>Software developers, data scientists, and other tech professionals have strong opinions about different programming languages. This is no secret. Most people have a favorite language, and some languages that they hate.</p>
+<p>SQL has long been my favorite programming language, and I’m not the only one. In its annual survey of professional developers, Stack Overflow finds SQL ranked in the top 3 most popular languages worlwide. Here are the <a href="https://survey.stackoverflow.co/2025/technology#most-popular-technologies-language-language-prof" target="_blank">2025 survey results</a>:</p>
+<p><a href="images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png" class="img-fluid"></a></p>
+<p>So, hey! By reading this textbook, you’re taking your first steps toward learning (and hopefully eventually mastering) one of the most popular <em>and</em> most ubiquitous programming languages on Earth. Good for you. Hopefully you like it as much as I do.</p>
+</section>
+<section id="postgresqls-popularity-as-a-database" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="postgresqls-popularity-as-a-database"><span class="header-section-number">1.3</span> PostgreSQL’s popularity as a database</h2>
+<p>There are literally dozens of major SQL database engines on the market today, including open-source and commercial variants. Some of them are optimized for analytical workloads, others for mobile development, others that are designed specifically to be cloud-native.</p>
+<p>Even in that crowded field of competitors, PostgreSQL consistently stands out as the most popular database engine in the world according to Stack Overflow’s annual survey of professional developers. The chart below is from the <a href="https://survey.stackoverflow.co/2025/technology#most-popular-technologies-database-database-prof" target="_blank">2025 survey results</a>:</p>
+<p><a href="images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png" class="img-fluid"></a></p>
+</section>
+<section id="the-many-flavors-of-sql" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="the-many-flavors-of-sql"><span class="header-section-number">1.4</span> The many flavors of SQL</h2>
+<p>You might be wondering: are there differences in the SQL language between all these dozens of database engines? Actually, yes! There are many different SQL “dialects,” and not every SQL database supports the same syntax or functions that others do. For example, the PostgreSQL databases we’ll use in this textbook use PL/pgSQL, which means “Procedural Language/PostgreSQL.” This language is based on PL/SQL (Procedural Language for SQL), which is the language spoken by Oracle’s family of SQL databases. Microsoft databases, meanwhile, use T-SQL, or “Transact SQL,” which was the first SQL variant I learned.</p>
+<p>What’s the impact of this? Well, it’s possible you can learn a function in one SQL dialect that does not work in all other dialects. As a matter of fact, two of my favorite SQL functions, <code>PIVOT</code> and <code>UNPIVOT</code>, don’t exist in PostgreSQL at all (much to my chagrin). Instead, PostgreSQL uses its own bespoke <code>CROSSTAB</code> function, which has to be installed as an extension.</p>
+<p>Some SQL dialects also have their own syntactic shortcuts. PostgreSQL has one that I really like that you can use when converting data from one data type to another. While in most SQL languages this is done with the <code>CAST()</code> function, PostgreSQL actually has a shortcut where you can do it with a simple <code>::</code> operator. You’ll find out more about this in our chapter on Data Types.</p>
+<p>Now, before you start freaking out about there being dozens of different SQL dialects and all these various shortcuts, the truth is that all SQL dialects share roughly 90-95% of the exact same core functions, and the skills you pick up in this textbook, whether that’s running <code>SELECT</code> statements to extract data or building new databases with <code>CREATE TABLE</code> statements, are easily transportable to other SQL databases.</p>
+<p>SQL was actually standardized in the early 1990s by the American National Standards Institute (ANSI), and almost all SQL dialects in existence now are largely based off what is commonly referred to as “ANSI SQL.” This includes a long list of functions and standards that carry over between this vast ecosystem of databases.</p>
+<p>The point is: if you can master one SQL dialect (like the PL/pgSQL we’ll be learning in this textbook), you can confidently apply 90+% of what you learned in any other SQL databse engine you come across, whether that’s Microsoft, Oracle, Snowflake, DuckDB, Google BigQuery, etc.</p>
+</section>
+<section id="how-to-pronounce-sql" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="how-to-pronounce-sql"><span class="header-section-number">1.5</span> How to pronounce SQL</h2>
 <p>The inevitable question: “Is it pronounced ‘Sequel’ or ‘Ess-Que-Ell?’”</p>
 <p>Honest answer: it doesn’t matter. Both pronuniciations are fine, and they’re both in common usage.</p>
 <p>Anecdotally, I do think it’s more common for the “ess-que-ell” pronunciation to be used outside the United States. This is only my observation from attending conferences and conversing with fellow data professionals around the world, but it seems that the “sequel” pronunication is more popular to Americans than it is to the rest of the world. But I have zero data to support that.</p>
