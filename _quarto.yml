@@ -81,6 +81,8 @@ filters:
     path: filters/skip-code-window-for-output.lua
   - at: pre-quarto
     path: code-window
+  - at: post-quarto
+    path: filters/collapse-sql-output.lua
 
 dbml:
   theme: light
@@ -94,6 +96,7 @@ format:
     lightbox: true
     code-overflow: wrap
     code-block-bg: false
+    df-print: paged
     # code-block-border-left: "#0165fc"
     author-meta: "Pete Benbow"
     callout-appearance: simple

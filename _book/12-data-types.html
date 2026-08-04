@@ -177,6 +177,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 <link rel="stylesheet" href="custom.css">
@@ -597,134 +599,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   information_schema.<span class="kw">columns</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  table_name <span class="op">=</span> <span class="st">'actors'</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> ordinal_position;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>15 records</caption>
-<colgroup>
-<col style="width: 21%">
-<col style="width: 18%">
-<col style="width: 26%">
-<col style="width: 18%">
-<col style="width: 14%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">column_name</th>
-<th style="text-align: left;">data_type</th>
-<th style="text-align: right;">character_maximum_length</th>
-<th style="text-align: right;">numeric_precision</th>
-<th style="text-align: right;">numeric_scale</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">actor_id</td>
-<td style="text-align: left;">integer</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">32</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">first_name</td>
-<td style="text-align: left;">character varying</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">last_name</td>
-<td style="text-align: left;">character varying</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">birth_name</td>
-<td style="text-align: left;">character varying</td>
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">sex</td>
-<td style="text-align: left;">character</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">birth_date</td>
-<td style="text-align: left;">date</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">death_date</td>
-<td style="text-align: left;">date</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">birth_country</td>
-<td style="text-align: left;">character varying</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">height_cm</td>
-<td style="text-align: left;">smallint</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">oscar_nominations</td>
-<td style="text-align: left;">smallint</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">oscar_wins</td>
-<td style="text-align: left;">smallint</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">primary_genre</td>
-<td style="text-align: left;">character varying</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">has_honorary_oscar</td>
-<td style="text-align: left;">boolean</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">notable_role</td>
-<td style="text-align: left;">text</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">total_box_office_usd</td>
-<td style="text-align: left;">numeric</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">0</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["column_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["data_type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["character_maximum_length"],"name":[3],"type":["int"],"align":["right"]},{"label":["numeric_precision"],"name":[4],"type":["int"],"align":["right"]},{"label":["numeric_scale"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"actor_id","2":"integer","3":"NA","4":"32","5":"0"},{"1":"first_name","2":"character varying","3":"50","4":"NA","5":"NA"},{"1":"last_name","2":"character varying","3":"50","4":"NA","5":"NA"},{"1":"birth_name","2":"character varying","3":"100","4":"NA","5":"NA"},{"1":"sex","2":"character","3":"1","4":"NA","5":"NA"},{"1":"birth_date","2":"date","3":"NA","4":"NA","5":"NA"},{"1":"death_date","2":"date","3":"NA","4":"NA","5":"NA"},{"1":"birth_country","2":"character varying","3":"50","4":"NA","5":"NA"},{"1":"height_cm","2":"smallint","3":"NA","4":"16","5":"0"},{"1":"oscar_nominations","2":"smallint","3":"NA","4":"16","5":"0"},{"1":"oscar_wins","2":"smallint","3":"NA","4":"16","5":"0"},{"1":"primary_genre","2":"character varying","3":"20","4":"NA","5":"NA"},{"1":"has_honorary_oscar","2":"boolean","3":"NA","4":"NA","5":"NA"},{"1":"notable_role","2":"text","3":"NA","4":"NA","5":"NA"},{"1":"total_box_office_usd","2":"numeric","3":"NA","4":"12","5":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The <code>data_type</code> column uses standard SQL type names. <code>character varying</code> is the standard name for <code>VARCHAR</code>, and <code>character</code> is the standard name for <code>CHAR</code>. PostgreSQL accepts both forms: the catalog stores the standard names regardless of which form you used when creating the table.</p>
 <p>An alternative approach uses the <code>pg_typeof()</code> function to return the data type of any <strong>expression</strong> in your query. This includes table columns, but it also works on computed expressions, literals, and the results of function calls.</p>
@@ -737,36 +618,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    pg_typeof(total_box_office_usd) <span class="kw">AS</span> box_office_type</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">1</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<colgroup>
-<col style="width: 18%">
-<col style="width: 20%">
-<col style="width: 21%">
-<col style="width: 18%">
-<col style="width: 21%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">actor_id_type</th>
-<th style="text-align: left;">height_cm_type</th>
-<th style="text-align: left;">birth_date_type</th>
-<th style="text-align: left;">honorary_type</th>
-<th style="text-align: left;">box_office_type</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">integer</td>
-<td style="text-align: left;">smallint</td>
-<td style="text-align: left;">date</td>
-<td style="text-align: left;">boolean</td>
-<td style="text-align: left;">numeric</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["actor_id_type"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height_cm_type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_date_type"],"name":[3],"type":["chr"],"align":["left"]},{"label":["honorary_type"],"name":[4],"type":["chr"],"align":["left"]},{"label":["box_office_type"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"integer","2":"smallint","3":"date","4":"boolean","5":"numeric"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The sections below work through each type family, explain what they mean, and show where they appear in the <code>actors</code> table.</p>
 </section>
@@ -791,70 +649,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> last_name</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span>  <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">notable_role</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Victoria</td>
-<td style="text-align: left;">Abril</td>
-<td style="text-align: left;">Tie Me Up! Tie Me Down!</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Amy</td>
-<td style="text-align: left;">Adams</td>
-<td style="text-align: left;">Arrival</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Mahershala</td>
-<td style="text-align: left;">Ali</td>
-<td style="text-align: left;">Moonlight</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bibi</td>
-<td style="text-align: left;">Andersson</td>
-<td style="text-align: left;">Persona</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Harriet</td>
-<td style="text-align: left;">Andersson</td>
-<td style="text-align: left;">Summer with Monika</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Julie</td>
-<td style="text-align: left;">Andrews</td>
-<td style="text-align: left;">The Sound of Music</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Fred</td>
-<td style="text-align: left;">Astaire</td>
-<td style="text-align: left;">Top Hat</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Amitabh</td>
-<td style="text-align: left;">Bachchan</td>
-<td style="text-align: left;">Deewar</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Kevin</td>
-<td style="text-align: left;">Bacon</td>
-<td style="text-align: left;">A Few Good Men</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Eric</td>
-<td style="text-align: left;">Bana</td>
-<td style="text-align: left;">Munich</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["notable_role"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Victoria","2":"Abril","3":"Tie Me Up! Tie Me Down!"},{"1":"Amy","2":"Adams","3":"Arrival"},{"1":"Mahershala","2":"Ali","3":"Moonlight"},{"1":"Bibi","2":"Andersson","3":"Persona"},{"1":"Harriet","2":"Andersson","3":"Summer with Monika"},{"1":"Julie","2":"Andrews","3":"The Sound of Music"},{"1":"Fred","2":"Astaire","3":"Top Hat"},{"1":"Amitabh","2":"Bachchan","3":"Deewar"},{"1":"Kevin","2":"Bacon","3":"A Few Good Men"},{"1":"Eric","2":"Bana","3":"Munich"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>In PostgreSQL, <code>TEXT</code> and <code>VARCHAR</code> without a length limit are implemented identically under the hood. The only practical difference is that <code>VARCHAR(n)</code> enforces a length cap, whereas <code>TEXT</code> does not. Some other databases deprecated <code>TEXT</code> years ago because it was inefficient, which led to a widespread convention of always using <code>VARCHAR(n)</code>. PostgreSQL does not have that limitation. If you do not have a specific reason to cap the length of a column, <code>TEXT</code> is a reasonable default.</p>
 <div class="callout callout-style-simple callout-note">
@@ -932,81 +733,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> total_box_office_usd <span class="kw">DESC</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span>  <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: right;">total_box_office_usd</th>
-<th style="text-align: right;">millions</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Chris</td>
-<td style="text-align: left;">Hemsworth</td>
-<td style="text-align: right;">9.2e+09</td>
-<td style="text-align: right;">9200</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Cate</td>
-<td style="text-align: left;">Blanchett</td>
-<td style="text-align: right;">5.1e+09</td>
-<td style="text-align: right;">5100</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Tom</td>
-<td style="text-align: left;">Hanks</td>
-<td style="text-align: right;">4.8e+09</td>
-<td style="text-align: right;">4800</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hugh</td>
-<td style="text-align: left;">Jackman</td>
-<td style="text-align: right;">4.6e+09</td>
-<td style="text-align: right;">4600</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Benedict</td>
-<td style="text-align: left;">Cumberbatch</td>
-<td style="text-align: right;">4.5e+09</td>
-<td style="text-align: right;">4500</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jennifer</td>
-<td style="text-align: left;">Lawrence</td>
-<td style="text-align: right;">4.2e+09</td>
-<td style="text-align: right;">4200</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Brad</td>
-<td style="text-align: left;">Pitt</td>
-<td style="text-align: right;">4.1e+09</td>
-<td style="text-align: right;">4100</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Nicole</td>
-<td style="text-align: left;">Kidman</td>
-<td style="text-align: right;">3.8e+09</td>
-<td style="text-align: right;">3800</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Robert</td>
-<td style="text-align: left;">De Niro</td>
-<td style="text-align: right;">3.5e+09</td>
-<td style="text-align: right;">3500</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Julia</td>
-<td style="text-align: left;">Roberts</td>
-<td style="text-align: right;">3.4e+09</td>
-<td style="text-align: right;">3400</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["total_box_office_usd"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["millions"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Chris","2":"Hemsworth","3":"9.2e+09","4":"9200"},{"1":"Cate","2":"Blanchett","3":"5.1e+09","4":"5100"},{"1":"Tom","2":"Hanks","3":"4.8e+09","4":"4800"},{"1":"Hugh","2":"Jackman","3":"4.6e+09","4":"4600"},{"1":"Benedict","2":"Cumberbatch","3":"4.5e+09","4":"4500"},{"1":"Jennifer","2":"Lawrence","3":"4.2e+09","4":"4200"},{"1":"Brad","2":"Pitt","3":"4.1e+09","4":"4100"},{"1":"Nicole","2":"Kidman","3":"3.8e+09","4":"3800"},{"1":"Robert","2":"De Niro","3":"3.5e+09","4":"3500"},{"1":"Julia","2":"Roberts","3":"3.4e+09","4":"3400"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Because <code>NUMERIC</code> uses exact arithmetic, it is the correct choice for financial and monetary data where rounding errors are unacceptable. The result of dividing two <code>NUMERIC</code> values is always exact, unlike floating-point arithmetic.</p>
 </section>
@@ -1018,25 +751,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span>                  <span class="kw">AS</span> amount,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span>)       <span class="kw">AS</span> stored_as,</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span>:<span class="ch">:text</span>            <span class="kw">AS</span> text_representation;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">amount</th>
-<th style="text-align: left;">stored_as</th>
-<th style="text-align: left;">text_representation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">money</td>
-<td style="text-align: left;">$1,234.56</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["amount"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["stored_as"],"name":[2],"type":["chr"],"align":["left"]},{"label":["text_representation"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"0","2":"money","3":"$1,234.56"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>At first glance, <code>MONEY</code> looks convenient for financial data. In practice, it has several rough edges worth understanding.</p>
 <p><strong>Locale-dependent output.</strong> The formatted output of a <code>MONEY</code> value depends on the <code>lc_monetary</code> locale configured on the server. Two databases with different locale settings will display the same stored value differently, and a value accepted as valid input on one server may be rejected on another.</p>
@@ -1047,33 +768,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">2</span>)         <span class="kw">AS</span> type_after_int_division,</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">100</span>:<span class="ch">:money</span>           <span class="kw">AS</span> divided_by_money,</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">1234.56</span>:<span class="ch">:money</span> <span class="op">/</span> <span class="dv">100</span>:<span class="ch">:money</span>) <span class="kw">AS</span> type_after_money_division;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<colgroup>
-<col style="width: 18%">
-<col style="width: 29%">
-<col style="width: 20%">
-<col style="width: 31%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: right;">divided_by_int</th>
-<th style="text-align: left;">type_after_int_division</th>
-<th style="text-align: right;">divided_by_money</th>
-<th style="text-align: left;">type_after_money_division</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">money</td>
-<td style="text-align: right;">12.3456</td>
-<td style="text-align: left;">double precision</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["divided_by_int"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["type_after_int_division"],"name":[2],"type":["chr"],"align":["left"]},{"label":["divided_by_money"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["type_after_money_division"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"0","2":"money","3":"12.3456","4":"double precision"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <div class="callout callout-style-simple callout-warning">
 <div class="callout-body d-flex">
@@ -1094,25 +795,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">3.14</span>)            <span class="kw">AS</span> uncast_literal,</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">3.14</span>:<span class="ch">:real</span>)      <span class="kw">AS</span> real_type,</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    pg_typeof(<span class="fl">3.14</span>:<span class="ch">:float8</span>)    <span class="kw">AS</span> double_type;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">uncast_literal</th>
-<th style="text-align: left;">real_type</th>
-<th style="text-align: left;">double_type</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">numeric</td>
-<td style="text-align: left;">real</td>
-<td style="text-align: left;">double precision</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["uncast_literal"],"name":[1],"type":["chr"],"align":["left"]},{"label":["real_type"],"name":[2],"type":["chr"],"align":["left"]},{"label":["double_type"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"numeric","2":"real","3":"double precision"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Floating-point types are appropriate for scientific measurements, geographic coordinates, and other values where a tiny approximation error is acceptable. They are not appropriate for financial amounts.</p>
 <div class="callout callout-style-simple callout-warning">
@@ -1135,123 +824,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span>   actors</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  has_honorary_oscar <span class="op">=</span> <span class="kw">true</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> last_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>17 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">has_honorary_oscar</th>
-<th style="text-align: right;">oscar_wins</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Julie</td>
-<td style="text-align: left;">Andrews</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Kirk</td>
-<td style="text-align: left;">Douglas</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clint</td>
-<td style="text-align: left;">Eastwood</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Whoopi</td>
-<td style="text-align: left;">Goldberg</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Cary</td>
-<td style="text-align: left;">Grant</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Alec</td>
-<td style="text-align: left;">Guinness</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Audrey</td>
-<td style="text-align: left;">Hepburn</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Charlton</td>
-<td style="text-align: left;">Heston</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Gene</td>
-<td style="text-align: left;">Kelly</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sophia</td>
-<td style="text-align: left;">Loren</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Paul</td>
-<td style="text-align: left;">Newman</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Peter</td>
-<td style="text-align: left;">O’Toole</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Laurence</td>
-<td style="text-align: left;">Olivier</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gregory</td>
-<td style="text-align: left;">Peck</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sidney</td>
-<td style="text-align: left;">Poitier</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">James</td>
-<td style="text-align: left;">Stewart</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Elizabeth</td>
-<td style="text-align: left;">Taylor</td>
-<td style="text-align: left;">TRUE</td>
-<td style="text-align: right;">2</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["has_honorary_oscar"],"name":[3],"type":["lgl"],"align":["right"]},{"label":["oscar_wins"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Julie","2":"Andrews","3":"TRUE","4":"1"},{"1":"Kirk","2":"Douglas","3":"TRUE","4":"0"},{"1":"Clint","2":"Eastwood","3":"TRUE","4":"0"},{"1":"Whoopi","2":"Goldberg","3":"TRUE","4":"1"},{"1":"Cary","2":"Grant","3":"TRUE","4":"0"},{"1":"Alec","2":"Guinness","3":"TRUE","4":"1"},{"1":"Audrey","2":"Hepburn","3":"TRUE","4":"1"},{"1":"Charlton","2":"Heston","3":"TRUE","4":"1"},{"1":"Gene","2":"Kelly","3":"TRUE","4":"0"},{"1":"Sophia","2":"Loren","3":"TRUE","4":"1"},{"1":"Paul","2":"Newman","3":"TRUE","4":"1"},{"1":"Peter","2":"O'Toole","3":"TRUE","4":"0"},{"1":"Laurence","2":"Olivier","3":"TRUE","4":"1"},{"1":"Gregory","2":"Peck","3":"TRUE","4":"1"},{"1":"Sidney","2":"Poitier","3":"TRUE","4":"1"},{"1":"James","2":"Stewart","3":"TRUE","4":"1"},{"1":"Elizabeth","2":"Taylor","3":"TRUE","4":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>PostgreSQL displays boolean values as <code>t</code> and <code>f</code> in the terminal, though it accepts several input forms: <code>TRUE</code>/<code>FALSE</code>, <code>'t'</code>/‘f’<code>,</code>‘yes’<code>/</code>‘no’<code>,</code>‘1’<code>/</code>‘0’<code>, and</code>‘on’<code>/</code>‘off’<code>. Applications and reporting tools typically render them as</code>true<code>/</code>false` or checkboxes depending on context.</p>
 <p>Boolean values also arise naturally whenever you write a comparison expression. The following query adds a computed boolean column that is <code>TRUE</code> for actors with more than one Oscar win:</p>
@@ -1263,70 +842,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> oscar_wins <span class="kw">DESC</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">full_name</th>
-<th style="text-align: right;">oscar_wins</th>
-<th style="text-align: left;">multiple_wins</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Katharine Hepburn</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jack Nicholson</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Daniel Day-Lewis</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Walter Brennan</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Meryl Streep</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Ingrid Bergman</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Cate Blanchett</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bette Davis</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Marlon Brando</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Denzel Washington</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["full_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["oscar_wins"],"name":[2],"type":["int"],"align":["right"]},{"label":["multiple_wins"],"name":[3],"type":["lgl"],"align":["right"]}],"data":[{"1":"Katharine Hepburn","2":"4","3":"TRUE"},{"1":"Jack Nicholson","2":"3","3":"TRUE"},{"1":"Daniel Day-Lewis","2":"3","3":"TRUE"},{"1":"Walter Brennan","2":"3","3":"TRUE"},{"1":"Meryl Streep","2":"3","3":"TRUE"},{"1":"Ingrid Bergman","2":"3","3":"TRUE"},{"1":"Cate Blanchett","2":"2","3":"TRUE"},{"1":"Bette Davis","2":"2","3":"TRUE"},{"1":"Marlon Brando","2":"2","3":"TRUE"},{"1":"Denzel Washington","2":"2","3":"TRUE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The expression <code>oscar_wins &gt; 1</code> evaluates to a <code>BOOLEAN</code> for each row. This is the same kind of expression you write in a <code>WHERE</code> clause; the difference here is that we are selecting it as a column rather than using it to filter rows.</p>
 </section>
@@ -1342,81 +864,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span>  death_date <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span>  <span class="kw">BY</span> death_date <span class="kw">DESC</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span>  <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">first_name</th>
-<th style="text-align: left;">last_name</th>
-<th style="text-align: left;">birth_date</th>
-<th style="text-align: left;">death_date</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Alain</td>
-<td style="text-align: left;">Delon</td>
-<td style="text-align: left;">1935-11-08</td>
-<td style="text-align: left;">2024-08-18</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gina</td>
-<td style="text-align: left;">Lollobrigida</td>
-<td style="text-align: left;">1927-07-04</td>
-<td style="text-align: left;">2023-01-16</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sidney</td>
-<td style="text-align: left;">Poitier</td>
-<td style="text-align: left;">1927-02-20</td>
-<td style="text-align: left;">2022-01-06</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jean-Paul</td>
-<td style="text-align: left;">Belmondo</td>
-<td style="text-align: left;">1933-04-09</td>
-<td style="text-align: left;">2021-09-06</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Sean</td>
-<td style="text-align: left;">Connery</td>
-<td style="text-align: left;">1930-08-25</td>
-<td style="text-align: left;">2020-10-31</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Max</td>
-<td style="text-align: left;">von Sydow</td>
-<td style="text-align: left;">1929-04-10</td>
-<td style="text-align: left;">2020-03-08</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Kirk</td>
-<td style="text-align: left;">Douglas</td>
-<td style="text-align: left;">1916-12-09</td>
-<td style="text-align: left;">2020-02-05</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Doris</td>
-<td style="text-align: left;">Day</td>
-<td style="text-align: left;">1922-04-03</td>
-<td style="text-align: left;">2019-05-13</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Bibi</td>
-<td style="text-align: left;">Andersson</td>
-<td style="text-align: left;">1935-11-11</td>
-<td style="text-align: left;">2019-04-14</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Albert</td>
-<td style="text-align: left;">Finney</td>
-<td style="text-align: left;">1936-05-09</td>
-<td style="text-align: left;">2019-02-07</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["first_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["last_name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["birth_date"],"name":[3],"type":["date"],"align":["right"]},{"label":["death_date"],"name":[4],"type":["date"],"align":["right"]}],"data":[{"1":"Alain","2":"Delon","3":"1935-11-08","4":"2024-08-18"},{"1":"Gina","2":"Lollobrigida","3":"1927-07-04","4":"2023-01-16"},{"1":"Sidney","2":"Poitier","3":"1927-02-20","4":"2022-01-06"},{"1":"Jean-Paul","2":"Belmondo","3":"1933-04-09","4":"2021-09-06"},{"1":"Sean","2":"Connery","3":"1930-08-25","4":"2020-10-31"},{"1":"Max","2":"von Sydow","3":"1929-04-10","4":"2020-03-08"},{"1":"Kirk","2":"Douglas","3":"1916-12-09","4":"2020-02-05"},{"1":"Doris","2":"Day","3":"1922-04-03","4":"2019-05-13"},{"1":"Bibi","2":"Andersson","3":"1935-11-11","4":"2019-04-14"},{"1":"Albert","2":"Finney","3":"1936-05-09","4":"2019-02-07"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Date literals in PostgreSQL are written as quoted strings in ISO 8601 format: <code>'2024-12-16'</code>. The database validates that the string represents a real date: <code>'2024-02-30'</code> would produce an error.</p>
 </section>
@@ -1443,25 +897,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    NOW()         <span class="kw">AS</span> <span class="fu">current_timestamp</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">CURRENT_DATE</span>  <span class="kw">AS</span> today,</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    CURRENT_TIME  <span class="kw">AS</span> time_now;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">current_timestamp</th>
-<th style="text-align: left;">today</th>
-<th style="text-align: left;">time_now</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">2026-07-30 20:32:26</td>
-<td style="text-align: left;">2026-07-30</td>
-<td style="text-align: left;">20:32:26.790804</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["current_timestamp"],"name":[1],"type":["dttm"],"align":["right"]},{"label":["today"],"name":[2],"type":["date"],"align":["right"]},{"label":["time_now"],"name":[3],"type":["time"],"align":["right"]}],"data":[{"1":"2026-08-04 13:53:39.832113","2":"2026-08-04","3":"13:53:39.832113"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 </section>
 <section id="interval" class="level3" data-number="5.6.4">
@@ -1478,81 +920,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> death_date <span class="kw">IS</span> <span class="kw">NULL</span></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_date</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">full_name</th>
-<th style="text-align: left;">birth_date</th>
-<th style="text-align: left;">fiftieth_birthday</th>
-<th style="text-align: right;">days_since_birth</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Eva Marie Saint</td>
-<td style="text-align: left;">1924-07-04</td>
-<td style="text-align: left;">1974-07-04</td>
-<td style="text-align: right;">37281</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gene Hackman</td>
-<td style="text-align: left;">1930-01-30</td>
-<td style="text-align: left;">1980-01-30</td>
-<td style="text-align: right;">35245</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clint Eastwood</td>
-<td style="text-align: left;">1930-05-31</td>
-<td style="text-align: left;">1980-05-31</td>
-<td style="text-align: right;">35124</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Harriet Andersson</td>
-<td style="text-align: left;">1932-02-14</td>
-<td style="text-align: left;">1982-02-14</td>
-<td style="text-align: right;">34500</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Kim Novak</td>
-<td style="text-align: left;">1933-02-13</td>
-<td style="text-align: left;">1983-02-13</td>
-<td style="text-align: right;">34135</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Michael Caine</td>
-<td style="text-align: left;">1933-03-14</td>
-<td style="text-align: left;">1983-03-14</td>
-<td style="text-align: right;">34106</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Shirley MacLaine</td>
-<td style="text-align: left;">1934-04-24</td>
-<td style="text-align: left;">1984-04-24</td>
-<td style="text-align: right;">33700</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sophia Loren</td>
-<td style="text-align: left;">1934-09-20</td>
-<td style="text-align: left;">1984-09-20</td>
-<td style="text-align: right;">33551</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Brigitte Bardot</td>
-<td style="text-align: left;">1934-09-28</td>
-<td style="text-align: left;">1984-09-28</td>
-<td style="text-align: right;">33543</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Judi Dench</td>
-<td style="text-align: left;">1934-12-09</td>
-<td style="text-align: left;">1984-12-09</td>
-<td style="text-align: right;">33471</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["full_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["birth_date"],"name":[2],"type":["date"],"align":["right"]},{"label":["fiftieth_birthday"],"name":[3],"type":["dttm"],"align":["right"]},{"label":["days_since_birth"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"Eva Marie Saint","2":"1924-07-04","3":"1974-07-04","4":"37286"},{"1":"Gene Hackman","2":"1930-01-30","3":"1980-01-30","4":"35250"},{"1":"Clint Eastwood","2":"1930-05-31","3":"1980-05-31","4":"35129"},{"1":"Harriet Andersson","2":"1932-02-14","3":"1982-02-14","4":"34505"},{"1":"Kim Novak","2":"1933-02-13","3":"1983-02-13","4":"34140"},{"1":"Michael Caine","2":"1933-03-14","3":"1983-03-14","4":"34111"},{"1":"Shirley MacLaine","2":"1934-04-24","3":"1984-04-24","4":"33705"},{"1":"Sophia Loren","2":"1934-09-20","3":"1984-09-20","4":"33556"},{"1":"Brigitte Bardot","2":"1934-09-28","3":"1984-09-28","4":"33548"},{"1":"Judi Dench","2":"1934-12-09","3":"1984-12-09","4":"33476"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Notice that subtracting two <code>DATE</code> values produces an <code>INTEGER</code> representing the number of days between them, while adding an <code>INTERVAL</code> to a <code>DATE</code> produces a <code>TIMESTAMP</code>. PostgreSQL promotes the result to a timestamp because an interval can include a time component.</p>
 <div class="callout callout-style-simple callout-note">
@@ -1581,92 +955,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_date</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">full_name</th>
-<th style="text-align: left;">birth_date</th>
-<th style="text-align: right;">birth_year</th>
-<th style="text-align: right;">birth_month</th>
-<th style="text-align: right;">birth_day</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Edward Robinson</td>
-<td style="text-align: left;">1893-12-12</td>
-<td style="text-align: right;">1893</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">12</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Walter Brennan</td>
-<td style="text-align: left;">1894-07-25</td>
-<td style="text-align: right;">1894</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">25</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Ruth Gordon</td>
-<td style="text-align: left;">1896-10-30</td>
-<td style="text-align: right;">1896</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">30</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Fred Astaire</td>
-<td style="text-align: left;">1899-05-10</td>
-<td style="text-align: right;">1899</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">10</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">James Cagney</td>
-<td style="text-align: left;">1899-07-17</td>
-<td style="text-align: right;">1899</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">17</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Humphrey Bogart</td>
-<td style="text-align: left;">1899-12-25</td>
-<td style="text-align: right;">1899</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">25</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Spencer Tracy</td>
-<td style="text-align: left;">1900-04-05</td>
-<td style="text-align: right;">1900</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Alastair Sim</td>
-<td style="text-align: left;">1900-10-09</td>
-<td style="text-align: right;">1900</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Thelma Ritter</td>
-<td style="text-align: left;">1902-02-14</td>
-<td style="text-align: right;">1902</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">14</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Cary Grant</td>
-<td style="text-align: left;">1904-01-18</td>
-<td style="text-align: right;">1904</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">18</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["full_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["birth_date"],"name":[2],"type":["date"],"align":["right"]},{"label":["birth_year"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["birth_month"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["birth_day"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"Edward Robinson","2":"1893-12-12","3":"1893","4":"12","5":"12"},{"1":"Walter Brennan","2":"1894-07-25","3":"1894","4":"7","5":"25"},{"1":"Ruth Gordon","2":"1896-10-30","3":"1896","4":"10","5":"30"},{"1":"Fred Astaire","2":"1899-05-10","3":"1899","4":"5","5":"10"},{"1":"James Cagney","2":"1899-07-17","3":"1899","4":"7","5":"17"},{"1":"Humphrey Bogart","2":"1899-12-25","3":"1899","4":"12","5":"25"},{"1":"Spencer Tracy","2":"1900-04-05","3":"1900","4":"4","5":"5"},{"1":"Alastair Sim","2":"1900-10-09","3":"1900","4":"10","5":"9"},{"1":"Thelma Ritter","2":"1902-02-14","3":"1902","4":"2","5":"14"},{"1":"Cary Grant","2":"1904-01-18","3":"1904","4":"1","5":"18"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>A practical use is computing an actor’s age in whole years. Subtracting birth years alone is imprecise because it ignores whether the birthday has occurred yet in the current year. The expression below accounts for that by comparing the month and day:</p>
 <div class="cell">
@@ -1684,70 +979,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> death_date <span class="kw">IS</span> <span class="kw">NULL</span></span>
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> birth_date</span>
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">full_name</th>
-<th style="text-align: left;">birth_date</th>
-<th style="text-align: right;">age</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Eva Marie Saint</td>
-<td style="text-align: left;">1924-07-04</td>
-<td style="text-align: right;">102</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Gene Hackman</td>
-<td style="text-align: left;">1930-01-30</td>
-<td style="text-align: right;">96</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clint Eastwood</td>
-<td style="text-align: left;">1930-05-31</td>
-<td style="text-align: right;">96</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Harriet Andersson</td>
-<td style="text-align: left;">1932-02-14</td>
-<td style="text-align: right;">94</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Kim Novak</td>
-<td style="text-align: left;">1933-02-13</td>
-<td style="text-align: right;">93</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Michael Caine</td>
-<td style="text-align: left;">1933-03-14</td>
-<td style="text-align: right;">93</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Shirley MacLaine</td>
-<td style="text-align: left;">1934-04-24</td>
-<td style="text-align: right;">92</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sophia Loren</td>
-<td style="text-align: left;">1934-09-20</td>
-<td style="text-align: right;">91</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Brigitte Bardot</td>
-<td style="text-align: left;">1934-09-28</td>
-<td style="text-align: right;">91</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Judi Dench</td>
-<td style="text-align: left;">1934-12-09</td>
-<td style="text-align: right;">91</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["full_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["birth_date"],"name":[2],"type":["date"],"align":["right"]},{"label":["age"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Eva Marie Saint","2":"1924-07-04","3":"102"},{"1":"Gene Hackman","2":"1930-01-30","3":"96"},{"1":"Clint Eastwood","2":"1930-05-31","3":"96"},{"1":"Harriet Andersson","2":"1932-02-14","3":"94"},{"1":"Kim Novak","2":"1933-02-13","3":"93"},{"1":"Michael Caine","2":"1933-03-14","3":"93"},{"1":"Shirley MacLaine","2":"1934-04-24","3":"92"},{"1":"Sophia Loren","2":"1934-09-20","3":"91"},{"1":"Brigitte Bardot","2":"1934-09-28","3":"91"},{"1":"Judi Dench","2":"1934-12-09","3":"91"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -1776,70 +1014,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> height_cm <span class="kw">DESC</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">full_name</th>
-<th style="text-align: right;">height_cm</th>
-<th style="text-align: right;">height_in</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Max von Sydow</td>
-<td style="text-align: right;">196</td>
-<td style="text-align: right;">77.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Clint Eastwood</td>
-<td style="text-align: right;">193</td>
-<td style="text-align: right;">76.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Gregory Peck</td>
-<td style="text-align: right;">191</td>
-<td style="text-align: right;">75.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Charlton Heston</td>
-<td style="text-align: right;">191</td>
-<td style="text-align: right;">75.2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Chris Hemsworth</td>
-<td style="text-align: right;">190</td>
-<td style="text-align: right;">74.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">James Stewart</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Idris Elba</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sidney Poitier</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Hugh Jackman</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Henry Fonda</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["full_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height_cm"],"name":[2],"type":["int"],"align":["right"]},{"label":["height_in"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Max von Sydow","2":"196","3":"77.2"},{"1":"Clint Eastwood","2":"193","3":"76.0"},{"1":"Gregory Peck","2":"191","3":"75.2"},{"1":"Charlton Heston","2":"191","3":"75.2"},{"1":"Chris Hemsworth","2":"190","3":"74.8"},{"1":"James Stewart","2":"188","3":"74.0"},{"1":"Idris Elba","2":"188","3":"74.0"},{"1":"Sidney Poitier","2":"188","3":"74.0"},{"1":"Hugh Jackman","2":"188","3":"74.0"},{"1":"Henry Fonda","2":"188","3":"74.0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 </section>
 <section id="the-operator" class="level3" data-number="5.7.2">
@@ -1853,70 +1034,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> height_cm <span class="kw">DESC</span></span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">full_name</th>
-<th style="text-align: right;">height_cm</th>
-<th style="text-align: right;">height_in</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Max von Sydow</td>
-<td style="text-align: right;">196</td>
-<td style="text-align: right;">77.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Clint Eastwood</td>
-<td style="text-align: right;">193</td>
-<td style="text-align: right;">76.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Gregory Peck</td>
-<td style="text-align: right;">191</td>
-<td style="text-align: right;">75.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Charlton Heston</td>
-<td style="text-align: right;">191</td>
-<td style="text-align: right;">75.2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Chris Hemsworth</td>
-<td style="text-align: right;">190</td>
-<td style="text-align: right;">74.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">James Stewart</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Idris Elba</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sidney Poitier</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Hugh Jackman</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Henry Fonda</td>
-<td style="text-align: right;">188</td>
-<td style="text-align: right;">74.0</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["full_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height_cm"],"name":[2],"type":["int"],"align":["right"]},{"label":["height_in"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Max von Sydow","2":"196","3":"77.2"},{"1":"Clint Eastwood","2":"193","3":"76.0"},{"1":"Gregory Peck","2":"191","3":"75.2"},{"1":"Charlton Heston","2":"191","3":"75.2"},{"1":"Chris Hemsworth","2":"190","3":"74.8"},{"1":"James Stewart","2":"188","3":"74.0"},{"1":"Idris Elba","2":"188","3":"74.0"},{"1":"Sidney Poitier","2":"188","3":"74.0"},{"1":"Hugh Jackman","2":"188","3":"74.0"},{"1":"Henry Fonda","2":"188","3":"74.0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Both queries produce identical results. The <code>::</code> form is widely used in PostgreSQL code because it is concise and reads naturally inline with other expressions. The <code>CAST()</code> form is more portable if you ever need to run the same query on a different database system.</p>
 </section>
@@ -1931,48 +1055,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> total_box_office_usd <span class="kw">DESC</span></span>
 <span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">bio_label</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Chris Hemsworth - $9200.0000000000000000M</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Cate Blanchett - $5100.0000000000000000M</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Tom Hanks - $4800.0000000000000000M</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hugh Jackman - $4600.0000000000000000M</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Benedict Cumberbatch - $4500.0000000000000000M</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jennifer Lawrence - $4200.0000000000000000M</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Brad Pitt - $4100.0000000000000000M</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Nicole Kidman - $3800.0000000000000000M</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Robert De Niro - $3500.0000000000000000M</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Julia Roberts - $3400.0000000000000000M</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["bio_label"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"Chris Hemsworth - $9200.0000000000000000M"},{"1":"Cate Blanchett - $5100.0000000000000000M"},{"1":"Tom Hanks - $4800.0000000000000000M"},{"1":"Hugh Jackman - $4600.0000000000000000M"},{"1":"Benedict Cumberbatch - $4500.0000000000000000M"},{"1":"Jennifer Lawrence - $4200.0000000000000000M"},{"1":"Brad Pitt - $4100.0000000000000000M"},{"1":"Nicole Kidman - $3800.0000000000000000M"},{"1":"Robert De Niro - $3500.0000000000000000M"},{"1":"Julia Roberts - $3400.0000000000000000M"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><strong>Text to a typed value.</strong> SQL queries often receive values from external sources as text strings. Casting converts them to the appropriate type for arithmetic or comparison.</p>
 <div class="cell">
@@ -1981,27 +1070,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'3.14159'</span>:<span class="ch">:numeric</span>     <span class="kw">AS</span> pi_as_numeric,</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'2024-12-16'</span>:<span class="ch">:date</span>     <span class="kw">AS</span> date_from_string,</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'true'</span>:<span class="ch">:boolean</span>        <span class="kw">AS</span> bool_from_string;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">year_as_int</th>
-<th style="text-align: right;">pi_as_numeric</th>
-<th style="text-align: left;">date_from_string</th>
-<th style="text-align: left;">bool_from_string</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">1956</td>
-<td style="text-align: right;">3.14159</td>
-<td style="text-align: left;">2024-12-16</td>
-<td style="text-align: left;">TRUE</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["year_as_int"],"name":[1],"type":["int"],"align":["right"]},{"label":["pi_as_numeric"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["date_from_string"],"name":[3],"type":["date"],"align":["right"]},{"label":["bool_from_string"],"name":[4],"type":["lgl"],"align":["right"]}],"data":[{"1":"1956","2":"3.14159","3":"2024-12-16","4":"TRUE"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><strong>Rounding versus truncating.</strong> Casting a <code>NUMERIC</code> value to <code>INTEGER</code> rounds to the nearest integer. If you want to discard the decimal component entirely and always round toward zero, use <code>TRUNC()</code> instead. The difference only shows when the decimal portion is 0.5 or greater. Converting heights from centimeters to whole feet makes the distinction visible:</p>
 <div class="cell">
@@ -2014,71 +1089,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> actors</span>
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> height_cm <span class="kw">BETWEEN</span> <span class="dv">163</span> <span class="kw">AND</span> <span class="dv">173</span></span>
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> height_cm, last_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>7 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">actor</th>
-<th style="text-align: right;">height_cm</th>
-<th style="text-align: right;">exact_feet</th>
-<th style="text-align: right;">truncated_feet</th>
-<th style="text-align: right;">rounded_feet</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Victoria Abril</td>
-<td style="text-align: right;">163</td>
-<td style="text-align: right;">5.35</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Bibi Andersson</td>
-<td style="text-align: right;">165</td>
-<td style="text-align: right;">5.41</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Juliette Binoche</td>
-<td style="text-align: right;">167</td>
-<td style="text-align: right;">5.48</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Julie Andrews</td>
-<td style="text-align: right;">168</td>
-<td style="text-align: right;">5.51</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Monica Bellucci</td>
-<td style="text-align: right;">170</td>
-<td style="text-align: right;">5.58</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sandra Bullock</td>
-<td style="text-align: right;">171</td>
-<td style="text-align: right;">5.61</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Jessica Lange</td>
-<td style="text-align: right;">173</td>
-<td style="text-align: right;">5.68</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">6</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["actor"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height_cm"],"name":[2],"type":["int"],"align":["right"]},{"label":["exact_feet"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["truncated_feet"],"name":[4],"type":["int"],"align":["right"]},{"label":["rounded_feet"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"Victoria Abril","2":"163","3":"5.35","4":"5","5":"5"},{"1":"Bibi Andersson","2":"165","3":"5.41","4":"5","5":"5"},{"1":"Juliette Binoche","2":"167","3":"5.48","4":"5","5":"5"},{"1":"Julie Andrews","2":"168","3":"5.51","4":"5","5":"6"},{"1":"Monica Bellucci","2":"170","3":"5.58","4":"5","5":"6"},{"1":"Sandra Bullock","2":"171","3":"5.61","4":"5","5":"6"},{"1":"Jessica Lange","2":"173","3":"5.68","4":"5","5":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 </section>
 <section id="implicit-casting" class="level3" data-number="5.7.4">

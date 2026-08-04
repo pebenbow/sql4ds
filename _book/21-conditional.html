@@ -177,6 +177,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 <link rel="stylesheet" href="custom.css">
@@ -593,81 +595,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> dep_delay <span class="kw">DESC</span> <span class="kw">NULLS</span> <span class="fu">LAST</span></span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">carrier</th>
-<th style="text-align: right;">flight</th>
-<th style="text-align: right;">dep_delay</th>
-<th style="text-align: left;">delay_category</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">2119</td>
-<td style="text-align: right;">911</td>
-<td style="text-align: left;">Major Delay</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">2047</td>
-<td style="text-align: right;">898</td>
-<td style="text-align: left;">Major Delay</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">F9</td>
-<td style="text-align: right;">835</td>
-<td style="text-align: right;">853</td>
-<td style="text-align: left;">Major Delay</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">1435</td>
-<td style="text-align: right;">812</td>
-<td style="text-align: left;">Major Delay</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">2019</td>
-<td style="text-align: right;">803</td>
-<td style="text-align: left;">Major Delay</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">2319</td>
-<td style="text-align: right;">788</td>
-<td style="text-align: left;">Major Delay</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">1715</td>
-<td style="text-align: right;">787</td>
-<td style="text-align: left;">Major Delay</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">1485</td>
-<td style="text-align: right;">753</td>
-<td style="text-align: left;">Major Delay</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">2131</td>
-<td style="text-align: right;">696</td>
-<td style="text-align: left;">Major Delay</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">2437</td>
-<td style="text-align: right;">660</td>
-<td style="text-align: left;">Major Delay</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["carrier"],"name":[1],"type":["chr"],"align":["left"]},{"label":["flight"],"name":[2],"type":["int"],"align":["right"]},{"label":["dep_delay"],"name":[3],"type":["int"],"align":["right"]},{"label":["delay_category"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"DL","2":"2119","3":"911","4":"Major Delay"},{"1":"DL","2":"2047","3":"898","4":"Major Delay"},{"1":"F9","2":"835","3":"853","4":"Major Delay"},{"1":"DL","2":"1435","3":"812","4":"Major Delay"},{"1":"AA","2":"2019","3":"803","4":"Major Delay"},{"1":"DL","2":"2319","3":"788","4":"Major Delay"},{"1":"DL","2":"1715","3":"787","4":"Major Delay"},{"1":"DL","2":"1485","3":"753","4":"Major Delay"},{"1":"DL","2":"2131","3":"696","4":"Major Delay"},{"1":"AA","2":"2437","3":"660","4":"Major Delay"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The conditions are checked in the order written, which matters here: a flight with <code>dep_delay = -5</code> fails the first <code>WHEN</code> (it is not <code>NULL</code>) but passes the second (<code>-5 &lt;= 0</code>), so it is labeled <code>'On Time'</code> before the <code>'Minor Delay'</code> condition is ever checked. If the second and third conditions were swapped, every on-time flight would incorrectly match <code>&lt;= 30</code> first. Order your conditions from most specific to least specific, or from the edge cases inward, to avoid this trap.</p>
 <p><code>CASE</code> is an expression, not a statement: it produces a single value and can appear anywhere a column can, including inside <code>WHERE</code>, <code>ORDER BY</code>, or another expression.</p>
@@ -697,47 +631,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> day_of_week</span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> num_flights <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>7 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">day_of_week</th>
-<th style="text-align: right;">num_flights</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Tuesday</td>
-<td style="text-align: right;">16232</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Monday</td>
-<td style="text-align: right;">16190</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Wednesday</td>
-<td style="text-align: right;">16006</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Thursday</td>
-<td style="text-align: right;">15979</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Friday</td>
-<td style="text-align: right;">15960</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Sunday</td>
-<td style="text-align: right;">12886</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Saturday</td>
-<td style="text-align: right;">11409</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["day_of_week"],"name":[1],"type":["chr"],"align":["left"]},{"label":["num_flights"],"name":[2],"type":["int64"],"align":["right"]}],"data":[{"1":"Tuesday","2":"16232"},{"1":"Monday","2":"16190"},{"1":"Wednesday","2":"16006"},{"1":"Thursday","2":"15979"},{"1":"Friday","2":"15960"},{"1":"Sunday","2":"12886"},{"1":"Saturday","2":"11409"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><code>EXTRACT(DOW FROM time_hour)</code> (introduced in the data types chapter) returns an integer from 0 (Sunday) to 6 (Saturday). The simple <code>CASE</code> matches that single value against each <code>WHEN</code>, exactly the way a switch statement works in most general-purpose programming languages. If you find yourself writing <code>WHEN x = 0</code>, <code>WHEN x = 1</code>, <code>WHEN x = 2</code> repeatedly with a searched <code>CASE</code>, the simple form is almost always the better fit.</p>
 </section>
@@ -754,51 +654,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> carrier</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> delayed_flights <span class="kw">DESC</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>5 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">carrier</th>
-<th style="text-align: right;">total_flights</th>
-<th style="text-align: right;">delayed_flights</th>
-<th style="text-align: right;">total_delay_minutes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">23067</td>
-<td style="text-align: right;">6993</td>
-<td style="text-align: right;">286808</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">MQ</td>
-<td style="text-align: right;">16928</td>
-<td style="text-align: right;">4777</td>
-<td style="text-align: right;">206442</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">15459</td>
-<td style="text-align: right;">4168</td>
-<td style="text-align: right;">158326</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">EV</td>
-<td style="text-align: right;">8826</td>
-<td style="text-align: right;">3341</td>
-<td style="text-align: right;">185114</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">WN</td>
-<td style="text-align: right;">6087</td>
-<td style="text-align: right;">3272</td>
-<td style="text-align: right;">112197</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["carrier"],"name":[1],"type":["chr"],"align":["left"]},{"label":["total_flights"],"name":[2],"type":["int64"],"align":["right"]},{"label":["delayed_flights"],"name":[3],"type":["int64"],"align":["right"]},{"label":["total_delay_minutes"],"name":[4],"type":["int64"],"align":["right"]}],"data":[{"1":"DL","2":"23067","3":"6993","4":"286808"},{"1":"MQ","2":"16928","3":"4777","4":"206442"},{"1":"AA","2":"15459","3":"4168","4":"158326"},{"1":"EV","2":"8826","3":"3341","4":"185114"},{"1":"WN","2":"6087","3":"3272","4":"112197"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><code>COUNT(CASE WHEN dep_delay &gt; 0 THEN 1 END)</code> has no <code>ELSE</code>, so every row that does not satisfy the condition produces <code>NULL</code> instead of a value. <code>COUNT()</code> only counts non-<code>NULL</code> inputs, so those rows are silently skipped, and the result is exactly the count of delayed flights per carrier. This is a common and deliberate idiom: omitting <code>ELSE</code> to let <code>COUNT</code> do the filtering.</p>
 <p><code>SUM</code>, by contrast, needs an explicit <code>ELSE 0</code>. <code>SUM</code> also ignores <code>NULL</code> inputs, but here every row should contribute <em>something</em> to the running total, zero for on-time flights and the actual delay for late ones, so the <code>ELSE 0</code> is required to keep those rows in the sum rather than dropping them out of it.</p>
@@ -812,23 +674,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>)          <span class="kw">AS</span> total_planes,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(speed)       <span class="kw">AS</span> planes_with_recorded_speed</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> planes;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>1 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">total_planes</th>
-<th style="text-align: right;">planes_with_recorded_speed</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">3348</td>
-<td style="text-align: right;">26</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["total_planes"],"name":[1],"type":["int64"],"align":["right"]},{"label":["planes_with_recorded_speed"],"name":[2],"type":["int64"],"align":["right"]}],"data":[{"1":"3348","2":"26"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Most rows have no recorded speed at all. If a later calculation needs <em>some</em> speed value for every plane (say, to estimate flight duration), <code>COALESCE</code> can fall back to a reasonable assumption when the real value is missing:</p>
 <div class="cell">
@@ -840,51 +692,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> planes</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> tailnum</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>5 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">tailnum</th>
-<th style="text-align: left;">manufacturer</th>
-<th style="text-align: left;">model</th>
-<th style="text-align: right;">assumed_speed_mph</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">N10156</td>
-<td style="text-align: left;">EMBRAER</td>
-<td style="text-align: left;">EMB-145XR</td>
-<td style="text-align: right;">260</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">N102UW</td>
-<td style="text-align: left;">AIRBUS INDUSTRIE</td>
-<td style="text-align: left;">A320-214</td>
-<td style="text-align: right;">260</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">N103US</td>
-<td style="text-align: left;">AIRBUS INDUSTRIE</td>
-<td style="text-align: left;">A320-214</td>
-<td style="text-align: right;">260</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">N104UW</td>
-<td style="text-align: left;">AIRBUS INDUSTRIE</td>
-<td style="text-align: left;">A320-214</td>
-<td style="text-align: right;">260</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">N10575</td>
-<td style="text-align: left;">EMBRAER</td>
-<td style="text-align: left;">EMB-145LR</td>
-<td style="text-align: right;">260</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["tailnum"],"name":[1],"type":["chr"],"align":["left"]},{"label":["manufacturer"],"name":[2],"type":["chr"],"align":["left"]},{"label":["model"],"name":[3],"type":["chr"],"align":["left"]},{"label":["assumed_speed_mph"],"name":[4],"type":["int"],"align":["right"]}],"data":[{"1":"N10156","2":"EMBRAER","3":"EMB-145XR","4":"260"},{"1":"N102UW","2":"AIRBUS INDUSTRIE","3":"A320-214","4":"260"},{"1":"N103US","2":"AIRBUS INDUSTRIE","3":"A320-214","4":"260"},{"1":"N104UW","2":"AIRBUS INDUSTRIE","3":"A320-214","4":"260"},{"1":"N10575","2":"EMBRAER","3":"EMB-145LR","4":"260"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Every row here has a <code>NULL</code> <code>speed</code>, so every row falls back to the assumed default of 260 mph. For the handful of planes that <em>do</em> have a recorded speed, <code>COALESCE</code> would return that real value instead, since it is the first non-<code>NULL</code> argument. <code>COALESCE</code> can take more than two arguments, trying each in turn: <code>COALESCE(a, b, c)</code> returns <code>a</code> if it is not <code>NULL</code>, otherwise <code>b</code> if it is not <code>NULL</code>, otherwise <code>c</code>.</p>
 </section>
@@ -907,51 +721,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> carrier</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> pct_delayed <span class="kw">DESC</span></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>5 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">carrier</th>
-<th style="text-align: right;">total_flights</th>
-<th style="text-align: right;">delayed_flights</th>
-<th style="text-align: right;">pct_delayed</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">WN</td>
-<td style="text-align: right;">6087</td>
-<td style="text-align: right;">3272</td>
-<td style="text-align: right;">0.538</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">FL</td>
-<td style="text-align: right;">3260</td>
-<td style="text-align: right;">1654</td>
-<td style="text-align: right;">0.507</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">F9</td>
-<td style="text-align: right;">685</td>
-<td style="text-align: right;">341</td>
-<td style="text-align: right;">0.498</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">YV</td>
-<td style="text-align: right;">601</td>
-<td style="text-align: right;">233</td>
-<td style="text-align: right;">0.388</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">B6</td>
-<td style="text-align: right;">6002</td>
-<td style="text-align: right;">2299</td>
-<td style="text-align: right;">0.383</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["carrier"],"name":[1],"type":["chr"],"align":["left"]},{"label":["total_flights"],"name":[2],"type":["int64"],"align":["right"]},{"label":["delayed_flights"],"name":[3],"type":["int64"],"align":["right"]},{"label":["pct_delayed"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"WN","2":"6087","3":"3272","4":"0.538"},{"1":"FL","2":"3260","3":"1654","4":"0.507"},{"1":"F9","2":"685","3":"341","4":"0.498"},{"1":"YV","2":"601","3":"233","4":"0.388"},{"1":"B6","2":"6002","3":"2299","4":"0.383"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><code>NULLIF(COUNT(*), 0)</code> returns <code>NULL</code> whenever a carrier has zero flights in the group, which turns the division into <code>something / NULL</code>. In SQL, any arithmetic operation involving <code>NULL</code> produces <code>NULL</code>, so <code>pct_delayed</code> comes back <code>NULL</code> for that row instead of raising a division-by-zero error. No carrier in this dataset actually has a zero-flight group, but the guard costs nothing to include and prevents the query from breaking the moment a filtered or grouped result set produces an empty group. This is a defensive habit worth building now, before it is the difference between a finished report and a crashed pipeline.</p>
 </section>
@@ -1001,35 +777,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> delay_category</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> num_flights <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>4 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">delay_category</th>
-<th style="text-align: right;">num_flights</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">On Time</td>
-<td style="text-align: right;">67819</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Minor Delay</td>
-<td style="text-align: right;">20554</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Major Delay</td>
-<td style="text-align: right;">13136</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Cancelled</td>
-<td style="text-align: right;">3153</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["delay_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["num_flights"],"name":[2],"type":["int64"],"align":["right"]}],"data":[{"1":"On Time","2":"67819"},{"1":"Minor Delay","2":"20554"},{"1":"Major Delay","2":"13136"},{"1":"Cancelled","2":"3153"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>PostgreSQL allows <code>GROUP BY</code> to reference the output alias (<code>delay_category</code>) rather than repeating the full <code>CASE</code> expression, which is what happens above. This is a convenience, not a universal rule: some databases require the entire <code>CASE</code> expression to be repeated in the <code>GROUP BY</code> clause, since grouping happens logically before column aliases are assigned. If you want a query that works unmodified across database systems, repeat the full expression in both places instead of relying on the alias.</p>
 <p>This pattern, inventing categories on the fly with <code>CASE WHEN</code> and grouping by them, is one of the most frequently used techniques in analytical SQL. It turns a continuous measurement like <code>dep_delay</code> into whatever discrete buckets are useful for the question at hand, without needing to add a new column to the table.</p>

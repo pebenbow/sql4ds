@@ -50,3 +50,49 @@ section#exercises > h2:first-child {
 pre.sourceCode {
     padding: 0.85em 1em !important;
 }
+
+/* Collapsible wrapper around SQL/data-frame result tables */
+details.sql-output-accordion {
+    border: 1px solid #c8cdd2;
+    border-radius: 0.5rem;
+    margin: 1.5em 0;
+    overflow: hidden;
+}
+
+details.sql-output-accordion > summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 0.5em 1em;
+    background-color: #f4f4f5;
+    font-size: 0.85em;
+    font-weight: 500;
+    color: #55595c;
+    user-select: none;
+}
+
+details.sql-output-accordion > summary::-webkit-details-marker {
+    display: none;
+}
+
+details.sql-output-accordion > summary::before {
+    content: "\25B8";
+    display: inline-block;
+    margin-right: 0.5em;
+    transition: transform 0.15s ease;
+}
+
+details.sql-output-accordion[open] > summary::before {
+    transform: rotate(90deg);
+}
+
+details.sql-output-accordion:not([open]) > summary {
+    border-bottom: none;
+}
+
+details.sql-output-accordion[open] > summary {
+    border-bottom: 1px solid #c8cdd2;
+}
+
+details.sql-output-accordion > div[data-pagedtable] {
+    padding: 0.75em 1em;
+}
