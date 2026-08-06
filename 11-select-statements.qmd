@@ -71,7 +71,7 @@ The `LIMIT 5` at the end restricts the output to five rows. Without it, the quer
 
 ### Selecting Specific Columns
 
-In most real situations, you will not want every column. Listing only the columns you need makes results easier to read and faster to retrieve from large tables.
+In most real situations, you won't want to include every column. Listing only the columns you need makes results easier to read and faster to retrieve from large tables.
 
 ```{sql}
 --| connection: con
@@ -83,7 +83,7 @@ FROM actors;
 Column names are listed after `SELECT`, separated by commas. The database returns them in exactly the order you specify, regardless of how they are arranged inside the table.
 
 ::: {.callout-tip}
-Relying on `SELECT *` in production code is considered poor practice because it breaks silently when someone adds, removes, or reorders columns in the table. Naming your columns explicitly makes queries more predictable and easier to maintain.
+Relying on `SELECT *` in production code is considered poor practice because your query could break if someone adds, removes, or reorders columns in the table. Naming your columns explicitly makes queries more predictable and easier to maintain. As a rule, I tell my students that `SELECT *` is fine when you're just exploring the data as part of an ad-hoc analysis, but including it in a production system raises substantial risks, so don't do it!
 :::
 
 ## Shaping Your Output
@@ -106,11 +106,11 @@ SELECT
 FROM actors;
 ```
 
-The `AS` keyword is optional in PostgreSQL; you can write the alias directly after the column name without it. Using `AS` explicitly is recommended, however, because it makes the intent of the query immediately clear to anyone reading it.
+The `AS` keyword is optional in PostgreSQL and most other SQL dialects; you can write the alias directly after the column name without it. Using `AS` explicitly is recommended, however, because it makes the intent of the query immediately clear to anyone reading it.
 
 ### Combining Text Columns
 
-PostgreSQL uses the `||` operator to concatenate (join) strings together. This lets you build a single display value out of multiple columns, or add literal text between column values.
+PostgreSQL uses the `||` operator to concatenate (combine) strings together. This lets you build a single display value out of multiple columns, or add literal text between column values.
 
 ```{sql}
 --| connection: con
@@ -122,7 +122,7 @@ SELECT
 FROM actors;
 ```
 
-You can add as many literal strings as you like. Here, a comma and space are inserted between the last name and the birth country to produce a compact bio label:
+You can add as many literal strings as you like. Here, a comma and space are inserted between the last name and the birth country to produce a compact biographical label for each actor:
 
 ```{sql}
 --| connection: con
@@ -159,7 +159,7 @@ LIMIT 10;
 
 ## Exploring Data with DISTINCT and COUNT
 
-Two features of the `SELECT` clause are especially useful when you first sit down with an unfamiliar database: `DISTINCT`, which removes duplicate values from your results, and `COUNT`, which tallies rows. Together they let you quickly understand what a table contains and how its data is distributed before you start filtering or transforming it.
+Two features of the `SELECT` clause are especially useful when you first sit down with an unfamiliar database: `DISTINCT`, which consolidates duplicate values from your results, and `COUNT`, which tallies rows. Together they let you quickly understand what a table contains and how its data is distributed before you start filtering or transforming it.
 
 ### DISTINCT
 
@@ -320,7 +320,7 @@ The same syntax applies to integer columns:
 --| label: where-between-int
 SELECT first_name, last_name, oscar_nominations, oscar_wins
 FROM actors
-WHERE oscar_nominations BETWEEN 3 AND 8
+WHERE oscar_nominations BETWEEN 5 AND 8
 ORDER BY oscar_nominations DESC;
 ```
 
@@ -338,7 +338,7 @@ ORDER BY last_name;
 The lower bound `>= 'D'` is inclusive and works as expected. The upper bound uses `< 'I'` rather than `<= 'H'` precisely because `'H'` alone would exclude names like `Hanks` and `Hoffman` that sort after the single character `H`.
 
 ::: {.callout-warning}
-Prefer explicit `>=` and `<=` comparisons over `BETWEEN` for most situations. The inclusive behavior is easy to forget, which makes off-by-one errors common, and `BETWEEN` cannot express half-open ranges. The alphabetical edge cases with strings make it especially error-prone there. Explicit operators are unambiguous. `BETWEEN` is fine when you encounter it in existing code or reach for it with simple integer or date ranges, but it is not the preferred form for new queries.
+You should use explicit `>=` and `<=` comparisons instead of `BETWEEN` for most situations. The inclusive behavior is easy to forget, which makes errors common, and `BETWEEN` cannot express partial ranges. The alphabetical edge cases with strings make it especially error-prone there. Meanwhile, explicit operators are unambiguous. `BETWEEN` is fine when you encounter it in existing code or reach for it with simple integer or date ranges, but it is not the preferred form for new queries.
 :::
 
 ### NULL Values and IS NULL
@@ -381,7 +381,7 @@ A `WHERE` clause can include multiple conditions joined by `AND` or `OR`.
 ```{sql}
 --| connection: con
 --| label: where-and
-SELECT first_name, last_name, birth_country, oscar_nominations, oscar_wins
+SELECT first_name, last_name, oscar_nominations, oscar_wins
 FROM actors
 WHERE primary_genre = 'Drama'
   AND oscar_wins > 0
@@ -389,6 +389,8 @@ ORDER BY oscar_wins DESC, oscar_nominations DESC;
 ```
 
 This query returns Drama actors who have won at least one Oscar, sorted by wins and then by total nominations to break ties.
+
+In a later chapter, I'll show you how to use window functions like `RANK` and `DENSE_RANK` to calculate rankings in similar situations.
 
 ::: {.callout-tip}
 When combining `AND` and `OR` in the same `WHERE` clause, use parentheses to make your intentions explicit. SQL evaluates `AND` before `OR`, which can produce surprising results if conditions are not grouped clearly.
@@ -431,14 +433,14 @@ ORDER BY last_name;
 
 Both queries return the same fourteen rows because the data happens to be consistently capitalized. The difference becomes meaningful when data entry is inconsistent: for example, if `primary_genre` values were stored as a mix of `'drama'`, `'Drama'`, and `'DRAMA'`, a `LIKE` filter for `'drama'` would miss the capitalized variants while `ILIKE` would catch all of them.
 
-With `%` wildcards on both sides of a search term, you can find text that occurs anywhere in a column. The following query finds actors whose birth names contain the word "Schwartz" or any other substring:
+With `%` wildcards on both sides of a search term, you can find text that occurs anywhere in a column. The following query finds actors whose birth names contain the name "Mary," regardless of whether it's a first or middle name:
 
 ```{sql}
 --| connection: con
 --| label: where-like-2
 SELECT first_name, last_name, birth_name
 FROM actors
-WHERE birth_name LIKE '%Bernard%';
+WHERE birth_name LIKE '%Mary%';
 ```
 
 ### Matching a List of Values with IN
@@ -644,12 +646,6 @@ ORDER BY oscar_nominations DESC;
 
 The SQL query does not describe steps. It describes a result: "I want the `first_name`, `last_name`, and `oscar_nominations` columns, from the `actors` table, restricted to rows where `primary_genre` is `'Drama'`, sorted by `oscar_nominations` descending." The database engine reads that description and decides for itself how to retrieve the data efficiently. It may use an index, reorder internal operations, or parallelize work across processors. You do not control those decisions, and most of the time you do not need to.
 
-### Set-Based Thinking
-
-One practical consequence of SQL's declarative nature is that it operates on **sets of rows** rather than individual records. When you write a `WHERE` clause, you are not writing a loop that examines each row in turn. You are describing a condition that applies to the entire table at once, and the database evaluates it however it finds most efficient.
-
-This can feel unfamiliar at first. In Python or R, reaching for a loop or an `apply`-style function is instinctive. In SQL, you resist that instinct and instead describe what the complete result set should look like. Queries that try to mimic row-by-row processing are almost always slower and harder to read than queries that embrace the set-based model.
-
 ### The Logical Order of Execution
 
 There is one aspect of SQL's declarative model that surprises many people coming from R or Python: the order in which you *write* a query's clauses is not the order in which the database *evaluates* them.
@@ -678,7 +674,8 @@ The most common practical consequence of this is that column aliases defined in 
 -- This fails: 'height_in' is not defined when WHERE runs
 SELECT ROUND(height_cm / 2.54::numeric, 1) AS height_in
 FROM actors
-WHERE height_in > 72;
+WHERE height_in > 72
+ORDER BY height_in;
 ```
 
 You have to repeat the expression in `WHERE` instead:
@@ -686,10 +683,13 @@ You have to repeat the expression in `WHERE` instead:
 ```sql
 SELECT ROUND(height_cm / 2.54::numeric, 1) AS height_in
 FROM actors
-WHERE ROUND(height_cm / 2.54::numeric, 1) > 72;
+WHERE ROUND(height_cm / 2.54::numeric, 1) > 72
+ORDER BY height_in;
 ```
 
-`ORDER BY` is an exception: most databases, including PostgreSQL, allow `ORDER BY` to reference aliases defined in `SELECT`, because `ORDER BY` is evaluated after `SELECT`. That is why `ORDER BY height_in` would work in the query above even though `WHERE height_in` does not.
+This is one aspect of SQL that many people find frustrating, but it's a natural byproduct of how relational databases operate. As you will learn in later chapters, though, there are strategies we can take when writing complex SQL queries to avoid having to duplicate the same logic repeatedly.
+
+Note, however, that `ORDER BY` does not have the same limitation. Because `ORDER BY` is evaluated later in the logical order, it can reference aliases defined in `SELECT`. That is why `ORDER BY height_in` works in the query above even though `WHERE height_in` does not.
 
 Keeping this logical order in mind will make otherwise cryptic error messages much easier to diagnose as your queries grow more complex.
 

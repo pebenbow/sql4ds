@@ -24,7 +24,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -471,11 +525,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">1.1</span> Learning Objectives</a></li>
-  <li><a href="#sqls-popularity-as-a-programming-language" id="toc-sqls-popularity-as-a-programming-language" class="nav-link" data-scroll-target="#sqls-popularity-as-a-programming-language"><span class="header-section-number">1.2</span> SQL’s popularity as a programming language</a></li>
-  <li><a href="#postgresqls-popularity-as-a-database" id="toc-postgresqls-popularity-as-a-database" class="nav-link" data-scroll-target="#postgresqls-popularity-as-a-database"><span class="header-section-number">1.3</span> PostgreSQL’s popularity as a database</a></li>
-  <li><a href="#the-many-flavors-of-sql" id="toc-the-many-flavors-of-sql" class="nav-link" data-scroll-target="#the-many-flavors-of-sql"><span class="header-section-number">1.4</span> The many flavors of SQL</a></li>
-  <li><a href="#how-to-pronounce-sql" id="toc-how-to-pronounce-sql" class="nav-link" data-scroll-target="#how-to-pronounce-sql"><span class="header-section-number">1.5</span> How to pronounce SQL</a></li>
+  <li><a href="#wherefore-sql" id="toc-wherefore-sql" class="nav-link active" data-scroll-target="#wherefore-sql"><span class="header-section-number">1.1</span> Wherefore SQL?</a></li>
+  <li><a href="#the-emergence-of-relational-databases" id="toc-the-emergence-of-relational-databases" class="nav-link" data-scroll-target="#the-emergence-of-relational-databases"><span class="header-section-number">1.2</span> The emergence of relational databases</a></li>
+  <li><a href="#sqls-role-in-data-science" id="toc-sqls-role-in-data-science" class="nav-link" data-scroll-target="#sqls-role-in-data-science"><span class="header-section-number">1.3</span> SQL’s role in data science</a></li>
+  <li><a href="#sqls-popularity-as-a-programming-language" id="toc-sqls-popularity-as-a-programming-language" class="nav-link" data-scroll-target="#sqls-popularity-as-a-programming-language"><span class="header-section-number">1.4</span> SQL’s popularity as a programming language</a></li>
+  <li><a href="#postgresqls-popularity-as-a-database" id="toc-postgresqls-popularity-as-a-database" class="nav-link" data-scroll-target="#postgresqls-popularity-as-a-database"><span class="header-section-number">1.5</span> PostgreSQL’s popularity as a database</a></li>
+  <li><a href="#the-many-flavors-of-sql" id="toc-the-many-flavors-of-sql" class="nav-link" data-scroll-target="#the-many-flavors-of-sql"><span class="header-section-number">1.6</span> The many flavors of SQL</a></li>
+  <li><a href="#how-to-pronounce-sql" id="toc-how-to-pronounce-sql" class="nav-link" data-scroll-target="#how-to-pronounce-sql"><span class="header-section-number">1.7</span> How to pronounce SQL</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/01-why-learn-sql.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -511,58 +567,129 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="learning-objectives" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">1.1</span> Learning Objectives</h2>
-<p>By the end of this chapter, students will be able to:</p>
-<ul>
-<li><strong>Articulate</strong> at least three reasons why SQL is a foundational skill for data scientists and analysts.</li>
-<li><strong>Distinguish</strong> between SQL and general-purpose programming languages such as R and Python in terms of purpose and typical use cases.</li>
-<li><strong>Describe</strong> the role of relational databases in modern data infrastructure.</li>
-<li><strong>Identify</strong> common job roles and professional workflows where SQL proficiency is required.</li>
-<li><strong>Compare</strong> relational databases to spreadsheets and flat files, explaining the limitations of each for managing structured data at scale.</li>
-<li><strong>Explain</strong> why SQL has remained relevant for decades despite the emergence of newer data technologies.</li>
-</ul>
+<p>This book is aimed mostly at my data science students at Davidson. It aims to introduce students to SQL who have no prior experience with it, but who need to know the language and the relational model upon which it is built so they can use it for research, app development, etc. Maybe you heard from a friend that a coveted data science internship wants you to know SQL, so you signed up for my Database Programming course to learn these skills. Or maybe you’re working on a business where you need to develop a full-stack application, and you need to design the back end of that product.</p>
+<p>Whoever you are and whatever brought you here, knowing how to navigate relational databases and retrieve data with SQL are two of the most durable and portable skills a young professional can have now. We live in the Information Age, and the vast majority of that information is stored in databases. Having the necessary technical skills to query and analyze data from those databases sets you up for success in pretty much every industry in existence for decades to come. It’s likely you will use databases in your first job after college, and every job after that.</p>
+<p>Investment bankers and business analysts do their work on top of relational databases, as do teachers and non-profit administrators. Doctors, lawyers, pharmacists, project managers, retail salespeople… even if they don’t realize it, most of these people are probably interacting with relational databases on a daily basis. In spite of their everyday usage, these databases are rarely seen. They run in the background, which is why they are often referred to as the “back end” of a given system or application. They’re hidden storage layers with built-in brains, driving your business or your research without most users ever really being aware of it. Ubiquitous, yet invisible.</p>
+<p>Yet, someone had to design and construct these databases to store their data. They had to structure the databases in a logical and efficient manner to keep their data consistent and secure. Someone had to build applications that could add data to these databases when, say, a new item gets added to the company’s inventory, and someone had to write queries to build a business dashboard that shows how many different types of items are in said inventory. Maybe someone even had to pull the entire history of the company’s data into a separate environment so they could run machine learning models against it and try to interpret and predict customer behavior.</p>
+<p>There are many aspects to working with databases ranging from the conceptual to the practical, and even the practical side of working with databases is complex and varied. When it comes to the world of data science and analysis, most people’s involvement is limited to retrieving data from an existing database they did not build themselves. They showed up to work a job at a company and somebody pointed them to a database or data warehouse and said, “There’s your data. Start analyzing.” So that’s what this book starts with: using SQL to query data for analysis. This is aimed at the foundational database skills most data scientists expect. They want to run statistical models against their organization’s data, and that data is kept in a database. The best way to get to it? Use some SQL to either do the analysis in the database, or extract the data using R or Python to perform your analysis with those languages.</p>
+<p>However, knowing how to build new databases and how to move data from Point A to Point B are also incredibly valuable, though they are more technical and more specialized. If you’re a data scientist who wants to collect massive amounts of data from different sources into a consolidated, well-designed, and high-performance environment, databases are fantastic at this! I basically spent the better part of a decade doing exactly this kind of work. So, once you’re familiar with the basics of SQL and how to retrieve data from existing databases, this book moves into the realm of teaching you how to design and construct new databases.</p>
+<p>Database design is much more rigorous than SQL, in my opinion, and has robust theoretical underpinnings that you need to understand in order to be effective at it, so this is likely the part you will find most challenging. It requires a strong understanding of the data you’re trying to capture and how different entities relate to each other. It requires careful thought, planning, and diagramming. It also requires discussions around data security and how not only to optimize your database for performance, but also how to harden it against data anomalies and bad actors.</p>
+<p>After that, we need to tackle the matter of how to even get data into a database in the first place! Now, this is not an application design class, so we’re not going to spend much if any time talking about how to make your React app communicate with your database. Instead, we’ll talk more about how to move data into a database <em>in bulk</em> through a process known as Extract, Transform, and Load (ETL). This gives you a glimpse into the world of <strong>data engineering</strong>, which is a related discipline to data science, and just happens to be my specialty as a data professional.</p>
+<p>Lastly, we’ll cover deployment and migration. Deployment is the process by which we take a database we’ve developed and “publish” it to a location where others can use it. In the old days, this was usually a bare metal server sitting in your company’s on-premise data center. Nowadays, it’s more likely to be a cloud hosting service that you either manage yourself, or that someone else manages for you. For this part, we’ll use a fantastic product called Supabase which will allow us to deploy our databases to the cloud and connect to them from anywhere on the planet, and migrate our databases between different versions.</p>
+<p>With all of that in mind, let’s take a moment to talk about the history and relevance of both SQL and relational databases. If nothing else, this will reinforce the idea that you’ve made a good move by choosing to learn these technologies.</p>
+<p>As this chapter seeks to illustrate, databases have long been foundational components of our technology landscape. They can be used for storing research data, building commercial platforms, developing video games, almost any scenario imaginable where data needs to persist and be recalled later.</p>
+<section id="wherefore-sql" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="wherefore-sql"><span class="header-section-number">1.1</span> Wherefore SQL?</h2>
+<p>SQL (Structured Query Language) is one of the most long-lived and ubiquitous programming languages in our world. It was invented in the 1970s, back when the internet was just a shadowy project of the United States military known as ARPANET, and long before personal computers made their way into people’s homes (and pockets).</p>
+<p>Many languages have risen in popularity in the decades since, only to crater and fade into obscurity and obsolescence. But SQL remains.</p>
+<p>Not only does SQL remain, but it is <em>everywhere</em>. In much the same way that HTML is the <em>lingua franca</em> of webpages, SQL is the <em>lingua franca</em> of data.</p>
+<p>Why is SQL so enduring? Like all programming languages, it’s quirky. It can even be frustrating and inscrutable. What makes it stand the test of time when so many other languages have withered and died?</p>
+<p>For one thing, databases have only become more popular and widespread as technology has worked its way into every facet of our lives, and databases have never seen a need to use a language other than SQL. It just does its job so well!</p>
+<p>Plus, it’s written in an accessible manner, using “plain English” syntax and diction like <code>SELECT</code> and <code>FROM</code> and <code>ORDER BY</code>. And it’s a <em>declarative</em> language, meaning you don’t have to expend a lot of energy telling the database how to do its job. Instead, you write the SQL to define the “shape” of the data you want to return, and the database engine itself determines the fastest way to get you those results. The declarative nature of SQL (more on this later in the book) and its plain English style make it easy for new users to pick up. This makes it incredibly popular not only with seasoned full-stack software engineers, but also with data analysts and business analysts whose technical skills aren’t as deep.</p>
 </section>
-<section id="sqls-popularity-as-a-programming-language" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="sqls-popularity-as-a-programming-language"><span class="header-section-number">1.2</span> SQL’s popularity as a programming language</h2>
-<p>Software developers, data scientists, and other tech professionals have strong opinions about different programming languages. This is no secret. Most people have a favorite language, and some languages that they hate.</p>
-<p>SQL has long been my favorite programming language, and I’m not the only one. In its annual survey of professional developers, Stack Overflow finds SQL ranked in the top 3 most popular languages worlwide. Here are the <a href="https://survey.stackoverflow.co/2025/technology#most-popular-technologies-language-language-prof" target="_blank">2025 survey results</a>:</p>
+<section id="the-emergence-of-relational-databases" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="the-emergence-of-relational-databases"><span class="header-section-number">1.2</span> The emergence of relational databases</h2>
+<p>Prior to the 1970s, data management largely consisted of rigidly structured hierarchical data stores, often using sequential flat files or physically storage on magnetic tapes and punch cards. Data retrieval was slow and maintenance was a nightmare.</p>
+<p>British computer scientist Edgar Codd stepped into this world in 1970 with his seminal paper, <em>A Relational Model of Data for Large Shared Data Banks</em> (<a href="https://www.engineering.upenn.edu/~zives/03f/cis550/codd.pdf">link</a>), which posited a new paradigm for database organization, the Relational Model. The Relational Model solved many of the problems that predecessor databases suffered from, so it quickly gained traction among researchers and businesses. Codd later won the Turing Award in 1981 for “his fundamental and continuing contributions to the theory and practice of database management systems.” <span class="citation" data-cites="codd1981turing">(<a href="99-references.html#ref-codd1981turing" role="doc-biblioref">Association for Computing Machinery 1981</a>)</span></p>
+<p>Inspired by Codd’s paper, a pair of engineers at IBM, Donald Chamberlin and Ronald Boyce, developed a language that could not only query data from a relational database, but also define its structure, create and manipulate data in its tables, and control access to the database itself. Initially named SEQUEL for “Structured English Query Language,” it was published in a 1974 paper <span class="citation" data-cites="chamberlinboyce1974sequel">(<a href="99-references.html#ref-chamberlinboyce1974sequel" role="doc-biblioref">Chamberlin and Boyce 1974</a>)</span> and IBM began developing commercial prototypes based on it.</p>
+<p>There’s an interesting historical sidenote here, though: another company had already trademarked SEQUEL, so IBM shortened the name of this language to “Structured Query Language,” and thus we ended up with SQL.</p>
+<p>Unfortunately for IBM, they were painstakingly slow to commercialize SQL and their relational database products, the most prominent of which was called “System R” (not to be confused with the R programming language). IBM had their own predecessor database known as IMS that they wanted to protect from competition, which ended up being one of their most costly mistakes.</p>
+<p>Into this void stepped Larry Ellison and his company Relational Software, Inc.&nbsp;(RSI), when they released the Oracle RDBMS (relational database management system) in 1979. They used Codd’s research and SQL to develop Oracle, and used it as the basis for financial and manufacturing software that became enormously popular worldwide. So popular, in fact, that Ellison and his partners changed the name of their company from RSI to Oracle. And if you know anything about Silicon Valley history, you know that Oracle became one of the largest companies in the world, catapulting Ellison into insane levels of wealth. As of the time I’m writing this, he’s the sixth-richest person in the world.</p>
+<p>So, one of Silicon Valley’s earliest and biggest success stories was born from SQL and relational databases!</p>
+<p>Because they were so early into the market, Oracle and their relational database were dominant for years to come. Many of the largest companies in the world, particularly financial institutions, were early adopters of Oracle databases and continue to favor them to this day. But, as the 1980s went by, more competition emerged in the RDBMS ecosystem: IBM finally caught up and released Db2 in 1983, and Sybase released Sybase SQL Server in 1987. Microsoft then bought the license for Sybase’s RDBMS and marketed it as Microsoft SQL Server beginning in 1989. In the years to come, other products emerged, with some great entrants on the open source side like MySQL, PostgreSQL, and SQLite.</p>
+<p>There’s a lot more history we could cover, and it gets really complicated when you start to factor in the arrival of cloud-native databases in the early 2010s and the growing prominence of data warehouses, which are a form of specialized RDBMS used for analytics and business intelligence (BI). For now, it’s sufficient for you to know that relational databases have a long history, and that they are fundamental to how we use data today.</p>
+</section>
+<section id="sqls-role-in-data-science" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="sqls-role-in-data-science"><span class="header-section-number">1.3</span> SQL’s role in data science</h2>
+<p>I firmly believe there are three languages that every data scientist should be comfortable with: R, Python, and SQL. These languages share some similarities, but less in how they are written and more in how they have overlapping or similar functions. Each of these languages can be used to manipulate data. Think of the <a href="https://dplyr.tidyverse.org" target="_blank">dplyr package</a> in R, or the <a href="https://pandas.pydata.org" target="_blank">pandas library</a> in Python, or its faster and more modern successor <a href="https://pola.rs" target="_blank">Polars</a>.</p>
+<p>However, each of these excel at different aspects of data science. R is fantastic for statistics, while Python excels at data integration and machine learning. And both of these languages have amazing data visualization extensions you can use, like <a href="https://ggplot2.tidyverse.org" target="_blank">ggplot2</a> in R and <a href="https://seaborn.pydata.org" target="_blank">Seaborn</a> in Python.</p>
+<p>Meanwhile, SQL has almost zero data visualization capabilities, save for the VERY recent launch of a tool called <a href="https://ggsql.org" target="_blank">ggsql</a>, which is only in early development as of the time I’m writing this. However, it is far-and-away the best language in the world for manipulating data. It’s so effective at this task, in fact, that popular data manipulation libraries in Python and R directly copy SQL’s verbiage, using functions like <code>left_join</code>, <code>inner_join</code>, <code>union</code>, <code>select</code>, and <code>groupby</code>. These are all derived from SQL, which existed decades before these libraries existed.</p>
+<p>The trick is that, to use SQL itself, your data needs to be in a database. And that’s why a lot of data scientists never learn SQL: when they’re in school, they get their data from flat files provided by their instructors. There’s nothing inherently wrong with that approach. For one thing, including databases in an introductory data science course really ramps up the technical complexity for students, and that’s a figurative minefield that a lot of instructors would prefer to sidestep. But it’s not representative of what happens in the real world, in corporate jobs or non-profits where data access is subject to much more rigorous controls.</p>
+<p>Indeed, many data science teams will expect you to get your data directly from a SQL database without exporting the data into flat files. There are several reasons for this, but the two I’ll highlight are <em>security</em> and <em>redundancy</em>. From a security standpoint, your institution’s data is probably at its most secure when it’s inside the database, behind strict access controls and firewalls. From a redundancy standpoint, copying data out of a database means your company now has more copies of the data it needs to maintain, which requires further storage and access control consideration, as well as the resources needed to keep the copied data fresh as new information enters the source system from which it originated. Speaking from experience, that’s not trivial for large companies to do!</p>
+<p>To be clear, there are perfectly valid reasons to extract data from databases into flat files. It’s not necessarily an anti-pattern to do these things. But some organizations, particularly ones that deal in highly sensitive data that are governed by federal regulations (think healthcare data), enact very stringent policies against the export of data files because it creates huge amounts of risk for them. So, to mitigate potential liability, they may prefer to funnel their data scientists directly into a centralized database or data warehouse.</p>
+<p>Another reason to favor giving data scientists direct access to a database or data warehouse is <em>performance</em>. Most servers that host these systems have enormous resources at their disposal, meaning memory, compute, and storage. For example, your organization’s database server, depending on its predicted workload and the budget it has, may have as much as 128 gigabytes of memory, which is double what a top-of-the-line laptop in today’s terms would typically have. Many enterprise database platforms like Microsoft SQL Server now support up to 256 gigabytes and 32 CPU cores! With the right storage array to back up those kinds of specs, like redundant solid-state drives, that means the database can handle hundreds of concurrent connections and perform lightning-fast read/write operations at scales that used to be hard for seasoned database professionals like me to even fathom.</p>
+<p>In other words, that database your company is plugging you into can crunch more data, and it can do it faster than your Macbook could ever dream of doing with R and Python.</p>
+<p>There are other features of databases, like foreign keys and indexes, that also give databases enormous performance advantages when reading data at scale, and we’ll cover those later in this book. But trust me when I say that, when it comes to manipulating massive amounts of data, nothing beats SQL on top of a high-powered database.</p>
+<p>Where does SQL fall short? Well, as I mentioned earlier, it’s not a data visualization language, but it’s also not great for statistics or machine learning, and these are prominent skills in a typical data science education. SQL does have some built-in functions for calculating regression coefficients and the like, but they’re limited. In fact, I used to teach those functions in my Database Programming course, but I stopped doing that because it’s a course on SQL, and I firmly believe that data scientists should not try to make languages do things they’re not optimized for doing. If I want to perform statistical analysis on information that’s in a database, I’ll write a query to extract only the specific dataset I need into RStudio, and I’ll use R to do that analysis. The same rule applies if I want to do some machine learning on that data, or visualization. There are tools out there, like the languages I mentioned above or platforms like Power BI and Tableau, that are much better fits for those specific use cases.</p>
+<p>So, the bottom line is to use relational databases for what they’re best at: storing and manipulating massive amounts of data.</p>
+</section>
+<section id="sqls-popularity-as-a-programming-language" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="sqls-popularity-as-a-programming-language"><span class="header-section-number">1.4</span> SQL’s popularity as a programming language</h2>
+<p>Software developers, data engineers, data scientists, and other tech professionals have strong opinions about different programming languages. This is no secret. Most people have a favorite language, and some languages that they hate.</p>
+<p>SQL has long been my favorite programming language, and I’m not the only one. In its annual survey of professional developers, Stack Overflow finds SQL ranked in the top 3 most popular languages worldwide. Here are the <a href="https://survey.stackoverflow.co/2025/technology#most-popular-technologies-language-language-prof" target="_blank">2025 survey results</a>:</p>
 <p><a href="images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png" class="img-fluid"></a></p>
 <p>So, hey! By reading this textbook, you’re taking your first steps toward learning (and hopefully eventually mastering) one of the most popular <em>and</em> most ubiquitous programming languages on Earth. Good for you. Hopefully you like it as much as I do.</p>
 </section>
-<section id="postgresqls-popularity-as-a-database" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="postgresqls-popularity-as-a-database"><span class="header-section-number">1.3</span> PostgreSQL’s popularity as a database</h2>
+<section id="postgresqls-popularity-as-a-database" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="postgresqls-popularity-as-a-database"><span class="header-section-number">1.5</span> PostgreSQL’s popularity as a database</h2>
 <p>There are literally dozens of major SQL database engines on the market today, including open-source and commercial variants. Some of them are optimized for analytical workloads, others for mobile development, others that are designed specifically to be cloud-native.</p>
-<p>Even in that crowded field of competitors, PostgreSQL consistently stands out as the most popular database engine in the world according to Stack Overflow’s annual survey of professional developers. The chart below is from the <a href="https://survey.stackoverflow.co/2025/technology#most-popular-technologies-database-database-prof" target="_blank">2025 survey results</a>:</p>
+<p>Even in that crowded field of competitors, PostgreSQL (often shortened to just “Postgres”) consistently stands out as the most popular database engine in the world according to Stack Overflow’s annual survey of professional developers. The chart below is from the <a href="https://survey.stackoverflow.co/2025/technology#most-popular-technologies-database-database-prof" target="_blank">2025 survey results</a>:</p>
 <p><a href="images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png" class="img-fluid"></a></p>
+<p>I use Postgres in my teaching for this very reason (its popularity), but also because the Postgres team is always making innovative updates to their product, pushing the envelope every year with new enhancements that are driven by the community and the changing landscape of the data profession. it’s an <strong>open source</strong> SQL variant, and I’m generally a proponent of open source technologies and principles. If you want to learn more, here’s a short read: <a href="https://opensource.com/open-source-way" target="_blank">the open source way</a>.</p>
 </section>
-<section id="the-many-flavors-of-sql" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="the-many-flavors-of-sql"><span class="header-section-number">1.4</span> The many flavors of SQL</h2>
-<p>You might be wondering: are there differences in the SQL language between all these dozens of database engines? Actually, yes! There are many different SQL “dialects,” and not every SQL database supports the same syntax or functions that others do. For example, the PostgreSQL databases we’ll use in this textbook use PL/pgSQL, which means “Procedural Language/PostgreSQL.” This language is based on PL/SQL (Procedural Language for SQL), which is the language spoken by Oracle’s family of SQL databases. Microsoft databases, meanwhile, use T-SQL, or “Transact SQL,” which was the first SQL variant I learned.</p>
+<section id="the-many-flavors-of-sql" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="the-many-flavors-of-sql"><span class="header-section-number">1.6</span> The many flavors of SQL</h2>
+<p>You might be wondering: are there differences in the SQL language between all these dozens of database engines? Actually, yes! There are many different SQL “dialects,” and not every SQL database supports the same syntax or functions that others do.</p>
+<p>For example, the Postgres databases we’ll use in this textbook use PL/pgSQL, which means “Procedural Language/PostgreSQL.” This language is based on PL/SQL (Procedural Language for SQL), which is the language spoken by Oracle’s family of SQL databases. Microsoft databases, meanwhile, use T-SQL, or “Transact SQL,” which was the first SQL variant I learned.</p>
 <p>What’s the impact of this? Well, it’s possible you can learn a function in one SQL dialect that does not work in all other dialects. As a matter of fact, two of my favorite SQL functions, <code>PIVOT</code> and <code>UNPIVOT</code>, don’t exist in PostgreSQL at all (much to my chagrin). Instead, PostgreSQL uses its own bespoke <code>CROSSTAB</code> function, which has to be installed as an extension.</p>
-<p>Some SQL dialects also have their own syntactic shortcuts. PostgreSQL has one that I really like that you can use when converting data from one data type to another. While in most SQL languages this is done with the <code>CAST()</code> function, PostgreSQL actually has a shortcut where you can do it with a simple <code>::</code> operator. You’ll find out more about this in our chapter on Data Types.</p>
+<p>Some SQL dialects also have their own syntactic shortcuts. Postgres has one that I really like that you can use when converting data from one data type to another. While in most SQL languages this is done with the <code>CAST()</code> function, PostgreSQL actually has a shortcut where you can do it with a simple <code>::</code> operator. You’ll find out more about this in our chapter on Data Types.</p>
+<p>Here are some examples of how the exact same query intent gets written differently depending on which type of database you’re pointed at. In the first example, we seek to return the top 5 rows from a table named <code>flights</code>. In PostgreSQL and MySQL, this is done with the <code>LIMIT</code> clause, but in Microsoft SQL Server it’s actually done by adding a <code>TOP</code> command to the <code>SELECT</code> clause:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="" aria-current="page">PostgreSQL / MySQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Microsoft SQL Server</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> flights <span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> TOP <span class="dv">5</span> <span class="op">*</span> <span class="kw">FROM</span> flights;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p>In the second example, our goal is to take two columns, <code>first_name</code> and <code>last_name</code>, and combine them into a single column named <code>full_name</code> by concatenating their values together with a space in between. Here we have three different approaches: in PostgreSQL and MySQL, you typically use either the <code>CONCAT()</code> function, or you use the <code>||</code> operator. But in Microsoft SQL Server, you can use the plus sign operator (<code>+</code>):</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">PostgreSQL / MySQL</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Microsoft SQL Server</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name <span class="op">||</span> <span class="st">' '</span> <span class="op">||</span> last_name <span class="kw">AS</span> full_name <span class="kw">FROM</span> passengers;</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">CONCAT</span>(first_name, <span class="st">' '</span>, last_name) <span class="kw">AS</span> full_name <span class="kw">FROM</span> passengers;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="sql"><pre class="sourceCode sql cw-auto code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> first_name <span class="op">+</span> <span class="st">' '</span> <span class="op">+</span> last_name <span class="kw">AS</span> full_name <span class="kw">FROM</span> passengers;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
 <p>Now, before you start freaking out about there being dozens of different SQL dialects and all these various shortcuts, the truth is that all SQL dialects share roughly 90-95% of the exact same core functions, and the skills you pick up in this textbook, whether that’s running <code>SELECT</code> statements to extract data or building new databases with <code>CREATE TABLE</code> statements, are easily transportable to other SQL databases.</p>
-<p>SQL was actually standardized in the early 1990s by the American National Standards Institute (ANSI), and almost all SQL dialects in existence now are largely based off what is commonly referred to as “ANSI SQL.” This includes a long list of functions and standards that carry over between this vast ecosystem of databases.</p>
-<p>The point is: if you can master one SQL dialect (like the PL/pgSQL we’ll be learning in this textbook), you can confidently apply 90+% of what you learned in any other SQL databse engine you come across, whether that’s Microsoft, Oracle, Snowflake, DuckDB, Google BigQuery, etc.</p>
+<p>SQL was actually standardized in the late 1980s, first by the American National Standards Institute (ANSI), then the following year by the International Standards Organization (ISO) <span class="citation" data-cites="iso9075-1-2023">(<a href="99-references.html#ref-iso9075-1-2023" role="doc-biblioref">International Organization for Standardization 2023</a>)</span>. The ANSI and ISO standards are interchangeable these days, and they have grown and evolved substantially since the 1980s to accommodate new functionality, but it should you to know that almost all SQL dialects in existence largely conform to these standards. Of course, vendors still often experiment and innovate with different ways of writing SQL, but the core of the language is still consistent no matter which platform you’re using.</p>
+<p>The point is: if you can master one SQL dialect (like the PL/pgSQL we’ll be learning in this textbook), you can confidently apply 90+% of what you learn in any other SQL database engine you come across, whether that’s Microsoft, Oracle, Snowflake, DuckDB, Google BigQuery, etc.</p>
 </section>
-<section id="how-to-pronounce-sql" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="how-to-pronounce-sql"><span class="header-section-number">1.5</span> How to pronounce SQL</h2>
+<section id="how-to-pronounce-sql" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="how-to-pronounce-sql"><span class="header-section-number">1.7</span> How to pronounce SQL</h2>
 <p>The inevitable question: “Is it pronounced ‘Sequel’ or ‘Ess-Que-Ell?’”</p>
 <p>Honest answer: it doesn’t matter. Both pronuniciations are fine, and they’re both in common usage.</p>
-<p>Anecdotally, I do think it’s more common for the “ess-que-ell” pronunciation to be used outside the United States. This is only my observation from attending conferences and conversing with fellow data professionals around the world, but it seems that the “sequel” pronunication is more popular to Americans than it is to the rest of the world. But I have zero data to support that.</p>
+<p>Anecdotally, I do think it’s more common for developers outside the United States to use the “ess-que-ell” pronunciation. This is only my observation from attending conferences and conversing with fellow data professionals around the world, but it seems that the “sequel” pronunication is more popular among Americans than it is in the rest of the world. But I have zero data to support that.</p>
 <p>I’ve also found it can depend on which variant of SQL you’re using. When I was first learning databases, I cut my teeth on Microsoft SQL Server, and Microsoft pretty much universally uses the “sequel” pronunciation. Watch any of their YouTube videos or other content, or go to any of their conferences, and you’ll hear “sequel” a billion times. Their employees almost never say “ess-que-ell.” And because that’s the platform I first learned, that’s the pronunciation I normally use.</p>
 <p>Other companies with their own products feel differently. MySQL, for example, actually has specifically stated:</p>
 <blockquote class="blockquote">
 <p>The official way to pronounce “MySQL” is “My Ess Que Ell” (not “my sequel”), but we do not mind if you pronounce it as “my sequel” or in some other localized way.</p>
 <p>Source: <a href="https://dev.mysql.com/doc/refman/8.0/en/what-is-mysql.html" target="_blank">MySQL 8.0 Reference Manual</a></p>
 </blockquote>
-<p>Fair enough.</p>
-<p>Here’s a fun historical fact, though: when SQL was first being written in the 1970s, the developers at IBM gave it the name SEQUEL, which stood for “Structured English Query Language.” However, they soon found out that another company had already trademarked “SEQUEL,” so IBM shortened it to “SQL.”</p>
-<p>So you could actually make the argument that it was always <em>meant</em> to be pronounced as “sequel.”</p>
-<p>But the truth is that it really does not matter. The vast majority of people know that “how to pronounce SQL” is not a hill worth dying on. If you’re talking to a data person and they pronounce it “ess-que-ell,” you will know exactly what they’re talking about. And vice versa if you pronounce it back to them as “sequel.”</p>
+<p>Fair enough. But I also want to refer you back to the historical context I gave you earlier when I mentioned that Chamberlin and Boyce originally wanted to call their language SEQUEL for “Structured English Query Language.” The only reason they shortened it to SQL was because some other company had trademarked SEQUEL. So, you could make the argument that it was always <em>meant</em> to be pronounced as “sequel.”</p>
+<p>At least, that’s how I choose to look at it.</p>
+<p>At the end of the day, the truth is that it really does not matter. The vast majority of people know that “how to pronounce SQL” is not a hill worth dying on. If you’re talking to a data person and they pronounce it “ess-que-ell,” you will know exactly what they’re talking about. And vice versa if you pronounce it back to them as “sequel.”</p>
 <p>If somebody berates you because they think you’re pronouncing it the “wrong” way, you should tell that person to go touch some grass.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-codd1981turing" class="csl-entry" role="listitem">
+Association for Computing Machinery. 1981. <em>Edgar f. Codd - a.m. Turing Award Laureate</em>. ACM. <a href="https://amturing.acm.org/award_winners/codd_1000892.cfm">https://amturing.acm.org/award_winners/codd_1000892.cfm</a>.
+</div>
+<div id="ref-chamberlinboyce1974sequel" class="csl-entry" role="listitem">
+Chamberlin, Donald D., and Raymond F. Boyce. 1974. <span>“SEQUEL: A Structured English Query Language.”</span> <em>Proceedings of the 1974 ACM SIGFIDET (Now SIGMOD) Workshop on Data Description, Access and Control</em> (New York, NY, USA), SIGFIDET ’74, 249–64. <a href="https://doi.org/10.1145/800296.811515">https://doi.org/10.1145/800296.811515</a>.
+</div>
+<div id="ref-iso9075-1-2023" class="csl-entry" role="listitem">
+International Organization for Standardization. 2023. <em>Information Technology — Database Languages — SQL — Part 1: Framework (SQL/Framework)</em>. ISO/IEC 9075-1:2023. ISO. <a href="https://www.iso.org/standard/76583.html">https://www.iso.org/standard/76583.html</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->

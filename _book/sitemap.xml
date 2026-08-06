@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sql4ds.com/index.html</loc>
-    <lastmod>2026-08-04T18:39:37.785Z</lastmod>
+    <lastmod>2026-08-05T13:08:32.114Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/00-intro.html</loc>
@@ -10,15 +10,15 @@
   </url>
   <url>
     <loc>https://sql4ds.com/01-why-learn-sql.html</loc>
-    <lastmod>2026-08-04T19:19:07.941Z</lastmod>
+    <lastmod>2026-08-05T19:13:28.444Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/02-setup.html</loc>
-    <lastmod>2026-07-27T16:34:01.417Z</lastmod>
+    <lastmod>2026-08-05T20:11:41.240Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/03-database-organization.html</loc>
-    <lastmod>2026-08-04T18:39:37.565Z</lastmod>
+    <lastmod>2026-08-05T19:34:30.797Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/10-query.html</loc>
@@ -26,7 +26,7 @@
   </url>
   <url>
     <loc>https://sql4ds.com/11-select-statements.html</loc>
-    <lastmod>2026-08-04T18:39:37.567Z</lastmod>
+    <lastmod>2026-08-05T19:28:25.503Z</lastmod>
   </url>
   <url>
     <loc>https://sql4ds.com/12-data-types.html</loc>
