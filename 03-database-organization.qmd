@@ -42,9 +42,9 @@ Each row describes exactly one student. This is the single most important discip
 
 ## Columns: One Attribute, Every Row
 
-A **column** (also called a *field* or *attribute*) represents one specific piece of information that every row in the table has, such as `first_name`, `major`, or `gpa`. Every value in a given column should be the same *kind* of thing: `gpa` always holds a grade point average, never sometimes a GPA and sometimes a comment like `"still finishing coursework"`.
+A **column** (also called a *field* or *attribute*) represents one specific piece of information that every row in the table has, such as `first_name`, `major`, or `gpa`. Every value in a given column should be the same *kind* of thing. The `gpa` column always holds a grade point average, and nothing BUT the grade point average. It should contain a text comment like `"still finishing coursework"`.
 
-This is a habit worth building early, because spreadsheets do not enforce it and databases do. In a spreadsheet, nothing stops you from typing a stray note into a column that is otherwise full of numbers. A relational database can be configured to reject that note outright, once you tell it what kind of value a column is supposed to hold. (The next chapter introduces the specific data types SQL uses to make that guarantee.)
+This is a habit worth building early, because spreadsheets do not enforce it and databases do. In a spreadsheet, nothing stops you from typing a stray note into a column that is otherwise full of numbers. A relational database can be configured to reject that note outright, once you tell it what kind of value a column is supposed to hold. (An upcoming chapter introduces the specific data types PostgreSQL uses to make that guarantee.)
 
 ## Values: The Cells of the Grid
 
@@ -93,6 +93,8 @@ The fix is to split the data into two tables: one for customers, one for orders.
 
 Each customer's information now lives in exactly one place. Each order simply records which customer placed it, using the `customer_id` column, rather than repeating their name and email every time. Update Maria's email once, in the `customers` table, and every order associated with her is automatically up to date, because the order itself never stored a copy of that email in the first place.
 
+We're going to spend a lot more time on these design principles when we get to the chapters on database design and normalization.
+
 ## Relationships: Tables Connected Through Shared Values
 
 The `customer_id` column in `orders` is what ties the two tables back together. It does not describe anything about the order itself; its entire purpose is to point at a specific row in `customers`. This is the essence of a **relationship** between tables: one table holds a value that refers to a row in another table, and that shared value is how the two are reconnected when needed.
@@ -124,20 +126,20 @@ You will not be asked to use the formal terms in this book's exercises, and the 
 
 If you have already worked with data frames in R or Python, you have effectively been using this same structure under yet another name. Data frames are analogous to database tables in many ways. For example, rows are typically referred to as "observations." Columns are a little more tricky because they are commonly referred to as "variables," but in Python data frames they are also often called "series."
 
-I'll admit, the comparison is not perfect when you take a more technical perspective because data frames in R and Python live in your program's memory, while a table lives in the database (which is stored on disk), but the shape of the data and the discipline around it (one kind of value per column, one entity per row) are the same idea you already know, just running inside a database instead of inside Python or R.
+I'll admit that the comparison is not perfect when you take a more technical perspective because data frames in R and Python live in your program's memory, while a table lives in the database (which is stored on disk), but the shape of the data and the discipline around it (one kind of value per column, one entity per row) are the same idea you already know, just running inside a database instead of inside Python or R.
 
 ## Putting It Together
 
 From smallest to largest, a relational database is organized as:
 
 1. **Value**: one piece of data, one fact, sitting in a single cell.
-2. **Column** (formally, an *attribute*): a named slot for one specific kind of value, with an enforce data type that is shared by every row in a table.
+2. **Column** (formally, an *attribute*): a named slot for one specific kind of value, with an enforced data type that is shared by every row in a table.
 3. **Row** (formally, a *tuple*): one record describing a single real-world thing, made up of one value per column.
 4. **Table** (formally, a *relation*): a named collection of rows that all describe the same kind of thing.
 5. **Schema**: a named collection of related tables.
 6. **Database**: the full environment that holds one or more schemas.
 
-Everything in the rest of this book builds on this structure. The next chapter starts writing queries against it with `SELECT`, and a later section of the book (starting with keys and integrity) returns to relationships and gives them the formal treatment only sketched here.
+Everything in the rest of this book builds on this structure. The coming chapters introduce you to writing queries against this structure with `SELECT`, and a later section of the book (starting with keys and integrity) returns to relationships and gives them the formal treatment only sketched here.
 
 ## Exercises {.unnumbered}
 

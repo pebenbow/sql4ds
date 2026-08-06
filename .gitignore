@@ -19,3 +19,4 @@ _extensions/quarto-dbml/node_modules/quarto-dbml
 .claude/
 
 **/*.quarto_ipynb
+**/*.quarto_ipynb_*

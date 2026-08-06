@@ -603,8 +603,8 @@ div.csl-indent {
 </section>
 <section id="columns-one-attribute-every-row" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="columns-one-attribute-every-row"><span class="header-section-number">3.5</span> Columns: One Attribute, Every Row</h2>
-<p>A <strong>column</strong> (also called a <em>field</em> or <em>attribute</em>) represents one specific piece of information that every row in the table has, such as <code>first_name</code>, <code>major</code>, or <code>gpa</code>. Every value in a given column should be the same <em>kind</em> of thing: <code>gpa</code> always holds a grade point average, never sometimes a GPA and sometimes a comment like <code>"still finishing coursework"</code>.</p>
-<p>This is a habit worth building early, because spreadsheets do not enforce it and databases do. In a spreadsheet, nothing stops you from typing a stray note into a column that is otherwise full of numbers. A relational database can be configured to reject that note outright, once you tell it what kind of value a column is supposed to hold. (The next chapter introduces the specific data types SQL uses to make that guarantee.)</p>
+<p>A <strong>column</strong> (also called a <em>field</em> or <em>attribute</em>) represents one specific piece of information that every row in the table has, such as <code>first_name</code>, <code>major</code>, or <code>gpa</code>. Every value in a given column should be the same <em>kind</em> of thing. The <code>gpa</code> column always holds a grade point average, and nothing BUT the grade point average. It should contain a text comment like <code>"still finishing coursework"</code>.</p>
+<p>This is a habit worth building early, because spreadsheets do not enforce it and databases do. In a spreadsheet, nothing stops you from typing a stray note into a column that is otherwise full of numbers. A relational database can be configured to reject that note outright, once you tell it what kind of value a column is supposed to hold. (An upcoming chapter introduces the specific data types PostgreSQL uses to make that guarantee.)</p>
 </section>
 <section id="values-the-cells-of-the-grid" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="values-the-cells-of-the-grid"><span class="header-section-number">3.6</span> Values: The Cells of the Grid</h2>
@@ -735,6 +735,7 @@ div.csl-indent {
 </tbody>
 </table>
 <p>Each customer’s information now lives in exactly one place. Each order simply records which customer placed it, using the <code>customer_id</code> column, rather than repeating their name and email every time. Update Maria’s email once, in the <code>customers</code> table, and every order associated with her is automatically up to date, because the order itself never stored a copy of that email in the first place.</p>
+<p>We’re going to spend a lot more time on these design principles when we get to the chapters on database design and normalization.</p>
 </section>
 <section id="relationships-tables-connected-through-shared-values" class="level2" data-number="3.8">
 <h2 data-number="3.8" class="anchored" data-anchor-id="relationships-tables-connected-through-shared-values"><span class="header-section-number">3.8</span> Relationships: Tables Connected Through Shared Values</h2>
@@ -789,20 +790,20 @@ div.csl-indent {
 <p>Second, notice that a relation is technically defined as an <em>unordered</em> collection of tuples with no duplicates, which is stricter than how a table behaves in practice. Real SQL tables can contain duplicate rows and are usually returned in whatever order the database finds convenient, unless you explicitly sort them. This book uses “table” rather than “relation” specifically because it is describing SQL as it is actually used, not the pure mathematical abstraction SQL is loosely based on.</p>
 <p>You will not be asked to use the formal terms in this book’s exercises, and the rest of this book sticks to table, row, and column throughout. But when you see “relation,” “tuple,” or “attribute” elsewhere (and you will), you now know exactly what they mean.</p>
 <p>If you have already worked with data frames in R or Python, you have effectively been using this same structure under yet another name. Data frames are analogous to database tables in many ways. For example, rows are typically referred to as “observations.” Columns are a little more tricky because they are commonly referred to as “variables,” but in Python data frames they are also often called “series.”</p>
-<p>I’ll admit, the comparison is not perfect when you take a more technical perspective because data frames in R and Python live in your program’s memory, while a table lives in the database (which is stored on disk), but the shape of the data and the discipline around it (one kind of value per column, one entity per row) are the same idea you already know, just running inside a database instead of inside Python or R.</p>
+<p>I’ll admit that the comparison is not perfect when you take a more technical perspective because data frames in R and Python live in your program’s memory, while a table lives in the database (which is stored on disk), but the shape of the data and the discipline around it (one kind of value per column, one entity per row) are the same idea you already know, just running inside a database instead of inside Python or R.</p>
 </section>
 <section id="putting-it-together" class="level2" data-number="3.11">
 <h2 data-number="3.11" class="anchored" data-anchor-id="putting-it-together"><span class="header-section-number">3.11</span> Putting It Together</h2>
 <p>From smallest to largest, a relational database is organized as:</p>
 <ol type="1">
 <li><strong>Value</strong>: one piece of data, one fact, sitting in a single cell.</li>
-<li><strong>Column</strong> (formally, an <em>attribute</em>): a named slot for one specific kind of value, with an enforce data type that is shared by every row in a table.</li>
+<li><strong>Column</strong> (formally, an <em>attribute</em>): a named slot for one specific kind of value, with an enforced data type that is shared by every row in a table.</li>
 <li><strong>Row</strong> (formally, a <em>tuple</em>): one record describing a single real-world thing, made up of one value per column.</li>
 <li><strong>Table</strong> (formally, a <em>relation</em>): a named collection of rows that all describe the same kind of thing.</li>
 <li><strong>Schema</strong>: a named collection of related tables.</li>
 <li><strong>Database</strong>: the full environment that holds one or more schemas.</li>
 </ol>
-<p>Everything in the rest of this book builds on this structure. The next chapter starts writing queries against it with <code>SELECT</code>, and a later section of the book (starting with keys and integrity) returns to relationships and gives them the formal treatment only sketched here.</p>
+<p>Everything in the rest of this book builds on this structure. The coming chapters introduce you to writing queries against this structure with <code>SELECT</code>, and a later section of the book (starting with keys and integrity) returns to relationships and gives them the formal treatment only sketched here.</p>
 </section>
 <section id="exercises" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="exercises">Exercises</h2>
