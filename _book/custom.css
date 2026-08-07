@@ -35,6 +35,10 @@ section#exercises {
     margin: 2.5rem 0;
 }
 
+.code-with-filename {
+    box-shadow : #26394d 10px 10px 10px -10px;
+}
+
 section#exercises > h2:first-child {
     margin-top: 0;
 }
@@ -57,6 +61,7 @@ details.sql-output-accordion {
     border-radius: 0.5rem;
     margin: 1.5em 0;
     overflow: hidden;
+    box-shadow : #26394d 10px 10px 10px -10px
 }
 
 details.sql-output-accordion > summary {
