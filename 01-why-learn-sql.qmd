@@ -2,9 +2,11 @@
 title: "Why Learn SQL?"
 ---
 
-This book is aimed mostly at my data science students at Davidson. It aims to introduce students to SQL who have no prior experience with it, but who need to know the language and the relational model upon which it is built so they can use it for research, app development, etc. Maybe you heard from a friend that a coveted data science internship wants you to know SQL, so you signed up for my Database Programming course to learn these skills. Or maybe you're working on a business where you need to develop a full-stack application, and you need to design the back end of that product.
+This book is aimed mostly at my data science students at Davidson. It aims to introduce students to SQL who have no prior experience with it, but who need to know the language and the relational model upon which it is built so they can use it for research, app development, etc.
 
-Whoever you are and whatever brought you here, knowing how to navigate relational databases and retrieve data with SQL are two of the most durable and portable skills a young professional can have now. We live in the Information Age, and the vast majority of that information is stored in databases. Having the necessary technical skills to query and analyze data from those databases sets you up for success in pretty much every industry in existence for decades to come. It's likely you will use databases in your first job after college, and every job after that.
+Maybe you heard from a friend that a coveted data science internship wants you to know SQL, so you signed up for my Database Programming course to learn these skills. Or maybe you're working on a business where you need to develop a full-stack application, and you need to design the back end of that product. Whoever you are and whatever brought you here, knowing how to navigate relational databases and retrieve data with SQL are two of the most durable and portable skills a young professional can have now.
+
+We live in the Information Age, and the vast majority of that information is stored in databases. Having the necessary technical skills to query and analyze data from those databases sets you up for success in pretty much every industry in existence for decades to come. It's likely you will use databases in your first job after college, and every job after that.
 
 Investment bankers and business analysts do their work on top of relational databases, as do teachers and non-profit administrators. Doctors, lawyers, pharmacists, project managers, retail salespeople... even if they don't realize it, most of these people are probably interacting with relational databases on a daily basis. In spite of their everyday usage, these databases are rarely seen. They run in the background, which is why they are often referred to as the "back end" of a given system or application. They're hidden storage layers with built-in brains, driving your business or your research without most users ever really being aware of it. Ubiquitous, yet invisible.
 
@@ -18,7 +20,7 @@ Database design is much more rigorous than SQL, in my opinion, and has robust th
 
 After that, we need to tackle the matter of how to even get data into a database in the first place! Now, this is not an application design class, so we're not going to spend much if any time talking about how to make your React app communicate with your database. Instead, we'll talk more about how to move data into a database _in bulk_ through a process known as Extract, Transform, and Load (ETL). This gives you a glimpse into the world of **data engineering**, which is a related discipline to data science, and just happens to be my specialty as a data professional.
 
-Lastly, we'll cover deployment and migration. Deployment is the process by which we take a database we've developed and "publish" it to a location where others can use it. In the old days, this was usually a bare metal server sitting in your company's on-premise data center. Nowadays, it's more likely to be a cloud hosting service that you either manage yourself, or that someone else manages for you. For this part, we'll use a fantastic product called Supabase which will allow us to deploy our databases to the cloud and connect to them from anywhere on the planet, and migrate our databases between different versions.
+Lastly, we'll cover deployment and migration. Deployment is the process by which we take a database we've developed and "publish" it to a location where others can use it. In the old days, this was usually a bare metal server sitting in your company's on-premise data center. Nowadays, it's more likely to be a cloud hosting service that you either manage yourself, or that someone else manages for you. For this part, we'll use a fantastic product called [Supabase](https://supabase.com){target="_blank"} which will allow us to deploy our databases to the cloud and connect to them from anywhere on the planet, and migrate our databases between different versions.
 
 With all of that in mind, let's take a moment to talk about the history and relevance of both SQL and relational databases. If nothing else, this will reinforce the idea that you've made a good move by choosing to learn these technologies.
 
@@ -88,7 +90,7 @@ Software developers, data engineers, data scientists, and other tech professiona
 
 SQL has long been my favorite programming language, and I'm not the only one. In its annual survey of professional developers, Stack Overflow finds SQL ranked in the top 3 most popular languages worldwide. Here are the [2025 survey results](https://survey.stackoverflow.co/2025/technology#most-popular-technologies-language-language-prof){target="_blank"}:
 
-![](images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png)
+![Bar chart showing the most popular technologies according to the 2025 Stack Overflow survey of professional developers; SQL is ranked #3](images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png)
 
 So, hey! By reading this textbook, you're taking your first steps toward learning (and hopefully eventually mastering) one of the most popular _and_ most ubiquitous programming languages on Earth. Good for you. Hopefully you like it as much as I do.
 
@@ -98,9 +100,9 @@ There are literally dozens of major SQL database engines on the market today, in
 
 Even in that crowded field of competitors, PostgreSQL (often shortened to just "Postgres") consistently stands out as the most popular database engine in the world according to Stack Overflow's annual survey of professional developers. The chart below is from the [2025 survey results](https://survey.stackoverflow.co/2025/technology#most-popular-technologies-database-database-prof){target="_blank"}:
 
-![](images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png)
+![Bar chart showing the most popular database technologies according to the 2025 Stack Overflow survey of professional developers; PostgreSQL is ranked #1](images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png)
 
-I use Postgres in my teaching for this very reason (its popularity), but also because the Postgres team is always making innovative updates to their product, pushing the envelope every year with new enhancements that are driven by the community and the changing landscape of the data profession. it's an **open source** SQL variant, and I'm generally a proponent of open source technologies and principles. If you want to learn more, here's a short read: [the open source way](https://opensource.com/open-source-way){target="_blank"}.
+I use Postgres in my teaching for this very reason (its popularity), but also because the Postgres team is always making innovative updates to their product, pushing the envelope every year with new enhancements that are driven by the community and the changing landscape of the data profession. It's an **open source** SQL variant, and I'm generally a proponent of open source technologies and principles. If you want to learn more, here's a short read: [the open source way](https://opensource.com/open-source-way){target="_blank"}.
 
 ## The many flavors of SQL
 
@@ -147,7 +149,7 @@ SELECT first_name + ' ' + last_name AS full_name FROM passengers;
 
 Now, before you start freaking out about there being dozens of different SQL dialects and all these various shortcuts, the truth is that all SQL dialects share roughly 90-95% of the exact same core functions, and the skills you pick up in this textbook, whether that's running `SELECT` statements to extract data or building new databases with `CREATE TABLE` statements, are easily transportable to other SQL databases.
 
-SQL was actually standardized in the late 1980s, first by the American National Standards Institute (ANSI), then the following year by the International Standards Organization (ISO) [@iso9075-1-2023]. The ANSI and ISO standards are interchangeable these days, and they have grown and evolved substantially since the 1980s to accommodate new functionality, but it should you to know that almost all SQL dialects in existence largely conform to these standards. Of course, vendors still often experiment and innovate with different ways of writing SQL, but the core of the language is still consistent no matter which platform you're using.
+SQL was actually standardized in the late 1980s, first by the American National Standards Institute (ANSI), then the following year by the International Standards Organization (ISO) [@iso9075-1-2023]. The ANSI and ISO standards are interchangeable these days, and they have grown and evolved substantially since the 1980s to accommodate new functionality, but it should ease your mind to know that almost all SQL dialects in existence largely conform to these standards. Of course, vendors still often experiment and innovate with different ways of writing SQL (and Postgres is a great example of this), but the core of the language is still consistent no matter which platform you're using.
 
 The point is: if you can master one SQL dialect (like the PL/pgSQL we'll be learning in this textbook), you can confidently apply 90+% of what you learn in any other SQL database engine you come across, whether that's Microsoft, Oracle, Snowflake, DuckDB, Google BigQuery, etc.
 
@@ -159,7 +161,7 @@ Honest answer: it doesn't matter. Both pronuniciations are fine, and they're bot
 
 Anecdotally, I do think it's more common for developers outside the United States to use the "ess-que-ell" pronunciation. This is only my observation from attending conferences and conversing with fellow data professionals around the world, but it seems that the "sequel" pronunication is more popular among Americans than it is in the rest of the world. But I have zero data to support that.
 
-I've also found it can depend on which variant of SQL you're using. When I was first learning databases, I cut my teeth on Microsoft SQL Server, and Microsoft pretty much universally uses the "sequel" pronunciation. Watch any of their YouTube videos or other content, or go to any of their conferences, and you'll hear "sequel" a billion times. Their employees almost never say "ess-que-ell." And because that's the platform I first learned, that's the pronunciation I normally use.
+I've also found it can depend on which variant of SQL you're using. When I was first learning databases, I cut my teeth on Microsoft SQL Server, and Microsoft pretty much universally uses the "sequel" pronunciation. Watch any of [their YouTube videos](https://www.youtube.com/watch?v=klRZjx_eyw0){target="_blank"} or other content, or go to any of their conferences, and you'll hear "sequel" a billion times. Their employees almost never say "ess-que-ell." And because that's the platform I first learned, that's the pronunciation I normally use.
 
 Other companies with their own products feel differently. MySQL, for example, actually has specifically stated:
 
@@ -174,3 +176,5 @@ At least, that's how I choose to look at it.
 At the end of the day, the truth is that it really does not matter. The vast majority of people know that "how to pronounce SQL" is not a hill worth dying on. If you're talking to a data person and they pronounce it "ess-que-ell," you will know exactly what they're talking about. And vice versa if you pronounce it back to them as "sequel."
 
 If somebody berates you because they think you're pronouncing it the "wrong" way, you should tell that person to go touch some grass.
+
+![Image of a person's hand touching a field of grass](images/touchgrass.png)
