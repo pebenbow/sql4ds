@@ -90,7 +90,7 @@ Software developers, data engineers, data scientists, and other tech professiona
 
 SQL has long been my favorite programming language, and I'm not the only one. In its annual survey of professional developers, Stack Overflow finds SQL ranked in the top 3 most popular languages worldwide. Here are the [2025 survey results](https://survey.stackoverflow.co/2025/technology#most-popular-technologies-language-language-prof){target="_blank"}:
 
-![Bar chart showing the most popular technologies according to the 2025 Stack Overflow survey of professional developers; SQL is ranked #3](images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png)
+![](images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-language-language-prof-social.png){fig-alt="Bar chart showing the most popular technologies according to the 2025 Stack Overflow survey of professional developers; SQL is ranked #3"}
 
 So, hey! By reading this textbook, you're taking your first steps toward learning (and hopefully eventually mastering) one of the most popular _and_ most ubiquitous programming languages on Earth. Good for you. Hopefully you like it as much as I do.
 
@@ -100,7 +100,7 @@ There are literally dozens of major SQL database engines on the market today, in
 
 Even in that crowded field of competitors, PostgreSQL (often shortened to just "Postgres") consistently stands out as the most popular database engine in the world according to Stack Overflow's annual survey of professional developers. The chart below is from the [2025 survey results](https://survey.stackoverflow.co/2025/technology#most-popular-technologies-database-database-prof){target="_blank"}:
 
-![Bar chart showing the most popular database technologies according to the 2025 Stack Overflow survey of professional developers; PostgreSQL is ranked #1](images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png)
+![](images/stackoverflow-dev-survey-2025-technology-most-popular-technologies-database-database-prof-social.png){fig-alt="Bar chart showing the most popular database technologies according to the 2025 Stack Overflow survey of professional developers; PostgreSQL is ranked #1"}
 
 I use Postgres in my teaching for this very reason (its popularity), but also because the Postgres team is always making innovative updates to their product, pushing the envelope every year with new enhancements that are driven by the community and the changing landscape of the data profession. It's an **open source** SQL variant, and I'm generally a proponent of open source technologies and principles. If you want to learn more, here's a short read: [the open source way](https://opensource.com/open-source-way){target="_blank"}.
 
@@ -177,4 +177,4 @@ At the end of the day, the truth is that it really does not matter. The vast maj
 
 If somebody berates you because they think you're pronouncing it the "wrong" way, you should tell that person to go touch some grass.
 
-![Image of a person's hand touching a field of grass](images/touchgrass.png)
+![](images/touchgrass.png){fig-alt="Image of a person's hand touching a field of grass"}
