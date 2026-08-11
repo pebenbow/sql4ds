@@ -59,7 +59,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -81,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-f46a24d1acb2d5d0482b2be2f0774bbb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
 <script>document.addEventListener("DOMContentLoaded",function(){
   var DEFAULT_COLLAPSE=null;
@@ -150,6 +169,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
   });
 });</script>
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -503,35 +525,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#installing-docker-desktop" id="toc-installing-docker-desktop" class="nav-link active" data-scroll-target="#installing-docker-desktop"><span class="header-section-number">2.1</span> Installing Docker Desktop</a>
+  <li><a href="#intro" id="toc-intro" class="nav-link active" data-scroll-target="#intro"><span class="header-section-number">2.1</span> Intro</a></li>
+  <li><a href="#database-architectures" id="toc-database-architectures" class="nav-link" data-scroll-target="#database-architectures"><span class="header-section-number">2.2</span> Database architectures</a>
   <ul class="collapse">
-  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows"><span class="header-section-number">2.1.1</span> Windows</a></li>
-  <li><a href="#macos" id="toc-macos" class="nav-link" data-scroll-target="#macos"><span class="header-section-number">2.1.2</span> macOS</a></li>
-  <li><a href="#linux" id="toc-linux" class="nav-link" data-scroll-target="#linux"><span class="header-section-number">2.1.3</span> Linux</a></li>
+  <li><a href="#client-server-databases" id="toc-client-server-databases" class="nav-link" data-scroll-target="#client-server-databases"><span class="header-section-number">2.2.1</span> Client-server databases</a></li>
+  <li><a href="#embedded-databases" id="toc-embedded-databases" class="nav-link" data-scroll-target="#embedded-databases"><span class="header-section-number">2.2.2</span> Embedded databases</a></li>
+  <li><a href="#localhost-databases" id="toc-localhost-databases" class="nav-link" data-scroll-target="#localhost-databases"><span class="header-section-number">2.2.3</span> localhost databases</a></li>
+  <li><a href="#the-bottom-line" id="toc-the-bottom-line" class="nav-link" data-scroll-target="#the-bottom-line"><span class="header-section-number">2.2.4</span> The bottom line</a></li>
   </ul></li>
-  <li><a href="#pulling-the-course-image" id="toc-pulling-the-course-image" class="nav-link" data-scroll-target="#pulling-the-course-image"><span class="header-section-number">2.2</span> Pulling the Course Image</a></li>
-  <li><a href="#running-the-container" id="toc-running-the-container" class="nav-link" data-scroll-target="#running-the-container"><span class="header-section-number">2.3</span> Running the Container</a>
+  <li><a href="#for-davidson-students" id="toc-for-davidson-students" class="nav-link" data-scroll-target="#for-davidson-students"><span class="header-section-number">2.3</span> For Davidson students</a></li>
+  <li><a href="#for-other-learners" id="toc-for-other-learners" class="nav-link" data-scroll-target="#for-other-learners"><span class="header-section-number">2.4</span> For other learners</a>
   <ul class="collapse">
-  <li><a href="#basic-setup-recommended" id="toc-basic-setup-recommended" class="nav-link" data-scroll-target="#basic-setup-recommended"><span class="header-section-number">2.3.1</span> Basic Setup (Recommended)</a></li>
-  <li><a href="#if-you-already-have-postgresql-installed" id="toc-if-you-already-have-postgresql-installed" class="nav-link" data-scroll-target="#if-you-already-have-postgresql-installed"><span class="header-section-number">2.3.2</span> If You Already Have PostgreSQL Installed</a></li>
+  <li><a href="#installing-docker-desktop" id="toc-installing-docker-desktop" class="nav-link" data-scroll-target="#installing-docker-desktop"><span class="header-section-number">2.4.1</span> Installing Docker Desktop</a></li>
+  <li><a href="#pulling-the-course-image" id="toc-pulling-the-course-image" class="nav-link" data-scroll-target="#pulling-the-course-image"><span class="header-section-number">2.4.2</span> Pulling the Course Image</a></li>
+  <li><a href="#running-the-container" id="toc-running-the-container" class="nav-link" data-scroll-target="#running-the-container"><span class="header-section-number">2.4.3</span> Running the Container</a></li>
+  <li><a href="#starting-and-stopping-the-container" id="toc-starting-and-stopping-the-container" class="nav-link" data-scroll-target="#starting-and-stopping-the-container"><span class="header-section-number">2.4.4</span> Starting and Stopping the Container</a></li>
+  <li><a href="#downloading-your-ide" id="toc-downloading-your-ide" class="nav-link" data-scroll-target="#downloading-your-ide"><span class="header-section-number">2.4.5</span> Downloading your IDE</a></li>
+  <li><a href="#connecting-to-the-database" id="toc-connecting-to-the-database" class="nav-link" data-scroll-target="#connecting-to-the-database"><span class="header-section-number">2.4.6</span> Connecting to the Database</a></li>
   </ul></li>
-  <li><a href="#starting-and-stopping-the-container" id="toc-starting-and-stopping-the-container" class="nav-link" data-scroll-target="#starting-and-stopping-the-container"><span class="header-section-number">2.4</span> Starting and Stopping the Container</a></li>
-  <li><a href="#connecting-to-the-database" id="toc-connecting-to-the-database" class="nav-link" data-scroll-target="#connecting-to-the-database"><span class="header-section-number">2.5</span> Connecting to the Database</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/pebenbow/sql4ds/edit/main/02-setup.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/pebenbow/sql4ds/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 <div class="alert alert-warning border-start border-warning border-1" role="alert">
+
     <div class="d-flex align-items-center">
+
         <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
         <div>
+
             <strong>In Development:</strong> This textbook is currently
+
             undergoing development and should not be used as an authoritative
+
             source of... well, ANYTHING.
+
         </div>
+
     </div>
+
 </div>
+
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00-intro.html">Introduction</a></li><li class="breadcrumb-item"><a href="./02-setup.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Setup</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -552,14 +588,103 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Before you can run your first SQL query, you need a database to query. Throughout this book, we will use <strong>PostgreSQL</strong>, one of the most widely used open-source relational database systems in the world, as our database engine.</p>
-<p>Rather than asking you to install and configure PostgreSQL directly on your machine, we are going to use <strong>Docker</strong>. Docker lets you run software inside a self-contained environment called a <em>container</em>. Think of a container as a lightweight, portable box that holds an application and everything it needs to run, regardless of what operating system or configuration your computer has.</p>
-<p>For this book, a pre-configured PostgreSQL container has been built and published to Docker Hub at <code>pebenbow/open-sql-docker</code>. When you run this container, you get a PostgreSQL 17 server that is already set up with the sample databases used throughout this textbook. Everyone in the course works with an identical environment, which eliminates the “it works on my machine” problem entirely.</p>
-<section id="installing-docker-desktop" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="installing-docker-desktop"><span class="header-section-number">2.1</span> Installing Docker Desktop</h2>
+<section id="intro" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="intro"><span class="header-section-number">2.1</span> Intro</h2>
+<p>As you can probably imagine after reading the previous chapter, there is a dizzying number of pathways we can take towards learning SQL and relational databases. Just the sheer variety of formats and SQL dialects creates a sort of “choose your own adventure” scenario for learners who are new to this world.</p>
+<p>I’ve chosen a specific pathway that I strongly feel is optimized for broad appeal to my learners, real-world relevance, and ease of implementation. That is teaching <strong>PostgreSQL</strong> in a traditional <strong>client-server</strong> setup.</p>
+<p>But even with one pathway determined, there are multiple audiences I potentially need to cater to. My primary audience? My Database Programming students at Davidson. This textbook is written for them. However, independent learners may come across this online textbook and decide they want to go on this adventure, too. And they are certainly welcome to do so!</p>
+<p>So I’ve written the book with both audiences in mind, and this chapter provides instructions on how they can each access or create the learning environment that I have curated. For my Davidson students, there is virtually no added work for them to get connected to their learning environment. For independent learners, the barriers are steeper, but there is no cost involved other than the time it takes you to install a few applications.</p>
+<p>Before we diverge, though, it helps to introduce some foundational concepts of how databases are deployed, why this informs the particular pathway I chose, and what this means for you as a learner.</p>
+</section>
+<section id="database-architectures" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="database-architectures"><span class="header-section-number">2.2</span> Database architectures</h2>
+<p>When deciding how to learn SQL and relational databases, one of the first forks in the road is choosing a traditional client-server setup versus an embedded, single-file database. I’m going to assume you’re not familiar with the distinction, so I’ll explain.</p>
+<section id="client-server-databases" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="client-server-databases"><span class="header-section-number">2.2.1</span> Client-server databases</h3>
+<p>The most common way you will interact with databases in the real world is through <strong>client-server</strong> architecture. The database is installed on a server that is managed by your organization, or is provided as a cloud service for a platform like Amazon Web Services (AWS), Microsoft Azure, or Google Cloud Platform (GCP). The server gives substantial resources to the database like memory, compute, and storage, manages concurrent connections and backups, and secures the database against unwanted infiltration and exfiltration.</p>
+<p>Meanwhile, you as the user access the database server from a client application (hence “client-server”). For a regular end user, these interactions are most likely to occur within the graphical user interface (GUI) of an app on their phone or computer. Click a button that says “view report?” That might execute a SQL query against the server. Change your password? Probably another SQL query. But the end user never writes the SQL themselves. Instead, the GUI invisibly triggers the database.</p>
+<p>For a data analyst, data engineer, or data scientist, database interactions are more likely to occur through an <strong>integrated development environment</strong> (IDE) which gives them the ability to not only write SQL queries, but also explore the structure of the database. Popular examples of some IDEs that are optimized for databases are <a href="https://www.jetbrains.com/datagrip/" target="_blank">DataGrip</a>, <a href="https://dbeaver.io" target="_blank">DBeaver</a>, <a href="https://www.dbvis.com" target="_blank">DbVisualizer</a>, and <a href="https://learn.microsoft.com/en-us/ssms/sql-server-management-studio-ssms" target="_blank">SQL Server Management Studio</a>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/datagrip_ide.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Screenshot of DataGrip, one of the most popular database IDEs on the market now, and my personal favorite"><img src="images/datagrip_ide.png" class="img-fluid figure-img" alt="Screenshot of a database IDE showing a list of database tables and a preview of a table containing data about countries"></a></p>
+<figcaption>Screenshot of DataGrip, one of the most popular database IDEs on the market now, and my personal favorite</figcaption>
+</figure>
+</div>
+<p>In these situations, whether interacting with the database server from an app or an IDE, the client is connecting to the server either over the internet or your organization’s local area network (LAN). Either way, the database is remote from your perspective, meaning it’s not installed on your laptop or phone. Your client app merely gives you a window into the database.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/client-server-architecture.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="High-level diagram of client-server database architecture"><img src="images/client-server-architecture.png" class="img-fluid figure-img" alt="High-level diagram of client-server database architecture"></a></p>
+<figcaption>High-level diagram of client-server database architecture</figcaption>
+</figure>
+</div>
+</section>
+<section id="embedded-databases" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="embedded-databases"><span class="header-section-number">2.2.2</span> Embedded databases</h3>
+<p><strong>Embedded databases</strong> are often used when your data needs to be portable, decentralized, and/or bundled with an application. Many of the apps that run on our phones come with embedded databases that store the application data. If you search the files on your phone, you can probably find these database files buried deep in its storage, running silently in the background. WhatsApp is a prominent example of this, where messages, contacts, and other data are encrypted inside local SQLite databases <span class="citation" data-cites="Fayyad-Kazan_Kassem-Moussa_Hejase_Hejase_2022">(<a href="99-references.html#ref-Fayyad-Kazan_Kassem-Moussa_Hejase_Hejase_2022" role="doc-biblioref">Fayyad-Kazan et al. 2022</a>)</span>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/embedded-architecture.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="High-level diagram of an embedded database architecture on a host client like a phone or laptop"><img src="images/embedded-architecture.png" class="img-fluid figure-img" alt="High-level diagram of an embedded database architecture on a host client like a phone or laptop"></a></p>
+<figcaption>High-level diagram of an embedded database architecture on a host client like a phone or laptop</figcaption>
+</figure>
+</div>
+<p>Notice the difference from the client-server diagram above: everything is contained within the client host, whether that’s a phone, laptop, or desktop. There’s no separate server to connect to and no network that requests and responses need to traverse. The user application and the database live on the same machine, and that database is just a file. This is what makes embedded databases so portable. No server required!</p>
+<p>These diagrams are obviously simplified and high level. There’s a lot more nuance in practice. But hopefully these give you a general understanding of the differences between these two modalities.</p>
+<p>Another example of embedded database usage I like to highlight? Turn-based video games! “Sid Meier’s Civilization” is a personal favorite of mine. The Civ franchise is still going strong after 35+ years, and it had an enormous influence on the formation of the “4X” genre of strategy games (eXplore, eXpand, eXploit, and eXterminate). More recent entries in the Civ series have used an array of SQLite database files behind the scenes to store local game data, and modders are known to change these databases when developing mods.</p>
+<p>PLACEHOLDER FOR IMAGE SHOWING DATA FROM CIV V DATABASE</p>
+<p>The most popular embedded databases are <a href="https://sqlite.org" target="_blank">SQLite</a> and <a href="https://duckdb.org" target="_blank">DuckDB</a>. SQLite has been around since the late 1990s, and its portability has made it so ubiquitous that it’s even used in the flight software for the Airbus A350 long-range airliner <span class="citation" data-cites="sqlite_famous">(<a href="99-references.html#ref-sqlite_famous" role="doc-biblioref">SQLite, n.d.</a>)</span>! Meanwhile, DuckDB is a relatively new embedded database that is optimized for large-scale analytical workloads, becoming increasingly popular with data science teams in particular.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Later in this book, I’ll talk about the difference between <em>transactional</em> databases like SQLite versus analytical ones like DuckDB.</p>
+</div>
+</div>
+</div>
+<p>As you might have guessed, the fact that embedded databases like these are portable files that you can literally share via email, cloud sharing services, or GitHub makes them very accessible for users who want to learn SQL without needing to worry about the infrastructure that is needed to support a client-server model, namely a server and an internet connection.</p>
+</section>
+<section id="localhost-databases" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="localhost-databases"><span class="header-section-number">2.2.3</span> localhost databases</h3>
+<p>There’s a third scenario I need to mention. It actually is possible to install database server applications on your laptop if you want to. This is known as a “localhost” installation, and the name fits because you are hosting the database locally! You can install PostgreSQL on your laptop and run as many databases on it as you want to; these databases are only limited resources of your laptop, and no internet connection is required to use them.</p>
+<p>Essentially, you are treating your laptop as if it is a server, and this is very common practice among software developers who need to develop an application or database locally without needing or wanting to bother with additional infrastructure. I use this approach all the time. In fact, I used a localhost approach to teach my students in the first database class I ever taught, my SQL class for DavidsonX (a platform for massively open online courses).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/localhost.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="A screenshot from my research workstation showing a pair of localhost databases I have installed, one in MySQL and the other in PostgreSQL"><img src="images/localhost.png" class="img-fluid figure-img" alt="A screenshot from my research workstation showing a pair of localhost databases I have installed, one in MySQL and the other in PostgreSQL"></a></p>
+<figcaption>A screenshot from my research workstation showing a pair of localhost databases I have installed, one in MySQL and the other in PostgreSQL</figcaption>
+</figure>
+</div>
+<p>However, this is still different from an embedded database like SQLite because a localhost database is not portable. You can’t attach it to an email and send it to a friend, and it still requires the right software and resources to run a localhost installation. Embedded databases, by contrast, are fully decoupled from any kind of server.</p>
+</section>
+<section id="the-bottom-line" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="the-bottom-line"><span class="header-section-number">2.2.4</span> The bottom line</h3>
+<p>I deliberated for a long time on which adventure I wanted to choose for teaching this material. My professional history with Microsoft SQL Server biased me towards that platform at first, and it’s a very common and reliable product for large organizations, but I chose against it because (A) it’s not open source, (B) it’s not compatible with Apple devices, and (C) it’s more difficult to implement. I eventually chose PostgreSQL for its popularity and its cross-platform compatibility.</p>
+<p>At one point I also debated whether to teach using embedded databases in DuckDB. As I said, DuckDB has become hugely popular just in the last few years, especially in the analytics and data science community. This is because it’s specifically optimized for large-scale datasets, the kind of stuff you encounter in a data science setting. For that reason, and the aforementioned portability of embedded databases, DuckDB would actually be a relevant and convenient way to teach these things!</p>
+<p>However, I eventually decided against DuckDB just based on the grounds that most organizations worldwide use the traditional client-server model, and I want you to have a learning experience that mirrors the real-world as closely as possible. And there are VERY good reasons why you won’t typically see SQLite and DuckDB used by whatever company or agency you end up working for in the future. Organizations favor the client-server model because:</p>
+<ol type="1">
+<li><p><strong>Security.</strong> Bad actors or careless employees can’t just copy, corrupt, or delete a single file. To destroy a server-hosted database, they need to gain access to both the server AND the database. That isolation of the database deep behind your organization’s firewall makes these scenarios very unlikely.</p></li>
+<li><p><strong>Performance.</strong> As I alluded to in the previous chapter, most database servers have enormous resources at their disposal in terms of compute, memory, and storage. A typical dedicated database server far outstrips the hardware of your phone or laptop. So the client-server model lets organizations put their databases on machines that are best capable of handling lots of concurrent requests, and with no processes other than the database competing for those same resources.</p></li>
+</ol>
+<p>So, when you consider how massive many company databases are, how many people and processes need to use them, and how secure they need to be, it shouldn’t surprise you that the client-server model is favored.</p>
+<p>Now, if you’re developing an app or a game, or you’re collecting research data for a small project, I think embedded databases are perfect for that. But at a large-scale enterprise level, you should expect to be working in exactly the kind of setup we’re going to use in this book.</p>
+</section>
+</section>
+<section id="for-davidson-students" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="for-davidson-students"><span class="header-section-number">2.3</span> For Davidson students</h2>
+<p>See the course website for detailed instructions on how to access our PostgreSQL learning environment in JupyterHub. All the databases are pre-installed from my Docker image already and ready for you to begin using.</p>
+<p>So you can <strong>stop</strong> reading at this point and ignore the rest of this chapter. Or keep reading if you’re curious. Whatever works for you.</p>
+<p><a href="images/stop.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="images/stop.png" class="img-fluid"></a></p>
+</section>
+<section id="for-other-learners" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="for-other-learners"><span class="header-section-number">2.4</span> For other learners</h2>
+<p>Learners from outside Davidson will not have access to our JupyterHub environment. Instead, you can use <strong>Docker</strong> to download and install all of the databases that I use with my Davidson students. This prevents you from needing to do a painstaking localhost installation from scratch. Instead, my Docker image gives you everything you need, pre-installed and pre-configured.</p>
+<p>If you’re not familiar, Docker lets you run software inside a self-contained environment called a <em>container</em>. Think of a container as a lightweight, portable box that holds an application and everything it needs to run, regardless of what operating system or configuration your computer has.</p>
+<p>For my database courses, I built a Docker image and published it at <code>pebenbow/open-sql-docker</code> (<a href="https://hub.docker.com/u/pebenbow" target="_blank">link</a>). Once you pull (download) the image, you can run it on your machine as a container. In this container, you get a PostgreSQL server that is ready for teaching and learning. That means everyone who runs the container is working in an identical environment, which eliminates the “it works on my machine” problem entirely.</p>
+<section id="installing-docker-desktop" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="installing-docker-desktop"><span class="header-section-number">2.4.1</span> Installing Docker Desktop</h3>
 <p>Docker Desktop is the application that manages containers on your computer. Follow the instructions for your operating system below.</p>
-<section id="windows" class="level3" data-number="2.1.1">
-<h3 data-number="2.1.1" class="anchored" data-anchor-id="windows"><span class="header-section-number">2.1.1</span> Windows</h3>
+<section id="windows" class="level4" data-number="2.4.1.1">
+<h4 data-number="2.4.1.1" class="anchored" data-anchor-id="windows"><span class="header-section-number">2.4.1.1</span> Windows</h4>
 <ol type="1">
 <li><p>Ensure your system meets the requirements: Windows 10 64-bit (version 21H2 or later) or Windows 11. Docker Desktop on Windows uses the <strong>Windows Subsystem for Linux 2 (WSL 2)</strong> backend.</p></li>
 <li><p>If you have not already enabled WSL 2, open PowerShell as Administrator and run:</p>
@@ -573,8 +698,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>You should see output like <code>Docker version 27.x.x, build ...</code>.</p></li>
 </ol>
 </section>
-<section id="macos" class="level3" data-number="2.1.2">
-<h3 data-number="2.1.2" class="anchored" data-anchor-id="macos"><span class="header-section-number">2.1.2</span> macOS</h3>
+<section id="macos" class="level4" data-number="2.4.1.2">
+<h4 data-number="2.4.1.2" class="anchored" data-anchor-id="macos"><span class="header-section-number">2.4.1.2</span> macOS</h4>
 <ol type="1">
 <li><p>Download Docker Desktop for Mac from <a href="https://docs.docker.com/desktop/install/mac-install/">https://docs.docker.com/desktop/install/mac-install/</a>.</p>
 <p>Choose the correct installer for your hardware:</p>
@@ -590,8 +715,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ol>
 </section>
-<section id="linux" class="level3" data-number="2.1.3">
-<h3 data-number="2.1.3" class="anchored" data-anchor-id="linux"><span class="header-section-number">2.1.3</span> Linux</h3>
+<section id="linux" class="level4" data-number="2.4.1.3">
+<h4 data-number="2.4.1.3" class="anchored" data-anchor-id="linux"><span class="header-section-number">2.4.1.3</span> Linux</h4>
 <p>Docker Desktop is available for several Linux distributions. The installation steps vary by distribution, so follow the guide for your system on the Docker documentation site: <a href="https://docs.docker.com/desktop/install/linux/">https://docs.docker.com/desktop/install/linux/</a>.</p>
 <p>If you prefer not to install Docker Desktop on Linux, you can install the Docker Engine (CLI only) directly. See <a href="https://docs.docker.com/engine/install/">https://docs.docker.com/engine/install/</a> and choose your distribution from the list.</p>
 <p>After installation, verify Docker is running:</p>
@@ -612,16 +737,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="pulling-the-course-image" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="pulling-the-course-image"><span class="header-section-number">2.2</span> Pulling the Course Image</h2>
+<section id="pulling-the-course-image" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="pulling-the-course-image"><span class="header-section-number">2.4.2</span> Pulling the Course Image</h3>
 <p>With Docker Desktop installed and running, you can download the course image from Docker Hub. Open a terminal and run:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull pebenbow/open-sql-docker:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Docker will download the image in layers and display progress as it goes. This only needs to be done once (or when you want to update to a newer version of the image).</p>
 </section>
-<section id="running-the-container" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="running-the-container"><span class="header-section-number">2.3</span> Running the Container</h2>
-<section id="basic-setup-recommended" class="level3" data-number="2.3.1">
-<h3 data-number="2.3.1" class="anchored" data-anchor-id="basic-setup-recommended"><span class="header-section-number">2.3.1</span> Basic Setup (Recommended)</h3>
+<section id="running-the-container" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="running-the-container"><span class="header-section-number">2.4.3</span> Running the Container</h3>
+<section id="basic-setup-recommended" class="level4" data-number="2.4.3.1">
+<h4 data-number="2.4.3.1" class="anchored" data-anchor-id="basic-setup-recommended"><span class="header-section-number">2.4.3.1</span> Basic Setup (Recommended)</h4>
 <p>The following command starts the course container with a <strong>persistent data volume</strong> so that any changes you make to the database are saved even if you stop or restart the container:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--name</span> open-sql <span class="dt">\</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 5432:5432 <span class="dt">\</span></span>
@@ -667,9 +792,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-e</span> POSTGRES_PASSWORD=postgres <span class="dt">\</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  pebenbow/open-sql-docker:latest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="if-you-already-have-postgresql-installed" class="level3" data-number="2.3.2">
-<h3 data-number="2.3.2" class="anchored" data-anchor-id="if-you-already-have-postgresql-installed"><span class="header-section-number">2.3.2</span> If You Already Have PostgreSQL Installed</h3>
-<p>If you already have PostgreSQL running on your machine, it is likely using port 5432, which would conflict with the container. In that case, map the container to a different host port. Port <strong>5433</strong> is a common choice:</p>
+<section id="if-you-already-have-postgresql-installed" class="level4" data-number="2.4.3.2">
+<h4 data-number="2.4.3.2" class="anchored" data-anchor-id="if-you-already-have-postgresql-installed"><span class="header-section-number">2.4.3.2</span> If You Already Have PostgreSQL Installed</h4>
+<p>If you already have a localhost installation of PostgreSQL running on your machine, it is likely using port 5432, which would conflict with the container. In that case, map the container to a different host port. Port <strong>5433</strong> is a common choice:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">--name</span> open-sql <span class="dt">\</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-p</span> 5433:5432 <span class="dt">\</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-v</span> open-sql-data:/var/lib/postgresql/data <span class="dt">\</span></span>
@@ -688,8 +813,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="starting-and-stopping-the-container" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="starting-and-stopping-the-container"><span class="header-section-number">2.4</span> Starting and Stopping the Container</h2>
+<section id="starting-and-stopping-the-container" class="level3" data-number="2.4.4">
+<h3 data-number="2.4.4" class="anchored" data-anchor-id="starting-and-stopping-the-container"><span class="header-section-number">2.4.4</span> Starting and Stopping the Container</h3>
 <p>Once you have created the container with <code>docker run</code>, you manage it with <code>docker start</code> and <code>docker stop</code> rather than <code>docker run</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start the container</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> start open-sql</span>
@@ -701,8 +826,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> ps</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>You do not need to keep the container running all the time. Start it when you sit down to work through the book, and stop it when you are done.</p>
 </section>
-<section id="connecting-to-the-database" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="connecting-to-the-database"><span class="header-section-number">2.5</span> Connecting to the Database</h2>
+<section id="downloading-your-ide" class="level3" data-number="2.4.5">
+<h3 data-number="2.4.5" class="anchored" data-anchor-id="downloading-your-ide"><span class="header-section-number">2.4.5</span> Downloading your IDE</h3>
+<p>Once you’ve got the Docker container running, you’ve successfully taken care of the server side of the client-server setup. Now it’s time to tackle the <strong>client</strong> side, which means installing an appropriate IDE so you can connect to your Postgres container and begin learning SQL.</p>
+<p>There are many database IDEs out there, and I’ve tried a lot of them. I’ll recommend a few options for you, all of them <strong>free</strong>, and all of them <strong>cross-compatible</strong> with Windows, macOS, and Linux operating systems.</p>
+<ol type="1">
+<li><a href="https://www.jetbrains.com/datagrip/" target="_blank">DataGrip</a> is my favorite database IDE. It’s my “daily driver” when I’m doing any kind of database work, whether that’s against a server, a localhost installation, or a Docker container. It supports dozens of different database vendors and has a lot of customizations.</li>
+<li><a href="https://www.dbvis.com" target="_blank">DbVisualizer</a> is a pretty new competitor in the database IDE market, but I’ve been really impressed with it so far. It has not yet worked its way up to my coveted #1 spot, but it’s a worthy contender.</li>
+<li><a href="https://dbeaver.io" target="_blank">DBeaver</a> benefits from being both venerable <em>and</em> open source. It’s a tried-and-true database IDE. It won’t win any awards for style versus DataGrip or DbVisualizer, but it’s highly reliable.</li>
+<li>Unlike the previous three options, <a href="https://www.pgadmin.org" target="_blank">pgAdmin</a> does not support other types of databases: it is strictly locked to PostgreSQL. That being said, it does Postgres very well, which is why it ships automatically with every installation of Postgres. pgAdmin is like the Honda Civic of database IDEs: it’s a steady, no-frills application that can get you from Point A to Point B. And it does so while consuming a lot less memory on your laptop than those other IDEs will consume.</li>
+<li><a href="https://code.visualstudio.com" target="_blank">Visual Studio Code</a> is not a database-specific IDE, but it is the most popular general-purpose IDE in the world. Don’t let the fact that it’s a Microsoft product fool you: VS Code slaps. Plus, Microsoft developed a pretty good <a href="https://marketplace.visualstudio.com/items?itemName=ms-ossdata.vscode-pgsql">PostgreSQL extension</a> for VS Code that gives you all the basic tools you need for writing SQL queries and scripts. This is actually the IDE that I ask my Davidson students to use because VS Code works so beautifully inside of our JupyterHub learning environment. However, it pales in comparison to full-featured IDEs like DataGrip and DbVisualizer, so it would not be my first choice.</li>
+</ol>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This textbook is IDE-agnostic. That means I really don’t care what IDE you use because your experience should be relatively equal regardless of which one you employ. This chapter is the last time in this book that you’ll see a screenshot or any mention of a specific IDE.</p>
+</div>
+</div>
+</div>
+<p>Once you’ve downloaded and installed your IDE of choice, then you should follow its instructions to set up your first connection to the PostgreSQL container.</p>
+</section>
+<section id="connecting-to-the-database" class="level3" data-number="2.4.6">
+<h3 data-number="2.4.6" class="anchored" data-anchor-id="connecting-to-the-database"><span class="header-section-number">2.4.6</span> Connecting to the Database</h3>
 <p>Your connection credentials for the course container are:</p>
 <table class="caption-top table">
 <colgroup>
@@ -738,12 +886,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>You can verify the connection is working from the terminal using <code>psql</code> (the PostgreSQL command-line client). If you do not have <code>psql</code> installed locally, you can run it from inside the container itself:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-filename="bash"><pre class="sourceCode bash cw-auto code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> open-sql psql <span class="at">-U</span> postgres</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>If you see the <code>postgres=#</code> prompt, your container is running correctly and you are ready to start writing SQL.</p>
-<p>Type <code>\q</code> to exit the <code>psql</code> prompt.</p>
+<p>In a database IDE like DataGrip, the connect dialog will look something like the screenshot below, and you can see the different options I just described.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Your IDE will probably require you to download specific drivers depending on what kind of database you are trying to connect to. DataGrip actually makes this very easy by alerting you whenever you don’t have the necessary driver(s) installed, and giving you a simple one-click download button to retrieve those drivers. I really cannot recommend DataGrip enough. It’s the best.</p>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/datagrip_postgres_connect.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Screenshot of DataGrip showing a working connection to the PostgreSQL Docker container"><img src="images/datagrip_postgres_connect.png" class="img-fluid figure-img" alt="Screenshot of DataGrip showing a working connection to the PostgreSQL Docker container"></a></p>
+<figcaption>Screenshot of DataGrip showing a working connection to the PostgreSQL Docker container</figcaption>
+</figure>
+</div>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-Fayyad-Kazan_Kassem-Moussa_Hejase_Hejase_2022" class="csl-entry" role="listitem">
+Fayyad-Kazan, Hasan, Sondos Kassem-Moussa, Hussin J. Hejase, and Ale J. Hejase. 2022. <span>“Forensic Analysis of WhatsApp SQLite Databases on the Unrooted Android Phones.”</span> <em>HighTech and Innovation Journal</em> 3 (2): 175–95. <a href="https://doi.org/10.28991/HIJ-2022-03-02-06">https://doi.org/10.28991/HIJ-2022-03-02-06</a>.
+</div>
+<div id="ref-sqlite_famous" class="csl-entry" role="listitem">
+SQLite. n.d. <em>Well-Known Users of <span>SQLite</span></em>. SQLite; <a href="https://www.sqlite.org/famous.html" class="uri">https://www.sqlite.org/famous.html</a>. <a href="https://www.sqlite.org/famous.html">https://www.sqlite.org/famous.html</a>.
+</div>
+</div>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1178,6 +1348,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

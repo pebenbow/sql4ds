@@ -81,7 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-f46a24d1acb2d5d0482b2be2f0774bbb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
 <script>document.addEventListener("DOMContentLoaded",function(){
   var DEFAULT_COLLAPSE=null;
@@ -178,7 +178,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
 
 
 <link rel="stylesheet" href="custom.css">
@@ -528,15 +530,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 <div class="alert alert-warning border-start border-warning border-1" role="alert">
+
     <div class="d-flex align-items-center">
+
         <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
         <div>
+
             <strong>In Development:</strong> This textbook is currently
+
             undergoing development and should not be used as an authoritative
+
             source of... well, ANYTHING.
+
         </div>
+
     </div>
+
 </div>
+
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./30-design.html">Design</a></li><li class="breadcrumb-item"><a href="./39-indexes.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Indexes</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -588,11 +600,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Seq Scan on flights  (cost=0.00..3178.28 rows=2940 width=81) (actual time=0.014..3.537 rows=2791 loops=1)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Seq Scan on flights  (cost=0.00..3178.28 rows=2940 width=81) (actual time=0.013..3.533 rows=2791 loops=1)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  Filter: (dep_delay &gt; 120)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  Rows Removed by Filter: 101871</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.462 ms</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Execution Time: 3.612 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.434 ms</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Execution Time: 3.617 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The plan output is a tree of <strong>nodes</strong>, each representing one operation. Reading the cost annotation on a node:</p>
@@ -652,13 +664,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Bitmap Heap Scan on flights  (cost=35.08..2022.79 rows=2940 width=81) (actual time=0.229..0.810 rows=2791 loops=1)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Bitmap Heap Scan on flights  (cost=35.08..2022.79 rows=2940 width=81) (actual time=0.460..1.113 rows=2791 loops=1)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  Recheck Cond: (dep_delay &gt; 120)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  Heap Blocks: exact=890</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..34.34 rows=2940 width=0) (actual time=0.175..0.175 rows=2791 loops=1)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..34.34 rows=2940 width=0) (actual time=0.406..0.407 rows=2791 loops=1)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        Index Cond: (dep_delay &gt; 120)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.198 ms</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Execution Time: 0.891 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.221 ms</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Execution Time: 1.182 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The planner switched to a <strong>Bitmap Heap Scan</strong>. It first ran a <code>Bitmap Index Scan</code> to traverse the new index and build an in-memory bitmap of pages containing matching rows, then fetched only those pages from the heap. Execution time dropped from about 11 milliseconds to about 2, a roughly five-fold improvement.</p>
@@ -668,13 +680,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 300"</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Bitmap Heap Scan on flights  (cost=6.15..677.45 rows=240 width=81) (actual time=0.031..0.137 rows=228 loops=1)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Bitmap Heap Scan on flights  (cost=6.15..677.45 rows=240 width=81) (actual time=0.040..0.176 rows=228 loops=1)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  Recheck Cond: (dep_delay &gt; 300)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  Heap Blocks: exact=148</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..6.09 rows=240 width=0) (actual time=0.020..0.020 rows=228 loops=1)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  -&gt;  Bitmap Index Scan on idx_flights_dep_delay  (cost=0.00..6.09 rows=240 width=0) (actual time=0.027..0.027 rows=228 loops=1)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        Index Cond: (dep_delay &gt; 300)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.044 ms</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>Execution Time: 0.167 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.073 ms</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>Execution Time: 0.212 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Only 228 rows match. With so few results, PostgreSQL uses a pure <strong>Index Scan</strong> rather than the bitmap approach, fetching each matching heap row directly from the index. Execution time falls under a millisecond.</p>
@@ -689,11 +701,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE month = 7 AND carrier = 'UA'"</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Seq Scan on flights  (cost=0.00..3439.93 rows=718 width=81) (actual time=2.012..3.921 rows=652 loops=1)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Seq Scan on flights  (cost=0.00..3439.93 rows=718 width=81) (actual time=1.877..3.423 rows=652 loops=1)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  Filter: ((month = 7) AND ((carrier)::text = 'UA'::text))</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  Rows Removed by Filter: 104010</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.106 ms</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>Execution Time: 3.953 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.138 ms</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>Execution Time: 3.444 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>652 rows match. Creating a composite index on both columns eliminates the full scan:</p>
@@ -702,13 +714,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE month = 7 AND carrier = 'UA'"</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Bitmap Heap Scan on flights  (cost=11.65..1407.17 rows=718 width=81) (actual time=0.033..0.144 rows=652 loops=1)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Bitmap Heap Scan on flights  (cost=11.65..1407.17 rows=718 width=81) (actual time=0.081..0.203 rows=652 loops=1)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  Recheck Cond: ((month = 7) AND ((carrier)::text = 'UA'::text))</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  Heap Blocks: exact=139</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  -&gt;  Bitmap Index Scan on idx_flights_month_carrier  (cost=0.00..11.47 rows=718 width=0) (actual time=0.022..0.022 rows=652 loops=1)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  -&gt;  Bitmap Index Scan on idx_flights_month_carrier  (cost=0.00..11.47 rows=718 width=0) (actual time=0.067..0.067 rows=652 loops=1)</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        Index Cond: ((month = 7) AND ((carrier)::text = 'UA'::text))</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.172 ms</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>Execution Time: 0.174 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.219 ms</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>Execution Time: 0.236 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Execution time drops from about 11 milliseconds to well under 1 millisecond.</p>
@@ -720,13 +732,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE carrier = 'UA'"</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Bitmap Heap Scan on flights  (cost=1163.33..3136.73 rows=8272 width=81) (actual time=0.851..2.074 rows=8044 loops=1)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Bitmap Heap Scan on flights  (cost=1163.33..3136.73 rows=8272 width=81) (actual time=0.836..2.054 rows=8044 loops=1)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  Recheck Cond: ((carrier)::text = 'UA'::text)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  Heap Blocks: exact=1609</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  -&gt;  Bitmap Index Scan on idx_flights_month_carrier  (cost=0.00..1161.26 rows=8272 width=0) (actual time=0.746..0.747 rows=8044 loops=1)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  -&gt;  Bitmap Index Scan on idx_flights_month_carrier  (cost=0.00..1161.26 rows=8272 width=0) (actual time=0.732..0.733 rows=8044 loops=1)</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        Index Cond: ((carrier)::text = 'UA'::text)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.050 ms</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>Execution Time: 2.234 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.069 ms</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>Execution Time: 2.219 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>PostgreSQL does use the index here, but the cost is much higher than the two-column query: it must scan nearly the entire index to collect all United Airlines entries scattered across all 12 months. A dedicated single-column index on <code>carrier</code> would outperform this. The general rule is to place the most selective column, or the one that appears in the most queries, first.</p>
@@ -744,13 +756,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay &gt; 120"</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Bitmap Heap Scan on flights  (cost=35.07..2022.78 rows=2940 width=81) (actual time=0.178..0.756 rows=2791 loops=1)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Bitmap Heap Scan on flights  (cost=35.07..2022.78 rows=2940 width=81) (actual time=0.205..0.918 rows=2791 loops=1)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  Recheck Cond: (dep_delay &gt; 120)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  Heap Blocks: exact=890</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  -&gt;  Bitmap Index Scan on idx_flights_delayed  (cost=0.00..34.34 rows=2940 width=0) (actual time=0.127..0.127 rows=2791 loops=1)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  -&gt;  Bitmap Index Scan on idx_flights_delayed  (cost=0.00..34.34 rows=2940 width=0) (actual time=0.144..0.144 rows=2791 loops=1)</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        Index Cond: (dep_delay &gt; 120)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.193 ms</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>Execution Time: 0.817 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.241 ms</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>Execution Time: 0.985 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The plan shows the partial index in use. The planner recognizes that <code>dep_delay &gt; 120</code> is a subset of the partial index’s <code>dep_delay &gt; 0</code> condition and uses it accordingly. A query that does not satisfy the partial index predicate (such as <code>WHERE dep_delay IS NULL</code>) will not use it and will fall back to a sequential scan.</p>
@@ -764,11 +776,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay &gt; 120"</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Seq Scan on flights  (cost=0.00..3178.28 rows=2940 width=11) (actual time=0.018..3.798 rows=2791 loops=1)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Seq Scan on flights  (cost=0.00..3178.28 rows=2940 width=11) (actual time=0.012..3.143 rows=2791 loops=1)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  Filter: (dep_delay &gt; 120)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  Rows Removed by Filter: 101871</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.171 ms</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>Execution Time: 3.867 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.102 ms</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>Execution Time: 3.196 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>Without an index, this is a sequential scan. A standard index on <code>dep_delay</code> would enable a bitmap heap scan, but the heap fetch would still be necessary to retrieve <code>carrier</code> and <code>dest</code>. Adding those columns to the index via <code>INCLUDE</code> eliminates the heap fetch entirely:</p>
@@ -777,11 +789,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay &gt; 120"</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>)[[<span class="dv">1</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Index Only Scan using idx_flights_dep_delay_covering on flights  (cost=0.42..99.87 rows=2940 width=11) (actual time=0.019..0.172 rows=2791 loops=1)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" data-code-window-auto-label="default"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Index Only Scan using idx_flights_dep_delay_covering on flights  (cost=0.42..99.87 rows=2940 width=11) (actual time=0.022..0.160 rows=2791 loops=1)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  Index Cond: (dep_delay &gt; 120)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  Heap Fetches: 0</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.160 ms</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>Execution Time: 0.228 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>Planning Time: 0.184 ms</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>Execution Time: 0.217 ms</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <p>The plan now shows <code>Index Only Scan</code> with <code>Heap Fetches: 0</code>. Every value the query needs is available directly from the index pages, without reading the heap. Execution time drops from about 11 milliseconds to under half a millisecond.</p>

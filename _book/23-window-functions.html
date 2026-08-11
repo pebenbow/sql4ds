@@ -81,7 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-55fa2159344b3a65a92aea6b5ef0c304.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-f46a24d1acb2d5d0482b2be2f0774bbb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/quarto-contrib/code-window-0.1.0/style.css" rel="stylesheet">
 <script>document.addEventListener("DOMContentLoaded",function(){
   var DEFAULT_COLLAPSE=null;
@@ -178,7 +178,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
 
 
 <link rel="stylesheet" href="custom.css">
@@ -525,15 +527,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 <div class="alert alert-warning border-start border-warning border-1" role="alert">
+
     <div class="d-flex align-items-center">
+
         <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
         <div>
+
             <strong>In Development:</strong> This textbook is currently
+
             undergoing development and should not be used as an authoritative
+
             source of... well, ANYTHING.
+
         </div>
+
     </div>
+
 </div>
+
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20-analyze.html">Analyze</a></li><li class="breadcrumb-item"><a href="./23-window-functions.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Window Functions</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -580,39 +592,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> carrier</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> carrier</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>5 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">carrier</th>
-<th style="text-align: right;">carrier_avg_delay</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">B6</td>
-<td style="text-align: right;">6.2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">-1.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">EV</td>
-<td style="text-align: right;">7.6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">F9</td>
-<td style="text-align: right;">-8.0</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["carrier"],"name":[1],"type":["chr"],"align":["left"]},{"label":["carrier_avg_delay"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"AA","2":"1.6"},{"1":"B6","2":"6.2"},{"1":"DL","2":"-1.8"},{"1":"EV","2":"7.6"},{"1":"F9","2":"-8.0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>This collapses every flight down to one row per carrier. Now the same average, computed as a window function instead:</p>
 <div class="cell">
@@ -622,81 +608,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">month</span> <span class="op">=</span> <span class="dv">1</span> <span class="kw">AND</span> <span class="dt">day</span> <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> carrier, dep_delay <span class="kw">DESC</span> <span class="kw">NULLS</span> <span class="fu">LAST</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>10 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">carrier</th>
-<th style="text-align: right;">flight</th>
-<th style="text-align: right;">dep_delay</th>
-<th style="text-align: right;">carrier_avg_delay</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">785</td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">763</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">1611</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">753</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">1837</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">773</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">1467</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">321</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">1709</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">745</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">1.6</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["carrier"],"name":[1],"type":["chr"],"align":["left"]},{"label":["flight"],"name":[2],"type":["int"],"align":["right"]},{"label":["dep_delay"],"name":[3],"type":["int"],"align":["right"]},{"label":["carrier_avg_delay"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"AA","2":"785","3":"61","4":"1.6"},{"1":"AA","2":"763","3":"33","4":"1.6"},{"1":"AA","2":"1611","3":"16","4":"1.6"},{"1":"AA","2":"753","3":"13","4":"1.6"},{"1":"AA","2":"1837","3":"13","4":"1.6"},{"1":"AA","2":"773","3":"12","4":"1.6"},{"1":"AA","2":"1467","3":"8","4":"1.6"},{"1":"AA","2":"321","3":"7","4":"1.6"},{"1":"AA","2":"1709","3":"7","4":"1.6"},{"1":"AA","2":"745","3":"7","4":"1.6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Every individual flight row survives, and every row belonging to the same carrier shows that carrier’s average delay sitting right alongside its own. Nothing was collapsed; the average was simply <em>attached</em> to each row that contributed to it. That is the defining trait of a window function: it looks across a set of related rows to compute something, but it never reduces the row count.</p>
 </section>
@@ -722,78 +640,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">month</span> <span class="op">=</span> <span class="dv">1</span> <span class="kw">AND</span> <span class="dt">day</span> <span class="op">=</span> <span class="dv">1</span> <span class="kw">AND</span> carrier <span class="op">=</span> <span class="st">'AA'</span> <span class="kw">AND</span> dep_delay <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> dep_delay <span class="kw">DESC</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">8</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>8 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">flight</th>
-<th style="text-align: right;">dep_delay</th>
-<th style="text-align: right;">row_num</th>
-<th style="text-align: right;">rank_val</th>
-<th style="text-align: right;">dense_rank_val</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">785</td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">763</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1611</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1837</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">753</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">773</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1467</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">321</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">7</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["flight"],"name":[1],"type":["int"],"align":["right"]},{"label":["dep_delay"],"name":[2],"type":["int"],"align":["right"]},{"label":["row_num"],"name":[3],"type":["int64"],"align":["right"]},{"label":["rank_val"],"name":[4],"type":["int64"],"align":["right"]},{"label":["dense_rank_val"],"name":[5],"type":["int64"],"align":["right"]}],"data":[{"1":"785","2":"61","3":"1","4":"1","5":"1"},{"1":"763","2":"33","3":"2","4":"2","5":"2"},{"1":"1611","2":"16","3":"3","4":"3","5":"3"},{"1":"1837","2":"13","3":"4","4":"4","5":"4"},{"1":"753","2":"13","3":"5","4":"4","5":"4"},{"1":"773","2":"12","3":"6","4":"6","5":"5"},{"1":"1467","2":"8","3":"7","4":"7","5":"6"},{"1":"321","2":"7","3":"8","4":"8","5":"7"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Flights 1837 and 753 are tied at a 13-minute delay, and the three functions handle that tie three different ways:</p>
 <ul>
@@ -820,78 +673,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> monthly_avg</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> carrier, <span class="dt">month</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">8</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>8 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">carrier</th>
-<th style="text-align: right;">month</th>
-<th style="text-align: right;">avg_delay</th>
-<th style="text-align: right;">prev_month_avg</th>
-<th style="text-align: right;">change</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">4.7</td>
-<td style="text-align: right;">NULL</td>
-<td style="text-align: right;">NULL</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6.7</td>
-<td style="text-align: right;">4.7</td>
-<td style="text-align: right;">2.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">6.2</td>
-<td style="text-align: right;">6.7</td>
-<td style="text-align: right;">-0.5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">9.7</td>
-<td style="text-align: right;">6.2</td>
-<td style="text-align: right;">3.5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">9.4</td>
-<td style="text-align: right;">9.7</td>
-<td style="text-align: right;">-0.3</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">14.7</td>
-<td style="text-align: right;">9.4</td>
-<td style="text-align: right;">5.3</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">9.5</td>
-<td style="text-align: right;">14.7</td>
-<td style="text-align: right;">-5.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">AA</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">5.6</td>
-<td style="text-align: right;">9.5</td>
-<td style="text-align: right;">-3.9</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["carrier"],"name":[1],"type":["chr"],"align":["left"]},{"label":["month"],"name":[2],"type":["int"],"align":["right"]},{"label":["avg_delay"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["prev_month_avg"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["change"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"AA","2":"1","3":"4.7","4":"NA","5":"NA"},{"1":"AA","2":"2","3":"6.7","4":"4.7","5":"2.0"},{"1":"AA","2":"3","3":"6.2","4":"6.7","5":"-0.5"},{"1":"AA","2":"4","3":"9.7","4":"6.2","5":"3.5"},{"1":"AA","2":"5","3":"9.4","4":"9.7","5":"-0.3"},{"1":"AA","2":"6","3":"14.7","4":"9.4","5":"5.3"},{"1":"AA","2":"7","3":"9.5","4":"14.7","5":"-5.2"},{"1":"AA","2":"8","3":"5.6","4":"9.5","5":"-3.9"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><code>PARTITION BY carrier</code> keeps each carrier’s month-to-month comparison separate from every other carrier’s, and <code>ORDER BY month</code> tells <code>LAG()</code> which row counts as “before.” January has no preceding month within its partition, so <code>prev_month_avg</code> and <code>change</code> are both <code>NULL</code> for the first row of each carrier, exactly as you would expect: there is nothing to look back to. <code>LEAD()</code> works identically but looks forward instead of backward, useful for questions phrased the other way around, such as “how much did next month improve on this one?”</p>
 </section>
@@ -910,57 +698,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> monthly_counts</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">month</span></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">6</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>6 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">carrier</th>
-<th style="text-align: right;">month</th>
-<th style="text-align: right;">num_flights</th>
-<th style="text-align: right;">running_total</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1889</td>
-<td style="text-align: right;">1889</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1797</td>
-<td style="text-align: right;">3686</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2133</td>
-<td style="text-align: right;">5819</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">2029</td>
-<td style="text-align: right;">7848</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">1963</td>
-<td style="text-align: right;">9811</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">1952</td>
-<td style="text-align: right;">11763</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["carrier"],"name":[1],"type":["chr"],"align":["left"]},{"label":["month"],"name":[2],"type":["int"],"align":["right"]},{"label":["num_flights"],"name":[3],"type":["int64"],"align":["right"]},{"label":["running_total"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"DL","2":"1","3":"1889","4":"1889"},{"1":"DL","2":"2","3":"1797","4":"3686"},{"1":"DL","2":"3","3":"2133","4":"5819"},{"1":"DL","2":"4","3":"2029","4":"7848"},{"1":"DL","2":"5","3":"1963","4":"9811"},{"1":"DL","2":"6","3":"1952","4":"11763"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>By month 6, <code>running_total</code> reflects every Delta flight recorded from January through June, while <code>num_flights</code> still shows only that individual month’s count. This same pattern, an aggregate function combined with <code>ORDER BY</code> inside <code>OVER()</code>, works for <code>AVG()</code>, <code>MIN()</code>, <code>MAX()</code>, and any other aggregate: each becomes a “running” version of itself.</p>
 </section>
@@ -987,69 +731,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">month</span> <span class="op">=</span> <span class="dv">1</span> <span class="kw">AND</span> <span class="dt">day</span> <span class="op">=</span> <span class="dv">1</span> <span class="kw">AND</span> carrier <span class="op">=</span> <span class="st">'AA'</span> <span class="kw">AND</span> dep_delay <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> dep_delay <span class="kw">DESC</span></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">8</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>8 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: right;">flight</th>
-<th style="text-align: right;">dep_delay</th>
-<th style="text-align: right;">rows_count</th>
-<th style="text-align: right;">range_count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">785</td>
-<td style="text-align: right;">61</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">763</td>
-<td style="text-align: right;">33</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1611</td>
-<td style="text-align: right;">16</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1837</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">753</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">773</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">6</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1467</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">7</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">321</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">10</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["flight"],"name":[1],"type":["int"],"align":["right"]},{"label":["dep_delay"],"name":[2],"type":["int"],"align":["right"]},{"label":["rows_count"],"name":[3],"type":["int64"],"align":["right"]},{"label":["range_count"],"name":[4],"type":["int64"],"align":["right"]}],"data":[{"1":"785","2":"61","3":"1","4":"1"},{"1":"763","2":"33","3":"2","4":"2"},{"1":"1611","2":"16","3":"3","4":"3"},{"1":"1837","2":"13","3":"4","4":"5"},{"1":"753","2":"13","3":"5","4":"5"},{"1":"773","2":"12","3":"6","4":"6"},{"1":"1467","2":"8","3":"7","4":"7"},{"1":"321","2":"7","3":"8","4":"10"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>The two flights tied at a 13-minute delay get <code>rows_count</code> values of 4 and 5, one per physical row, but both get a <code>range_count</code> of 5: <code>RANGE</code> treats every row with the same <code>dep_delay</code> as occupying the same position, so both tied rows see the <em>entire</em> tied group included in their frame, not just themselves. <code>ROWS</code> is the more commonly used and more intuitive option, and is what this book uses by default; reach for <code>RANGE</code> specifically when ties in the ordering column should be treated as a single unit rather than processed one at a time.</p>
 </section>
@@ -1071,57 +759,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> monthly_avg</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="dt">month</span></span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">6</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>6 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">carrier</th>
-<th style="text-align: right;">month</th>
-<th style="text-align: right;">avg_delay</th>
-<th style="text-align: right;">moving_avg_3mo</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">3.4</td>
-<td style="text-align: right;">3.4</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6.5</td>
-<td style="text-align: right;">5.0</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">13.5</td>
-<td style="text-align: right;">7.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">10.3</td>
-<td style="text-align: right;">10.1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">10.7</td>
-<td style="text-align: right;">11.5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">DL</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">18.0</td>
-<td style="text-align: right;">13.0</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["carrier"],"name":[1],"type":["chr"],"align":["left"]},{"label":["month"],"name":[2],"type":["int"],"align":["right"]},{"label":["avg_delay"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["moving_avg_3mo"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"DL","2":"1","3":"3.4","4":"3.4"},{"1":"DL","2":"2","3":"6.5","4":"5.0"},{"1":"DL","2":"3","3":"13.5","4":"7.8"},{"1":"DL","2":"4","3":"10.3","4":"10.1"},{"1":"DL","2":"5","3":"10.7","4":"11.5"},{"1":"DL","2":"6","3":"18.0","4":"13.0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p><code>moving_avg_3mo</code> for month 3 averages months 1 through 3; for month 4, it averages months 2 through 4, dropping January out of the window as April enters it. Each row’s moving average only ever considers itself and the two months immediately before it, sliding forward one month at a time. Moving averages like this are a standard way to visualize a trend (delay is generally worsening or improving over the year) without the month-to-month noise of the raw values obscuring it.</p>
 </section>
@@ -1144,51 +788,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">change</span> <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="kw">change</span> <span class="kw">ASC</span></span>
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>5 records</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">carrier</th>
-<th style="text-align: right;">month</th>
-<th style="text-align: right;">avg_delay</th>
-<th style="text-align: right;">change</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">OO</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">-4.9</td>
-<td style="text-align: right;">-68.9</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">YV</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">22.4</td>
-<td style="text-align: right;">-20.4</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">FL</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">23.4</td>
-<td style="text-align: right;">-17.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">F9</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">8.3</td>
-<td style="text-align: right;">-13.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">EV</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">11.8</td>
-<td style="text-align: right;">-13.7</td>
-</tr>
-</tbody>
-</table>
+<details class="sql-output-accordion"><summary>Query Results</summary>
+<div data-pagedtable="false">
+<script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["carrier"],"name":[1],"type":["chr"],"align":["left"]},{"label":["month"],"name":[2],"type":["int"],"align":["right"]},{"label":["avg_delay"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["change"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"OO","2":"9","3":"-4.9","4":"-68.9"},{"1":"YV","2":"7","3":"22.4","4":"-20.4"},{"1":"FL","2":"8","3":"23.4","4":"-17.8"},{"1":"F9","2":"9","3":"8.3","4":"-13.9"},{"1":"EV","2":"9","3":"11.8","4":"-13.7"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
+</details>
 </div>
 <p>Three steps, each in its own named CTE, build on one another: <code>monthly_avg</code> aggregates delay per carrier and month; <code>month_over_month</code> computes each month’s change from the previous one using <code>LAG()</code>; the final query filters out the <code>NULL</code> change values (January has no prior month to compare against) and sorts to find the largest improvements, the most negative <code>change</code> values. Attempting to write <code>WHERE change IS NOT NULL</code> directly against a raw <code>LAG(...) OVER (...)</code> expression in a single ungrouped query would fail, since a <code>WHERE</code> clause cannot reference a window function by definition. Splitting the work into CTEs is what makes filtering and sorting on a window function’s result possible at all, not just more readable.</p>
 </section>

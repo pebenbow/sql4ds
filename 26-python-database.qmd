@@ -2,6 +2,29 @@
 title: "Connecting Python to a Database"
 ---
 
+```{python}
+#| label: load-local-env
+#| echo: false
+#| include: false
+
+# Quarto's Python/Jupyter engine runs in its own process, so it doesn't
+# automatically pick up local overrides the way R does via .Renviron
+# (that's an R-only startup convention). This reads the same file
+# directly so a local PGPORT override (e.g. 5433, matching a Docker
+# host-port mapping) applies here too, without depending on whatever the
+# OS-level environment happens to look like for this process.
+import os
+from pathlib import Path
+
+_renviron = Path(".Renviron")
+if _renviron.exists():
+    for _line in _renviron.read_text().splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith("#") and "=" in _line:
+            _key, _, _value = _line.partition("=")
+            os.environ.setdefault(_key.strip(), _value.strip())
+```
+
 ## Learning Objectives
 
 By the end of this chapter, students will be able to:
