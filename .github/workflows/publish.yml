@@ -1,5 +1,12 @@
 name: Deploy Book to GitHub Pages
 
+# Renders the book fresh from `main` on every push and deploys straight to
+# GitHub Pages. Mirrors draft-preview.yml's build steps exactly (same
+# Quarto/R/Python setup, same postgres service) so main and draft only ever
+# differ in their final deploy target -- production is always a direct,
+# deterministic render of main's own content, never an artifact borrowed
+# from a different branch's run.
+
 on:
   push:
     branches: [main]
@@ -15,8 +22,27 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
+    # No `container:` here on purpose. Every chapter in this book hardcodes
+    # host = "localhost" directly in its dbConnect() call (there's no PGHOST
+    # env var to override it, unlike the dat153/site repo). Inside a
+    # `container:` job, services are only reachable by service name, not
+    # localhost -- so instead this job runs directly on the runner and the
+    # postgres service below maps its port straight onto the runner, which
+    # is exactly what "localhost" already means to every chapter's code.
+    services:
+      postgres:
+        image: pebenbow/open-sql-docker:latest
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -24,6 +50,60 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.9.38"
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # The whole book only ever loads DBI, RPostgres, and ggplot2 in R
+      # (checked via grep across every .qmd file) -- no need for the full
+      # tidyverse. rmarkdown/knitr are what Quarto's R engine runs on.
+      - name: Install R packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::rmarkdown
+            any::knitr
+            any::DBI
+            any::RPostgres
+            any::ggplot2
+            any::reticulate
+
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Packages imported by the book's executable {python} chunks
+      # (26-python-database, 62-transforming-with-polars,
+      # 63-loading-with-sqlalchemy, 64-etl-pipeline), plus jupyter so
+      # Quarto's Python engine has a kernel to execute against.
+      - name: Install Python packages
+        run: |
+          pip install --no-cache-dir \
+            jupyter \
+            sqlalchemy \
+            psycopg2-binary \
+            polars \
+            pandas \
+            plotnine \
+            seaborn \
+            matplotlib \
+            pyarrow
+
+      - name: Render book
+        env:
+          # reticulate defaults to auto-provisioning its own Python via uv;
+          # pin it to the interpreter the packages above were installed into.
+          RETICULATE_PYTHON: ${{ steps.setup-python.outputs.python-path }}
+        run: quarto render
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
