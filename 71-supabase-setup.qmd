@@ -91,7 +91,7 @@ The SQL Editor in Supabase connects to the `public` schema by default. If you cr
 
 ## Finding Your Connection String
 
-External tools such as psql, pgAdmin, DBeaver, or the VS Code extensions introduced in the next chapter connect to your Supabase database using a connection string. To find yours:
+External tools such as DataGrip, DBeaver, or the VS Code extensions introduced in the next chapter connect to your Supabase database using a connection string. To find yours:
 
 1. Click **Project Settings** in the left navigation.
 2. Click **Database** under the Settings section.

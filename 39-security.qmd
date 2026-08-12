@@ -82,7 +82,7 @@ FROM   pg_roles
 ORDER  BY rolname;
 ```
 
-In `psql`, the `\du` meta-command shows a formatted role list with attributes and group memberships.
+Many database IDEs also show a formatted role list, with attributes and group memberships, in their own roles or users panel.
 
 ### Modifying Roles
 
@@ -290,9 +290,7 @@ Without `CASCADE`, the revoke statement will fail if downstream grants exist.
 
 ### Checking Privileges
 
-In `psql`, `\dp table_name` displays the access control list (ACL) for a table. The output uses a compact notation where each entry takes the form `grantee=privilege_letters/grantor`. The letters map to privileges: `r` = SELECT, `a` = INSERT, `w` = UPDATE, `d` = DELETE, `D` = TRUNCATE, `x` = REFERENCES, `t` = TRIGGER.
-
-For a more readable view, query `information_schema`:
+Some database IDEs display a table's access control list (ACL) directly in a permissions or security panel. For a portable view that works the same regardless of which IDE you use, query `information_schema`:
 
 ```sql
 SELECT grantee, privilege_type, is_grantable

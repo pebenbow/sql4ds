@@ -245,7 +245,7 @@ COMMIT
 Had something gone wrong partway through, `ROLLBACK` instead of `COMMIT` would have discarded the `UPDATE` and the `DELETE` both, leaving the database exactly as it was before `BEGIN`. Nothing outside the transaction can see its changes until `COMMIT` succeeds; a concurrent session querying `students` mid-transaction would still see Connor Walsh as active.
 
 ::: {.callout-note}
-Every `{sql}` chunk in this chapter runs in the same persistent connection (`con`), which is why a `BEGIN` in one chunk carries over to affect the chunks that follow it, exactly as it would across separate statements typed into `psql`. A transaction is a property of the *connection's session*, not of any single statement.
+Every `{sql}` chunk in this chapter runs in the same persistent connection (`con`), which is why a `BEGIN` in one chunk carries over to affect the chunks that follow it, exactly as it would across separate statements run one after another in the same query window. A transaction is a property of the *connection's session*, not of any single statement.
 :::
 
 ### Aborted Transactions

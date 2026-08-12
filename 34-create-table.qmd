@@ -59,14 +59,13 @@ CREATE DATABASE university;
 ```
 
 ::: {.callout-note}
-`CREATE DATABASE` must be run while connected to a *different* database: you cannot create a database while you are connected to it. The standard approach is to connect to the built-in `postgres` maintenance database first:
+`CREATE DATABASE` must be run while connected to a *different* database: you cannot create a database while you are connected to it. Open a new query window in your IDE connected to the built-in `postgres` maintenance database, and run the statement there:
 
+```sql
+CREATE DATABASE university;
 ```
-psql -U postgres -p 5433 -d postgres
-postgres=# CREATE DATABASE university;
-postgres=# \c university
-university=#
-```
+
+Once that succeeds, open another new query window, this time connected to `university`, and use that one for everything that follows.
 :::
 
 Once connected to `university`, every `CREATE TABLE` statement you run will place its tables there, completely separate from `worldbank`.
@@ -341,7 +340,7 @@ DROP COLUMN major;
 
 ## Exercises {.unnumbered}
 
-**1.** Connect to your `university` database and run `\dt` in psql to list its tables. Confirm that `students` exists. Then query `information_schema.columns` to display the column names, data types, and nullability for the `students` table.
+**1.** Open a new query window connected to your `university` database and query `information_schema.tables` to list its tables. Confirm that `students` exists. Then query `information_schema.columns` to display the column names, data types, and nullability for the `students` table.
 
 ---
 

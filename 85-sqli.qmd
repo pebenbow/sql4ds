@@ -51,11 +51,7 @@ Because `'1'='1'` is always true, this query returns every row in the table. The
 
 ## Setting Up the Lab
 
-This lab uses the `university` database and a simplified version of the `students` table. Connect to your local container and run the following setup:
-
-```bash
-psql -U postgres -p 5433 -d university
-```
+This lab uses the `university` database and a simplified version of the `students` table. Open a new query window in your IDE connected to the `university` database, and run the following setup:
 
 ```sql
 DROP TABLE IF EXISTS students_lab;
@@ -117,7 +113,7 @@ WHERE student_id = 1
   AND 1 = CAST((SELECT email FROM students_lab LIMIT 1) AS INTEGER);
 ```
 
-Run this query in `psql`. The cast fails because an email address cannot be converted to an integer, and PostgreSQL returns an error that includes the value that caused the failure:
+Run this query in your query window. The cast fails because an email address cannot be converted to an integer, and PostgreSQL returns an error that includes the value that caused the failure:
 
 ```
 ERROR:  invalid input syntax for type integer: "msantos@university.edu"
@@ -184,7 +180,7 @@ UNION
 SELECT 1, 'injected', 'data', version(), NULL;
 ```
 
-Run this in `psql`. The result contains one row with the PostgreSQL version string in the fourth column, extracted without any prior knowledge.
+Run this in your query window. The result contains one row with the PostgreSQL version string in the fourth column, extracted without any prior knowledge.
 
 A real attack would pivot to enumerating tables from `information_schema.tables`:
 
@@ -250,7 +246,7 @@ result = conn.execute(stmt, {"name": name})
 
 The `%s` and `:name` placeholders are never filled by string operations in your code. The database driver handles substitution at the protocol level, after query compilation.
 
-You can observe the protection in `psql` using prepared statements directly:
+You can observe the protection in a query window using prepared statements directly:
 
 ```sql
 PREPARE lookup_student (TEXT) AS
@@ -298,7 +294,7 @@ A layered approach reduces the impact if an injection does occur:
 
 ---
 
-**5.** Construct a parameterized prepared statement in `psql` using `PREPARE` and `EXECUTE` that looks up a student by last name. Test it with a legitimate name, then test it with the injection string `' OR 1=1 --`. Explain why the injection attempt returns zero rows instead of all rows.
+**5.** Construct a parameterized prepared statement in a query window using `PREPARE` and `EXECUTE` that looks up a student by last name. Test it with a legitimate name, then test it with the injection string `' OR 1=1 --`. Explain why the injection attempt returns zero rows instead of all rows.
 
 ---
 
