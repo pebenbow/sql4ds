@@ -2,14 +2,17 @@ name: Draft Preview
 
 # Renders the book from the `draft` branch and publishes it to a Netlify
 # site that is entirely separate from sql4ds.com (production is deployed
-# only from `main` via publish.yml, which just uploads the already-built
-# _book/ committed there -- this workflow does a full fresh `quarto render`
-# in CI instead and never touches that committed _book/ or the main branch).
+# only from `main` via publish.yml, which renders independently on its own
+# push trigger -- draft and main never share a build or touch each other).
 
 on:
   push:
     branches: ["draft"]
   workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
 
 jobs:
   build-and-preview:
@@ -99,7 +102,9 @@ jobs:
           deploy-message: "Draft preview - ${{ github.sha }}"
           enable-pull-request-comment: false
           enable-commit-comment: false
-          enable-github-deployment: false
+          enable-github-deployment: true
+          github-deployment-environment: netlify
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
