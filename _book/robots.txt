@@ -1,1 +1,0 @@
-Sitemap: https://sql4ds.com/sitemap.xml

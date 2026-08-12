@@ -6,6 +6,11 @@
 
 /.quarto/
 
+# Rendered book output. Both publish.yml (main) and draft-preview.yml
+# (draft) render fresh in CI and deploy directly, so this is pure build
+# output now -- nothing keeps a committed copy in sync with either branch.
+/_book/
+
 # Exercise solutions (not for distribution)
 solutions/
 

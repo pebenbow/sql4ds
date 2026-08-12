@@ -12,3 +12,219 @@ By the end of this chapter, students will be able to:
 - **Design** a multi-table schema from a written set of business requirements, applying normalization principles and referential integrity constraints.
 - **Write** a complete DDL script that creates schemas, tables, constraints, and indexes in correct dependency order.
 - **Evaluate** a schema design for common problems such as missing constraints, inappropriate data types, or unnormalized structures, and propose improvements.
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 100)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
+
+PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
+PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
+
+con_admin <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "postgres", user = "postgres", password = PGPASS
+)
+tryCatch(
+  dbExecute(con_admin, "CREATE DATABASE university"),
+  error = function(e) NULL
+)
+dbDisconnect(con_admin)
+
+con <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "university", user = "postgres", password = PGPASS
+)
+
+dbExecute(con, "DROP SCHEMA IF EXISTS registrar CASCADE")
+```
+
+## From One Table to Many
+
+So far, every example in this part of the book has lived in a single table inside the default `public` schema: `students`, created in the chapter on `CREATE TABLE` and manipulated in the chapter that followed it. A real application rarely stops at one table. The `enrollments` table introduced back in the composite-key discussion, linking `students` to `courses`, is exactly the kind of related table a working registrar system needs. This chapter builds that full picture: multiple related tables, organized into a named schema, created in an order that respects their dependencies on each other.
+
+## Schemas as Namespaces
+
+A **schema** is a named namespace inside a database that groups related objects together. Every PostgreSQL database starts with one, called `public`, which is why none of the `CREATE TABLE` statements so far have needed to say which schema they belonged to. `CREATE SCHEMA` introduces additional namespaces:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE SCHEMA registrar
+```
+
+Objects inside a schema are referenced with a **schema-qualified name**: `schema_name.object_name`. A table named `students` inside the `registrar` schema is `registrar.students`, distinct from any unrelated `students` table that might exist in a different schema of the same database.
+
+::: {.callout-note}
+The chapter on `CREATE TABLE` mentioned that schemas become more important once a database serves multiple applications or teams. This chapter is where that idea is put into practice: `registrar` groups enrollment data together, and a separate application, say a `billing` schema, could coexist in the same `university` database without either one's table names colliding with the other's.
+:::
+
+### The search_path
+
+Writing `registrar.students` every time is correct but verbose. The `search_path` setting controls which schema PostgreSQL checks first when a query uses an unqualified name. It can be set for the current session:
+
+```sql
+SET search_path TO registrar, public;
+```
+
+or made permanent for a specific role, so it takes effect automatically on every future connection:
+
+```sql
+ALTER ROLE current_user SET search_path TO registrar, public;
+```
+
+Listing more than one schema establishes a search order: PostgreSQL checks `registrar` first, and falls back to `public` only if the name is not found there. Keeping `public` in the path is a common convention, since PostgreSQL's built-in functions and any shared, cross-application tables typically live there.
+
+For the remainder of this chapter, schema-qualified names are used explicitly, so that every example is unambiguous regardless of `search_path`.
+
+## From Requirements to Schema
+
+Suppose the registrar's office describes what it needs in plain language:
+
+> We need to track which students are enrolled in which courses, for which semester. Each course has a code like `CS101`, a title, a number of credit hours, and a department. A student can enroll in the same course more than once across different semesters, but not twice in the same course in the same semester.
+
+Turning this into a schema means identifying the entities (`students`, `courses`), the relationship between them (`enrollments`, a many-to-many relationship resolved with a junction table, as covered in the ER diagrams chapter), and the constraints that enforce the business rules stated above.
+
+**`students`**, unchanged from the `CREATE TABLE` chapter, now placed inside `registrar`:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE TABLE registrar.students (
+    student_id   SERIAL        PRIMARY KEY,
+    first_name   TEXT          NOT NULL,
+    last_name    TEXT          NOT NULL,
+    email        TEXT          NOT NULL UNIQUE,
+    enrolled_on  DATE          NOT NULL DEFAULT CURRENT_DATE,
+    is_active    BOOLEAN       NOT NULL DEFAULT TRUE,
+    gpa          NUMERIC(3, 2) CHECK (gpa IS NULL OR (gpa >= 0.0 AND gpa <= 4.0))
+)
+```
+
+**`courses`** uses a natural key rather than a surrogate one: a course code such as `'CS101'` already uniquely identifies a course and is what everyone, students and registrars alike, actually uses to refer to it.
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE TABLE registrar.courses (
+    course_code   TEXT     PRIMARY KEY,
+    title         TEXT     NOT NULL,
+    credit_hours  INTEGER  NOT NULL CHECK (credit_hours > 0),
+    department    TEXT     NOT NULL DEFAULT 'General'
+)
+```
+
+**`enrollments`** is the junction table resolving the many-to-many relationship between students and courses. `semester` is part of the primary key because the business rule explicitly allows the same student to retake the same course in a different semester, but not twice in the same semester:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE TABLE registrar.enrollments (
+    student_id   INTEGER  NOT NULL REFERENCES registrar.students(student_id),
+    course_code  TEXT     NOT NULL REFERENCES registrar.courses(course_code),
+    semester     TEXT     NOT NULL,
+    grade        TEXT,
+    PRIMARY KEY (student_id, course_code, semester)
+)
+```
+
+## Dependency Order Matters
+
+Notice the order these three `CREATE TABLE` statements had to run in. `registrar.enrollments` declares foreign keys pointing at both `registrar.students` and `registrar.courses`, so both of those tables must already exist before `registrar.enrollments` can be created; running the statements in the opposite order would fail with an error about a missing referenced table. This is true of any DDL script that builds more than one related table: schemas before the tables that live in them, tables with no foreign keys before the tables that reference them, and, if tables reference each other in a cycle, either a deferred constraint or a temporary relaxation of `NOT NULL` is required to break the chicken-and-egg problem. For the straightforward one-directional dependencies here, `schema → students, courses → enrollments` is the only order that works.
+
+## Populating and Querying the Schema
+
+With the structure in place, sample data brings it to life:
+
+```{sql}
+--| connection: con
+--| output: false
+INSERT INTO registrar.students (first_name, last_name, email, enrolled_on, gpa)
+VALUES
+    ('Maria',  'Santos',  'msantos@university.edu',  '2023-08-28', 3.85),
+    ('James',  'Okafor',  'jokafor@university.edu',  '2023-08-28', 3.41),
+    ('Priya',  'Nair',    'pnair@university.edu',    '2024-01-15', 3.20)
+```
+
+```{sql}
+--| connection: con
+--| output: false
+INSERT INTO registrar.courses (course_code, title, credit_hours, department)
+VALUES
+    ('CS101', 'Introduction to Programming', 4, 'Computer Science'),
+    ('CS201', 'Data Structures',             4, 'Computer Science'),
+    ('MTH150', 'Calculus I',                 3, 'Mathematics')
+```
+
+```{sql}
+--| connection: con
+--| output: false
+INSERT INTO registrar.enrollments (student_id, course_code, semester, grade)
+VALUES
+    (1, 'CS101',  'Fall 2023',   'A'),
+    (1, 'CS201',  'Spring 2024', NULL),
+    (2, 'CS101',  'Fall 2023',   'B+'),
+    (3, 'MTH150', 'Spring 2024', NULL)
+```
+
+A query joining across all three tables confirms the schema works exactly like the single-schema examples from earlier chapters, just with schema-qualified names:
+
+```{sql}
+--| connection: con
+SELECT
+    s.first_name || ' ' || s.last_name AS student,
+    c.title,
+    e.semester,
+    e.grade
+FROM registrar.enrollments e
+JOIN registrar.students s ON s.student_id = e.student_id
+JOIN registrar.courses c ON c.course_code = e.course_code
+ORDER BY s.last_name, e.semester
+```
+
+## Evaluating a Schema
+
+Not every schema that runs without errors is a good schema. Consider a version of `enrollments` written without the benefit of this chapter:
+
+```sql
+CREATE TABLE bad_enrollments (
+    id            SERIAL PRIMARY KEY,
+    student_name  TEXT,
+    course_title  TEXT,
+    semester      TEXT,
+    grade         TEXT
+);
+```
+
+This executes without complaint, but it repeats the problems normalization is designed to eliminate: `student_name` and `course_title` duplicate data that already lives in `students` and `courses`, inviting the update anomalies described in the normalization chapter (rename a course and every row mentioning it must be found and fixed). There is no foreign key tying a row to an actual student or course, so `student_name` could contain a typo, or the name of a student who does not exist, and the database would never object. And `id` as a surrogate primary key permits the same student to be enrolled in the same course in the same semester twice, since nothing prevents duplicate `(student_name, course_title, semester)` combinations.
+
+When evaluating any schema, whether someone else's or your own, work through the same checklist:
+
+- Does every foreign-key relationship that should exist have an actual `REFERENCES` constraint, or is it only implied by a column name?
+- Does the primary key (composite or otherwise) match the real-world uniqueness rule, or does it merely guarantee that *rows* are unique regardless of whether the *data* makes sense?
+- Are there columns that store derived or duplicated information that a join could produce instead?
+- Do data types and constraints (`NOT NULL`, `CHECK`) match the business rules, or do they merely match whatever the first example row happened to look like?
+
+## Exercises {.unnumbered}
+
+**1.** Add a `payments` schema to the `university` database. Inside it, create an `invoices` table with an auto-incrementing primary key, a `student_id` column referencing `registrar.students`, an `amount_due` column that must be positive, and a `paid` boolean defaulting to `FALSE`.
+
+---
+
+**2.** Set the `search_path` for your current session to `registrar, public`. Confirm that `SELECT * FROM students;` (unqualified) now resolves to `registrar.students` without an error.
+
+---
+
+**3.** Attempt to create `registrar.enrollments` before `registrar.courses` exists (drop both first). Observe the error PostgreSQL raises and explain, in your own words, why the order of `CREATE TABLE` statements matters here but would not matter if neither table had a foreign key.
+
+---
+
+**4.** The `bad_enrollments` table above is missing a way to prevent the same student from enrolling in the same course in the same semester twice. Without adding a foreign key, propose a single constraint that would fix this specific problem, and explain what limitation would remain even after adding it.
+
+---
+
+**5.** Write a complete DDL script, from `CREATE SCHEMA` to the last `CREATE TABLE`, for a `library` schema containing `books` (natural key: ISBN), `members` (surrogate key), and `checkouts` (a junction table recording which member checked out which book and when). Include at least one `CHECK` constraint and one `DEFAULT` value.

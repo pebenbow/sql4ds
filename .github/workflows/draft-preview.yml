@@ -1,28 +1,21 @@
-name: Deploy Book to GitHub Pages
+name: Draft Preview
 
-# Renders the book fresh from `main` on every push and deploys straight to
-# GitHub Pages. Mirrors draft-preview.yml's build steps exactly (same
-# Quarto/R/Python setup, same postgres service) so main and draft only ever
-# differ in their final deploy target -- production is always a direct,
-# deterministic render of main's own content, never an artifact borrowed
-# from a different branch's run.
+# Renders the book from the `draft` branch and publishes it to a Netlify
+# site that is entirely separate from sql4ds.com (production is deployed
+# only from `main` via publish.yml, which renders independently on its own
+# push trigger -- draft and main never share a build or touch each other).
 
 on:
   push:
-    branches: [main]
+    branches: ["draft"]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
+  deployments: write
 
 jobs:
-  build-and-deploy:
+  build-and-preview:
     runs-on: ubuntu-latest
 
     # No `container:` here on purpose. Every chapter in this book hardcodes
@@ -43,13 +36,9 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -105,11 +94,18 @@ jobs:
           RETICULATE_PYTHON: ${{ steps.setup-python.outputs.python-path }}
         run: quarto render
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3
         with:
-          path: _book/
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          publish-dir: "_book"
+          production-deploy: true
+          deploy-message: "Draft preview - ${{ github.sha }}"
+          enable-pull-request-comment: false
+          enable-commit-comment: false
+          enable-github-deployment: true
+          github-deployment-environment: netlify
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 5

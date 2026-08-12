@@ -1,0 +1,329 @@
+---
+title: "Data Manipulation and Transactions"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Write** `INSERT` statements to add single or multiple rows to a table, including `INSERT ... VALUES` with multiple row tuples.
+- **Write** `INSERT INTO ... SELECT` to copy or transform rows from one table into another.
+- **Use** the `RETURNING` clause to retrieve values (e.g., a generated ID) from a newly inserted row.
+- **Write** `UPDATE` statements with a `WHERE` clause to modify existing rows, and explain the consequence of omitting `WHERE`.
+- **Write** `DELETE` statements with a `WHERE` clause to remove rows, and distinguish `DELETE` from `TRUNCATE TABLE` in terms of transaction safety and reversibility.
+- **Explain** the purpose of a transaction and identify the boundaries of an implicit (auto-commit) transaction in PostgreSQL.
+- **Use** `BEGIN`, `COMMIT`, and `ROLLBACK` to group multiple DML statements into a single atomic transaction.
+- **Diagnose** a failed statement inside a transaction block and explain why subsequent statements are blocked until `ROLLBACK`.
+- **Apply** `SAVEPOINT` and `ROLLBACK TO SAVEPOINT` to undo part of a transaction without discarding the whole thing.
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 100)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
+
+PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
+PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
+
+con_admin <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "postgres", user = "postgres", password = PGPASS
+)
+tryCatch(
+  dbExecute(con_admin, "CREATE DATABASE university"),
+  error = function(e) NULL
+)
+dbDisconnect(con_admin)
+
+con <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "university", user = "postgres", password = PGPASS
+)
+
+dbExecute(con, "DROP TABLE IF EXISTS honor_roll CASCADE")
+dbExecute(con, "DROP TABLE IF EXISTS probation CASCADE")
+dbExecute(con, "DROP TABLE IF EXISTS students CASCADE")
+dbExecute(con, "
+  CREATE TABLE students (
+      student_id   SERIAL        PRIMARY KEY,
+      first_name   TEXT          NOT NULL,
+      last_name    TEXT          NOT NULL,
+      email        TEXT          NOT NULL UNIQUE,
+      enrolled_on  DATE          NOT NULL DEFAULT CURRENT_DATE,
+      is_active    BOOLEAN       NOT NULL DEFAULT TRUE,
+      gpa          NUMERIC(3, 2) CHECK (gpa IS NULL OR (gpa >= 0.0 AND gpa <= 4.0))
+  )
+")
+dbExecute(con, "
+  INSERT INTO students (first_name, last_name, email, enrolled_on, gpa)
+  VALUES
+      ('Maria',  'Santos',  'msantos@university.edu',  '2023-08-28', 3.85),
+      ('James',  'Okafor',  'jokafor@university.edu',  '2023-08-28', 3.41),
+      ('Priya',  'Nair',    'pnair@university.edu',    '2024-01-15', NULL),
+      ('Connor', 'Walsh',   'cwalsh@university.edu',   '2024-01-15', 2.97)
+")
+```
+
+## From Defining Structure to Changing Data
+
+The previous chapter built the `students` table in the `university` database and populated it with a handful of rows just to confirm the table worked. This chapter treats those `INSERT` statements as a subject in their own right, along with `UPDATE`, `DELETE`, and the transaction commands that keep a batch of them safe. Together with `SELECT`, these four statements are **Data Manipulation Language (DML)**: the part of SQL concerned with the *contents* of a table rather than its *structure*.
+
+The `students` table already exists with four rows, exactly as chapter 34 left it. Confirm that before continuing:
+
+```{sql}
+--| connection: con
+SELECT * FROM students ORDER BY student_id
+```
+
+## Inserting Rows
+
+### Single-Row INSERT
+
+The basic form of `INSERT` names the target table, the columns being supplied, and a matching list of values:
+
+```sql
+INSERT INTO students (first_name, last_name, email, enrolled_on, gpa)
+VALUES ('Devon', 'Kim', 'dkim@university.edu', '2024-08-26', NULL);
+```
+
+Any column omitted from the column list is left to its default, if it has one, or `NULL` otherwise. `student_id` is omitted here because it is `SERIAL`: PostgreSQL assigns the next value automatically.
+
+### Multi-Row INSERT
+
+A single `INSERT` can supply more than one row by separating value tuples with commas. This is both more concise and considerably faster than issuing one `INSERT` per row, since the database only has to parse and plan the statement once:
+
+```{sql}
+--| connection: con
+--| output: false
+INSERT INTO students (first_name, last_name, email, enrolled_on, gpa)
+VALUES
+    ('Devon',  'Kim',      'dkim@university.edu',      '2024-08-26', NULL),
+    ('Amara',  'Adeyemi',  'aadeyemi@university.edu',  '2024-08-26', 3.12),
+    ('Lucas',  'Ferreira', 'lferreira@university.edu', '2024-08-26', 3.67)
+```
+
+```{sql}
+--| connection: con
+SELECT * FROM students ORDER BY student_id
+```
+
+### INSERT INTO ... SELECT
+
+Rows do not have to come from a literal `VALUES` list. `INSERT INTO ... SELECT` inserts the result of a query, which makes it the standard way to copy or transform data from one table into another:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE TABLE honor_roll (
+    student_id  INTEGER PRIMARY KEY REFERENCES students(student_id),
+    first_name  TEXT NOT NULL,
+    last_name   TEXT NOT NULL,
+    gpa         NUMERIC(3, 2) NOT NULL
+)
+```
+
+```{sql}
+--| connection: con
+--| output: false
+INSERT INTO honor_roll (student_id, first_name, last_name, gpa)
+SELECT student_id, first_name, last_name, gpa
+FROM students
+WHERE gpa >= 3.5
+```
+
+```{sql}
+--| connection: con
+SELECT * FROM honor_roll ORDER BY gpa DESC
+```
+
+The column list after `INSERT INTO honor_roll` and the columns selected in the `SELECT` must correspond in number and compatible type, but they do not need matching names. This is the mechanism behind `CREATE TABLE AS SELECT` from the previous chapter: `CTAS` creates the table *and* populates it in one step, while `INSERT INTO ... SELECT` populates a table that already exists.
+
+### RETURNING
+
+Because a `SERIAL` primary key is assigned by the database, the application issuing an `INSERT` often does not know the new row's key in advance. The `RETURNING` clause reports back values from the row exactly as it was written, in the same statement:
+
+```{sql}
+--| connection: con
+INSERT INTO students (first_name, last_name, email, enrolled_on, gpa)
+VALUES ('Wei', 'Zhang', 'wzhang@university.edu', CURRENT_DATE, NULL)
+RETURNING student_id, first_name, last_name
+```
+
+`RETURNING` works the same way after `UPDATE` and `DELETE`, reporting the rows as they looked immediately after the change (for `UPDATE`) or immediately before removal (for `DELETE`). Without it, an application would need a second round-trip query just to find out what it did.
+
+## Updating Rows
+
+`UPDATE` modifies existing rows. It names the table, a `SET` clause assigning new values, and (almost always) a `WHERE` clause identifying which rows to change:
+
+```{sql}
+--| connection: con
+--| output: false
+UPDATE students
+SET gpa = 3.20
+WHERE first_name = 'Priya' AND last_name = 'Nair'
+```
+
+```{sql}
+--| connection: con
+SELECT * FROM students WHERE last_name = 'Nair'
+```
+
+Multiple columns can be updated in one statement:
+
+```sql
+UPDATE students
+SET is_active = FALSE, gpa = NULL
+WHERE student_id = 1;
+```
+
+::: {.callout-warning}
+`UPDATE` without a `WHERE` clause modifies **every row** in the table. This is valid SQL, not an error, so the database will not stop you:
+
+```sql
+UPDATE students
+SET is_active = FALSE;
+```
+
+Before running an `UPDATE`, it is good practice to first run the same condition as a `SELECT` to confirm exactly which rows will be affected.
+:::
+
+## Deleting Rows
+
+`DELETE` removes rows and, like `UPDATE`, is normally paired with a `WHERE` clause:
+
+```{sql}
+--| connection: con
+--| output: false
+DELETE FROM students
+WHERE first_name = 'Devon' AND last_name = 'Kim'
+```
+
+```{sql}
+--| connection: con
+SELECT COUNT(*) FROM students
+```
+
+Omitting `WHERE` deletes every row in the table, one at a time, while still allowing the operation to be rolled back if it turns out to be a mistake (see the next section). This is the key difference from `TRUNCATE TABLE`, introduced in the previous chapter: `TRUNCATE` also removes every row, but it does so by deallocating the table's storage directly rather than deleting rows individually, which makes it much faster on large tables but means it cannot fire row-level triggers and, on some systems, is harder to undo. For routine data cleanup, prefer `DELETE ... WHERE`; reach for `TRUNCATE` only when you deliberately want to empty an entire table as fast as possible.
+
+## Transactions
+
+Every one of the statements above has run on its own so far. By default, PostgreSQL wraps each individual statement in its own implicit transaction: the moment a statement completes successfully, its effect is permanent, and there is no way to undo just that one statement afterward. This is called **auto-commit** mode.
+
+A **transaction** groups multiple statements so that they succeed or fail together, as a single unit. This matters whenever a change to the database only makes sense as a set. Consider transferring a student between two sections: removing them from one roster and adding them to another has to happen as a pair. If the database crashed, or the application errored, after only the first half completed, the student would vanish from both.
+
+### BEGIN, COMMIT, and ROLLBACK
+
+`BEGIN` starts an explicit transaction, suspending auto-commit until it ends. `COMMIT` makes every change since `BEGIN` permanent; `ROLLBACK` discards all of them, as if none had happened.
+
+```{sql}
+--| connection: con
+--| output: false
+BEGIN
+```
+
+```{sql}
+--| connection: con
+--| output: false
+UPDATE students SET is_active = FALSE WHERE student_id = 4
+```
+
+```{sql}
+--| connection: con
+--| output: false
+DELETE FROM honor_roll WHERE student_id = 4
+```
+
+```{sql}
+--| connection: con
+--| output: false
+COMMIT
+```
+
+Had something gone wrong partway through, `ROLLBACK` instead of `COMMIT` would have discarded the `UPDATE` and the `DELETE` both, leaving the database exactly as it was before `BEGIN`. Nothing outside the transaction can see its changes until `COMMIT` succeeds; a concurrent session querying `students` mid-transaction would still see Connor Walsh as active.
+
+::: {.callout-note}
+Every `{sql}` chunk in this chapter runs in the same persistent connection (`con`), which is why a `BEGIN` in one chunk carries over to affect the chunks that follow it, exactly as it would across separate statements run one after another in the same query window. A transaction is a property of the *connection's session*, not of any single statement.
+:::
+
+### Aborted Transactions
+
+If any statement inside a transaction fails, for example by violating a constraint, PostgreSQL does not simply skip it and continue. The entire transaction is marked as **aborted**, and every subsequent statement is rejected until a `ROLLBACK` is issued:
+
+```sql
+BEGIN;
+UPDATE students SET gpa = 5.0 WHERE student_id = 2;  -- violates the GPA CHECK constraint
+SELECT * FROM students;  -- rejected: current transaction is aborted
+ROLLBACK;
+```
+
+This is deliberate: once one statement in the group has failed, the database cannot know whether the rest of the transaction still makes sense, so it refuses to let it proceed silently in an inconsistent state. `ROLLBACK` is the only way out of an aborted transaction; it discards everything, including the statements that succeeded before the failure.
+
+### SAVEPOINT
+
+A `SAVEPOINT` marks a point inside a transaction that you can roll back to without discarding the entire transaction. This is useful when one part of a larger batch is allowed to fail independently of the rest:
+
+```{sql}
+--| connection: con
+--| output: false
+BEGIN
+```
+
+```{sql}
+--| connection: con
+--| output: false
+UPDATE students SET is_active = TRUE WHERE student_id = 4
+```
+
+```{sql}
+--| connection: con
+--| output: false
+SAVEPOINT before_risky_update
+```
+
+```{sql}
+--| connection: con
+--| error: true
+UPDATE students SET gpa = 9.9 WHERE student_id = 4
+```
+
+```{sql}
+--| connection: con
+--| output: false
+ROLLBACK TO SAVEPOINT before_risky_update
+```
+
+```{sql}
+--| connection: con
+--| output: false
+COMMIT
+```
+
+```{sql}
+--| connection: con
+SELECT * FROM students WHERE student_id = 4
+```
+
+`ROLLBACK TO SAVEPOINT` undoes only the statements issued after that savepoint, restores the transaction to a healthy (non-aborted) state, and lets you continue and eventually `COMMIT` the parts that were fine. Without the savepoint, the failed `UPDATE` would have aborted the whole transaction, forcing a full `ROLLBACK` and losing the earlier, valid change to `is_active` as well.
+
+## Exercises {.unnumbered}
+
+**1.** Insert three new rows into `students` in a single `INSERT` statement, supplying `first_name`, `last_name`, `email`, and `enrolled_on` but omitting `gpa`. Confirm each new row has a `NULL` GPA.
+
+---
+
+**2.** Write an `UPDATE` that increases every currently `NULL` GPA to `0.00`, but only for students enrolled before `2024-01-01`. Run the equivalent `SELECT` first to confirm which rows would be affected before running the `UPDATE`.
+
+---
+
+**3.** Create a `probation` table with the same columns as `honor_roll`. Use `INSERT INTO ... SELECT` to populate it with every student whose GPA is below `3.0`, excluding students with a `NULL` GPA.
+
+---
+
+**4.** Start a transaction. Inside it, delete every row from `honor_roll`, then immediately query `honor_roll` to confirm it is empty. Roll the transaction back. Query `honor_roll` again and explain why the rows have returned.
+
+---
+
+**5.** Start a transaction and insert a new student. Create a savepoint. After the savepoint, attempt an `UPDATE` that violates the `gpa` CHECK constraint. Roll back to the savepoint, then commit the transaction. Confirm that the new student exists but the invalid update was discarded.
