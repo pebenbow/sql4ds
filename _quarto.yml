@@ -50,11 +50,12 @@ book:
         - 32-er-diagrams.qmd
         - 33-normal-forms.qmd
         - 34-create-table.qmd
-        - 35-views.qmd
+        - 35-data-manipulation.qmd
         - 36-building-schema.qmd
-        - 37-programmability.qmd
-        - 38-security.qmd
-        - 39-indexes.qmd
+        - 37-views.qmd
+        - 38-programmability.qmd
+        - 39-security.qmd
+        - 40-indexes.qmd
 
     - part: 60-load.qmd
       chapters:

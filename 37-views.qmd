@@ -1,0 +1,329 @@
+---
+title: "Views and Materialized Views"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Create** a view using `CREATE VIEW` and query it like a table.
+- **Explain** what a view is and how it differs from a base table in terms of storage and execution.
+- **Use** `CREATE OR REPLACE VIEW` to update a view definition without dropping dependent objects.
+- **Identify** the conditions under which a view is updatable and explain what prevents a view from supporting `INSERT`, `UPDATE`, or `DELETE`.
+- **Create** a materialized view using `CREATE MATERIALIZED VIEW` and explain how it differs from a regular view.
+- **Refresh** a materialized view using `REFRESH MATERIALIZED VIEW` and `REFRESH MATERIALIZED VIEW CONCURRENTLY`.
+- **Design** an index on a materialized view to improve query performance against pre-computed results.
+- **Evaluate** whether a given use case calls for a regular view or a materialized view based on data freshness requirements and query frequency.
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 100)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
+
+PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
+PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
+
+con_admin <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "postgres", user = "postgres", password = PGPASS
+)
+tryCatch(
+  dbExecute(con_admin, "CREATE DATABASE university"),
+  error = function(e) NULL
+)
+dbDisconnect(con_admin)
+
+con <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "university", user = "postgres", password = PGPASS
+)
+
+dbExecute(con, "DROP SCHEMA IF EXISTS registrar CASCADE")
+dbExecute(con, "CREATE SCHEMA registrar")
+dbExecute(con, "
+  CREATE TABLE registrar.students (
+      student_id   SERIAL        PRIMARY KEY,
+      first_name   TEXT          NOT NULL,
+      last_name    TEXT          NOT NULL,
+      email        TEXT          NOT NULL UNIQUE,
+      enrolled_on  DATE          NOT NULL DEFAULT CURRENT_DATE,
+      is_active    BOOLEAN       NOT NULL DEFAULT TRUE,
+      gpa          NUMERIC(3, 2) CHECK (gpa IS NULL OR (gpa >= 0.0 AND gpa <= 4.0))
+  )
+")
+dbExecute(con, "
+  CREATE TABLE registrar.courses (
+      course_code   TEXT     PRIMARY KEY,
+      title         TEXT     NOT NULL,
+      credit_hours  INTEGER  NOT NULL CHECK (credit_hours > 0),
+      department    TEXT     NOT NULL DEFAULT 'General'
+  )
+")
+dbExecute(con, "
+  CREATE TABLE registrar.enrollments (
+      student_id   INTEGER  NOT NULL REFERENCES registrar.students(student_id),
+      course_code  TEXT     NOT NULL REFERENCES registrar.courses(course_code),
+      semester     TEXT     NOT NULL,
+      grade        TEXT,
+      PRIMARY KEY (student_id, course_code, semester)
+  )
+")
+dbExecute(con, "
+  INSERT INTO registrar.students (first_name, last_name, email, enrolled_on, gpa)
+  VALUES
+      ('Maria',  'Santos',  'msantos@university.edu',  '2023-08-28', 3.85),
+      ('James',  'Okafor',  'jokafor@university.edu',  '2023-08-28', 3.41),
+      ('Priya',  'Nair',    'pnair@university.edu',    '2024-01-15', 3.20)
+")
+dbExecute(con, "
+  INSERT INTO registrar.courses (course_code, title, credit_hours, department)
+  VALUES
+      ('CS101', 'Introduction to Programming', 4, 'Computer Science'),
+      ('CS201', 'Data Structures',             4, 'Computer Science'),
+      ('MTH150', 'Calculus I',                 3, 'Mathematics')
+")
+dbExecute(con, "
+  INSERT INTO registrar.enrollments (student_id, course_code, semester, grade)
+  VALUES
+      (1, 'CS101',  'Fall 2023',   'A'),
+      (1, 'CS201',  'Spring 2024', NULL),
+      (2, 'CS101',  'Fall 2023',   'B+'),
+      (3, 'MTH150', 'Spring 2024', NULL)
+")
+```
+
+## A Query You Can Query
+
+The previous chapter ended with a three-table join listing every student's enrollments, course titles, and grades. That query is useful enough that it will likely be written again, by someone else, slightly differently each time. A **view** solves this by giving a query a permanent name:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE VIEW registrar.enrollment_summary AS
+SELECT
+    e.student_id,
+    s.first_name || ' ' || s.last_name AS student,
+    c.course_code,
+    c.title,
+    e.semester,
+    e.grade
+FROM registrar.enrollments e
+JOIN registrar.students s ON s.student_id = e.student_id
+JOIN registrar.courses c ON c.course_code = e.course_code
+```
+
+Once created, a view is queried exactly like a table:
+
+```{sql}
+--| connection: con
+SELECT * FROM registrar.enrollment_summary WHERE semester = 'Fall 2023'
+```
+
+A view is not a copy of the data. PostgreSQL stores only the query itself; every time the view is queried, the underlying `SELECT` runs again against the current contents of `students`, `courses`, and `enrollments`. Insert a new enrollment and `enrollment_summary` reflects it immediately, with no extra step, because there is nothing to update: there was never a stored copy to fall out of sync.
+
+```{sql}
+--| connection: con
+--| output: false
+INSERT INTO registrar.enrollments (student_id, course_code, semester, grade)
+VALUES (2, 'MTH150', 'Spring 2024', NULL)
+```
+
+```{sql}
+--| connection: con
+SELECT * FROM registrar.enrollment_summary WHERE student_id = 2
+```
+
+## Replacing and Dropping Views
+
+Requirements change, and a view's definition often needs to change with them. `CREATE OR REPLACE VIEW` updates a view in place:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE OR REPLACE VIEW registrar.enrollment_summary AS
+SELECT
+    e.student_id,
+    s.first_name || ' ' || s.last_name AS student,
+    c.course_code,
+    c.title,
+    e.semester,
+    e.grade,
+    c.credit_hours
+FROM registrar.enrollments e
+JOIN registrar.students s ON s.student_id = e.student_id
+JOIN registrar.courses c ON c.course_code = e.course_code
+```
+
+This adds a `credit_hours` column without dropping and recreating the view. The new column has to be appended to the *end* of the `SELECT` list; PostgreSQL allows `CREATE OR REPLACE VIEW` to add columns, but not to reorder, rename, or remove any of the existing ones. `CREATE OR REPLACE VIEW` has one restriction: it can add columns to the end of the column list, but it cannot remove a column or change an existing column's type without an explicit `DROP VIEW` first. Anything more than an additive change requires:
+
+```sql
+DROP VIEW registrar.enrollment_summary;
+```
+
+`DROP VIEW` fails if another view or object depends on this one, unless `CASCADE` is added, mirroring the same dependency behavior seen with `DROP TABLE ... CASCADE`.
+
+## Updatable Views
+
+A view built from a single table, with no aggregation, `DISTINCT`, `GROUP BY`, window function, or set operation, is **updatable**: PostgreSQL can unambiguously translate an `INSERT`, `UPDATE`, or `DELETE` against the view into the equivalent operation on the underlying table.
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE VIEW registrar.active_students AS
+SELECT student_id, first_name, last_name, email, gpa
+FROM registrar.students
+WHERE is_active = TRUE
+```
+
+```{sql}
+--| connection: con
+--| output: false
+UPDATE registrar.active_students
+SET gpa = 3.30
+WHERE student_id = 3
+```
+
+```{sql}
+--| connection: con
+SELECT * FROM registrar.students WHERE student_id = 3
+```
+
+The `UPDATE` against the view actually modified the row in `registrar.students`. `enrollment_summary`, by contrast, is **not** updatable: it joins three tables, so an `UPDATE` against it would be ambiguous. If a row in the joined result changed `title`, should PostgreSQL update `courses.title`, or is `title` meant to be read-only in this context? Rather than guess, PostgreSQL refuses:
+
+```sql
+UPDATE registrar.enrollment_summary SET title = 'New Title' WHERE student_id = 1;
+-- ERROR: cannot update view "enrollment_summary"
+-- DETAIL: Views containing joins are not automatically updatable.
+```
+
+::: {.callout-note}
+`WITH CHECK OPTION` can be added to an updatable view to reject any `INSERT` or `UPDATE` that would produce a row the view's own `WHERE` clause would not show. Without it, nothing stops an `UPDATE` through `registrar.active_students` from setting `gpa` to a value that still satisfies the base table's constraints but has no bearing on `is_active`, since `is_active` is not a column the view exposes at all; the row would simply update successfully and then vanish from the view's own results the next time someone queries it, since it never checks whether the row it just touched still belongs.
+:::
+
+## Security Views
+
+Because a view can select a subset of columns, it doubles as a simple access-control tool. Suppose the registrar's staff should see enrollment records but never a student's GPA:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE VIEW registrar.enrollment_public AS
+SELECT student_id, first_name, last_name, email
+FROM registrar.students
+```
+
+A role granted access only to `registrar.enrollment_public`, and not to `registrar.students` directly, can query student names and emails but has no way to see `gpa`, `is_active`, or any other column the view omits, no matter how the query is phrased. This pattern, restricting both rows (with a `WHERE` clause) and columns (with the `SELECT` list) through a view rather than the base table, is revisited with actual `GRANT` statements in the chapter on security.
+
+## Materialized Views
+
+A regular view re-runs its query on every reference, which is exactly right when the underlying data changes constantly and every read must be current. Some queries, though, are expensive to compute and do not need to reflect data that changed one second ago. A **materialized view** runs the query once and stores the result physically, like a table:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE MATERIALIZED VIEW registrar.course_enrollment_counts AS
+SELECT
+    c.course_code,
+    c.title,
+    COUNT(e.student_id) AS enrolled_count
+FROM registrar.courses c
+LEFT JOIN registrar.enrollments e ON e.course_code = c.course_code
+GROUP BY c.course_code, c.title
+```
+
+```{sql}
+--| connection: con
+SELECT * FROM registrar.course_enrollment_counts ORDER BY enrolled_count DESC
+```
+
+This looks identical to a regular view when queried, but the aggregation ran exactly once, at creation time. Enrolling another student in `CS101` does not change `course_enrollment_counts` until it is explicitly told to update:
+
+```{sql}
+--| connection: con
+--| output: false
+INSERT INTO registrar.enrollments (student_id, course_code, semester, grade)
+VALUES (3, 'CS101', 'Fall 2024', NULL)
+```
+
+```{sql}
+--| connection: con
+SELECT * FROM registrar.course_enrollment_counts WHERE course_code = 'CS101'
+```
+
+The count is still stale. `REFRESH MATERIALIZED VIEW` recomputes it:
+
+```{sql}
+--| connection: con
+--| output: false
+REFRESH MATERIALIZED VIEW registrar.course_enrollment_counts
+```
+
+```{sql}
+--| connection: con
+SELECT * FROM registrar.course_enrollment_counts WHERE course_code = 'CS101'
+```
+
+### REFRESH ... CONCURRENTLY
+
+A plain `REFRESH MATERIALIZED VIEW` locks the view against reads for the duration of the refresh: any query that tries to read it has to wait. `REFRESH MATERIALIZED VIEW CONCURRENTLY` avoids this by building the new result alongside the old one and swapping them, so queries against the view keep working (against the slightly stale version) while the refresh runs. It requires at least one unique index on the materialized view:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE UNIQUE INDEX ON registrar.course_enrollment_counts (course_code)
+```
+
+```{sql}
+--| connection: con
+--| output: false
+REFRESH MATERIALIZED VIEW CONCURRENTLY registrar.course_enrollment_counts
+```
+
+### Indexing a Materialized View
+
+Because a materialized view's data is physically stored, it can be indexed exactly like a table, including indexes that support fast lookups on columns other than the one used for `CONCURRENTLY` above:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE INDEX ON registrar.course_enrollment_counts (enrolled_count)
+```
+
+A regular view has nothing to index: since it stores no data of its own, any index would have to live on the underlying base tables instead.
+
+## Choosing Between a View and a Materialized View
+
+The decision comes down to two questions: how fresh does the result need to be, and how expensive is it to compute?
+
+| | Regular view | Materialized view |
+|---|---|---|
+| Data freshness | Always current | Current as of the last refresh |
+| Query cost | Full query runs every time | Instant read of stored result |
+| Storage | None (just the query definition) | Physical storage, same as a table |
+| Best for | Simple queries, or data that must never be stale | Expensive aggregations, dashboards, reports refreshed on a schedule |
+
+`enrollment_summary`, a straightforward three-table join with no aggregation, is cheap enough to recompute on every query and benefits from always being current: a regular view is the right choice. `course_enrollment_counts`, an aggregation that might eventually run over millions of enrollment rows and is realistically only needed for a once-a-day report, is a better candidate for a materialized view refreshed on a schedule rather than recomputed on every page load.
+
+## Exercises {.unnumbered}
+
+**1.** Create a view named `registrar.honor_roll_view` that selects students with a `gpa` of `3.5` or higher. Confirm it is updatable by using it to change one qualifying student's email address.
+
+---
+
+**2.** Explain, without running it, why the following would fail, and identify which specific feature of the query makes it non-updatable: `CREATE VIEW registrar.course_load AS SELECT student_id, COUNT(*) AS num_courses FROM registrar.enrollments GROUP BY student_id;`
+
+---
+
+**3.** Create a materialized view `registrar.department_summary` that shows each department's total number of courses and total credit hours offered. Add a course to a new department, confirm the materialized view is stale, then refresh it.
+
+---
+
+**4.** Add a unique index to `registrar.department_summary` on `department`, then refresh it using `REFRESH MATERIALIZED VIEW CONCURRENTLY`. Explain what would have happened had you tried `CONCURRENTLY` before adding the unique index.
+
+---
+
+**5.** A colleague suggests replacing `registrar.enrollment_public` (the security view from this chapter) with a materialized view instead, refreshed nightly, to make it faster. Evaluate this suggestion: what would be gained, and what would be lost, given the view's purpose?

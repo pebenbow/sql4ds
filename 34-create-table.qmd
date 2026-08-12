@@ -48,7 +48,7 @@ dbExecute(con, "DROP TABLE IF EXISTS students CASCADE")
 
 Every query in this book so far has been a `SELECT` statement: reading data from tables that already exist. Creating and modifying tables is the domain of **Data Definition Language (DDL)**, a subset of SQL distinct from the `SELECT`, `INSERT`, `UPDATE`, and `DELETE` statements that make up Data Manipulation Language (DML).
 
-This chapter introduces `CREATE TABLE`, the fundamental DDL statement, in the context of building a university database from scratch. By the end, you will know how to create a database, define a table with appropriate constraints, prevent duplicate or invalid data at the schema level, and modify a table's structure after the fact. The next chapter extends this foundation to multi-table schemas with foreign keys.
+This chapter introduces `CREATE TABLE`, the fundamental DDL statement, in the context of building a university database from scratch. By the end, you will know how to create a database, define a table with appropriate constraints, prevent duplicate or invalid data at the schema level, and modify a table's structure after the fact. A later chapter extends this foundation to multi-table schemas with foreign keys.
 
 ## Creating a Database
 
@@ -85,7 +85,7 @@ CREATE TABLE public.students (...);
 
 You can create additional schemas to separate concerns: for example, a `registrar` schema for enrollment data and an `finance` schema for billing tables. Tables outside the default schema are referenced with a **schema-qualified name**: `schema_name.table_name`. The `search_path` setting controls which schemas PostgreSQL searches when you use an unqualified name.
 
-For the exercises in this chapter, the `public` schema of the `university` database is sufficient. Schemas become more important when a single database serves multiple applications or teams, a pattern covered in the chapter on privileges.
+For the exercises in this chapter, the `public` schema of the `university` database is sufficient. Schemas become more important when a single database serves multiple applications or teams, a pattern covered in the chapter on building a schema.
 
 ## Basic Syntax
 
@@ -211,7 +211,7 @@ CREATE TABLE enrollments (
 );
 ```
 
-Inline `PRIMARY KEY` syntax cannot express a composite key. The full multi-table schema, including this `enrollments` table and the foreign keys that connect it to `students` and `courses`, is built out in the next chapter.
+Inline `PRIMARY KEY` syntax cannot express a composite key. The full multi-table schema, including this `enrollments` table and the foreign keys that connect it to `students` and `courses`, is built out in the chapter on building a schema.
 
 ## Putting It Together: The Students Table
 
