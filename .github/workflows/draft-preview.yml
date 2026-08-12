@@ -14,16 +14,19 @@ on:
 jobs:
   build-and-preview:
     runs-on: ubuntu-latest
-    # `container:` puts this job on the same Docker network as the
-    # `postgres` service below, so the book's hardcoded `host = "localhost"`
-    # connections actually resolve to it. Matches the pattern already used
-    # by the dat153/site workflow for the same reason.
-    container:
-      image: rocker/verse:latest
 
+    # No `container:` here on purpose. Every chapter in this book hardcodes
+    # host = "localhost" directly in its dbConnect() call (there's no PGHOST
+    # env var to override it, unlike the dat153/site repo). Inside a
+    # `container:` job, services are only reachable by service name, not
+    # localhost -- so instead this job runs directly on the runner and the
+    # postgres service below maps its port straight onto the runner, which
+    # is exactly what "localhost" already means to every chapter's code.
     services:
       postgres:
         image: pebenbow/open-sql-docker:latest
+        ports:
+          - 5432:5432
         options: >-
           --health-cmd "pg_isready -U postgres"
           --health-interval 10s
@@ -34,29 +37,43 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.2.2
 
-      # Mirrors dat153-integration/render-env/Containerfile, which was
-      # already built and vetted locally for this exact purpose (verifying
-      # sql4ds chapters against open-sql-docker) -- transcribed here as
-      # inline steps rather than publishing that image to a registry.
       - name: Install Quarto
-        run: |
-          curl -fsSL -o /tmp/quarto.deb \
-            "https://github.com/quarto-dev/quarto-cli/releases/download/v1.9.38/quarto-1.9.38-linux-amd64.deb"
-          apt-get update
-          apt-get install -y /tmp/quarto.deb
-          rm /tmp/quarto.deb
-          rm -rf /var/lib/apt/lists/*
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "1.9.38"
 
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # The whole book only ever loads DBI, RPostgres, and ggplot2 in R
+      # (checked via grep across every .qmd file) -- no need for the full
+      # tidyverse. rmarkdown/knitr are what Quarto's R engine runs on.
       - name: Install R packages
-        run: |
-          Rscript -e "install.packages(c('DBI', 'RPostgres', 'reticulate'), repos = 'https://cloud.r-project.org')"
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::rmarkdown
+            any::knitr
+            any::DBI
+            any::RPostgres
+            any::ggplot2
+            any::reticulate
 
-      - name: Install Python and packages
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Packages imported by the book's executable {python} chunks
+      # (26-python-database, 62-transforming-with-polars,
+      # 63-loading-with-sqlalchemy, 64-etl-pipeline), plus jupyter so
+      # Quarto's Python engine has a kernel to execute against.
+      - name: Install Python packages
         run: |
-          apt-get update
-          apt-get install -y --no-install-recommends python3 python3-pip
-          rm -rf /var/lib/apt/lists/*
-          pip3 install --no-cache-dir --break-system-packages \
+          pip install --no-cache-dir \
             jupyter \
             sqlalchemy \
             psycopg2-binary \
@@ -71,15 +88,7 @@ jobs:
         env:
           # reticulate defaults to auto-provisioning its own Python via uv;
           # pin it to the interpreter the packages above were installed into.
-          RETICULATE_PYTHON: /usr/bin/python3
-          # NOTE: every chapter hardcodes host = "localhost" directly in its
-          # dbConnect() call rather than reading a PGHOST env var, so there is
-          # nothing to override here. "localhost" resolves to the `postgres`
-          # service above only because this job runs inside `container:` --
-          # GitHub Actions attaches service containers to that container's
-          # own network and makes them reachable as localhost automatically.
-          # A bare `runs-on` job without `container:` would need `ports:` on
-          # the service plus a `localhost:<mapped-port>` connection instead.
+          RETICULATE_PYTHON: ${{ steps.setup-python.outputs.python-path }}
         run: quarto render
 
       - name: Deploy to Netlify
