@@ -1,0 +1,8 @@
+/*-- scss:defaults --*/
+
+// Widen the floating sidebar's chapter-navigation column so long chapter
+// titles wrap less. Quarto/Bootstrap default this to 250px
+// ($grid-sidebar-width in _bootstrap-variables.scss); since this file is
+// processed before Bootstrap's own !default assignment, setting it here
+// takes effect instead of being silently dropped.
+$grid-sidebar-width: 420px !default;

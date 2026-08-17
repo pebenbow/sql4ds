@@ -218,34 +218,17 @@ A **transaction** groups multiple statements so that they succeed or fail togeth
 
 `BEGIN` starts an explicit transaction, suspending auto-commit until it ends. `COMMIT` makes every change since `BEGIN` permanent; `ROLLBACK` discards all of them, as if none had happened.
 
-```{sql}
---| connection: con
---| output: false
-BEGIN
-```
-
-```{sql}
---| connection: con
---| output: false
-UPDATE students SET is_active = FALSE WHERE student_id = 4
-```
-
-```{sql}
---| connection: con
---| output: false
-DELETE FROM honor_roll WHERE student_id = 4
-```
-
-```{sql}
---| connection: con
---| output: false
-COMMIT
+```sql
+BEGIN;
+UPDATE students SET is_active = FALSE WHERE student_id = 4;
+DELETE FROM honor_roll WHERE student_id = 4;
+COMMIT;
 ```
 
 Had something gone wrong partway through, `ROLLBACK` instead of `COMMIT` would have discarded the `UPDATE` and the `DELETE` both, leaving the database exactly as it was before `BEGIN`. Nothing outside the transaction can see its changes until `COMMIT` succeeds; a concurrent session querying `students` mid-transaction would still see Connor Walsh as active.
 
 ::: {.callout-note}
-Every `{sql}` chunk in this chapter runs in the same persistent connection (`con`), which is why a `BEGIN` in one chunk carries over to affect the chunks that follow it, exactly as it would across separate statements run one after another in the same query window. A transaction is a property of the *connection's session*, not of any single statement.
+A transaction is a property of the *connection's session*, not of any single statement: `BEGIN` suspends auto-commit for every statement that follows on that same connection, until a `COMMIT` or `ROLLBACK` ends it, exactly as shown here run one after another in the same query window.
 :::
 
 ### Aborted Transactions
@@ -265,48 +248,22 @@ This is deliberate: once one statement in the group has failed, the database can
 
 A `SAVEPOINT` marks a point inside a transaction that you can roll back to without discarding the entire transaction. This is useful when one part of a larger batch is allowed to fail independently of the rest:
 
-```{sql}
---| connection: con
---| output: false
-BEGIN
-```
+```sql
+BEGIN;
+UPDATE students SET is_active = TRUE WHERE student_id = 4;
+SAVEPOINT before_risky_update;
 
-```{sql}
---| connection: con
---| output: false
-UPDATE students SET is_active = TRUE WHERE student_id = 4
-```
+UPDATE students SET gpa = 9.9 WHERE student_id = 4;
+-- ERROR:  new row for relation "students" violates check constraint "students_gpa_check"
+-- DETAIL:  Failing row contains (4, ..., 9.90).
 
-```{sql}
---| connection: con
---| output: false
-SAVEPOINT before_risky_update
-```
-
-```{sql}
---| connection: con
---| error: true
-UPDATE students SET gpa = 9.9 WHERE student_id = 4
-```
-
-```{sql}
---| connection: con
---| output: false
-ROLLBACK TO SAVEPOINT before_risky_update
-```
-
-```{sql}
---| connection: con
---| output: false
-COMMIT
-```
-
-```{sql}
---| connection: con
-SELECT * FROM students WHERE student_id = 4
+ROLLBACK TO SAVEPOINT before_risky_update;
+COMMIT;
 ```
 
 `ROLLBACK TO SAVEPOINT` undoes only the statements issued after that savepoint, restores the transaction to a healthy (non-aborted) state, and lets you continue and eventually `COMMIT` the parts that were fine. Without the savepoint, the failed `UPDATE` would have aborted the whole transaction, forcing a full `ROLLBACK` and losing the earlier, valid change to `is_active` as well.
+
+Checking the row afterward would confirm it: `is_active` is `TRUE` from the first `UPDATE`, which survived, while `gpa` is unchanged, since the second `UPDATE` never took effect.
 
 ## Exercises {.unnumbered}
 
