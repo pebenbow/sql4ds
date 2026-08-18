@@ -16,6 +16,7 @@ By the end of this chapter, students will be able to:
 - **Use** `CROSS JOIN` to produce a Cartesian product and identify a practical scenario where this is the intended behavior.
 - **Diagnose** unexpected duplicate rows caused by one-to-many join relationships and correct the query.
 - **Select** the appropriate join type for a given analytical question.
+- **Locate** `JOIN` and `ON` within SQL's logical order of execution and explain why that order governs the behavior of `ON` vs. `WHERE` with outer joins.
 
 ```{r}
 #| include: false
@@ -337,6 +338,25 @@ LIMIT 20;
 
 Because `indicators.country_id` is enforced as a foreign key, every indicator row already has a matching country. The only unmatched rows come from the left side: the 38 aggregates in `countries` with no indicator data. The result is therefore the same as a left join with the year in the `ON` clause. Full outer joins show their full value when comparing two datasets that are not constrained to reference each other, such as two independent snapshots of the same data where either side could contain records the other does not.
 
+## Sidebar
+
+A few years ago, I stumbled on a LinkedIn post that I think does an amazing job of summing up these first four join types. I've included a screenshot below, but here's the abridged text:
+
+> ➔ Left Join: Keeps everything from the left table, even if there's no match. Gets all the attention.
+> ➔ Right Join: Keeps everything from the right table. Rarely used, often forgotten.
+> ➔ Inner Join: Only keeps matching rows. Fair and balanced.
+> ➔ Full Outer Join: Keeps everything. Maximum data, maximum confusion.
+>
+> Most of us stick to Left Joins.
+>
+> Some brave souls use Full Outer Joins.
+>
+> But let’s be real, when was the last time you actually wrote a Right Join?
+
+I especially love the description of `FULL OUTER JOIN`: "Maximum data, maximum confusion." That pretty well sums it up. LIke I said above, they can be valuable in a few narrow use cases, mainly when you need to detect gaps in the data. But otherwise, you should expect to use `LEFT JOIN` and `INNER JOIN` the most throughout your career.
+
+![A LinkedIn post I saw one day that sums up these first four join types perfectly.](images\join_types.png)
+
 ## CROSS JOIN
 
 A `CROSS JOIN` produces the **Cartesian product** of two tables: every row from the left table is paired with every row from the right table. If the left table has M rows and the right table has N rows, the result has M × N rows. No join condition is specified.
@@ -494,6 +514,48 @@ FROM countries, indicators;
 With explicit syntax, omitting the `ON` clause is a syntax error that fails immediately rather than quietly returning millions of rows.
 
 **Outer joins require explicit syntax.** There is no comma-table equivalent of `LEFT JOIN` or `FULL OUTER JOIN`. Some databases offered proprietary workarounds (Oracle's `(+)` operator, for example), but they were not portable and are now deprecated. Any query that needs to preserve unmatched rows must use explicit syntax.
+
+## The Logical Order of Execution
+
+Earlier chapters introduced SQL's logical order of execution: the fixed sequence in which the database evaluates a query's clauses, no matter what order you write them in. Joins slot into the very first step of that sequence, alongside `FROM`.
+
+The full logical order, updated to include joins, is:
+
+1. `FROM` and `JOIN` ... `ON` (identify tables and combine them, one join at a time, in the order written)
+2. `WHERE` (filter rows)
+3. `GROUP BY` (form groups)
+4. Aggregate functions (compute summary values per group)
+5. `HAVING` (filter groups)
+6. `SELECT` (compute and choose columns)
+7. `ORDER BY` (sort the result)
+8. `LIMIT` (trim to the requested row count)
+
+![The SQL logical order of execution, including JOIN and ON.](images/sql-query-logical-order.png){fig-alt="Diagram showing the SQL logical order of execution as a pipeline: FROM, JOIN, ON, WHERE, GROUP BY, HAVING, ORDER BY, and LIMIT, each stage progressively filtering or combining a grid of rows" width="80%"}
+
+When a query joins more than one table, every `JOIN ... ON` pair still belongs to step 1, evaluated left to right in the order written. Each join builds on the combined result of the joins before it, which is why a later join's `ON` clause, or the query's `WHERE` clause, can freely reference a table that an earlier join introduced:
+
+```{sql}
+--| connection: con
+--| label: logical-order-sequential-join
+SELECT
+    c.short_name,
+    r.name AS region,
+    i.gdp_per_capita_usd
+FROM countries AS c
+INNER JOIN regions AS r
+    ON c.region_id = r.region_id
+INNER JOIN indicators AS i
+    ON i.country_id = c.id AND i.year = 2022
+WHERE r.name = 'Sub-Saharan Africa'
+ORDER BY i.gdp_per_capita_usd DESC NULLS LAST
+LIMIT 10;
+```
+
+The `WHERE` clause here references `r.name`, a column that came from a join earlier in the query. That works because both joins finish running, as part of step 1, before step 2 begins.
+
+This also explains why the `ON` vs. `WHERE` distinction from earlier in this chapter matters so much for outer joins. `ON` runs as part of step 1, while a join is still deciding which rows match and which get NULL-padded. `WHERE` does not run until step 2, by which point every unmatched row an outer join is going to produce already exists in the working result. Moving a condition from `ON` to `WHERE` does not just change *when* it runs, it changes *whether* the outer join's unmatched rows survive long enough to be filtered at all.
+
+Table aliases, unlike column aliases, are established in step 1, so they are visible in every clause that follows: `ON`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, and `ORDER BY` can all reference `c`, `r`, or `i` above. Column aliases defined in `SELECT` remain restricted to step 6 onward, exactly as earlier chapters described: usable in `ORDER BY`, but not in `WHERE`, `GROUP BY`, or `HAVING`.
 
 ## Exercises {.unnumbered}
 
