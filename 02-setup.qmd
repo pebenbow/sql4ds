@@ -42,10 +42,6 @@ Notice the difference from the client-server diagram above: everything is contai
 
 These diagrams are obviously simplified and high level. There's a lot more nuance in practice. But hopefully these give you a general understanding of the differences between these two modalities.
 
-Another example of embedded database usage I like to highlight? Turn-based video games! Sid Meier's Civilization (aka "Civ") is a personal favorite of mine. The Civ franchise is still going strong after 35+ years, and it had an enormous influence on the formation of the "4X" genre of strategy games (eXplore, eXpand, eXploit, and eXterminate). More recent entries in the Civ series have used an array of SQLite database files behind the scenes to store local game data, and modders are known to change these databases when developing mods. The screenshot below shows a tiny portion of the database that Civ V uses, which has 370 distinct tables in it!
-
-![Screenshot of a SQL query in DataGrip, showing a selection of data from Sid Meier's Civilization V](images/civ_v_database.png)
-
 The most popular embedded databases are [SQLite](https://sqlite.org){target="_blank"} and [DuckDB](https://duckdb.org){target="_blank"}. SQLite has been around since the late 1990s, and its portability has made it so ubiquitous that it's even used in the flight software for the Airbus A350 long-range airliner [@sqlite_famous]! Meanwhile, DuckDB is a relatively new embedded database that is optimized for large-scale analytical workloads, becoming increasingly popular with data science teams in particular.
 
 ::: callout-note
@@ -53,6 +49,16 @@ Later in this book, I'll talk about the difference between _transactional_ datab
 :::
 
 As you might have guessed, the fact that embedded databases like these are portable files that you can literally share via email, cloud sharing services, or GitHub makes them very accessible for users who want to learn SQL without needing to worry about the infrastructure that is needed to support a client-server model, namely a server and an internet connection.
+
+### Embedded databases in gaming
+
+Another example of embedded database usage I like to highlight? Turn-based video games! Sid Meier's Civilization (aka "Civ") is a personal favorite of mine. The Civ franchise is still going strong after 35+ years, and it had an enormous influence on the formation of the "4X" genre of strategy games (eXplore, eXpand, eXploit, and eXterminate).
+
+![Screenshot from Sid Meier's Civilization V](images/civ5_city_screen.jpg)
+
+More recent entries in the Civ series have used an array of SQLite database files behind the scenes to store local game data, and modders are known to change these databases when developing mods. The screenshot below shows a tiny portion of the SQLite database that Civ V uses, which has roughly 370 distinct tables, containing everything from unit stats to each civilization's characteristics. The `leaders` table, for example, has columns that are used to control each leader's diplomacy, loyalty, and military aggression. The `units` table, seen here, shows the different characteristics of military and non-military units in the game.
+
+![Screenshot of a SQL query in DataGrip, showing a selection of data from Sid Meier's Civilization V](images/civ_v_database.png)
 
 ### localhost databases
 
