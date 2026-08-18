@@ -92,6 +92,13 @@ dbml:
 
 bibliography: references.bib
 
+announcement:
+  icon: exclamation-circle-fill
+  dismissable: false
+  content: "This site is in DRAFT form -- course content is subject to change"
+  type: warning
+  position: below-navbar
+
 format:
   html:
     lightbox: true
