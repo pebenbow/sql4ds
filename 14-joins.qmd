@@ -338,6 +338,25 @@ LIMIT 20;
 
 Because `indicators.country_id` is enforced as a foreign key, every indicator row already has a matching country. The only unmatched rows come from the left side: the 38 aggregates in `countries` with no indicator data. The result is therefore the same as a left join with the year in the `ON` clause. Full outer joins show their full value when comparing two datasets that are not constrained to reference each other, such as two independent snapshots of the same data where either side could contain records the other does not.
 
+## Sidebar
+
+A few years ago, I stumbled on a LinkedIn post that I think does an amazing job of summing up these first four join types. I've included a screenshot below, but here's the abridged text:
+
+> ➔ Left Join: Keeps everything from the left table, even if there's no match. Gets all the attention.
+> ➔ Right Join: Keeps everything from the right table. Rarely used, often forgotten.
+> ➔ Inner Join: Only keeps matching rows. Fair and balanced.
+> ➔ Full Outer Join: Keeps everything. Maximum data, maximum confusion.
+>
+> Most of us stick to Left Joins.
+>
+> Some brave souls use Full Outer Joins.
+>
+> But let’s be real, when was the last time you actually wrote a Right Join?
+
+I especially love the description of `FULL OUTER JOIN`: "Maximum data, maximum confusion." That pretty well sums it up. LIke I said above, they can be valuable in a few narrow use cases, mainly when you need to detect gaps in the data. But otherwise, you should expect to use `LEFT JOIN` and `INNER JOIN` the most throughout your career.
+
+![A LinkedIn post I saw one day that sums up these first four join types perfectly.](images\join_types.png)
+
 ## CROSS JOIN
 
 A `CROSS JOIN` produces the **Cartesian product** of two tables: every row from the left table is paired with every row from the right table. If the left table has M rows and the right table has N rows, the result has M × N rows. No join condition is specified.
