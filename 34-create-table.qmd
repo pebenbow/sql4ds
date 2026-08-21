@@ -44,11 +44,47 @@ con <- dbConnect(Postgres(),
 dbExecute(con, "DROP TABLE IF EXISTS students CASCADE")
 ```
 
-## From Reading to Writing
+## The SQL Family
 
-Every query in this book so far has been a `SELECT` statement: reading data from tables that already exist. Creating and modifying tables is the domain of **Data Definition Language (DDL)**, a subset of SQL distinct from the `SELECT`, `INSERT`, `UPDATE`, and `DELETE` statements that make up Data Manipulation Language (DML).
+Every query in this book so far has been a `SELECT` statement: reading data from tables that already exist. But there are many more SQL commands for us to cover, and their capabilities range from the creative to the destructive. With these, you can bring databases to life and keep them secure, or you can utterly demolish them. Sounds like fun, right?
 
-This chapter introduces `CREATE TABLE`, the fundamental DDL statement, in the context of building a university database from scratch. By the end, you will know how to create a database, define a table with appropriate constraints, prevent duplicate or invalid data at the schema level, and modify a table's structure after the fact. A later chapter extends this foundation to multi-table schemas with foreign keys.
+This is where I begin to familiarize you with these other SQL commands and their capabilities so you can build databases from scratch and populate them. It's also where we begin to take your growing knowledge of normalization and apply it to the design of new database systems.
+
+For the purposes of this textbook, we will classify SQL commands under four categories or families:
+
+### Data Query Language (DQL)
+
+This category is used to retrieve data from the database. `SELECT` is the only kind of command we see in DQL. It is used with clauses like `FROM`, `WHERE`, `GROUP BY`, etc., to shape its output, but those are not separate commands.
+
+### Data Manipulation Language (DML)
+
+This category is used to modify the data that is stored in the database. If you're familiar with CRUD operations, think of this is CRUD without the "R" (`SELECT` is the "R"). `INSERT`, `UPDATE`, and `DELETE` are prominent examples of DML commands you'll use.
+
+Like `SELECT`, these commands can also be used with supporting clauses like `FROM` and `WHERE` to make sure you only manipulate the data you intend to manipulate.
+
+As you can imagine, these are potentially destructive commands that can overwrite or destroy your data. But fret not, because these commands are often used in conjunction with another group of SQL commands known as TCL (Transaction Control Language) to safely manage the data manipulation and ensure we can "undo" any accidents. We'll cover this in our upcoming chapter on DML statements.
+
+### Data Definition Language (DDL)
+
+These are the commands we use to create and modify database objects like tables. These have the capability to define and alter the very structure of your database itself through operations like `CREATE`, `ALTER`, `DROP`, and `TRUNCATE`. These are also potentially highly destructive commands in your database, so they should be employed with care.
+
+### Data Control Language (DCL)
+
+This final category of SQL commands is used to secure our database by controlling access and other privileges through commands like `GRANT` and `REVOKE`. It's not as sexy as the other categories, perhaps, but it's essential for robust database design.
+
+![A diagram showing the different categories of SQL commands](images/sql_commands.png)
+
+### Data-level operations vs. structural changes
+
+Broadly speaking, SQL commands can be subdivided into two main groups: commands that make structural changes to the database, and commands like operate on the data itself. You're probably noticing that DQL and DML are distinct from DDL and DCL in that they only perform operations against the data, whereas the other commands can physically alter the database schema. Notice also how DQL and DML commands share the same supporting clauses with DML commands, such as `FROM` and `WHERE`.
+
+For this reason, if you consult the ANSI/ISO definitions, you'll see that `SELECT` is traditionally classified as a DML command because it operates on the data itself rather than the structure of the database. In fact, you can actually use DML statements like `SELECT ... INTO` to take the results of a `SELECT` command and insert them directly into a table.
+
+That's probably confusing for SQL newcomers because I'm telling you that `SELECT` is both a DQL command *and* a DML command. But technically, it's true. The distinction between DQL and DML largely came about from a desire to pedagogically pedagogically separate **read-only** operations like `SELECT` from **write-intent** operations like `INSERT`, `UPDATE`, and `DELETE`, the commands that we use to mutate data.
+
+So, if you accept the broad view that `SELECT` belongs with its siblings whose only job is to perform operations agaisnt the data, then you can see why it qualifies as a DML command. But, if you want to get more precise, you can split it out into DQL to reflect the read-versus-write separation.
+
+This chapter and the ones following it will introduce you to DDL and DML commands in SQL by challenging you to create new databases, as well as add and modify data in them. In this chapter specifically, we'll focus on `CREATE TABLE`, the fundamental DDL statement, in the context of building a university database from scratch. By the end, you will know how to create a database, define a table with appropriate constraints, prevent duplicate or invalid data at the schema level, and modify a table's structure after the fact. A later chapter extends this foundation to multi-table schemas with foreign keys.
 
 ## Creating a Database
 
