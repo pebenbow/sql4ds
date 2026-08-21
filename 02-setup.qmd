@@ -50,7 +50,7 @@ Later in this book, I'll talk about the difference between _transactional_ datab
 
 As you might have guessed, the fact that embedded databases like these are portable files that you can literally share via email, cloud sharing services, or GitHub makes them very accessible for users who want to learn SQL without needing to worry about the infrastructure that is needed to support a client-server model, namely a server and an internet connection.
 
-### Embedded databases in gaming
+#### Embedded databases in gaming
 
 Another example of embedded database usage I like to highlight? Turn-based video games! Sid Meier's Civilization (aka "Civ") is a personal favorite of mine. The Civ franchise is still going strong after 35+ years, and it had an enormous influence on the formation of the "4X" genre of strategy games (eXplore, eXpand, eXploit, and eXterminate).
 
