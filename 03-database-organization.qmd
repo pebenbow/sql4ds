@@ -20,13 +20,13 @@ If you have used Excel or Google Sheets, you already have most of the intuition 
 
 This chapter introduces the vocabulary and structure behind that organization: tables, rows, columns, values, and how tables relate to one another. It does not yet cover how to write queries against a database (that starts in the next chapter) or how to design an efficient schema from scratch (that is the subject of an entire later section of this book). The goal here is simpler: build a clear mental picture of what a database actually contains, so that everything that follows has something solid to attach to.
 
-## Tables: The Basic Container
+## Tables
 
-A **table** is the database equivalent of a single sheet in a spreadsheet workbook. It is a named, two-dimensional grid that holds information about one kind of thing: `students`, `orders`, `movies`, `countries`. A database is not one giant table holding everything; it is a collection of many tables, each focused on a single subject.
+A **table** is sort of like the database equivalent of a single sheet in a spreadsheet workbook. It is a named, two-dimensional object that holds information about one kind of thing: `students`, `orders`, `movies`, `countries`. A database is not one giant table holding everything; it is a collection of many tables, each focused on a single subject.
 
 Naming a table well is worth taking seriously from the start. A table name should describe what each row represents, usually with a plural noun: `students` holds one row per student, `orders` holds one row per order. This convention shows up throughout the rest of this book, and in the vast majority of real-world schemas you will encounter.
 
-## Rows: One Record, One Entity
+## Rows
 
 A **row** (also called a *record*) is a single entry in a table: one student, one order, one movie. Every row in a table has the same set of columns, but each row supplies its own values for them.
 
@@ -40,13 +40,23 @@ Consider a `students` table:
 
 Each row describes exactly one student. This is the single most important discipline in organizing data: a row should represent one, and only one, real-world thing. A row that tries to describe two students at once, or half of one student and half of an order, breaks the model and makes the data far harder to work with.
 
-## Columns: One Attribute, Every Row
+## Columns
 
-A **column** (also called a *field* or *attribute*) represents one specific piece of information that every row in the table has, such as `first_name`, `major`, or `gpa`. Every value in a given column should be the same *kind* of thing. The `gpa` column always holds a grade point average, and nothing BUT the grade point average. It should contain a text comment like `"still finishing coursework"`.
+A **column** (also called a *field* or *attribute*) represents one specific piece of information that every row in the table has, such as `first_name`, `major`, or `gpa`. Every value in a given column should be the same *kind* of thing. The `gpa` column should always hold a numeric grade point average, and nothing BUT a numeric grade point average. It NEVER should contain a text comment like `"still finishing coursework"`.
 
-This is a habit worth building early, because spreadsheets do not enforce it and databases do. In a spreadsheet, nothing stops you from typing a stray note into a column that is otherwise full of numbers. A relational database can be configured to reject that note outright, once you tell it what kind of value a column is supposed to hold. (An upcoming chapter introduces the specific data types PostgreSQL uses to make that guarantee.)
+Fortunately, databases do a good job of enforcing this from the beginning by requiring you to specify each column's **data type** when you first build a given table. Every column must have a data type, without exception.
 
-## Values: The Cells of the Grid
+Now, lazy database designers can skirt around this rule by setting their columns to string data types like `TEXT` or `VARCHAR` (stands for "variable character"). In a situation like that, you absolutely can store other types of data like numbers and dates in those columns. But the problem is that the database won't treat that data as numeric or temporal. It will treat them as **text**, and this is bad. Storing non-text data in a text column ruins your ability to sort the data with SQL queries, it makes those values extremely difficult to aggregate for analysis, and it offers zero protection against the insertion of invalid data that can impede your analysis and break your downstream systems.
+
+![Screenshot from VS Code of a database table with a mixture of text, numeric, and logical data types specified](images/vscode_datatypes.png)
+
+Meanwhile, spreadsheets don't enforce data types unless you enact specific rules, like how you can use the Data Validation feature in Microsoft Excel. But I'm willing to bet most everyday users of Excel don't know about that feature, and are not willing to use it because of the additional planning and setup it requires. And I'm guilty of this, too! Sometimes it's just easier to hope that people are being careful about the data they're inputting.
+
+A well-designed database, however, does not trust its users to be error-free. It uses data types on its columns, and other forms of programmatic data validation, to **guarantee** that bad inputs from lazy humans won't poison the database. Because bad data isn't just messy and laborious to clean up: it's also potentially misleading.
+
+So, observing each column's data type is a habit worth building early. While there is very little in a typical spreadsheet that stops you from typing a stray note into a column that is otherwise full of numbers, a relational database can and should be configured to reject that note outright when you tell it what kind of value a column is supposed to hold. (An upcoming chapter introduces the specific data types PostgreSQL uses to make that guarantee.)
+
+## Values
 
 A **value** is the single piece of data sitting at the intersection of one row and one column, such as `"Alice"` or `3.8` in the table above. A value should be *atomic*: one fact, not several facts crammed together.
 
