@@ -70,6 +70,8 @@ Essentially, you are treating your laptop as if it is a server, and this is very
 
 However, this is still different from an embedded database like SQLite because a localhost database is not portable. You can't attach it to an email and send it to a friend, and it still requires the right software and resources to run a localhost installation. Embedded databases, by contrast, are fully decoupled from any kind of server.
 
+Localhost databases are also pretty much useful for only one thing: local development, done by a single individual. The only way for other people to use a localhost database you have deployed to your laptop is to put your laptop on the internet and allow external connections to it. Not a smart idea.
+
 ### The bottom line
 
 I deliberated for a long time on which adventure I wanted to choose for teaching this material. My professional history with Microsoft SQL Server biased me towards that platform at first, and it's a very common and reliable product for large organizations, but I chose against it because (A) it's not open source, (B) it's not compatible with Apple devices, and (C) it's more difficult to implement. I eventually chose PostgreSQL for its popularity and its cross-platform compatibility.
