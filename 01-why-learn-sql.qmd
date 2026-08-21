@@ -42,7 +42,7 @@ Plus, it's written in an accessible manner, using "plain English" syntax and dic
 
 ## The emergence of relational databases
 
-Prior to the 1970s, data management largely consisted of rigidly structured hierarchical data stores, often using sequential flat files or physically storage on magnetic tapes and punch cards. Data retrieval was slow and maintenance was a nightmare.
+Prior to the 1970s, data management largely consisted of rigidly structured hierarchical data stores, often using sequential flat files or physical storage on magnetic tapes and punch cards. Data retrieval was slow and maintenance was a nightmare.
 
 British computer scientist Edgar Codd stepped into this world in 1970 with his seminal paper, _A Relational Model of Data for Large Shared Data Banks_ ([link](https://www.engineering.upenn.edu/~zives/03f/cis550/codd.pdf)), which posited a new paradigm for database organization, the Relational Model. The Relational Model solved many of the problems that predecessor databases suffered from, so it quickly gained traction among researchers and businesses. Codd later won the Turing Award in 1981 for "his fundamental and continuing contributions to the theory and practice of database management systems." [@codd1981turing]
 
