@@ -463,7 +463,7 @@ A few practical notes on multi-table joins:
 
 **Each join adds columns, not necessarily rows.** A join to a parent table in a many-to-one relationship (indicators to countries) does not change the number of rows. A join to a child table in a one-to-many relationship (countries to indicators) multiplies rows. Understanding this keeps the result size predictable.
 
-**Order joins for readability.** SQL does not require joins in any particular sequence, but organizing them so that each new table connects to something already in the query makes the logic easier to follow.
+**Order joins for readability.** SQL doesn't require you to write joins in the same order their real-world relationships suggest, but each join's `ON` clause can only reference tables that already appear earlier in the query. If one join's condition depends on a column from a table you haven't joined yet, that table has to come first. Organizing joins so each new table connects to something already in the query keeps this constraint naturally satisfied and makes the logic easier to follow.
 
 ## Implicit vs. Explicit Join Syntax
 
