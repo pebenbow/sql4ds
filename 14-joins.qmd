@@ -173,8 +173,7 @@ SELECT
 FROM countries AS c
 INNER JOIN indicators AS i ON c.id = i.country_id
 WHERE i.year = 2022
-ORDER BY i.gdp_per_capita_usd DESC NULLS LAST
-LIMIT 10;
+ORDER BY i.gdp_per_capita_usd DESC NULLS LAST;
 ```
 
 This query pairs each country with its 2022 measurements. Because the join is inner, any country without a matching row in `indicators` is excluded from the result entirely. Notice that no aggregate entries (rows where `is_aggregate` is true, such as "Africa" or "High income") appear: most of them have no rows in `indicators` at all, so the inner join drops them without any warning. The next section shows how a left join makes those gaps visible.
@@ -200,11 +199,10 @@ SELECT
     i.population
 FROM countries AS c
 LEFT JOIN indicators AS i ON c.id = i.country_id
-ORDER BY c.short_name, i.year
-LIMIT 15;
+ORDER BY i.year NULLS FIRST, c.short_name;
 ```
 
-The first rows in this result belong to regional aggregates such as "Africa" and "Africa Eastern and Southern". They appear with NULL in both `year` and `population` because they have no rows in `indicators`. Further down, individual countries appear once per year of recorded data. The left join preserves every row from `countries`, whether or not a match exists on the right side.
+Sorting with `NULLS FIRST` puts every unmatched row at the top, which is the easiest way to see what a left join actually preserves. These first rows are entries in `countries` with no rows in `indicators` at all: mostly regional and income-group aggregates like "Africa" and "High income". They show NULL in both `year` and `population` because there is nothing to match on the right side, not because their real values happen to be missing. If you sorted by `c.short_name` alone instead, these unmatched entries would be scattered alphabetically among ordinary countries rather than grouped at the top, and every one of the first 15 rows would belong to an ordinary, fully-matched country like Afghanistan instead. The left join still preserves every row from `countries` either way; this sort just makes that preservation visible immediately.
 
 Left joins are extremely common in analytical queries because they let you start with a complete reference list (all countries) and attach available data without discarding entries that happen to have gaps.
 
@@ -228,8 +226,7 @@ SELECT
 FROM countries AS c
 INNER JOIN indicators AS i ON c.id = i.country_id
 WHERE i.year = 2022
-ORDER BY c.short_name
-LIMIT 5;
+ORDER BY c.short_name;
 ```
 
 ```{sql}
@@ -242,8 +239,7 @@ SELECT
 FROM countries AS c
 INNER JOIN indicators AS i
     ON c.id = i.country_id AND i.year = 2022
-ORDER BY c.short_name
-LIMIT 5;
+ORDER BY c.short_name;
 ```
 
 **With LEFT JOIN (and other outer joins), the placement is critical.** Suppose you want every country alongside its 2022 GDP figure, with NULL for countries that have no 2022 data. This query does not accomplish that goal:
@@ -258,8 +254,7 @@ SELECT
 FROM countries AS c
 LEFT JOIN indicators AS i ON c.id = i.country_id
 WHERE i.year = 2022
-ORDER BY c.short_name
-LIMIT 10;
+ORDER BY c.short_name;
 ```
 
 The left join runs first and correctly produces 16,742 rows: 16,704 matched rows plus 38 NULL-padded rows for the regional aggregates. Then `WHERE i.year = 2022` runs on that result and discards every row where `i.year` is NULL, which are exactly the 38 unmatched rows. The left join's promise of "all left rows" is silently undone, and the result is identical to an inner join.
@@ -277,8 +272,7 @@ FROM countries AS c
 LEFT JOIN indicators AS i
     ON c.id = i.country_id
     AND i.year = 2022
-ORDER BY c.short_name
-LIMIT 15;
+ORDER BY c.short_name;
 ```
 
 Now the database evaluates `i.year = 2022` during the join. For each country row, it looks for a matching indicator row where both `country_id` matches and `year` equals 2022. If no such row exists, the country still appears in the result, with NULLs on the right side. All 299 rows from `countries` come through.
@@ -300,8 +294,7 @@ SELECT
     i.population
 FROM countries AS c
 RIGHT JOIN indicators AS i ON c.id = i.country_id
-ORDER BY c.short_name, i.year
-LIMIT 10;
+ORDER BY c.short_name, i.year;
 ```
 
 This returns every row from `indicators`, with the country name attached from the left table. Because `indicators.country_id` is enforced as a foreign key, every indicator row already has a valid matching country, so no NULLs appear on the left side here.
@@ -332,8 +325,7 @@ FROM countries AS c
 FULL OUTER JOIN indicators AS i
     ON c.id = i.country_id
     AND i.year = 2022
-ORDER BY c.short_name
-LIMIT 20;
+ORDER BY c.short_name;
 ```
 
 Because `indicators.country_id` is enforced as a foreign key, every indicator row already has a matching country. The only unmatched rows come from the left side: the 38 aggregates in `countries` with no indicator data. The result is therefore the same as a left join with the year in the `ON` clause. Full outer joins show their full value when comparing two datasets that are not constrained to reference each other, such as two independent snapshots of the same data where either side could contain records the other does not.
@@ -376,8 +368,7 @@ SELECT
     s.indicator_name
 FROM countries AS c
 CROSS JOIN series AS s
-ORDER BY c.short_name, s.indicator_name
-LIMIT 15;
+ORDER BY c.short_name, s.indicator_name;
 ```
 
 With 299 countries and 9 indicator types, this produces 2,691 rows. Cross joins grow very quickly.
@@ -459,8 +450,7 @@ INNER JOIN indicators AS i2000
 INNER JOIN indicators AS i2022
     ON c.id = i2022.country_id AND i2022.year = 2022
 WHERE NOT c.is_aggregate
-ORDER BY c.short_name
-LIMIT 10;
+ORDER BY c.short_name;
 ```
 
 Each instance of the `indicators` table gets its own alias (`i2000` and `i2022`) so the query can reference columns from each independently. The year condition is placed inside the `ON` clause for each join so it participates in the matching logic rather than filtering the result after the fact. The `WHERE NOT c.is_aggregate` filter is still needed even with the `regions` join in place: some aggregate entries do have indicator data for both years, so only the join to `regions` would not exclude them on its own.
@@ -495,8 +485,7 @@ SELECT
 FROM countries c, indicators i
 WHERE c.id = i.country_id
   AND i.year = 2022
-ORDER BY i.gdp_per_capita_usd DESC NULLS LAST
-LIMIT 10;
+ORDER BY i.gdp_per_capita_usd DESC NULLS LAST;
 ```
 
 The result is identical to the explicit `INNER JOIN` from earlier in this chapter. Implicit joins still execute in every major SQL database and appear frequently in legacy code, older textbooks, and online examples, so you will encounter them.
@@ -552,8 +541,7 @@ INNER JOIN regions AS r
 INNER JOIN indicators AS i
     ON i.country_id = c.id AND i.year = 2022
 WHERE r.name = 'Sub-Saharan Africa'
-ORDER BY i.gdp_per_capita_usd DESC NULLS LAST
-LIMIT 10;
+ORDER BY i.gdp_per_capita_usd DESC NULLS LAST;
 ```
 
 The `WHERE` clause here references `r.name`, a column that came from a join earlier in the query. That works because both joins finish running, as part of step 1, before step 2 begins.
