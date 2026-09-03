@@ -200,11 +200,11 @@ SELECT
     i.population
 FROM countries AS c
 LEFT JOIN indicators AS i ON c.id = i.country_id
-ORDER BY c.short_name, i.year
+ORDER BY i.year NULLS FIRST, c.short_name
 LIMIT 15;
 ```
 
-The first rows in this result belong to regional aggregates such as "Africa" and "Africa Eastern and Southern". They appear with NULL in both `year` and `population` because they have no rows in `indicators`. Further down, individual countries appear once per year of recorded data. The left join preserves every row from `countries`, whether or not a match exists on the right side.
+Sorting with `NULLS FIRST` puts every unmatched row at the top, which is the easiest way to see what a left join actually preserves. These first rows are entries in `countries` with no rows in `indicators` at all: mostly regional and income-group aggregates like "Africa" and "High income". They show NULL in both `year` and `population` because there is nothing to match on the right side, not because their real values happen to be missing. If you sorted by `c.short_name` alone instead, these unmatched entries would be scattered alphabetically among ordinary countries rather than grouped at the top, and every one of the first 15 rows would belong to an ordinary, fully-matched country like Afghanistan instead. The left join still preserves every row from `countries` either way; this sort just makes that preservation visible immediately.
 
 Left joins are extremely common in analytical queries because they let you start with a complete reference list (all countries) and attach available data without discarding entries that happen to have gaps.
 
