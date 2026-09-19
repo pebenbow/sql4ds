@@ -57,7 +57,7 @@ This lab uses the `university` database and a simplified version of the `student
 DROP TABLE IF EXISTS students_lab;
 
 CREATE TABLE students_lab (
-    student_id  SERIAL       PRIMARY KEY,
+    student_id  INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
     first_name  TEXT         NOT NULL,
     last_name   TEXT         NOT NULL,
     email       TEXT         NOT NULL UNIQUE,

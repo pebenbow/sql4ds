@@ -67,7 +67,7 @@ To create a table, write a `CREATE TABLE` statement and run it:
 
 ```sql
 CREATE TABLE students (
-    id          SERIAL PRIMARY KEY,
+    id          INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     last_name   TEXT NOT NULL,
     first_name  TEXT NOT NULL,
     enrolled_on DATE DEFAULT CURRENT_DATE

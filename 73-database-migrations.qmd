@@ -34,7 +34,7 @@ A migration that creates a new table:
 
 ```sql
 CREATE TABLE orders (
-    id          SERIAL PRIMARY KEY,
+    id          INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     customer_id INTEGER NOT NULL REFERENCES customers(id),
     placed_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
     total_usd   NUMERIC(12, 2) NOT NULL CHECK (total_usd >= 0)
