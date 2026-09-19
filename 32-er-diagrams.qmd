@@ -44,7 +44,7 @@ The constraint annotations inside `[...]` map directly to SQL:
 | Annotation | Meaning |
 |------------|---------|
 | `pk` | Primary key |
-| `increment` | Auto-incrementing surrogate (`SERIAL` in PostgreSQL) |
+| `increment` | Auto-incrementing surrogate (`GENERATED ALWAYS AS IDENTITY` in PostgreSQL) |
 | `not null` | Column cannot be NULL |
 | `unique` | Values must be distinct across all rows |
 | `default: value` | Default value when none is supplied |

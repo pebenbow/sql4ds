@@ -143,7 +143,7 @@ Each column is defined by its name, its data type (covered in the data types cha
 
 ```sql
 CREATE TABLE students (
-    student_id   SERIAL  PRIMARY KEY,
+    student_id   INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
     first_name   TEXT    NOT NULL,
     last_name    TEXT    NOT NULL
 );
@@ -157,7 +157,7 @@ A `DEFAULT` value is substituted automatically when an `INSERT` statement omits 
 
 ```sql
 CREATE TABLE students (
-    student_id      SERIAL   PRIMARY KEY,
+    student_id      INTEGER  GENERATED ALWAYS AS IDENTITY   PRIMARY KEY,
     first_name      TEXT     NOT NULL,
     last_name       TEXT     NOT NULL,
     enrolled_on     DATE     NOT NULL DEFAULT CURRENT_DATE,
@@ -173,7 +173,7 @@ If a new row is inserted without specifying `enrolled_on`, the database records 
 
 ```sql
 CREATE TABLE students (
-    student_id   SERIAL  PRIMARY KEY,
+    student_id   INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
     first_name   TEXT    NOT NULL,
     last_name    TEXT    NOT NULL,
     email        TEXT    NOT NULL UNIQUE,
@@ -194,7 +194,7 @@ A `CHECK` constraint specifies a boolean condition that every row must satisfy. 
 
 ```sql
 CREATE TABLE students (
-    student_id   SERIAL        PRIMARY KEY,
+    student_id   INTEGER  GENERATED ALWAYS AS IDENTITY        PRIMARY KEY,
     first_name   TEXT          NOT NULL,
     last_name    TEXT          NOT NULL,
     email        TEXT          NOT NULL UNIQUE,
@@ -216,21 +216,21 @@ The simplest form declares `PRIMARY KEY` inline with the column definition:
 
 ```sql
 CREATE TABLE students (
-    student_id  SERIAL  PRIMARY KEY,
+    student_id  INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
     ...
 );
 ```
 
-`PRIMARY KEY` implies both `NOT NULL` and `UNIQUE`, so neither needs to be written separately. `SERIAL` is a PostgreSQL convenience type that creates an auto-incrementing integer column backed by a sequence: each new row automatically receives the next integer if no value is supplied. This is the standard way to create a surrogate primary key.
+`PRIMARY KEY` implies both `NOT NULL` and `UNIQUE`, so neither needs to be written separately. `GENERATED ALWAYS AS IDENTITY` tells PostgreSQL to generate the column's value automatically, backed by a sequence: each new row receives the next integer if no value is supplied. This is the SQL standard way to create a surrogate primary key, supported in PostgreSQL 10 and later, and is what we'll use throughout this book.
 
 ::: {.callout-note}
-`SERIAL` is PostgreSQL-specific. The SQL standard equivalent, supported in PostgreSQL 10 and later, is:
+You will also encounter `SERIAL` in older PostgreSQL code and documentation:
 
 ```sql
-student_id  INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY
+student_id  SERIAL  PRIMARY KEY
 ```
 
-Both accomplish the same thing. `SERIAL` is still common in documentation and existing codebases.
+This is a PostgreSQL-specific convenience type that predates `GENERATED ALWAYS AS IDENTITY` and accomplishes the same thing. It still works, but `GENERATED ALWAYS AS IDENTITY` is the modern, standard-SQL form and the one you should reach for in new code.
 :::
 
 ### Composite Primary Keys
@@ -256,7 +256,7 @@ Here is the complete `students` table definition, bringing all the constraints a
 --| connection: con
 --| output: false
 CREATE TABLE students (
-    student_id   SERIAL        PRIMARY KEY,
+    student_id   INTEGER  GENERATED ALWAYS AS IDENTITY        PRIMARY KEY,
     first_name   TEXT          NOT NULL,
     last_name    TEXT          NOT NULL,
     email        TEXT          NOT NULL UNIQUE,
@@ -292,7 +292,7 @@ Running `CREATE TABLE` against a table that already exists produces an error. Th
 
 ```sql
 CREATE TABLE IF NOT EXISTS students (
-    student_id   SERIAL        PRIMARY KEY,
+    student_id   INTEGER  GENERATED ALWAYS AS IDENTITY        PRIMARY KEY,
     first_name   TEXT          NOT NULL,
     last_name    TEXT          NOT NULL,
     email        TEXT          NOT NULL UNIQUE,

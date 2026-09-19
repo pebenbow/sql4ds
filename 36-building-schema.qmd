@@ -95,7 +95,7 @@ Turning this into a schema means identifying the entities (`students`, `courses`
 --| connection: con
 --| output: false
 CREATE TABLE registrar.students (
-    student_id   SERIAL        PRIMARY KEY,
+    student_id   INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
     first_name   TEXT          NOT NULL,
     last_name    TEXT          NOT NULL,
     email        TEXT          NOT NULL UNIQUE,
@@ -192,7 +192,7 @@ Not every schema that runs without errors is a good schema. Consider a version o
 
 ```sql
 CREATE TABLE bad_enrollments (
-    id            SERIAL PRIMARY KEY,
+    id            INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
     student_name  TEXT,
     course_title  TEXT,
     semester      TEXT,
