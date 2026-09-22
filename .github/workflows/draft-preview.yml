@@ -71,8 +71,8 @@ jobs:
           python-version: "3.12"
 
       # Packages imported by the book's executable {python} chunks
-      # (26-python-database, 62-transforming-with-polars,
-      # 63-loading-with-sqlalchemy, 64-etl-pipeline), plus jupyter so
+      # (python-database, transforming-with-polars,
+      # loading-with-sqlalchemy, etl-pipeline), plus jupyter so
       # Quarto's Python engine has a kernel to execute against.
       - name: Install Python packages
         run: |

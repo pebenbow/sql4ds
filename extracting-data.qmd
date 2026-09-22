@@ -24,7 +24,7 @@ The example files used throughout this chapter live in the `data/` directory of 
 
 ## pandas vs. Polars
 
-Two DataFrame libraries dominate the Python data ecosystem: **pandas** and **Polars**. Chapter 26 introduced both side by side for querying a database, with pandas as the long-standing standard and Polars for its speed and expressive API. From here through the rest of the ETL section, this book uses Polars exclusively, and it is worth explaining why.
+Two DataFrame libraries dominate the Python data ecosystem: **pandas** and **Polars**. [*Connecting Python to a Database*](python-database.qmd) introduced both side by side for querying a database, with pandas as the long-standing standard and Polars for its speed and expressive API. From here through the rest of the ETL section, this book uses Polars exclusively, and it is worth explaining why.
 
 **pandas** has been the standard since 2008, and that maturity is still its biggest strength. Its API is deeply embedded in the Python data ecosystem: most plotting libraries, machine learning frameworks, and existing tutorials assume a pandas DataFrame as the default input. If you need to hand data off to `scikit-learn`, `seaborn`, or a colleague's existing pipeline, pandas remains the safest common currency, which is exactly why it appeared alongside Polars in the previous chapter.
 

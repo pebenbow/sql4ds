@@ -346,7 +346,7 @@ print(indicators_clean.head(5))
 
 We drop `short_name`, `region`, and `income_group` from the indicators DataFrame because those fields belong to the `countries` table. Storing them in both tables would violate the normalization principles from the database design section of this book. When we need those fields for a query, we will join the two tables.
 
-Save both to Parquet so Chapter 33 can load them without re-running the transformation:
+Save both to Parquet so [*Loading Data into PostgreSQL with SQLAlchemy*](loading-with-sqlalchemy.qmd) can load them without re-running the transformation:
 
 ```{python}
 #| label: save-clean

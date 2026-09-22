@@ -71,7 +71,7 @@ dbExecute(con, "
 
 The previous chapter built the `students` table in the `university` database and populated it with a handful of rows just to confirm the table worked. This chapter treats those `INSERT` statements as a subject in their own right, along with `UPDATE`, `DELETE`, and the transaction commands that keep a batch of them safe. Together with `SELECT`, these four statements are **Data Manipulation Language (DML)**: the part of SQL concerned with the *contents* of a table rather than its *structure*.
 
-The `students` table already exists with four rows, exactly as chapter 34 left it. Confirm that before continuing:
+The `students` table already exists with four rows, exactly as [*Creating Tables*](create-table.qmd) left it. Confirm that before continuing:
 
 ```{sql}
 --| connection: con
