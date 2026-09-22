@@ -12,8 +12,6 @@ By the end of this chapter, students will be able to:
 - **Evaluate** whether a table satisfies Second Normal Form (2NF) and decompose a violating table by removing partial dependencies.
 - **Evaluate** whether a table satisfies Third Normal Form (3NF) and decompose a violating table by removing transitive dependencies.
 - **Apply** normalization to transform a flat, denormalized dataset into a properly structured relational schema.
-- **Distinguish** between normalized and denormalized schemas and articulate the trade-offs relevant to transactional versus analytical workloads.
-- **Justify** a deliberate denormalization decision given specific performance or simplicity requirements.
 
 ## Why Normalization Matters
 
