@@ -43,14 +43,53 @@ This table has several structural problems, each addressed by a different normal
 
 ## Functional Dependencies
 
-Before defining the normal forms, it helps to understand what a *functional dependency* is. Column B is functionally dependent on column A if knowing the value of A always determines the value of B.
+Before defining the normal forms, it helps to understand what a *functional dependency* is, since every normal form in this chapter is defined in terms of it.
 
-For example, in the orders table above:
+### Definition
 
-- `order_date` is functionally dependent on `order_id`: each order has exactly one date, so knowing the order ID tells you the date.
-- `customer` is functionally dependent on `email`: assuming each email address belongs to one person, knowing the email address tells you the customer name.
+Column B is functionally dependent on column A if, for any two rows that agree on A, they must also agree on B. Equivalently: knowing the value of A always determines a single, unambiguous value of B. This is written:
 
-Functional dependencies describe what a column is "about." They are the mechanism through which the normal forms identify and eliminate redundancy.
+$$A \rightarrow B$$
+
+read as "A determines B," or "B is functionally dependent on A." A and B do not need to be single columns. A *set* of columns can appear on either side of the arrow, which is exactly what happens with composite keys:
+
+$$\{A_1, A_2\} \rightarrow B$$
+
+means that the combination of $A_1$ and $A_2$ together determines B, even if neither column determines B on its own.
+
+It helps to think of a functional dependency as a promise about the data, not a description of a formula. $A \rightarrow B$ does not mean B is computed from A. It means that whenever two rows share the same A value, the database guarantees they share the same B value too. If you can find (or imagine) two rows with the same A value but different B values, the dependency does not hold.
+
+### Examples from the Orders Table
+
+In the orders table introduced above:
+
+- `order_id` $\rightarrow$ `order_date`: each order has exactly one date, so knowing the order ID tells you the date. Two rows with the same `order_id` can never have different `order_date` values.
+- `email` $\rightarrow$ `customer`: assuming each email address belongs to one person, knowing the email address tells you the customer name.
+- `order_id` $\rightarrow$ `email`: each order was placed by one customer, so the order ID determines which email address is associated with it.
+
+Once the table is decomposed into `order_id` and `product` as a composite key (the 1NF version from the next section), a new dependency appears:
+
+$$\{order\_id, product\} \rightarrow quantity$$
+
+Neither `order_id` alone nor `product` alone determines `quantity`. The order ID alone is not enough, since a single order contains multiple products, each with its own quantity. The product alone is not enough either, since the same product (say, "Keyboard") can appear on different orders with different quantities. Only the *combination* of the two determines the quantity. This is an example of a **full functional dependency**, one where a non-key column depends on the entire key and not just part of it. Full functional dependency is exactly what 2NF requires, and its absence (a *partial* dependency) is what 2NF forbids.
+
+### Dependencies That Do Not Hold
+
+It is just as important to recognize when a functional dependency does *not* hold. In the orders table:
+
+- `product` does **not** determine `quantity`: two different rows can have `product = 'Keyboard'` with different quantities (order 2 has 1, order 3 has 1, but there is nothing stopping a future order from having `product = 'Keyboard', quantity = 5`).
+- `customer` does **not** determine `order_date`: Alice Smith has placed orders on both 2024-01-15 and 2024-01-20. The same customer value appears with two different dates, so `customer` $\rightarrow$ `order_date` fails.
+
+A useful test: to check whether $A \rightarrow B$ holds, look for (or imagine) two rows that share the same A value. If every such pair also shares the same B value, the dependency holds. If you can find even one counterexample, it does not.
+
+### Trivial and Transitive Dependencies
+
+Two special cases of functional dependency notation are worth naming, because they reappear later in the chapter:
+
+- A dependency is **trivial** if the right-hand side is a subset of the left-hand side, such as $\{order\_id, product\} \rightarrow order\_id$. This is always true by definition and carries no useful information; normal forms are concerned only with *non-trivial* dependencies.
+- A dependency is **transitive** if $A \rightarrow B$ and $B \rightarrow C$ together imply $A \rightarrow C$, where B is not part of a key. For example, `order_id` $\rightarrow$ `email` and `email` $\rightarrow$ `customer` together imply `order_id` $\rightarrow$ `customer`, but only *through* `email`. This chain, $A \rightarrow B \rightarrow C$, is precisely what 3NF forbids, and it resurfaces in the 3NF section below.
+
+Functional dependencies describe what a column is "about": which other column, or combination of columns, uniquely determines it. They are the mechanism through which the normal forms identify and eliminate redundancy. Every violation discussed in the rest of this chapter is a violation because of a functional dependency you can name explicitly using this notation.
 
 ## First Normal Form (1NF)
 
@@ -67,7 +106,14 @@ The `products` and `quantities` columns each contain comma-separated lists:
 | 1        | Laptop, Mouse     | 1, 2       |
 | 3        | Monitor, Keyboard | 1, 1       |
 
-This design creates immediate practical problems. Suppose you want to find all orders that included a Keyboard. You cannot filter with `WHERE products = 'Keyboard'`; you would need to search inside the string, which is fragile and slow. Suppose you want to count total items ordered. You cannot aggregate the `quantities` column directly. The database cannot enforce referential integrity on individual products embedded in a list. And if a single order ever contains more products than you anticipated, the structure breaks down.
+This design creates immediate practical problems. Suppose you want to find all orders that included a Keyboard. You cannot filter with `WHERE products = 'Keyboard'`; you would need to search inside the string, which is fragile and slow. Suppose you want to count total items ordered. You cannot aggregate the `quantities` column directly.
+
+Furthermore, the database cannot enforce referential integrity on individual products embedded in a list. This is big reason why many-to-many relationships need to be effectuated via bridge/junction tables. Trying to join tables like what you see below would be an absolute nightmare. Assuming we have a `students` table that is one row per student, how are we expected to join it to our `courses` table?
+
+| course_id | student_id         |
+|-----------|--------------------|
+| 1         | 1, 2, 5, 7, 8      |
+| 3         | 1, 2, 3, 9, 10, 11 |
 
 ::: {.callout-note}
 A related 1NF violation is the use of *repeating column groups*: rather than a list in one column, you create multiple columns for the same concept (`product_1`, `product_2`, `product_3`, ...). This shares the same problems: you impose an arbitrary limit on how many values are allowed, most rows will have empty columns, and queries become awkward. Atomic values solve both forms of the problem.
@@ -103,8 +149,8 @@ Recall from the previous chapter that a composite primary key is a primary key m
 
 In the 1NF table, the primary key is `(order_id, product)`. Consider each non-key column:
 
-- `quantity` depends on both `order_id` and `product`: the quantity of a given product on a given order requires knowing both values. This is a full dependency.
-- `customer`, `email`, and `order_date` depend only on `order_id`: knowing the order ID alone is sufficient to determine the customer, email, and date, regardless of which product the row is about. These are partial dependencies.
+- $\{order\_id, product\} \rightarrow quantity$: the quantity of a given product on a given order requires knowing both values. This is a full dependency.
+- `order_id` $\rightarrow$ `customer`, `order_id` $\rightarrow$ `email`, and `order_id` $\rightarrow$ `order_date`: knowing the order ID alone is sufficient to determine the customer, email, and date, regardless of which product the row is about. Because each of these depends on only *part* of the composite key `{order_id, product}`, these are partial dependencies.
 
 Because customer and order information is stored once per order line rather than once per order, the table violates 2NF.
 
@@ -130,6 +176,12 @@ Remove the partial dependencies by splitting the table. Columns that depend on t
 | 3        | Monitor  | 1        |
 | 3        | Keyboard | 1        |
 
+We can visualize this as an ER diagram:
+
+<div class="embed-container">
+<iframe src="https://dbdiagram.io/e/6ab2c343586942561263441f/6ab2c359586942561263459f"></iframe>
+</div>
+
 The `orders` table has `order_id` as its primary key. The `order_items` table has `(order_id, product)` as its composite primary key, and `order_id` serves as a foreign key back to `orders`. To assemble a complete picture of an order, you join these two tables. This is precisely the connection between normalization and the join operations covered in the previous chapter: a well-normalized database is inherently a database of related tables, and joins are the tool for querying across them.
 
 The redundancy *within* each order is now gone. In the 1NF version, Alice's email appeared once per order line: twice for order 1 (Laptop and Mouse) and twice for order 3 (Monitor and Keyboard). After applying 2NF, it appears once per order, regardless of how many items that order contains. If order 1 had ten products, the previous schema would have stored her email ten times across those ten rows; the 2NF schema stores it once, in the single `orders` row for order 1.
@@ -150,10 +202,14 @@ The informal summary often quoted is: every non-key column must depend on **the 
 
 In the `orders` table, consider the relationship between `email` and `customer`:
 
-- `order_id` determines `email`: each order is placed by one customer, who has one email address.
-- `email` determines `customer`: each email address belongs to exactly one person with one name.
+- `order_id` $\rightarrow$ `email`: each order is placed by one customer, who has one email address.
+- `email` $\rightarrow$ `customer`: each email address belongs to exactly one person with one name.
 
-Therefore, `customer` is transitively dependent on `order_id` through `email`: `order_id → email → customer`. The customer name does not depend directly on the order ID; it depends on the email address, which depends on the order ID. This is the source of the remaining redundancy. Alice's name is stored once per order rather than once per customer.
+Therefore, `customer` is transitively dependent on `order_id` through `email`:
+
+$$order\_id \rightarrow email \rightarrow customer$$
+
+The customer name does not depend directly on the order ID; it depends on the email address, which depends on the order ID. This is the source of the remaining redundancy. Alice's name is stored once per order rather than once per customer.
 
 ### The Fix
 
@@ -184,6 +240,12 @@ Move the transitively dependent columns to their own table. The non-key column t
 | 3        | Monitor  | 1        |
 | 3        | Keyboard | 1        |
 
+Let's take a look at the ER diagram:
+
+<div class="embed-container">
+<iframe src="https://dbdiagram.io/e/6ab2c4700f25a52d01d7ad2c/6ab2c48c5869425612635465"></iframe>
+</div>
+
 The schema now consists of three tables, each representing exactly one concept. All three anomalies are resolved:
 
 - **Update anomaly eliminated**: Alice's name and email appear exactly once, in `customers`. One update is sufficient.
@@ -209,6 +271,18 @@ In practice, 3NF is the appropriate target for most transactional databases. Vio
 There are also situations where *denormalization* (deliberately reintroducing redundancy) is appropriate. Data warehouses and analytical systems sometimes store pre-computed aggregates or flattened "wide" tables to support fast reporting queries. When you denormalize, you are making a deliberate trade: faster reads at the cost of more complex write logic and more disciplined maintenance. That trade is reasonable in specific contexts. The key is to make it deliberately, with a clear understanding of what you are giving up and why.
 
 The next chapter translates these design decisions into working SQL. You will implement the normalized orders schema from this chapter as `CREATE TABLE` statements in a PostgreSQL database running on your local Docker container, adding primary keys, foreign keys, and constraints that enforce the rules discussed here at the database level.
+
+## Videos
+
+Here are a couple of good videos I recommend that walk you through the normal forms.
+
+<div class="video-container">
+<iframe src="https://www.youtube.com/embed/GFQaEYEc8_8?si=2QVIY94SXSYyhNqF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+<div class="video-container">
+<iframe src="https://www.youtube.com/embed/wY1qqBFnKhk?si=GK0vqcV7SFUOESFx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Exercises {.unnumbered}
 

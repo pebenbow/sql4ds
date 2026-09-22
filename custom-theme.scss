@@ -6,3 +6,18 @@
 // processed before Bootstrap's own !default assignment, setting it here
 // takes effect instead of being silently dropped.
 $grid-sidebar-width: 420px !default;
+
+
+.video-container,
+.embed-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.video-container iframe,
+.embed-container iframe {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
