@@ -46,8 +46,8 @@ book:
 
     - part: design.qmd
       chapters:
-        - create-table.qmd
         - keys-and-integrity.qmd
+        - create-table.qmd
         - er-diagrams.qmd
         - normal-forms.qmd
         - data-manipulation.qmd
