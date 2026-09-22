@@ -141,7 +141,7 @@ with engine.connect() as conn:
 
 ## Loading the Clean DataFrames
 
-Load the files produced at the end of Chapter 32:
+Load the files produced at the end of [*Transforming Data with Polars*](transforming-with-polars.qmd):
 
 ```{python}
 #| label: load-clean

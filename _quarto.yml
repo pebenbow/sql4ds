@@ -22,59 +22,59 @@ book:
   chapters:
     - index.qmd
 
-    - part: 00-intro.qmd
+    - part: intro.qmd
       chapters:
-        - 01-why-learn-sql.qmd
-        - 02-setup.qmd
-        - 03-database-organization.qmd
+        - why-learn-sql.qmd
+        - setup.qmd
+        - database-organization.qmd
 
-    - part: 10-query.qmd
+    - part: query.qmd
       chapters:
-        - 11-select-statements.qmd
-        - 12-data-types.qmd
-        - 13-aggregating.qmd
-        - 14-joins.qmd
-        - 15-set-operations.qmd
+        - select-statements.qmd
+        - data-types.qmd
+        - aggregating.qmd
+        - joins.qmd
+        - set-operations.qmd
 
-    - part: 20-analyze.qmd
+    - part: analyze.qmd
       chapters:
-        - 21-conditional.qmd
-        - 22-subqueries.qmd
-        - 23-window-functions.qmd
-        - 25-r-database.qmd
-        - 26-python-database.qmd
+        - conditional.qmd
+        - subqueries.qmd
+        - window-functions.qmd
+        - r-database.qmd
+        - python-database.qmd
 
-    - part: 30-design.qmd
+    - part: design.qmd
       chapters:
-        - 31-keys-and-integrity.qmd
-        - 32-er-diagrams.qmd
-        - 33-normal-forms.qmd
-        - 34-create-table.qmd
-        - 35-data-manipulation.qmd
-        - 36-building-schema.qmd
-        - 37-views.qmd
-        - 38-programmability.qmd
-        - 39-security.qmd
-        - 40-indexes.qmd
+        - create-table.qmd
+        - keys-and-integrity.qmd
+        - er-diagrams.qmd
+        - normal-forms.qmd
+        - data-manipulation.qmd
+        - building-schema.qmd
+        - views.qmd
+        - programmability.qmd
+        - security.qmd
+        - indexes.qmd
 
-    - part: 60-load.qmd
+    - part: load.qmd
       chapters:
-        - 61-extracting-data.qmd
-        - 62-transforming-with-polars.qmd
-        - 63-loading-with-sqlalchemy.qmd
-        - 64-etl-pipeline.qmd
+        - extracting-data.qmd
+        - transforming-with-polars.qmd
+        - loading-with-sqlalchemy.qmd
+        - etl-pipeline.qmd
 
-    - part: 70-deploy.qmd
+    - part: deploy.qmd
       chapters:
-        - 71-supabase-setup.qmd
-        - 72-supabase-vscode.qmd
-        - 73-database-migrations.qmd
+        - supabase-setup.qmd
+        - supabase-vscode.qmd
+        - database-migrations.qmd
 
-    - part: 80-labs.qmd
+    - part: labs.qmd
       chapters:
-        - 85-sqli.qmd
+        - sqli.qmd
 
-    - 99-references.qmd
+    - references.qmd
 
 filters:
   - quarto-dbml
