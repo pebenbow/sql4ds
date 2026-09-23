@@ -120,10 +120,16 @@ A temporary table's rows, like the table itself, last for the whole session by d
 
 ```{sql}
 --| connection: con
---| label: temp-cleanup
+--| label: temp-cleanup-carrier
 --| output: false
-DROP TABLE carrier_avg_delay;
-DROP TABLE flagged_flights;
+DROP TABLE carrier_avg_delay
+```
+
+```{sql}
+--| connection: con
+--| label: temp-cleanup-flagged
+--| output: false
+DROP TABLE flagged_flights
 ```
 
 ## Choosing a Tool for Intermediate Results

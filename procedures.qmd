@@ -129,9 +129,14 @@ CALL registrar.enroll_student(1, 'CS101', 'Fall 2024')
 
 ```{sql}
 --| connection: con
---| label: check-procedure
-SELECT * FROM registrar.enrollments;
-SELECT course_code, enrolled, capacity FROM registrar.courses;
+--| label: check-procedure-enrollments
+SELECT * FROM registrar.enrollments
+```
+
+```{sql}
+--| connection: con
+--| label: check-procedure-courses
+SELECT course_code, enrolled, capacity FROM registrar.courses
 ```
 
 Both statements inside the procedure ran as part of the transaction already in progress when `CALL` was issued, the same as if they had been written out directly; nothing here yet takes advantage of a procedure's ability to control its own transaction.

@@ -140,17 +140,32 @@ The [Temporary Tables](temporary-tables.qmd) chapter introduced `CREATE TEMPORAR
 
 ```{sql}
 --| connection: con
---| label: temp-oncommit
+--| label: temp-oncommit-begin
 --| output: false
-BEGIN;
+BEGIN
+```
 
+```{sql}
+--| connection: con
+--| label: temp-oncommit-create
+--| output: false
 CREATE TEMPORARY TABLE scratch_gpa (student_id INTEGER, gpa NUMERIC)
-ON COMMIT DROP;
+ON COMMIT DROP
+```
 
+```{sql}
+--| connection: con
+--| label: temp-oncommit-insert
+--| output: false
 INSERT INTO scratch_gpa
-SELECT student_id, gpa FROM students WHERE gpa IS NOT NULL;
+SELECT student_id, gpa FROM students WHERE gpa IS NOT NULL
+```
 
-COMMIT;
+```{sql}
+--| connection: con
+--| label: temp-oncommit-commit
+--| output: false
+COMMIT
 ```
 
 Once `COMMIT` runs, `scratch_gpa` no longer exists, dropped automatically the moment the transaction that created it ended, without a separate `DROP TABLE`. This is useful for scratch work that should genuinely disappear the instant its transaction finishes, rather than lingering for the rest of the session.
