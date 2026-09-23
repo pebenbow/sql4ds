@@ -1,5 +1,5 @@
 ---
-title: "Views and Materialized Views"
+title: "Views"
 ---
 
 ## Learning Objectives
