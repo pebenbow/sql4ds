@@ -1,0 +1,161 @@
+---
+title: "Temporary Tables"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Create** a temporary table using `CREATE TEMPORARY TABLE`, both empty and populated directly from a query with `CREATE TEMPORARY TABLE ... AS`.
+- **Explain** the session-scoped lifetime of a temporary table and identify when PostgreSQL drops it automatically.
+- **Distinguish** a temporary table from a permanent table of the same name and explain PostgreSQL's name resolution rule between them.
+- **Evaluate** when a temporary table is the right tool compared to a subquery, a CTE, a view, or a materialized view.
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 100)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
+
+con <- dbConnect(
+  Postgres(),
+  host     = "localhost",
+  port     = as.integer(Sys.getenv("PGPORT", unset = "5432")),
+  dbname   = "nycflights",
+  user     = "postgres",
+  password = Sys.getenv("PGPASS", unset = "postgres")
+)
+```
+
+The previous chapter's closing section drew a line between a CTE and a **temporary table**: a CTE is generally recomputed every time the query that defines it runs, while a temporary table is materialized once, as real rows, and stays around until it is dropped or the session ends. This chapter picks up that thread. It uses the same `flights` table from the `nycflights` database.
+
+## Creating a Temporary Table
+
+`CREATE TEMPORARY TABLE ... AS` runs a query once and stores the result as an ordinary-looking table, the same way `CREATE MATERIALIZED VIEW` does, except the result lives only for this session:
+
+```{sql}
+--| connection: con
+--| label: temp-ctas
+--| output: false
+CREATE TEMPORARY TABLE carrier_avg_delay AS
+SELECT carrier, AVG(dep_delay) AS avg_delay
+FROM flights
+GROUP BY carrier
+```
+
+```{sql}
+--| connection: con
+--| label: temp-select
+SELECT * FROM carrier_avg_delay ORDER BY avg_delay DESC LIMIT 5
+```
+
+`carrier_avg_delay` can now be queried, joined, filtered, and indexed exactly like a permanent table, because it *is* one, just with a shorter lifetime. Unlike a CTE, which only exists inside the single query that defines it, this result can be referenced by any later query in the same session without recomputing the aggregation:
+
+```{sql}
+--| connection: con
+--| label: temp-reuse
+SELECT f.carrier, f.flight, f.dep_delay, cad.avg_delay
+FROM flights f
+JOIN carrier_avg_delay cad ON cad.carrier = f.carrier
+WHERE f.month = 7 AND f.day = 4
+  AND f.dep_delay > cad.avg_delay
+ORDER BY f.dep_delay DESC
+LIMIT 5
+```
+
+This is the same July 4th query from the previous chapter, but `carrier_avg_delay` was computed exactly once, back when the table was created, not once for this query and again for any other query that happens to need the same averages later in the session.
+
+## Session Scope and Visibility
+
+A temporary table exists only for the database session that created it. PostgreSQL stores it in a special, session-private schema (`pg_temp`), which is why it needs no schema qualification to use even though it lives alongside `flights` and `airlines` in the same database. When the session ends, whether it disconnects normally or the connection simply drops, PostgreSQL drops the temporary table automatically. No other session, even one connected to the exact same database at the exact same time, can see it.
+
+This has a practical consequence: a temporary table can share a name with a permanent table without conflict. If a session creates a temporary table named `flights`, every unqualified reference to `flights` in that session resolves to the temporary one, not the permanent `flights` table, for as long as the temporary table exists. PostgreSQL always prefers the session-private match. This is convenient for quick experimentation, but it is also an easy way to confuse yourself: a query that looks like it is reading the real `flights` table may quietly be reading a stale temporary copy instead. `DROP TABLE flights` while a temporary `flights` exists drops the temporary one, not the permanent one underneath it, another reason to give temporary tables names that describe what they hold rather than reusing a permanent table's name out of convenience.
+
+## Populating a Temporary Table Incrementally
+
+`CREATE TEMPORARY TABLE ... AS` populates a table from a single query in one step, but a temporary table can also be declared empty, with an explicit column list, and filled in afterward with one or more `INSERT` statements, the same as any table:
+
+```{sql}
+--| connection: con
+--| label: temp-empty-create
+--| output: false
+CREATE TEMPORARY TABLE flagged_flights (
+    carrier    TEXT,
+    flight     INTEGER,
+    dep_delay  NUMERIC,
+    reason     TEXT
+)
+```
+
+```{sql}
+--| connection: con
+--| label: temp-empty-insert-1
+--| output: false
+INSERT INTO flagged_flights
+SELECT carrier, flight, dep_delay, 'severe delay'
+FROM flights
+WHERE dep_delay > 120
+```
+
+```{sql}
+--| connection: con
+--| label: temp-empty-insert-2
+--| output: false
+INSERT INTO flagged_flights
+VALUES ('XX', 9999, NULL, 'manually flagged for review')
+```
+
+```{sql}
+--| connection: con
+--| label: temp-empty-select
+SELECT * FROM flagged_flights ORDER BY dep_delay DESC NULLS LAST LIMIT 5
+```
+
+This pattern, declare the shape first, then build it up across several statements, is useful when the rows a temporary table should hold do not come from one clean query: some rows might come from an aggregation, others from a manual correction, others from a second table entirely.
+
+A temporary table's rows, like the table itself, last for the whole session by default. That default can be narrowed to a single transaction instead, and a temporary table can be indexed exactly like a permanent one; both of those are easier to appreciate once transactions and indexes have been covered in their own right, so this chapter defers them: scoping a temporary table's lifetime with `ON COMMIT` is covered in the chapter on [Transactions](transactions.qmd), and indexing one is covered in [Indexes](indexes.qmd).
+
+```{sql}
+--| connection: con
+--| label: temp-cleanup
+--| output: false
+DROP TABLE carrier_avg_delay;
+DROP TABLE flagged_flights;
+```
+
+## Choosing a Tool for Intermediate Results
+
+Five tools now exist for the same general problem, staging a result so it can be reused rather than rewritten: a subquery, a CTE, a temporary table, a view, and a materialized view. The first three are covered in this book's query chapters; views and materialized views, covered in the [Views](views.qmd) chapter, differ from all three by being visible to every session, not just the one that created them.
+
+| | Subquery | CTE | Temporary table | View | Materialized view |
+|---|---|---|---|---|---|
+| Visible to | This query only | This query only | This session only | Every session | Every session |
+| Recomputed | Every reference | Every reference (generally) | Never, until explicitly rebuilt | Every reference | Only on `REFRESH` |
+| Can be indexed | No | No | Yes | No | Yes |
+| Persists past session end | No | No | No | Yes | Yes |
+| Best for | Short, one-off logic | Multi-step logic within one query | Reusing an expensive result across several queries in one session | Simple queries that must always be current | Expensive aggregations shared across sessions or scheduled reports |
+
+A temporary table sits between a CTE and a materialized view: like a CTE, it is private to whoever created it and disappears without a trace once they are done; like a materialized view, it stores real rows once and can be indexed, so it does not pay the recomputation cost of a CTE referenced many times over. Reach for it specifically when the same expensive intermediate result needs to be queried repeatedly within one session, but there is no reason for any other session, now or later, to see it.
+
+## Exercises {.unnumbered}
+
+### Reflection {.unnumbered}
+
+**1.** Explain, in your own words, why a temporary table can share a name with a permanent table without PostgreSQL raising an error, and what risk that creates.
+
+---
+
+**2.** Using the comparison table from this chapter, explain which tool you would choose, and why, for: (a) a one-time filter used in a single query, (b) an expensive aggregation queried a dozen times over the course of an analysis session, (c) a dashboard summary that many analysts across the company check throughout the day.
+
+---
+
+### Practical {.unnumbered}
+
+**3.** Create a temporary table `plane_flight_counts` that holds, for every `tailnum` in `flights`, the number of flights it appears in. Write two separate queries against it: one finding the five most-flown planes, another finding every plane that appears exactly once.
+
+---
+
+**4.** Create an empty temporary table `delay_notes` with columns for `carrier`, `flight`, and `note`. Insert one row for every flight delayed more than 180 minutes with the note `'extreme delay'`, using a single `INSERT ... SELECT`. Then insert one additional row by hand for a flight of your choosing with a note of your own.

@@ -40,6 +40,7 @@ book:
       chapters:
         - conditional.qmd
         - subqueries.qmd
+        - temporary-tables.qmd
         - window-functions.qmd
         - r-database.qmd
         - python-database.qmd
@@ -51,11 +52,14 @@ book:
         - er-diagrams.qmd
         - normal-forms.qmd
         - data-manipulation.qmd
+        - transactions.qmd
         - building-schema.qmd
-        - views.qmd
-        - programmability.qmd
-        - security.qmd
         - indexes.qmd
+        - views.qmd
+        - functions.qmd
+        - triggers.qmd
+        - procedures.qmd
+        - security.qmd
 
     - part: load.qmd
       chapters:
