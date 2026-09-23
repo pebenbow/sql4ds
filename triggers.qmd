@@ -1,0 +1,234 @@
+---
+title: "Triggers"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Create** a trigger function that returns `NEW` or `OLD` and attach it to a table using `CREATE TRIGGER`.
+- **Distinguish** between `BEFORE`, `AFTER`, and `INSTEAD OF` triggers, and between `ROW`-level and `STATEMENT`-level triggers.
+- **Design** a trigger to enforce a business rule or maintain a derived value that cannot be expressed as a simple constraint.
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 100)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
+
+PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
+PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
+
+con_admin <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "postgres", user = "postgres", password = PGPASS
+)
+tryCatch(
+  dbExecute(con_admin, "CREATE DATABASE university"),
+  error = function(e) NULL
+)
+dbDisconnect(con_admin)
+
+con <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "university", user = "postgres", password = PGPASS
+)
+
+dbExecute(con, "DROP SCHEMA IF EXISTS registrar CASCADE")
+dbExecute(con, "CREATE SCHEMA registrar")
+dbExecute(con, "
+  CREATE TABLE registrar.students (
+      student_id     INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
+      first_name     TEXT          NOT NULL,
+      last_name      TEXT          NOT NULL,
+      email          TEXT          NOT NULL UNIQUE,
+      enrolled_on    DATE          NOT NULL DEFAULT CURRENT_DATE,
+      is_active      BOOLEAN       NOT NULL DEFAULT TRUE,
+      gpa            NUMERIC(3, 2) CHECK (gpa IS NULL OR (gpa >= 0.0 AND gpa <= 4.0)),
+      last_modified  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )
+")
+dbExecute(con, "
+  INSERT INTO registrar.students (first_name, last_name, email, enrolled_on, gpa)
+  VALUES
+      ('Maria',  'Santos',  'msantos@university.edu',  '2023-08-28', 3.85),
+      ('James',  'Okafor',  'jokafor@university.edu',  '2023-08-28', 3.41),
+      ('Priya',  'Nair',    'pnair@university.edu',    '2024-01-15', 3.20)
+")
+dbExecute(con, "
+  CREATE TABLE registrar.gpa_history (
+      history_id  INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
+      student_id  INTEGER  NOT NULL REFERENCES registrar.students(student_id),
+      old_gpa     NUMERIC(3, 2),
+      new_gpa     NUMERIC(3, 2),
+      changed_at  TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )
+")
+```
+
+The [previous chapter](functions.qmd) introduced functions as reusable logic called explicitly, from a query. A **trigger** calls a function too, but automatically, in response to a table being changed, rather than because someone referenced it. This chapter uses `registrar.students`, extended with a `last_modified` column, and a new `registrar.gpa_history` table used to log changes.
+
+## Trigger Functions
+
+A trigger does not run arbitrary code directly; it runs a **trigger function**, a special kind of PL/pgSQL function that returns the pseudo-type `TRIGGER` instead of an ordinary value. Inside it, two special record variables are available: `NEW`, the row as it will look after the change (for `INSERT` and `UPDATE`), and `OLD`, the row as it looked before the change (for `UPDATE` and `DELETE`).
+
+```{sql}
+--| connection: con
+--| label: trigger-function-modified
+--| output: false
+CREATE FUNCTION registrar.set_last_modified()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    NEW.last_modified := CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$
+```
+
+This function stamps `last_modified` with the current time and returns `NEW`, the row PostgreSQL should actually write. A trigger function that modifies `NEW` and returns it is how a `BEFORE` trigger changes the row on its way into the table; returning `NULL` instead would silently cancel the operation.
+
+## Attaching a Trigger
+
+`CREATE TRIGGER` attaches a trigger function to a table, specifying when it should fire and for which operations:
+
+```{sql}
+--| connection: con
+--| label: trigger-attach-modified
+--| output: false
+CREATE TRIGGER trg_students_set_last_modified
+BEFORE UPDATE ON registrar.students
+FOR EACH ROW
+EXECUTE FUNCTION registrar.set_last_modified()
+```
+
+```{sql}
+--| connection: con
+--| label: trigger-fire-modified
+--| output: false
+UPDATE registrar.students SET gpa = 3.90 WHERE student_id = 3
+```
+
+```{sql}
+--| connection: con
+--| label: trigger-check-modified
+SELECT student_id, gpa, last_modified FROM registrar.students WHERE student_id = 3
+```
+
+`last_modified` updated automatically, without the `UPDATE` statement ever mentioning that column. `BEFORE UPDATE` means the trigger function runs before PostgreSQL writes the row, which is what makes it possible for the function to change `NEW` and have that change take effect.
+
+## BEFORE, AFTER, and INSTEAD OF
+
+The timing keyword controls when a trigger function runs relative to the underlying change:
+
+| Timing | Runs | Can modify the row? | Typical use |
+|---|---|---|---|
+| `BEFORE` | Before the row is written | Yes, via `NEW` | Validate or normalize data, maintain a derived column |
+| `AFTER` | After the row is written | No, the write already happened | Logging, cascading updates to other tables, sending a notification |
+| `INSTEAD OF` | In place of the write (views only) | N/A, the trigger function decides what happens | Making a non-updatable view accept `INSERT`/`UPDATE`/`DELETE` |
+
+An `AFTER` trigger is the right choice for `registrar.gpa_history`, since logging a change should happen only once the change is confirmed to have actually occurred:
+
+```{sql}
+--| connection: con
+--| label: trigger-function-history
+--| output: false
+CREATE FUNCTION registrar.log_gpa_change()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NEW.gpa IS DISTINCT FROM OLD.gpa THEN
+        INSERT INTO registrar.gpa_history (student_id, old_gpa, new_gpa)
+        VALUES (OLD.student_id, OLD.gpa, NEW.gpa);
+    END IF;
+    RETURN NEW;
+END;
+$$
+```
+
+```{sql}
+--| connection: con
+--| label: trigger-attach-history
+--| output: false
+CREATE TRIGGER trg_students_log_gpa_change
+AFTER UPDATE ON registrar.students
+FOR EACH ROW
+EXECUTE FUNCTION registrar.log_gpa_change()
+```
+
+```{sql}
+--| connection: con
+--| label: trigger-fire-history
+--| output: false
+UPDATE registrar.students SET gpa = 3.75 WHERE student_id = 1
+```
+
+```{sql}
+--| connection: con
+--| label: trigger-check-history
+SELECT * FROM registrar.gpa_history
+```
+
+`IS DISTINCT FROM` is used instead of `<>` because it treats `NULL` as a comparable value rather than propagating `NULL`, which matters here since `gpa` can legitimately be `NULL`; an ordinary `<>` comparison against a `NULL` GPA would itself evaluate to `NULL` and silently skip the log entry. An `AFTER` trigger's return value is ignored for row-level triggers on tables, since the write already happened; `RETURN NEW` is included here mainly by convention.
+
+`INSTEAD OF` triggers solve a different problem, from the [Views](views.qmd) chapter: `registrar.enrollment_summary`, a multi-table join, is not updatable on its own, because PostgreSQL cannot infer which underlying table an `UPDATE` against the view should modify. An `INSTEAD OF` trigger on the view can make that decision explicit, by writing procedural logic that decides, given `NEW` and `OLD`, exactly which base table statement to run, rather than PostgreSQL guessing.
+
+## ROW-Level vs. STATEMENT-Level Triggers
+
+`FOR EACH ROW`, used in every example so far, means the trigger function runs once per affected row. `FOR EACH STATEMENT` instead runs the trigger function exactly once per statement, regardless of how many rows it touches, and `NEW`/`OLD` are not available inside it, since there is no single row to reference.
+
+```{sql}
+--| connection: con
+--| label: statement-trigger-function
+--| output: false
+CREATE FUNCTION registrar.notice_bulk_update()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RAISE NOTICE 'registrar.students was bulk-updated';
+    RETURN NULL;
+END;
+$$
+```
+
+```{sql}
+--| connection: con
+--| label: statement-trigger-attach
+--| output: false
+CREATE TRIGGER trg_students_bulk_notice
+AFTER UPDATE ON registrar.students
+FOR EACH STATEMENT
+EXECUTE FUNCTION registrar.notice_bulk_update()
+```
+
+A statement that updates a hundred rows at once fires a `FOR EACH ROW` trigger a hundred times, but a `FOR EACH STATEMENT` trigger only once; the choice matters both for correctness (row-level logic almost always needs `FOR EACH ROW`, to see each row's own `NEW`/`OLD`) and for performance (a `FOR EACH STATEMENT` trigger avoids the per-row overhead when the logic genuinely does not depend on individual rows, such as a single summary notification after a batch operation).
+
+## Exercises {.unnumbered}
+
+### Reflection {.unnumbered}
+
+**1.** Explain why `AFTER` triggers cannot modify the row being written, while `BEFORE` triggers can. What would it mean for an `AFTER` trigger to try?
+
+---
+
+**2.** A colleague's `BEFORE UPDATE` trigger function ends with `RETURN OLD` instead of `RETURN NEW`. Explain what effect this has on the write, and why.
+
+---
+
+### Practical {.unnumbered}
+
+**3.** Write a `BEFORE INSERT` trigger on `registrar.students` that rejects (raises an exception for) any row where `email` does not contain `'@'`, using `RAISE EXCEPTION` inside the trigger function.
+
+---
+
+**4.** Extend `registrar.log_gpa_change` (or write a new trigger function) so that it also logs a change when a student's `is_active` flag changes, recording the old and new value in a new `registrar.status_history` table you design yourself.
+
+---
+
+**5.** Explain, without running it, why `CREATE TRIGGER ... INSTEAD OF UPDATE ON registrar.students FOR EACH ROW ...` would fail. What kind of object does `INSTEAD OF` require?

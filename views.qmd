@@ -98,7 +98,7 @@ dbExecute(con, "
 
 ## A Query You Can Query
 
-The previous chapter ended with a three-table join listing every student's enrollments, course titles, and grades. That query is useful enough that it will likely be written again, by someone else, slightly differently each time. A **view** solves this by giving a query a permanent name:
+[Building a Schema](building-schema.qmd) ended with a three-table join listing every student's enrollments, course titles, and grades. That query is useful enough that it will likely be written again, by someone else, slightly differently each time. A **view** solves this by giving a query a permanent name:
 
 ```{sql}
 --| connection: con
@@ -285,7 +285,7 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY registrar.course_enrollment_counts
 
 ### Indexing a Materialized View
 
-Because a materialized view's data is physically stored, it can be indexed exactly like a table, including indexes that support fast lookups on columns other than the one used for `CONCURRENTLY` above:
+[Indexes](indexes.qmd) covered indexing ordinary tables; because a materialized view's data is physically stored the same way a table's is, everything from that chapter applies to it directly, including indexes that support fast lookups on columns other than the one used for `CONCURRENTLY` above:
 
 ```{sql}
 --| connection: con
@@ -307,6 +307,8 @@ The decision comes down to two questions: how fresh does the result need to be, 
 | Best for | Simple queries, or data that must never be stale | Expensive aggregations, dashboards, reports refreshed on a schedule |
 
 `enrollment_summary`, a straightforward three-table join with no aggregation, is cheap enough to recompute on every query and benefits from always being current: a regular view is the right choice. `course_enrollment_counts`, an aggregation that might eventually run over millions of enrollment rows and is realistically only needed for a once-a-day report, is a better candidate for a materialized view refreshed on a schedule rather than recomputed on every page load.
+
+Both options here are visible to every session, which is the point of a view: publishing a query, or its stored result, for anyone with access to the database to reuse. If the expensive result in question is only needed by *you*, for the length of *this* session, rather than by every session that connects to the database, a [temporary table](temporary-tables.qmd) is usually a better fit than either.
 
 ## Exercises {.unnumbered}
 

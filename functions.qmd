@@ -1,0 +1,180 @@
+---
+title: "User-Defined Functions"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Write** a SQL-language function using `CREATE FUNCTION` that accepts arguments and returns a value.
+- **Write** a PL/pgSQL function using procedural constructs including variables, conditionals (`IF`/`ELSIF`/`ELSE`), and loops.
+- **Call** a user-defined function within a `SELECT` statement or `WHERE` clause.
+- **Classify** a function as `IMMUTABLE`, `STABLE`, or `VOLATILE` and explain how each classification affects query planning and caching.
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 100)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
+
+PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
+PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
+
+con_admin <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "postgres", user = "postgres", password = PGPASS
+)
+tryCatch(
+  dbExecute(con_admin, "CREATE DATABASE university"),
+  error = function(e) NULL
+)
+dbDisconnect(con_admin)
+
+con <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "university", user = "postgres", password = PGPASS
+)
+
+dbExecute(con, "DROP SCHEMA IF EXISTS registrar CASCADE")
+dbExecute(con, "CREATE SCHEMA registrar")
+dbExecute(con, "
+  CREATE TABLE registrar.students (
+      student_id   INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
+      first_name   TEXT          NOT NULL,
+      last_name    TEXT          NOT NULL,
+      email        TEXT          NOT NULL UNIQUE,
+      enrolled_on  DATE          NOT NULL DEFAULT CURRENT_DATE,
+      is_active    BOOLEAN       NOT NULL DEFAULT TRUE,
+      gpa          NUMERIC(3, 2) CHECK (gpa IS NULL OR (gpa >= 0.0 AND gpa <= 4.0))
+  )
+")
+dbExecute(con, "
+  INSERT INTO registrar.students (first_name, last_name, email, enrolled_on, gpa)
+  VALUES
+      ('Maria',  'Santos',  'msantos@university.edu',  '2023-08-28', 3.85),
+      ('James',  'Okafor',  'jokafor@university.edu',  '2023-08-28', 3.41),
+      ('Priya',  'Nair',    'pnair@university.edu',    '2024-01-15', 3.20)
+")
+```
+
+The previous chapters built views over the `registrar` schema to give a query a permanent, reusable name. A **function** does the same for logic that is not itself a complete query: a calculation, a classification, a small piece of procedural logic that gets reused across many different queries. This chapter uses the `registrar.students` table.
+
+## SQL-Language Functions
+
+The simplest kind of function wraps a single SQL expression. It is declared with `CREATE FUNCTION`, a parameter list, a `RETURNS` type, and a body written in `LANGUAGE sql`:
+
+```{sql}
+--| connection: con
+--| label: sql-function
+--| output: false
+CREATE FUNCTION registrar.full_name(first TEXT, last TEXT)
+RETURNS TEXT
+LANGUAGE sql
+AS $$
+    SELECT first || ' ' || last
+$$
+```
+
+A function is called like any built-in function, including inside the `SELECT` list:
+
+```{sql}
+--| connection: con
+--| label: sql-function-call
+SELECT student_id, registrar.full_name(first_name, last_name) AS name
+FROM registrar.students
+ORDER BY student_id
+```
+
+The `$$ ... $$` markers are **dollar quoting**, a way of delimiting a string (here, the function body) without having to escape every single quote inside it. This matters once a function body contains its own string literals, since `'...'` quoting inside `'...'` quoting would otherwise require awkward escaping.
+
+## PL/pgSQL Functions
+
+A SQL-language function is limited to a single query. **PL/pgSQL** is PostgreSQL's procedural extension to SQL: it adds variables, conditionals, and loops, which makes it possible to express logic that a single `SELECT` cannot. A PL/pgSQL function is declared with `LANGUAGE plpgsql`, and its body follows a `DECLARE` / `BEGIN` / `END` structure:
+
+```{sql}
+--| connection: con
+--| label: plpgsql-function
+--| output: false
+CREATE FUNCTION registrar.gpa_status(gpa NUMERIC)
+RETURNS TEXT
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    status TEXT;
+BEGIN
+    IF gpa IS NULL THEN
+        status := 'Not Yet Recorded';
+    ELSIF gpa >= 3.9 THEN
+        status := 'Highest Honors';
+    ELSIF gpa >= 3.5 THEN
+        status := 'Honors';
+    ELSE
+        status := 'Standard';
+    END IF;
+
+    RETURN status;
+END;
+$$
+```
+
+```{sql}
+--| connection: con
+--| label: plpgsql-function-call
+SELECT student_id, gpa, registrar.gpa_status(gpa) AS status
+FROM registrar.students
+ORDER BY gpa DESC NULLS LAST
+```
+
+`DECLARE` introduces any local variables the function needs, here just `status`; `BEGIN`/`END` bracket the executable body. `:=` assigns a value to a variable, and `IF`/`ELSIF`/`ELSE`/`END IF` branches exactly the way it reads. This same structure, a `DECLARE` block for variables and a `BEGIN`/`END` block of procedural statements, reappears in every PL/pgSQL object covered in the next two chapters: trigger functions and stored procedures are both written in the same language.
+
+::: {.callout-note}
+PL/pgSQL also supports loops (`LOOP`, `WHILE`, `FOR`), which matter most once a function needs to process a result set row by row rather than compute a single value from its parameters, a pattern seen again in the [Stored Procedures](procedures.qmd) chapter.
+:::
+
+## Function Volatility
+
+PostgreSQL lets a function declare how predictable its output is, which affects whether the planner can cache or skip repeated calls. Three categories exist:
+
+- **`VOLATILE`** (the default): the function can return a different result on every call, even with the same arguments, and may have side effects. PostgreSQL re-evaluates it for every row, every time.
+- **`STABLE`**: the function returns the same result for the same arguments *within a single query*, but may differ between queries (for example, a function that depends on `CURRENT_TIMESTAMP`). PostgreSQL can skip redundant calls within one query, but not cache across queries.
+- **`IMMUTABLE`**: the function always returns the same result for the same arguments, with no dependency on database state at all. PostgreSQL can precompute it, cache it aggressively, and even use it in an [expression index](indexes.qmd).
+
+`registrar.full_name` already exists from earlier in this chapter, so declaring it as `IMMUTABLE` means updating the existing definition rather than creating a new one. `CREATE OR REPLACE FUNCTION` does this in place, the same way `CREATE OR REPLACE VIEW` does for views:
+
+```{sql}
+--| connection: con
+--| label: replace-immutable-function
+--| output: false
+CREATE OR REPLACE FUNCTION registrar.full_name(first TEXT, last TEXT)
+RETURNS TEXT
+LANGUAGE sql
+IMMUTABLE
+AS $$
+    SELECT first || ' ' || last
+$$
+```
+
+`full_name` genuinely is immutable: given the same two strings, it always concatenates them the same way, with no reference to a table or the current time. Marking it as such lets PostgreSQL treat it the same way it treats a built-in operator, which matters if it is ever used in a `WHERE` clause or an index. `gpa_status`, by contrast, would technically also qualify as `IMMUTABLE`, since it only depends on its argument, but a mislabeled `VOLATILE` function that is actually stable or immutable is a safer mistake than the reverse: labeling a function `IMMUTABLE` when its result can actually change would let PostgreSQL cache a stale result and return it incorrectly.
+
+## Exercises {.unnumbered}
+
+### Reflection {.unnumbered}
+
+**1.** Explain, in your own words, the difference between `VOLATILE`, `STABLE`, and `IMMUTABLE`, and why mislabeling a function `IMMUTABLE` is more dangerous than leaving it `VOLATILE`.
+
+---
+
+### Practical {.unnumbered}
+
+**2.** Write a SQL-language function `registrar.email_domain(email TEXT)` that returns everything after the `@` in an email address. Use it in a query that lists each student's `email_domain` alongside their name.
+
+---
+
+**3.** Write a PL/pgSQL function `registrar.class_standing(enrolled_on DATE)` that returns `'New'` if a student enrolled within the last year (relative to `CURRENT_DATE`) and `'Continuing'` otherwise, using `IF`/`ELSE`. Call it in a query against `registrar.students`.
+
+---
+
+**4.** Mark `registrar.gpa_status` with the correct volatility classification, using `CREATE OR REPLACE FUNCTION`, and justify your choice in a comment.

@@ -1,0 +1,235 @@
+---
+title: "Stored Procedures"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Write** a stored procedure using `CREATE PROCEDURE` and invoke it with `CALL`.
+- **Distinguish** between a function and a stored procedure in PostgreSQL, particularly regarding return values and transaction control.
+- **Implement** `COMMIT` and `ROLLBACK` within a stored procedure to manage transactions across multiple statements.
+- **Handle** an exception inside a procedure using a `BEGIN ... EXCEPTION WHEN ... END` block, rolling back only the work attempted since the block started.
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 100)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
+
+PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
+PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
+
+con_admin <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "postgres", user = "postgres", password = PGPASS
+)
+tryCatch(
+  dbExecute(con_admin, "CREATE DATABASE university"),
+  error = function(e) NULL
+)
+dbDisconnect(con_admin)
+
+con <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "university", user = "postgres", password = PGPASS
+)
+
+dbExecute(con, "DROP SCHEMA IF EXISTS registrar CASCADE")
+dbExecute(con, "CREATE SCHEMA registrar")
+dbExecute(con, "
+  CREATE TABLE registrar.students (
+      student_id   INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
+      first_name   TEXT          NOT NULL,
+      last_name    TEXT          NOT NULL,
+      email        TEXT          NOT NULL UNIQUE,
+      enrolled_on  DATE          NOT NULL DEFAULT CURRENT_DATE,
+      is_active    BOOLEAN       NOT NULL DEFAULT TRUE,
+      gpa          NUMERIC(3, 2) CHECK (gpa IS NULL OR (gpa >= 0.0 AND gpa <= 4.0))
+  )
+")
+dbExecute(con, "
+  CREATE TABLE registrar.courses (
+      course_code   TEXT     PRIMARY KEY,
+      title         TEXT     NOT NULL,
+      credit_hours  INTEGER  NOT NULL CHECK (credit_hours > 0),
+      capacity      INTEGER  NOT NULL,
+      enrolled      INTEGER  NOT NULL DEFAULT 0 CHECK (enrolled <= capacity)
+  )
+")
+dbExecute(con, "
+  CREATE TABLE registrar.enrollments (
+      student_id   INTEGER  NOT NULL REFERENCES registrar.students(student_id),
+      course_code  TEXT     NOT NULL REFERENCES registrar.courses(course_code),
+      semester     TEXT     NOT NULL,
+      PRIMARY KEY (student_id, course_code, semester)
+  )
+")
+dbExecute(con, "
+  INSERT INTO registrar.students (first_name, last_name, email, gpa)
+  VALUES
+      ('Maria', 'Santos', 'msantos@university.edu', 3.85),
+      ('James', 'Okafor', 'jokafor@university.edu', 3.41)
+")
+dbExecute(con, "
+  INSERT INTO registrar.courses (course_code, title, credit_hours, capacity, enrolled)
+  VALUES
+      ('CS101', 'Introduction to Programming', 4, 2, 1)
+")
+```
+
+[Functions](functions.qmd) return a value and are called from inside a query; a **stored procedure** is called on its own, with `CALL`, and exists to run a sequence of operations rather than to compute a value. This chapter uses `registrar.students`, `registrar.courses`, and a new `registrar.enrollments` table, where `courses.enrolled` is a manually maintained count capped by `capacity`.
+
+## Functions vs. Procedures
+
+| | Function | Procedure |
+|---|---|---|
+| Declared with | `CREATE FUNCTION` | `CREATE PROCEDURE` |
+| Invoked with | `SELECT`, or inline in a query | `CALL` |
+| Returns a value | Yes, via `RETURN` | No (`OUT` parameters can return values, but there is no single return value) |
+| Can issue `COMMIT`/`ROLLBACK` | No | Yes |
+
+That last row is the practical reason to reach for a procedure instead of a function: a function always runs inside the transaction of the statement that called it and can never commit or roll back on its own, while a procedure can manage its own transaction boundaries, covered next.
+
+## CREATE PROCEDURE and CALL
+
+A procedure that enrolls a student in a course, incrementing the course's `enrolled` count as part of the same operation, needs two statements to succeed or fail together:
+
+```{sql}
+--| connection: con
+--| label: create-procedure
+--| output: false
+CREATE PROCEDURE registrar.enroll_student(
+    p_student_id INTEGER,
+    p_course_code TEXT,
+    p_semester TEXT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO registrar.enrollments (student_id, course_code, semester)
+    VALUES (p_student_id, p_course_code, p_semester);
+
+    UPDATE registrar.courses
+    SET enrolled = enrolled + 1
+    WHERE course_code = p_course_code;
+END;
+$$
+```
+
+```{sql}
+--| connection: con
+--| label: call-procedure
+--| output: false
+CALL registrar.enroll_student(1, 'CS101', 'Fall 2024')
+```
+
+```{sql}
+--| connection: con
+--| label: check-procedure
+SELECT * FROM registrar.enrollments;
+SELECT course_code, enrolled, capacity FROM registrar.courses;
+```
+
+Both statements inside the procedure ran as part of the transaction already in progress when `CALL` was issued, the same as if they had been written out directly; nothing here yet takes advantage of a procedure's ability to control its own transaction.
+
+## COMMIT and ROLLBACK Inside a Procedure
+
+[Transaction Control](transactions.qmd) introduced `BEGIN`, `COMMIT`, and `ROLLBACK` as statements issued directly by a client. A procedure can issue those same commands from *inside* its own body, something a function is never allowed to do. This matters most for work that processes many rows and should commit its progress periodically, rather than holding one enormous transaction open (and losing all of it to a single failure near the end):
+
+```{sql}
+--| connection: con
+--| label: procedure-periodic-commit
+--| output: false
+CREATE PROCEDURE registrar.bump_all_gpas(p_amount NUMERIC)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    r RECORD;
+    n INTEGER := 0;
+BEGIN
+    FOR r IN SELECT student_id FROM registrar.students WHERE gpa IS NOT NULL LOOP
+        UPDATE registrar.students
+        SET gpa = LEAST(gpa + p_amount, 4.0)
+        WHERE student_id = r.student_id;
+
+        n := n + 1;
+        IF n % 500 = 0 THEN
+            COMMIT;
+        END IF;
+    END LOOP;
+
+    COMMIT;
+END;
+$$
+```
+
+`FOR r IN SELECT ... LOOP` is PL/pgSQL's row-by-row loop, iterating `r` over the result of the query one row at a time. Every 500 rows, the procedure commits its progress so far, so a failure late in a very large batch does not force the database to redo (or lose) everything already processed. This pattern only works inside a procedure; a function or a plain client-issued transaction has no equivalent way to commit partway through a single running block of procedural code.
+
+## Exception Handling
+
+A `BEGIN ... EXCEPTION WHEN ... END` block catches an error inside a procedure (or a PL/pgSQL function) without aborting the whole surrounding transaction the way an uncaught error would, echoing the aborted-transaction behavior from [Transaction Control](transactions.qmd):
+
+```{sql}
+--| connection: con
+--| label: procedure-exception
+--| output: false
+CREATE PROCEDURE registrar.enroll_student_safe(
+    p_student_id INTEGER,
+    p_course_code TEXT,
+    p_semester TEXT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO registrar.enrollments (student_id, course_code, semester)
+    VALUES (p_student_id, p_course_code, p_semester);
+
+    UPDATE registrar.courses
+    SET enrolled = enrolled + 1
+    WHERE course_code = p_course_code;
+
+EXCEPTION
+    WHEN check_violation THEN
+        RAISE NOTICE 'Enrollment failed: % is already at capacity', p_course_code;
+    WHEN unique_violation THEN
+        RAISE NOTICE 'Enrollment failed: student % is already enrolled in %', p_student_id, p_course_code;
+END;
+$$
+```
+
+```{sql}
+--| connection: con
+--| label: call-procedure-exception
+--| output: false
+CALL registrar.enroll_student_safe(2, 'CS101', 'Fall 2024')
+```
+
+`CS101` has `capacity = 2` and was already at `enrolled = 2` after the first `CALL` in this chapter, so the `UPDATE` here violates the `enrolled <= capacity` check constraint. Rather than aborting the entire transaction the way an unhandled error would, the `EXCEPTION` block catches the specific condition (`check_violation`), and the procedure returns normally after logging a notice. `unique_violation` is caught the same way, for the case of an enrollment that duplicates an existing primary key. Each `WHEN` clause names a specific error condition; catching `OTHERS` instead would match any error at all, which is usually too broad, since it can silently swallow a genuine bug along with the error it was meant to handle.
+
+## Exercises {.unnumbered}
+
+### Reflection {.unnumbered}
+
+**1.** Explain why a function cannot issue `COMMIT`, but a procedure can. What does this imply about calling a procedure from inside a function?
+
+---
+
+**2.** A colleague's exception block catches `WHEN OTHERS THEN NULL`, silently discarding any error. Explain what could go wrong with this pattern, even if it makes the immediate bug go away.
+
+---
+
+### Practical {.unnumbered}
+
+**3.** Write a procedure `registrar.drop_student(p_student_id INTEGER, p_course_code TEXT, p_semester TEXT)` that deletes the matching row from `registrar.enrollments` and decrements `registrar.courses.enrolled` for that course, as a single atomic operation.
+
+---
+
+**4.** Modify `registrar.enroll_student_safe` (or write a new version) so that a `check_violation` also inserts a row into a `registrar.waitlist` table you design, recording the student and course that could not be enrolled.
+
+---
+
+**5.** Using `registrar.bump_all_gpas` as a model, write a procedure that processes a table in batches, committing every 100 rows, and explain in a comment what would happen differently if the `COMMIT` inside the loop were removed entirely.

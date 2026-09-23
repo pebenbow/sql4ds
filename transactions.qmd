@@ -1,0 +1,172 @@
+---
+title: "Transactions"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Explain** the purpose of a transaction and identify the boundaries of an implicit (auto-commit) transaction in PostgreSQL.
+- **Use** `BEGIN`, `COMMIT`, and `ROLLBACK` to group multiple DML statements into a single atomic transaction.
+- **Diagnose** a failed statement inside a transaction block and explain why subsequent statements are blocked until `ROLLBACK`.
+- **Apply** `SAVEPOINT` and `ROLLBACK TO SAVEPOINT` to undo part of a transaction without discarding the whole thing.
+- **Apply** `ON COMMIT` options when creating a temporary table to scope its contents to a single transaction rather than the whole session.
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 100)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
+
+PGPORT <- as.integer(Sys.getenv("PGPORT", unset = "5432"))
+PGPASS <- Sys.getenv("PGPASS", unset = "postgres")
+
+con_admin <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "postgres", user = "postgres", password = PGPASS
+)
+tryCatch(
+  dbExecute(con_admin, "CREATE DATABASE university"),
+  error = function(e) NULL
+)
+dbDisconnect(con_admin)
+
+con <- dbConnect(Postgres(),
+  host = "localhost", port = PGPORT,
+  dbname = "university", user = "postgres", password = PGPASS
+)
+
+dbExecute(con, "DROP TABLE IF EXISTS honor_roll CASCADE")
+dbExecute(con, "DROP TABLE IF EXISTS students CASCADE")
+dbExecute(con, "
+  CREATE TABLE students (
+      student_id   INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
+      first_name   TEXT          NOT NULL,
+      last_name    TEXT          NOT NULL,
+      email        TEXT          NOT NULL UNIQUE,
+      enrolled_on  DATE          NOT NULL DEFAULT CURRENT_DATE,
+      is_active    BOOLEAN       NOT NULL DEFAULT TRUE,
+      gpa          NUMERIC(3, 2) CHECK (gpa IS NULL OR (gpa >= 0.0 AND gpa <= 4.0))
+  )
+")
+dbExecute(con, "
+  INSERT INTO students (first_name, last_name, email, enrolled_on, gpa)
+  VALUES
+      ('Maria',  'Santos',  'msantos@university.edu',  '2023-08-28', 3.85),
+      ('James',  'Okafor',  'jokafor@university.edu',  '2023-08-28', 3.41),
+      ('Priya',  'Nair',    'pnair@university.edu',    '2024-01-15', 3.20),
+      ('Connor', 'Walsh',   'cwalsh@university.edu',   '2024-01-15', 2.97)
+")
+dbExecute(con, "
+  CREATE TABLE honor_roll (
+      student_id  INTEGER PRIMARY KEY REFERENCES students(student_id),
+      first_name  TEXT NOT NULL,
+      last_name   TEXT NOT NULL,
+      gpa         NUMERIC(3, 2) NOT NULL
+  )
+")
+dbExecute(con, "
+  INSERT INTO honor_roll (student_id, first_name, last_name, gpa)
+  SELECT student_id, first_name, last_name, gpa
+  FROM students
+  WHERE gpa >= 3.5
+")
+```
+
+The [previous chapter](data-manipulation.qmd) ran every `INSERT`, `UPDATE`, and `DELETE` on its own. By default, PostgreSQL wraps each individual statement in its own implicit transaction: the moment a statement completes successfully, its effect is permanent, and there is no way to undo just that one statement afterward. This is called **auto-commit** mode.
+
+A **transaction** groups multiple statements so that they succeed or fail together, as a single unit. This matters whenever a change to the database only makes sense as a set. Consider transferring a student between two sections: removing them from one roster and adding them to another has to happen as a pair. If the database crashed, or the application errored, after only the first half completed, the student would vanish from both.
+
+## BEGIN, COMMIT, and ROLLBACK
+
+`BEGIN` starts an explicit transaction, suspending auto-commit until it ends. `COMMIT` makes every change since `BEGIN` permanent; `ROLLBACK` discards all of them, as if none had happened.
+
+```sql
+BEGIN;
+UPDATE students SET is_active = FALSE WHERE student_id = 4;
+DELETE FROM honor_roll WHERE student_id = 4;
+COMMIT;
+```
+
+Had something gone wrong partway through, `ROLLBACK` instead of `COMMIT` would have discarded the `UPDATE` and the `DELETE` both, leaving the database exactly as it was before `BEGIN`. Nothing outside the transaction can see its changes until `COMMIT` succeeds; a concurrent session querying `students` mid-transaction would still see Connor Walsh as active.
+
+::: {.callout-note}
+A transaction is a property of the *connection's session*, not of any single statement: `BEGIN` suspends auto-commit for every statement that follows on that same connection, until a `COMMIT` or `ROLLBACK` ends it, exactly as shown here run one after another in the same query window.
+:::
+
+## Aborted Transactions
+
+If any statement inside a transaction fails, for example by violating a constraint, PostgreSQL does not simply skip it and continue. The entire transaction is marked as **aborted**, and every subsequent statement is rejected until a `ROLLBACK` is issued:
+
+```sql
+BEGIN;
+UPDATE students SET gpa = 5.0 WHERE student_id = 2;  -- violates the GPA CHECK constraint
+SELECT * FROM students;  -- rejected: current transaction is aborted
+ROLLBACK;
+```
+
+This is deliberate: once one statement in the group has failed, the database cannot know whether the rest of the transaction still makes sense, so it refuses to let it proceed silently in an inconsistent state. `ROLLBACK` is the only way out of an aborted transaction; it discards everything, including the statements that succeeded before the failure.
+
+## SAVEPOINT
+
+A `SAVEPOINT` marks a point inside a transaction that you can roll back to without discarding the entire transaction. This is useful when one part of a larger batch is allowed to fail independently of the rest:
+
+```sql
+BEGIN;
+UPDATE students SET is_active = TRUE WHERE student_id = 4;
+SAVEPOINT before_risky_update;
+
+UPDATE students SET gpa = 9.9 WHERE student_id = 4;
+-- ERROR:  new row for relation "students" violates check constraint "students_gpa_check"
+-- DETAIL:  Failing row contains (4, ..., 9.90).
+
+ROLLBACK TO SAVEPOINT before_risky_update;
+COMMIT;
+```
+
+`ROLLBACK TO SAVEPOINT` undoes only the statements issued after that savepoint, restores the transaction to a healthy (non-aborted) state, and lets you continue and eventually `COMMIT` the parts that were fine. Without the savepoint, the failed `UPDATE` would have aborted the whole transaction, forcing a full `ROLLBACK` and losing the earlier, valid change to `is_active` as well.
+
+Checking the row afterward would confirm it: `is_active` is `TRUE` from the first `UPDATE`, which survived, while `gpa` is unchanged, since the second `UPDATE` never took effect.
+
+## Scoping a Temporary Table to a Transaction
+
+The [Temporary Tables](temporary-tables.qmd) chapter introduced `CREATE TEMPORARY TABLE`, where a table's rows last for the whole session by default. `ON COMMIT` narrows that to a single transaction instead. Two options are common:
+
+- `ON COMMIT DELETE ROWS` empties the table, but keeps its definition, at the end of every transaction that used it.
+- `ON COMMIT DROP` drops the table entirely at the end of the transaction that created it.
+
+```{sql}
+--| connection: con
+--| label: temp-oncommit
+--| output: false
+BEGIN;
+
+CREATE TEMPORARY TABLE scratch_gpa (student_id INTEGER, gpa NUMERIC)
+ON COMMIT DROP;
+
+INSERT INTO scratch_gpa
+SELECT student_id, gpa FROM students WHERE gpa IS NOT NULL;
+
+COMMIT;
+```
+
+Once `COMMIT` runs, `scratch_gpa` no longer exists, dropped automatically the moment the transaction that created it ended, without a separate `DROP TABLE`. This is useful for scratch work that should genuinely disappear the instant its transaction finishes, rather than lingering for the rest of the session.
+
+## Exercises {.unnumbered}
+
+**1.** Start a transaction. Inside it, delete every row from `honor_roll`, then immediately query `honor_roll` to confirm it is empty. Roll the transaction back. Query `honor_roll` again and explain why the rows have returned.
+
+---
+
+**2.** Start a transaction and insert a new student. Create a savepoint. After the savepoint, attempt an `UPDATE` that violates the `gpa` CHECK constraint. Roll back to the savepoint, then commit the transaction. Confirm that the new student exists but the invalid update was discarded.
+
+---
+
+**3.** A colleague's script creates a temporary table named `flagged_flights` with `ON COMMIT DROP`, but never explicitly wraps the `CREATE TEMPORARY TABLE` statement in `BEGIN`/`COMMIT`. What happens to the table, and why?
+
+---
+
+**4.** Start a transaction. Inside it, create a temporary table `session_scratch` with `ON COMMIT DELETE ROWS`, insert a few rows into it, and query it to confirm the rows are there. Commit the transaction, then query `session_scratch` again. Explain what you see and why, referencing the difference between `ON COMMIT DELETE ROWS` and `ON COMMIT DROP`.
