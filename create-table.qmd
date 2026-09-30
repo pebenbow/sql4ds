@@ -41,6 +41,7 @@ con <- dbConnect(Postgres(),
   dbname = "university", user = "postgres", password = PGPASS
 )
 
+dbExecute(con, "DROP TABLE IF EXISTS cohort_summary CASCADE")
 dbExecute(con, "DROP TABLE IF EXISTS students CASCADE")
 ```
 
@@ -304,6 +305,69 @@ CREATE TABLE IF NOT EXISTS students (
 
 If `students` already exists, this statement does nothing and raises no error. This is the pattern used in setup scripts and database migrations.
 
+## Creating a Table from a Query
+
+Every `CREATE TABLE` statement so far has spelled out its columns one by one. Sometimes you already have a query whose result you want to keep, and writing out the columns by hand would only repeat what the query already says. `CREATE TABLE ... AS`, usually shortened to **CTAS** (for `CREATE TABLE AS SELECT`), creates a new table and fills it with a query's result in a single statement.
+
+You have seen this form once already. The [Temporary Tables](temporary-tables.qmd) chapter used `CREATE TEMPORARY TABLE ... AS` to stage an intermediate result for one session. Leave out `TEMPORARY` and the result becomes a permanent table: visible to every session and kept until someone drops it.
+
+The query can be any `SELECT`, including one with filters, joins, or aggregation. Here, it summarizes the `students` table by enrollment date:
+
+```{sql}
+--| connection: con
+--| output: false
+CREATE TABLE cohort_summary AS
+SELECT enrolled_on,
+       COUNT(*)           AS num_students,
+       ROUND(AVG(gpa), 2) AS avg_gpa
+FROM students
+GROUP BY enrolled_on
+```
+
+```{sql}
+--| connection: con
+SELECT * FROM cohort_summary ORDER BY enrolled_on
+```
+
+The new table's column names come from the query's select list, which is why the aliases matter. Without them, PostgreSQL would name the computed columns `count` and `round`, which say nothing about what they hold. Always alias every computed column in a CTAS query.
+
+### What CTAS does not copy
+
+CTAS gives each column a data type based on the expression that produced it. That is *all* it infers. Query the new table's columns in `information_schema.columns` to see what it came away with:
+
+```{sql}
+--| connection: con
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_name = 'cohort_summary'
+ORDER BY ordinal_position
+```
+
+Every column is nullable, and `cohort_summary` has no primary key. The same is true when the query reads straight from a table with `SELECT *`. CTAS copies column names, data types, and rows. It does *not* copy the source table's `PRIMARY KEY`, `GENERATED ALWAYS AS IDENTITY`, `NOT NULL`, `UNIQUE`, `CHECK`, `DEFAULT`, or foreign key constraints. A copy of `students` made this way would happily accept two rows with the same `email` or a GPA of 5.0.
+
+That makes CTAS a good fit for snapshots, reporting tables, and other results you mostly read from. If the new table will take new rows that need to follow the same rules as the original, add the constraints afterward with `ALTER TABLE`, or define the table with a full `CREATE TABLE` statement and fill it with `INSERT INTO ... SELECT`, covered in the chapter on [Data Manipulation](data-manipulation.qmd).
+
+::: {.callout-note}
+To copy a table's structure *including* its constraints, PostgreSQL offers `LIKE` inside an ordinary `CREATE TABLE` statement:
+
+```sql
+CREATE TABLE students_archive (LIKE students INCLUDING ALL);
+```
+
+This creates an empty table with the same columns, defaults, identity column, and constraints as `students`, but none of its rows. `INCLUDING ALL` is what brings most of that along. On its own, `LIKE students` copies only the columns and their `NOT NULL` constraints. Foreign keys are never copied, even with `INCLUDING ALL`.
+:::
+
+Always remember: a table created with CTAS holds the query's result *as of the moment it ran*. If a new student enrolls tomorrow, `cohort_summary` will not change. To bring it up to date, you drop the table and run the CTAS statement again. If you want a saved query that always reflects the current data, you can create a **view**, which is covered in the [Views](views.qmd) chapter.
+
+Two variations are worth knowing:
+
+- `CREATE TABLE IF NOT EXISTS cohort_summary AS ...` does nothing if the table already exists, just like the `IF NOT EXISTS` form above.
+- Adding `WITH NO DATA` to the end of the statement creates the table's columns from the query without inserting any rows. This is a quick way to get an empty table shaped like a query's result.
+
+::: {.callout-note}
+Earlier in this chapter, I mentioned that `SELECT ... INTO` can write a query's result into a table. In PostgreSQL, `SELECT * INTO new_table FROM old_table` is an older way to write the same thing as CTAS, and you will see it in existing code. The PostgreSQL documentation recommends `CREATE TABLE ... AS` instead, because `SELECT INTO` means something different inside PostgreSQL functions, and because CTAS supports options such as `IF NOT EXISTS` and `WITH NO DATA`.
+:::
+
 ## Removing Tables
 
 `DROP TABLE` removes a table and all of its data permanently:
@@ -325,6 +389,46 @@ DROP TABLE students CASCADE;
 ```
 
 `CASCADE` removes the constraint definitions in the dependent tables; it does not drop those tables themselves. Use it carefully: in a complex schema it can remove constraints you did not intend to touch.
+
+### Emptying a Table with TRUNCATE
+
+Sometimes you want to get rid of a table's rows but keep the table itself. `TRUNCATE TABLE` does exactly that. It removes every row at once and leaves the table's columns, data types, and constraints in place, ready for new data. Try it on the `cohort_summary` table from the previous section:
+
+```{sql}
+--| connection: con
+--| output: false
+TRUNCATE TABLE cohort_summary
+```
+
+```{sql}
+--| connection: con
+SELECT COUNT(*) AS num_rows FROM cohort_summary
+```
+
+The table is empty, but it still exists: you can query it, and you can insert new rows into it. After a `DROP TABLE`, the same `SELECT` would fail with an error because `cohort_summary` would no longer exist. The `TABLE` keyword is optional, so `TRUNCATE cohort_summary` does the same thing.
+
+`TRUNCATE` is classified as DDL rather than DML because it doesn't delete rows one at a time. Instead, it throws away the table's storage and replaces it with an empty one. That makes it nearly instant, even on a table with millions of rows, and it frees the disk space immediately. The [Data Manipulation](data-manipulation.qmd) chapter compares it with `DELETE`, which can also empty a table, but row by row.
+
+A few behaviors are worth knowing before you use it:
+
+- **Identity columns keep counting.** By default, `TRUNCATE` leaves identity sequences alone. If you truncate `students` and insert a new student, that student gets the next `student_id` after the highest one ever issued, not `1`. To start the numbering over, add `RESTART IDENTITY`:
+
+  ```sql
+  TRUNCATE TABLE students RESTART IDENTITY;
+  ```
+
+- **Foreign keys block it.** PostgreSQL refuses to truncate a table that another table references through a foreign key, because the referencing rows would be left pointing at nothing. You can either truncate both tables in one statement (`TRUNCATE TABLE students, enrollments;`) or add `CASCADE`. Be careful: `TRUNCATE ... CASCADE` empties *every* table that references this one, and every table that references those. This is not the same as `DROP TABLE ... CASCADE`, which only removes constraints. Here, `CASCADE` deletes data.
+
+- **It can be undone, in PostgreSQL.** Inside an explicit transaction, a `TRUNCATE` can be rolled back like any other change. The chapter on [Transactions](transactions.qmd) shows how. This is not true everywhere: MySQL and Oracle commit a `TRUNCATE` immediately, with no way to roll it back. If you run a truncate outside a transaction, treat it as permanent.
+
+| Statement | Removes rows | Removes the table | Can be rolled back in PostgreSQL |
+|:---|:---|:---|:---|
+| `TRUNCATE TABLE t` | Yes, all of them | No | Yes, inside a transaction |
+| `DROP TABLE t` | Yes, all of them | Yes | Yes, inside a transaction |
+
+::: {.callout-warning}
+Neither `DROP TABLE` nor `TRUNCATE TABLE` asks for confirmation, and neither has a `WHERE` clause. In auto-commit mode, which is the default in most IDEs, the data is gone the moment the statement finishes. Double-check the table name before you press run.
+:::
 
 ## Modifying Existing Tables
 
@@ -403,4 +507,12 @@ Run the statement twice and confirm the second execution produces no error.
 
 ---
 
-**6.** Drop the `students` table, then recreate it using `CREATE TABLE IF NOT EXISTS`. Verify that the data is gone after the drop and that the table structure is restored after the recreate.
+**6.** Use CTAS to create a table named `students_copy` that holds every row and column of `students`. Then insert a row into `students_copy` that reuses an existing `student_id` and `email` and has a GPA of 5.0. Does it succeed? Try the same `INSERT` against `students` and compare the results. What does the difference tell you about what CTAS copied from `students`?
+
+---
+
+**7.** Truncate `students_copy` from Exercise 6 and confirm it has no rows but still exists. Then truncate `students` and insert one new student. What `student_id` does the new student get, and why? Truncate `students` again with `RESTART IDENTITY`, insert the student again, and compare.
+
+---
+
+**8.** Drop the `students` table, then recreate it using `CREATE TABLE IF NOT EXISTS`. Verify that the data is gone after the drop and that the table structure is restored after the recreate.
