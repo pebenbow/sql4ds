@@ -7,6 +7,7 @@ title: "Indexes"
 By the end of this chapter, students will be able to:
 
 - **Explain** what a B-tree index is and describe the trade-off between read performance and write and storage overhead.
+- **Distinguish** high-cardinality from low-cardinality columns and explain why cardinality affects a filter's selectivity.
 - **Read** a query execution plan produced by `EXPLAIN ANALYZE` and interpret the cost, row, and timing annotations.
 - **Identify** the three main scan strategies (Sequential Scan, Bitmap Heap Scan, Index Scan) and explain when the planner chooses each.
 - **Create** a single-column index and verify with `EXPLAIN ANALYZE` that the planner uses it.
@@ -41,11 +42,19 @@ This chapter uses the `nycflights` database. The `flights` table has 104,662 row
 
 ## What an Index Is
 
-An index is a separate data structure that the database maintains alongside a table. It stores a copy of one or more columns in a sorted, searchable form, together with a pointer back to the full row in the table (called the **heap**). When a query filters on an indexed column, PostgreSQL can traverse the index to find the matching rows directly, rather than reading every row in the table.
+An index is a separate data structure that the database maintains alongside a table. It stores a copy of one or more columns in a sorted, searchable form, together with a pointer back to the full row in the table. That underlying table storage is called the **heap**, which in database-speak means an unordered pile of rows, stored in whatever order they happened to be inserted, with no sorting to help a search along. An index exists precisely to give a query a fast, sorted path into that unsorted pile. When a query filters on an indexed column, PostgreSQL can traverse the index to find the matching rows directly, rather than reading every row in the heap.
 
 The trade-off is straightforward: indexes make reads faster and writes slower. Every `INSERT`, `UPDATE`, or `DELETE` that touches an indexed column must also update the index. Indexes also consume disk space. A thoughtfully chosen index speeds up the queries that matter most; an excessive number of indexes on a write-heavy table imposes overhead that outweighs any benefit.
 
 PostgreSQL supports several index types. By far the most common is the **B-tree** (balanced tree), which is the default when you write `CREATE INDEX` without specifying a type. A B-tree organizes values in sorted order, which makes it efficient for equality checks (`=`), range queries (`<`, `>`, `BETWEEN`), and sorting. Unless you have a specific reason to choose otherwise, B-tree is the right choice.
+
+## Cardinality and Selectivity
+
+A column's **cardinality** is the number of distinct values it contains. `is_active`, a boolean flag, has a cardinality of at most two, since every row's value is either `TRUE` or `FALSE`; this is a **low-cardinality** column. `tailnum`, a plane's tail number, has a cardinality close to the number of distinct planes that have ever flown, since most values belong to only one or two rows; this is a **high-cardinality** column.
+
+**Selectivity** describes the same idea from a query's point of view: how much a particular filter narrows down the rows it has to consider. `WHERE is_active = TRUE` is not very selective in a table where 95 percent of rows are active because it still keeps almost everything. `WHERE tailnum = 'N14228'` is highly selective, since at most a handful of rows in `flights` share that exact tail number. A high-cardinality column tends to produce highly selective filters, because a given value is unlikely to repeat across many rows. Conversely, a low-cardinality column tends to produce poorly selective filters.
+
+The two terms describe different things: *cardinality* is a property of a column, whereas *selectivity* is a property of a filter. But the concepts are so closely intertwined that it's easy to mix them up, and the rest of this chapter uses them almost interchangeably. But the main point remains: index the high-cardinality columns because those are the ones that tend to produce selective filters that an index can make much faster.
 
 ## Reading Query Plans
 
@@ -293,9 +302,45 @@ An index exists but the planner ignores it in several common situations.
 Not every column deserves an index. A useful mental checklist:
 
 - **Columns that appear in `WHERE` clauses frequently.** The more often a column is filtered, the more benefit an index provides.
-- **Join keys.** PostgreSQL uses indexes on join columns to avoid full scans when building hash or nested-loop joins.
+- **Join keys.** A `JOIN` has to match rows between two tables on some column, and PostgreSQL has more than one strategy for finding those matches. A **nested-loop join** strategy checks every row of one table against every row of the other, which is slow without an index to speed up the matching. A **hash join** strategy instead builds a quick-lookup structure, known as a **hash table**, from the smaller table's join column, then scans the larger table once, checking each row against that structure instead of against every row individually. This is faster than a nested loop, but it still means reading every row of both tables at least once. Whichever strategy the planner picks, adding an index on the join column gives it a faster way to find matches, which is why join columns are strong index candidates.
 - **Foreign key columns.** PostgreSQL does not automatically index foreign keys (unlike some other databases). A missing foreign key index can cause slow cascading deletes and slow joins.
-- **High-selectivity columns.** A column with many distinct values (a UUID, an email address, a timestamp) benefits more from an index than a column with few distinct values, like a status flag.
-- **Columns used in `ORDER BY`.** If a query both filters and sorts on the same column, the index may satisfy both operations, eliminating a sort step.
+- **High-cardinality columns.** A column with many distinct values (an email address or a birthdate column) tends to produce the highly selective filters an index speeds up most, unlike a low-cardinality column with only a handful of distinct values, like a status flag.
+- **Columns used in `ORDER BY`.** If a query both filters and sorts on the same column, the index may satisfy both operations, resulting in fewer steps for the query planner.
 
-Columns that are written to constantly, rarely queried, or very low selectivity are poor candidates. Monitor query performance over time and add indexes in response to observed slow queries rather than preemptively indexing every column.
+Columns that are written to constantly, rarely queried, or low-cardinality are poor candidates. Monitor query performance over time and add indexes in response to observed slow queries rather than preemptively indexing every column.
+
+## Exercises {.unnumbered}
+
+### Reflection {.unnumbered}
+
+**1.** Explain, in your own words, the difference between cardinality and selectivity. Is `carrier` (16 distinct values across 104,662 rows) a high-cardinality or low-cardinality column? Would `WHERE carrier = 'UA'` be a selective filter?
+
+---
+
+**2.** A classmate adds an index to every column in a table "just in case a query needs it someday." Explain why this is not automatically a good idea, referencing both the write-side cost of an index and the planner's willingness to actually use one.
+
+---
+
+**3.** Explain why `WHERE EXTRACT(month FROM time_hour) = 7` cannot use a plain index on `time_hour`, and describe two different ways to fix the query so that it can use an index.
+
+---
+
+### Practical {.unnumbered}
+
+**4.** Using `EXPLAIN ANALYZE`, compare the query plan for `SELECT * FROM flights WHERE dest = 'ORD'` before and after creating an index on `dest`. Report the scan strategy PostgreSQL chose in each case and the change in execution time.
+
+---
+
+**5.** Create a multi-column index on `(origin, dest)`. Write one query that can use it efficiently and one query, filtering on `dest` alone, that cannot use it as efficiently. Explain the difference by referencing the leading-column rule.
+
+---
+
+**6.** The `flights` table has an `air_time` column that is `NULL` for cancelled flights. Create a partial index on `air_time` that excludes `NULL` values, and write a query that benefits from it.
+
+---
+
+**7.** Add `carrier` as an `INCLUDE` column on an index over `dep_delay`, then write a query that can be satisfied entirely by an index-only scan. Confirm with `EXPLAIN ANALYZE` that `Heap Fetches` is `0`.
+
+---
+
+**8.** Using the checklist from this chapter, evaluate `flights.tailnum` as an index candidate: is it high- or low-cardinality, does it appear in joins, and would you expect the planner to use an index on it? Create the index and check your prediction with `EXPLAIN ANALYZE`.

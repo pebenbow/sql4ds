@@ -78,7 +78,7 @@ jobs:
         run: |
           pip install --no-cache-dir \
             jupyter \
-            sqlalchemy \
+            "sqlalchemy[asyncio]" \
             psycopg2-binary \
             polars \
             pandas \
