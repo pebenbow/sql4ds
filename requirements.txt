@@ -1,4 +1,4 @@
 polars
-sqlalchemy
+sqlalchemy[asyncio]
 psycopg2-binary
 requests
