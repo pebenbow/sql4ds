@@ -255,7 +255,7 @@ for file in supabase/migrations/*.sql; do
 done
 ```
 
-This is rougher than a dedicated tool, but it is understandable, it works on any system with `psql` installed, and it illustrates exactly what is happening under the hood of every migration framework.
+This is rougher than a dedicated tool, but it is understandable; it works on any system with `psql` installed, and it illustrates exactly what is happening under the hood of every migration framework.
 
 ### Standalone Migration Tools
 

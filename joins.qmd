@@ -546,7 +546,7 @@ ORDER BY i.gdp_per_capita_usd DESC NULLS LAST;
 
 The `WHERE` clause here references `r.name`, a column that came from a join earlier in the query. That works because both joins finish running, as part of step 1, before step 2 begins.
 
-This also explains why the `ON` vs. `WHERE` distinction from earlier in this chapter matters so much for outer joins. `ON` runs as part of step 1, while a join is still deciding which rows match and which get NULL-padded. `WHERE` does not run until step 2, by which point every unmatched row an outer join is going to produce already exists in the working result. Moving a condition from `ON` to `WHERE` does not just change *when* it runs, it changes *whether* the outer join's unmatched rows survive long enough to be filtered at all.
+This also explains why the `ON` vs. `WHERE` distinction from earlier in this chapter matters so much for outer joins. `ON` runs as part of step 1, while a join is still deciding which rows match and which get NULL-padded. `WHERE` does not run until step 2, by which point every unmatched row an outer join is going to produce already exists in the working result. Moving a condition from `ON` to `WHERE` does not just change *when* it runs; it changes *whether* the outer join's unmatched rows survive long enough to be filtered at all.
 
 Table aliases, unlike column aliases, are established in step 1, so they are visible in every clause that follows: `ON`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, and `ORDER BY` can all reference `c`, `r`, or `i` above. Column aliases defined in `SELECT` remain restricted to step 6 onward, exactly as earlier chapters described: usable in `ORDER BY`, but not in `WHERE`, `GROUP BY`, or `HAVING`.
 
