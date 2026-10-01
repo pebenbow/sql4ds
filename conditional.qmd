@@ -74,7 +74,9 @@ ORDER BY dep_delay DESC NULLS LAST
 LIMIT 10;
 ```
 
-The conditions are checked in the order written, which matters here: a flight with `dep_delay = -5` fails the first `WHEN` (it is not `NULL`) but passes the second (`-5 <= 0`), so it is labeled `'On Time'` before the `'Minor Delay'` condition is ever checked. If the second and third conditions were swapped, every on-time flight would incorrectly match `<= 30` first. Order your conditions from most specific to least specific, or from the edge cases inward, to avoid this trap.
+The conditions are checked in the order written, which matters here: a flight with `dep_delay = -5` fails the first `WHEN` (it is not `NULL`) but passes the second (`-5 <= 0`), so it is labeled `'On Time'` before the `'Minor Delay'` condition is ever checked. If the second and third conditions were swapped, every on-time flight would incorrectly match `<= 30` first. To avoid this trap, check the narrower condition (`<= 0`) before the broader one (`<= 30`).
+
+![CASE checks each WHEN in order and stops at the first one that is true.](images/case_order.svg){fig-alt="Four flights evaluated against CASE WHEN dep_delay IS NULL THEN 'Cancelled', WHEN dep_delay <= 0 THEN 'On Time', WHEN dep_delay <= 30 THEN 'Minor Delay', ELSE 'Major Delay'. Each flight is checked top to bottom and evaluation stops at the first true condition: f1 (NULL) is Cancelled at line 1, f2 (-5) is On Time at line 2 even though -5 <= 30 is also true, f3 (12) is Minor Delay at line 3, and f4 (45) falls through to ELSE, Major Delay. With lines 2 and 3 swapped, f2 becomes Minor Delay and 'On Time' can never be returned, because every value <= 0 is also <= 30." width="100%"}
 
 `CASE` is an expression, not a statement: it produces a single value and can appear anywhere a column can, including inside `WHERE`, `ORDER BY`, or another expression.
 
@@ -148,6 +150,10 @@ ORDER BY num_flights DESC;
 Read a nested `CASE` from the outside in. The outer expression decides which branch a row belongs to, and only then does the inner `CASE` in that branch get evaluated. A flight with `dep_delay = 12` matches the outer `WHEN dep_delay > 0`, so SQL evaluates the first inner `CASE` and never looks at the second one. Each inner `CASE` needs its own `END`, and indenting each level consistently is the easiest way to keep track of which `END` closes which expression.
 
 The inner `WHEN arr_delay IS NULL` checks handle diverted flights, which departed (so `dep_delay` has a value) but never arrived at their destination (so `arr_delay` is `NULL`). Without that check, a diverted flight would fail `arr_delay <= 0`, since any comparison with `NULL` is unknown rather than true, and it would fall through to `ELSE 'Left late, arrived late'`. Every level of a nested `CASE` has to account for `NULL` on its own.
+
+The diagram below follows seven flights through the query above, including one diverted flight in each inner `CASE`:
+
+![A nested CASE: the outer CASE picks a branch, and only that branch's inner CASE runs.](images/case_nested.svg){fig-alt="Seven flights go through the chapter's nested CASE. The outer CASE checks dep_delay and sends each flight to exactly one branch: f1 (dep_delay NULL) to Cancelled; f2, f3, and f4 (dep_delay > 0) to the first inner CASE; f5, f6, and f7 (dep_delay -3, -6, and 0) to the ELSE branch's inner CASE. Only that branch's inner CASE runs on a row. f2 made up time, f3 arrived late, and f4 has a NULL arr_delay, so it is Diverted. f5 arrived late, f6 was on time throughout, and f7 is Diverted. GROUP BY flight_outcome then counts the labels: Diverted 2, every other outcome 1." width="100%"}
 
 ### Nesting vs. Combining Conditions
 

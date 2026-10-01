@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1090 546" width="1090" height="546" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">CASE checks its conditions in order</title>
+<desc id="desc">Four flights evaluated against CASE WHEN dep_delay IS NULL THEN 'Cancelled', WHEN dep_delay &lt;= 0 THEN 'On Time', WHEN dep_delay &lt;= 30 THEN 'Minor Delay', ELSE 'Major Delay'. Each flight is checked top to bottom and evaluation stops at the first true condition: f1 (NULL) is Cancelled at line 1, f2 (-5) is On Time at line 2 even though -5 &lt;= 30 is also true, f3 (12) is Minor Delay at line 3, and f4 (45) falls through to ELSE, Major Delay. With lines 2 and 3 swapped, f2 becomes Minor Delay and 'On Time' can never be returned, because every value &lt;= 0 is also &lt;= 30.</desc>
+<defs><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">CASE checks conditions top to bottom, and the first true one wins</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Once a WHEN is true, its THEN value is returned and every later line is skipped, even ones that would also be true.</text>
+<text x="30" y="92" font-size="15" font-weight="bold" fill="#222222" text-anchor="start">As written</text>
+<rect x="30" y="104" width="360" height="130" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="60" y="130" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">CASE</text>
+<text x="50" y="148" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">1</text>
+<text x="60" y="148" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  WHEN dep_delay IS NULL THEN 'Cancelled'</text>
+<text x="50" y="166" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">2</text>
+<text x="60" y="166" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  WHEN dep_delay &lt;= 0    THEN 'On Time'</text>
+<text x="50" y="184" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">3</text>
+<text x="60" y="184" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  WHEN dep_delay &lt;= 30   THEN 'Minor Delay'</text>
+<text x="50" y="202" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">4</text>
+<text x="60" y="202" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  ELSE 'Major Delay'</text>
+<text x="60" y="220" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">END AS delay_category</text>
+<rect x="420" y="104" width="633" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="428" y="122.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="483" y="122.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="568" y="122.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">1: IS NULL</text>
+<text x="660" y="122.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">2: &lt;= 0</text>
+<text x="752" y="122.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">3: &lt;= 30</text>
+<text x="844" y="122.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">4: ELSE</text>
+<text x="936" y="122.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">delay_category</text>
+<rect x="420" y="130" width="633" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="428" y="148.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f1</text>
+<text x="483" y="148.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="562" y="132" width="88" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="568" y="148.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">true</text>
+<rect x="655" y="133" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="660" y="148.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<rect x="747" y="133" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="752" y="148.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<rect x="839" y="133" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="844" y="148.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<text x="936" y="148.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cancelled</text>
+<rect x="420" y="156" width="633" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="428" y="174.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f2</text>
+<text x="483" y="174.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-5</text>
+<text x="568" y="174.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<rect x="654" y="158" width="88" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="660" y="174.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">true</text>
+<rect x="747" y="159" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="752" y="174.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<rect x="839" y="159" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="844" y="174.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<text x="936" y="174.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">On Time</text>
+<rect x="420" y="182" width="633" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="428" y="200.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f3</text>
+<text x="483" y="200.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">12</text>
+<text x="568" y="200.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<text x="660" y="200.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<rect x="746" y="184" width="88" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="752" y="200.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">true</text>
+<rect x="839" y="185" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="844" y="200.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<text x="936" y="200.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Minor Delay</text>
+<rect x="420" y="208" width="633" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="428" y="226.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f4</text>
+<text x="483" y="226.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">45</text>
+<text x="568" y="226.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<text x="660" y="226.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<text x="752" y="226.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<rect x="838" y="210" width="88" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="844" y="226.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">used</text>
+<text x="936" y="226.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Major Delay</text>
+<line x1="475" y1="104" x2="475" y2="234" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="560" y1="104" x2="560" y2="234" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="652" y1="104" x2="652" y2="234" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="744" y1="104" x2="744" y2="234" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="836" y1="104" x2="836" y2="234" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="928" y1="104" x2="928" y2="234" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="420" y="104" width="633" height="130" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="420" y="258" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">f2: -5 &lt;= 30 is true as well, but line 3 is never checked. CASE already stopped at line 2.</text>
+<text x="30" y="314" font-size="15" font-weight="bold" fill="#D55E00" text-anchor="start">Lines 2 and 3 swapped</text>
+<rect x="30" y="326" width="360" height="130" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="60" y="352" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">CASE</text>
+<text x="50" y="370" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">1</text>
+<text x="60" y="370" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  WHEN dep_delay IS NULL THEN 'Cancelled'</text>
+<text x="50" y="388" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">2</text>
+<text x="60" y="388" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  WHEN dep_delay &lt;= 30   THEN 'Minor Delay'</text>
+<text x="50" y="406" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">3</text>
+<text x="60" y="406" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  WHEN dep_delay &lt;= 0    THEN 'On Time'</text>
+<text x="50" y="424" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">4</text>
+<text x="60" y="424" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  ELSE 'Major Delay'</text>
+<text x="60" y="442" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">END AS delay_category</text>
+<rect x="420" y="326" width="633" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="428" y="344.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="483" y="344.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="568" y="344.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">1: IS NULL</text>
+<text x="660" y="344.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">2: &lt;= 30</text>
+<text x="752" y="344.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">3: &lt;= 0</text>
+<text x="844" y="344.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">4: ELSE</text>
+<text x="936" y="344.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">delay_category</text>
+<rect x="420" y="352" width="633" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="428" y="370.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f1</text>
+<text x="483" y="370.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="562" y="354" width="88" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="568" y="370.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">true</text>
+<rect x="655" y="355" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="660" y="370.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<rect x="747" y="355" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="752" y="370.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<rect x="839" y="355" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="844" y="370.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<text x="936" y="370.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cancelled</text>
+<rect x="420" y="378" width="633" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="428" y="396.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f2</text>
+<text x="483" y="396.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-5</text>
+<text x="568" y="396.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<rect x="654" y="380" width="88" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="660" y="396.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">true</text>
+<rect x="747" y="381" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="752" y="396.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<rect x="839" y="381" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="844" y="396.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<rect x="930" y="380" width="121" height="22" rx="3" fill="#FBE3D3" stroke="#D55E00" stroke-width="2"/>
+<text x="936" y="396.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Minor Delay</text>
+<rect x="420" y="404" width="633" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="428" y="422.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f3</text>
+<text x="483" y="422.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">12</text>
+<text x="568" y="422.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<rect x="654" y="406" width="88" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="660" y="422.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">true</text>
+<rect x="747" y="407" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="752" y="422.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<rect x="839" y="407" width="86" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="844" y="422.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">not checked</text>
+<text x="936" y="422.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Minor Delay</text>
+<rect x="420" y="430" width="633" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="428" y="448.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f4</text>
+<text x="483" y="448.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">45</text>
+<text x="568" y="448.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<text x="660" y="448.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<text x="752" y="448.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">false</text>
+<rect x="838" y="432" width="88" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="844" y="448.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">used</text>
+<text x="936" y="448.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Major Delay</text>
+<line x1="475" y1="326" x2="475" y2="456" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="560" y1="326" x2="560" y2="456" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="652" y1="326" x2="652" y2="456" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="744" y1="326" x2="744" y2="456" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="836" y1="326" x2="836" y2="456" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="928" y1="326" x2="928" y2="456" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="420" y="326" width="633" height="130" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="420" y="480" font-size="14" font-weight="bold" fill="#D55E00" text-anchor="start">f2 is now Minor Delay, and 'On Time' can never be returned: any value &lt;= 0</text>
+<text x="420" y="500" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">is also &lt;= 30, so line 2 catches it first.</text>
+<text x="420" y="520" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">The fix: check the narrower condition (&lt;= 0) before the broader one (&lt;= 30).</text>
+</svg>

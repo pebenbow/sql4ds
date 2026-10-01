@@ -155,6 +155,8 @@ Venn diagrams are not entirely wrong. They're just too simple to fully convey wh
 
 The checkered flag diagrams make the row-matching process explicit, showing which rows from each table appear in the result and how NULLs fill in for unmatched rows in outer joins. This makes them a more accurate visual representation of database joins, but it also makes them a little harder to explain (and draw)!
 
+Each join section also includes a second diagram that works through one small example: three customers and four orders. Alice has two orders, Bob has one, Chen has none, and order 104 points to a customer who is not in the `customers` table. Lines connect each pair of matching rows, and the result table shows exactly which rows the join returns, including any `NULL`s. Because every join type uses the same two tables, you can compare the results from one section to the next. (The `CROSS JOIN` section uses a separate example of shirt sizes and colors.)
+
 ## INNER JOIN
 
 An `INNER JOIN` returns only the rows where the join condition is satisfied in **both** tables. Rows that have no match on the other side are excluded from the result entirely.
@@ -162,6 +164,10 @@ An `INNER JOIN` returns only the rows where the join condition is satisfied in *
 This is the default join type. Writing `JOIN` without a qualifier is equivalent to writing `INNER JOIN`.
 
 ![INNER JOIN illustrated with the checkered flag method.](images/joins-checkered-inner.png){fig-alt="Checkered flag diagram showing the rows returned by an INNER JOIN" width="80%"}
+
+The same join, worked through on the small customers and orders example:
+
+![INNER JOIN on the customers and orders example.](images/join_inner.svg){fig-alt="customers has Alice (1), Bob (2), and Chen (3). orders has 101 and 102 for customer 1, 103 for customer 2, and 104 for customer 4, who is not in customers. The INNER JOIN returns 3 rows: Alice with 101, Alice with 102, and Bob with 103. Chen and order 104 have no match and are left out." width="100%"}
 
 ```{sql}
 --| connection: con
@@ -189,6 +195,10 @@ A `LEFT JOIN` (also written `LEFT OUTER JOIN`) returns **all rows from the left 
 The "left" table is the one named in the `FROM` clause. The "right" table is the one named in the `JOIN` clause.
 
 ![LEFT JOIN illustrated with the checkered flag method.](images/joins-checkered-left.png){fig-alt="Checkered flag diagram showing the rows returned by a LEFT JOIN" width="80%"}
+
+The same join, worked through on the small customers and orders example:
+
+![LEFT JOIN on the customers and orders example.](images/join_left.svg){fig-alt="customers has Alice (1), Bob (2), and Chen (3). orders has 101 and 102 for customer 1, 103 for customer 2, and 104 for customer 4, who is not in customers. The LEFT JOIN returns the 3 matched rows plus Chen with NULL order columns. Order 104 is left out." width="100%"}
 
 ```{sql}
 --| connection: con
@@ -285,6 +295,10 @@ A `RIGHT JOIN` is the mirror image of a `LEFT JOIN`. It returns all rows from th
 
 ![RIGHT JOIN illustrated with the checkered flag method.](images/joins-checkered-right.png){fig-alt="Checkered flag diagram showing the rows returned by a RIGHT JOIN" width="80%"}
 
+The same join, worked through on the small customers and orders example:
+
+![RIGHT JOIN on the customers and orders example.](images/join_right.svg){fig-alt="customers has Alice (1), Bob (2), and Chen (3). orders has 101 and 102 for customer 1, 103 for customer 2, and 104 for customer 4, who is not in customers. The RIGHT JOIN returns the 3 matched rows plus order 104 with NULL customer columns. Chen is left out." width="100%"}
+
 ```{sql}
 --| connection: con
 --| label: right-join
@@ -314,6 +328,10 @@ LEFT JOIN countries AS c ON c.id = i.country_id
 A `FULL OUTER JOIN` returns **all rows from both tables**. Rows that have a match are joined together. Rows from the left table with no right-side match appear with NULLs on the right. Rows from the right table with no left-side match appear with NULLs on the left.
 
 ![FULL OUTER JOIN illustrated with the checkered flag method.](images/joins-checkered-fullouter.png){fig-alt="Checkered flag diagram showing the rows returned by a FULL OUTER JOIN" width="80%"}
+
+The same join, worked through on the small customers and orders example:
+
+![FULL OUTER JOIN on the customers and orders example.](images/join_full_outer.svg){fig-alt="customers has Alice (1), Bob (2), and Chen (3). orders has 101 and 102 for customer 1, 103 for customer 2, and 104 for customer 4, who is not in customers. The FULL OUTER JOIN returns the 3 matched rows, Chen with NULL order columns, and order 104 with NULL customer columns." width="100%"}
 
 ```{sql}
 --| connection: con
@@ -357,6 +375,10 @@ I especially love the description of `FULL OUTER JOIN`: "Maximum data, maximum c
 A `CROSS JOIN` produces the **Cartesian product** of two tables: every row from the left table is paired with every row from the right table. If the left table has M rows and the right table has N rows, the result has M × N rows. No join condition is specified.
 
 ![CROSS JOIN illustrated with the checkered flag method.](images/joins-checkered-cross.png){fig-alt="Checkered flag diagram showing the Cartesian product returned by a CROSS JOIN" width="80%"}
+
+And on a small example of shirt sizes and colors:
+
+![CROSS JOIN pairs every size with every color.](images/join_cross.svg){fig-alt="sizes has 3 rows (S, M, L) and colors has 2 rows (navy, white). CROSS JOIN has no ON clause: it pairs every size with every color, giving 3 times 2 = 6 rows." width="100%"}
 
 The `series` table, with its 9 rows describing each measurement type, pairs naturally with `countries` in a cross join. The result is a complete grid of every possible country-indicator combination.
 
@@ -404,6 +426,10 @@ WHERE i.country_id IS NULL;
 ```
 
 This returns every entry in `countries` that has no rows in `indicators`. The left join brings in all countries; the `WHERE` clause discards the ones that did match, leaving only those that did not. The result is those same 38 entries: mostly regional aggregates, plus one individual country with no recorded measurements at all.
+
+Here is the same pattern on the small customers and orders example. The `LEFT JOIN` produces a `NULL`-padded row for Chen, and `WHERE` keeps only that row:
+
+![A left anti-join: LEFT JOIN, then keep the rows where the right side is NULL.](images/join_left_anti.svg){fig-alt="customers has Alice (1), Bob (2), and Chen (3). orders has 101 and 102 for customer 1, 103 for customer 2, and 104 for customer 4, who is not in customers. The LEFT JOIN produces the 3 matched rows plus Chen with NULL order columns. WHERE o.customer_id IS NULL removes the 3 matched rows, leaving only Chen." width="100%"}
 
 ::: {.callout-tip}
 Filter on the join key column from the right table, not a data column. The join key is guaranteed to be NULL only when no match was found. A data column could be NULL for other reasons, which would produce false positives.
@@ -525,6 +551,10 @@ The full logical order, updated to include joins, is:
 This graphic might help you, too ([source](https://bytebytego.com/guides/visualizing-a-sql-query/)):
 
 ![The SQL logical order of execution, including JOIN and ON.](images/sql-query-logical-order.png){fig-alt="Diagram showing the SQL logical order of execution as a pipeline: FROM, JOIN, ON, WHERE, GROUP BY, HAVING, ORDER BY, and LIMIT, each stage progressively filtering or combining a grid of rows" width="80%"}
+
+The diagram below traces one complete query through the same steps, showing the rows that exist after each one:
+
+![One query traced through the logical order of execution.](images/query_logical_order.svg){fig-alt="One query traced step by step, with the rows that exist after each step. 1: FROM flights and INNER JOIN airlines bring in 8 flights and 3 airlines; ON pairs each flight with its airline's name. 2: WHERE dep_delay > 0 drops f3 and f7, leaving 6 rows. 3: GROUP BY name forms 3 groups: American with 1 flight, Delta with 2, United with 3. 4 and 5: COUNT(*) is computed per group and HAVING COUNT(*) >= 2 drops American. 6: SELECT outputs name and n_flights for Delta (2) and United (3). 7: ORDER BY n_flights DESC puts United first. 8: LIMIT 1 keeps only United, 3." width="100%"}
 
 When a query joins more than one table, every `JOIN ... ON` pair still belongs to step 1, evaluated left to right in the order written. Each join builds on the combined result of the joins before it, which is why a later join's `ON` clause, or the query's `WHERE` clause, can freely reference a table that an earlier join introduced:
 
