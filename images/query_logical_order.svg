@@ -1,0 +1,387 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1330" width="1080" height="1330" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">SQL logical order of execution</title>
+<desc id="desc">One query traced step by step, with the rows that exist after each step. 1: FROM flights and INNER JOIN airlines bring in 8 flights and 3 airlines; ON pairs each flight with its airline's name. 2: WHERE dep_delay &gt; 0 drops f3 and f7, leaving 6 rows. 3: GROUP BY name forms 3 groups: American with 1 flight, Delta with 2, United with 3. 4 and 5: COUNT(*) is computed per group and HAVING COUNT(*) &gt;= 2 drops American. 6: SELECT outputs name and n_flights for Delta (2) and United (3). 7: ORDER BY n_flights DESC puts United first. 8: LIMIT 1 keeps only United, 3.</desc>
+<defs><marker id="arrow-0072B2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">Logical order: the clauses run in a different order than you write them</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Each box shows the table that exists after that step. Read left to right, one row of boxes at a time.</text>
+<rect x="30" y="80" width="320" height="445" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="40" y="102" font-size="15" font-weight="bold" fill="#222222"><tspan fill="#D55E00">1</tspan>  FROM, JOIN</text>
+<text x="40" y="122" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">FROM flights AS f</text>
+<text x="40" y="138" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">INNER JOIN airlines AS a</text>
+<text x="40" y="174" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flights</text>
+<rect x="40" y="184" width="240" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="48" y="200.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="118" y="200.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="198" y="200.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<rect x="40" y="206" width="240" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="206" width="5" height="22" fill="#0072B2"/>
+<text x="48" y="222.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f1</text>
+<text x="118" y="222.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="198" y="222.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">12</text>
+<rect x="40" y="228" width="240" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="228" width="5" height="22" fill="#C98500"/>
+<text x="48" y="244.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f2</text>
+<text x="118" y="244.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DL</text>
+<text x="198" y="244.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">5</text>
+<rect x="40" y="250" width="240" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="250" width="5" height="22" fill="#0072B2"/>
+<text x="48" y="266.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f3</text>
+<text x="118" y="266.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="198" y="266.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-3</text>
+<rect x="40" y="272" width="240" height="22" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="272" width="5" height="22" fill="#009E73"/>
+<text x="48" y="288.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f4</text>
+<text x="118" y="288.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<text x="198" y="288.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20</text>
+<rect x="40" y="294" width="240" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="294" width="5" height="22" fill="#0072B2"/>
+<text x="48" y="310.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f5</text>
+<text x="118" y="310.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="198" y="310.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">7</text>
+<rect x="40" y="316" width="240" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="316" width="5" height="22" fill="#C98500"/>
+<text x="48" y="332.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f6</text>
+<text x="118" y="332.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DL</text>
+<text x="198" y="332.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">30</text>
+<rect x="40" y="338" width="240" height="22" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="338" width="5" height="22" fill="#009E73"/>
+<text x="48" y="354.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f7</text>
+<text x="118" y="354.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<text x="198" y="354.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-8</text>
+<rect x="40" y="360" width="240" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="360" width="5" height="22" fill="#0072B2"/>
+<text x="48" y="376.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f8</text>
+<text x="118" y="376.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="198" y="376.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">15</text>
+<line x1="110" y1="184" x2="110" y2="382" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="190" y1="184" x2="190" y2="382" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="184" width="240" height="198" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="406" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">airlines</text>
+<rect x="40" y="416" width="180" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="48" y="432.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="128" y="432.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="40" y="438" width="180" height="22" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="438" width="5" height="22" fill="#009E73"/>
+<text x="48" y="454.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<text x="128" y="454.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">American</text>
+<rect x="40" y="460" width="180" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="460" width="5" height="22" fill="#C98500"/>
+<text x="48" y="476.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DL</text>
+<text x="128" y="476.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Delta</text>
+<rect x="40" y="482" width="180" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="482" width="5" height="22" fill="#0072B2"/>
+<text x="48" y="498.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="128" y="498.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<line x1="120" y1="416" x2="120" y2="504" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="416" width="180" height="88" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="380" y="80" width="320" height="445" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="390" y="102" font-size="15" font-weight="bold" fill="#222222"><tspan fill="#D55E00">1</tspan>  ON</text>
+<text x="390" y="122" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ON f.carrier = a.carrier</text>
+<text x="390" y="152" font-size="12" font-weight="bold" fill="#555555" text-anchor="start">8 joined rows</text>
+<rect x="390" y="160" width="300" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="398" y="176.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="456" y="176.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="528" y="176.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="610" y="176.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="390" y="182" width="300" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="182" width="5" height="22" fill="#0072B2"/>
+<text x="398" y="198.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f1</text>
+<text x="456" y="198.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="528" y="198.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">12</text>
+<rect x="604" y="184" width="84" height="18" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="610" y="198.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<rect x="390" y="204" width="300" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="204" width="5" height="22" fill="#C98500"/>
+<text x="398" y="220.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f2</text>
+<text x="456" y="220.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DL</text>
+<text x="528" y="220.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">5</text>
+<rect x="604" y="206" width="84" height="18" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="610" y="220.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Delta</text>
+<rect x="390" y="226" width="300" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="226" width="5" height="22" fill="#0072B2"/>
+<text x="398" y="242.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f3</text>
+<text x="456" y="242.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="528" y="242.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-3</text>
+<rect x="604" y="228" width="84" height="18" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="610" y="242.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<rect x="390" y="248" width="300" height="22" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="248" width="5" height="22" fill="#009E73"/>
+<text x="398" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f4</text>
+<text x="456" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<text x="528" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20</text>
+<rect x="604" y="250" width="84" height="18" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="610" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">American</text>
+<rect x="390" y="270" width="300" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="270" width="5" height="22" fill="#0072B2"/>
+<text x="398" y="286.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f5</text>
+<text x="456" y="286.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="528" y="286.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">7</text>
+<rect x="604" y="272" width="84" height="18" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="610" y="286.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<rect x="390" y="292" width="300" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="292" width="5" height="22" fill="#C98500"/>
+<text x="398" y="308.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f6</text>
+<text x="456" y="308.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DL</text>
+<text x="528" y="308.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">30</text>
+<rect x="604" y="294" width="84" height="18" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="610" y="308.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Delta</text>
+<rect x="390" y="314" width="300" height="22" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="314" width="5" height="22" fill="#009E73"/>
+<text x="398" y="330.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f7</text>
+<text x="456" y="330.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<text x="528" y="330.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-8</text>
+<rect x="604" y="316" width="84" height="18" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="610" y="330.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">American</text>
+<rect x="390" y="336" width="300" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="336" width="5" height="22" fill="#0072B2"/>
+<text x="398" y="352.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f8</text>
+<text x="456" y="352.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="528" y="352.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">15</text>
+<rect x="604" y="338" width="84" height="18" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="610" y="352.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<line x1="448" y1="160" x2="448" y2="358" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="520" y1="160" x2="520" y2="358" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="602" y1="160" x2="602" y2="358" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="160" width="300" height="198" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="390" y="380" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">name comes from airlines: each flight</text>
+<text x="390" y="396" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">is matched to its carrier's row</text>
+<rect x="730" y="80" width="320" height="445" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="740" y="102" font-size="15" font-weight="bold" fill="#222222"><tspan fill="#D55E00">2</tspan>  WHERE</text>
+<text x="740" y="122" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">WHERE f.dep_delay &gt; 0</text>
+<text x="740" y="152" font-size="12" font-weight="bold" fill="#555555" text-anchor="start">6 rows left</text>
+<rect x="740" y="160" width="300" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="748" y="176.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="806" y="176.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="878" y="176.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="960" y="176.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="740" y="182" width="300" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="740" y="182" width="5" height="22" fill="#0072B2"/>
+<text x="748" y="198.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f1</text>
+<text x="806" y="198.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="878" y="198.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">12</text>
+<text x="960" y="198.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<rect x="740" y="204" width="300" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="740" y="204" width="5" height="22" fill="#C98500"/>
+<text x="748" y="220.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f2</text>
+<text x="806" y="220.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DL</text>
+<text x="878" y="220.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">5</text>
+<text x="960" y="220.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Delta</text>
+<rect x="740" y="226" width="300" height="22" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="748" y="242.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">f3</text>
+<text x="806" y="242.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">UA</text>
+<text x="878" y="242.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">-3</text>
+<text x="960" y="242.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">United</text>
+<rect x="740" y="248" width="300" height="22" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="740" y="248" width="5" height="22" fill="#009E73"/>
+<text x="748" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f4</text>
+<text x="806" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<text x="878" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20</text>
+<text x="960" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">American</text>
+<rect x="740" y="270" width="300" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="740" y="270" width="5" height="22" fill="#0072B2"/>
+<text x="748" y="286.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f5</text>
+<text x="806" y="286.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="878" y="286.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">7</text>
+<text x="960" y="286.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<rect x="740" y="292" width="300" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="740" y="292" width="5" height="22" fill="#C98500"/>
+<text x="748" y="308.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f6</text>
+<text x="806" y="308.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DL</text>
+<text x="878" y="308.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">30</text>
+<text x="960" y="308.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Delta</text>
+<rect x="740" y="314" width="300" height="22" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="748" y="330.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">f7</text>
+<text x="806" y="330.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">AA</text>
+<text x="878" y="330.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">-8</text>
+<text x="960" y="330.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">American</text>
+<rect x="740" y="336" width="300" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="740" y="336" width="5" height="22" fill="#0072B2"/>
+<text x="748" y="352.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f8</text>
+<text x="806" y="352.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="878" y="352.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">15</text>
+<text x="960" y="352.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<line x1="798" y1="160" x2="798" y2="358" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="870" y1="160" x2="870" y2="358" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="952" y1="160" x2="952" y2="358" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="740" y="160" width="300" height="198" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="740" y="380" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">filters individual rows,</text>
+<text x="740" y="396" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">before any grouping</text>
+<rect x="30" y="575" width="320" height="420" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="40" y="597" font-size="15" font-weight="bold" fill="#222222"><tspan fill="#D55E00">3</tspan>  GROUP BY</text>
+<text x="40" y="617" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">GROUP BY a.name</text>
+<text x="40" y="647" font-size="12" font-weight="bold" fill="#555555" text-anchor="start">the 6 rows, gathered into 3 groups</text>
+<rect x="40" y="657" width="300" height="80" rx="8" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="50" y="677" font-size="13" font-weight="bold" fill="#555555" text-anchor="start">group: name = 'American'</text>
+<rect x="50" y="685" width="280" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="58" y="701.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="114" y="701.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="180" y="701.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="260" y="701.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="50" y="707" width="280" height="22" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="50" y="707" width="5" height="22" fill="#009E73"/>
+<text x="58" y="723.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f4</text>
+<text x="114" y="723.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<text x="180" y="723.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20</text>
+<text x="260" y="723.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">American</text>
+<line x1="106" y1="685" x2="106" y2="729" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="172" y1="685" x2="172" y2="729" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="252" y1="685" x2="252" y2="729" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="50" y="685" width="280" height="44" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="40" y="745" width="300" height="102" rx="8" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="50" y="765" font-size="13" font-weight="bold" fill="#555555" text-anchor="start">group: name = 'Delta'</text>
+<rect x="50" y="773" width="280" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="58" y="789.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="114" y="789.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="180" y="789.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="260" y="789.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="50" y="795" width="280" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="50" y="795" width="5" height="22" fill="#C98500"/>
+<text x="58" y="811.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f2</text>
+<text x="114" y="811.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DL</text>
+<text x="180" y="811.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">5</text>
+<text x="260" y="811.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Delta</text>
+<rect x="50" y="817" width="280" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="50" y="817" width="5" height="22" fill="#C98500"/>
+<text x="58" y="833.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f6</text>
+<text x="114" y="833.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DL</text>
+<text x="180" y="833.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">30</text>
+<text x="260" y="833.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Delta</text>
+<line x1="106" y1="773" x2="106" y2="839" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="172" y1="773" x2="172" y2="839" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="252" y1="773" x2="252" y2="839" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="50" y="773" width="280" height="66" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="40" y="855" width="300" height="124" rx="8" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="50" y="875" font-size="13" font-weight="bold" fill="#555555" text-anchor="start">group: name = 'United'</text>
+<rect x="50" y="883" width="280" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="58" y="899.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="114" y="899.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="180" y="899.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="260" y="899.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="50" y="905" width="280" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="50" y="905" width="5" height="22" fill="#0072B2"/>
+<text x="58" y="921.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f1</text>
+<text x="114" y="921.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="180" y="921.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">12</text>
+<text x="260" y="921.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<rect x="50" y="927" width="280" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="50" y="927" width="5" height="22" fill="#0072B2"/>
+<text x="58" y="943.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f5</text>
+<text x="114" y="943.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="180" y="943.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">7</text>
+<text x="260" y="943.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<rect x="50" y="949" width="280" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="50" y="949" width="5" height="22" fill="#0072B2"/>
+<text x="58" y="965.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f8</text>
+<text x="114" y="965.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UA</text>
+<text x="180" y="965.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">15</text>
+<text x="260" y="965.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<line x1="106" y1="883" x2="106" y2="971" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="172" y1="883" x2="172" y2="971" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="252" y1="883" x2="252" y2="971" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="50" y="883" width="280" height="88" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="380" y="575" width="320" height="420" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="390" y="597" font-size="15" font-weight="bold" fill="#222222"><tspan fill="#D55E00">4, 5</tspan>  COUNT, HAVING</text>
+<text x="390" y="617" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">HAVING COUNT(*) &gt;= 2</text>
+<text x="390" y="647" font-size="12" font-weight="bold" fill="#555555" text-anchor="start">each group collapses to one row</text>
+<rect x="390" y="655" width="220" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="398" y="671.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="518" y="671.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">COUNT(*)</text>
+<rect x="390" y="677" width="220" height="22" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="398" y="693.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">American</text>
+<text x="518" y="693.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">1</text>
+<rect x="390" y="699" width="220" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="699" width="5" height="22" fill="#C98500"/>
+<text x="398" y="715.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Delta</text>
+<text x="518" y="715.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<rect x="390" y="721" width="220" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="721" width="5" height="22" fill="#0072B2"/>
+<text x="398" y="737.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<text x="518" y="737.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<line x1="510" y1="655" x2="510" y2="743" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="655" width="220" height="88" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="390" y="765" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">4: COUNT(*) is computed for each group</text>
+<text x="390" y="781" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">5: HAVING drops American (1 flight)</text>
+<rect x="730" y="575" width="320" height="420" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="740" y="597" font-size="15" font-weight="bold" fill="#222222"><tspan fill="#D55E00">6</tspan>  SELECT</text>
+<text x="740" y="617" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">SELECT a.name,</text>
+<text x="740" y="633" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  COUNT(*) AS n_flights</text>
+<rect x="740" y="663" width="220" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="748" y="679.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="868" y="679.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">n_flights</text>
+<rect x="740" y="685" width="220" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="740" y="685" width="5" height="22" fill="#C98500"/>
+<text x="748" y="701.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Delta</text>
+<text x="868" y="701.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<rect x="740" y="707" width="220" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="740" y="707" width="5" height="22" fill="#0072B2"/>
+<text x="748" y="723.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<text x="868" y="723.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<line x1="860" y1="663" x2="860" y2="729" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="740" y="663" width="220" height="66" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="740" y="751" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">the alias n_flights exists</text>
+<text x="740" y="767" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">from this step on</text>
+<rect x="30" y="1045" width="320" height="215" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="40" y="1067" font-size="15" font-weight="bold" fill="#222222"><tspan fill="#D55E00">7</tspan>  ORDER BY</text>
+<text x="40" y="1087" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ORDER BY n_flights DESC</text>
+<rect x="40" y="1117" width="220" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="48" y="1133.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="168" y="1133.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">n_flights</text>
+<rect x="40" y="1139" width="220" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="1139" width="5" height="22" fill="#0072B2"/>
+<text x="48" y="1155.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<text x="168" y="1155.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<rect x="40" y="1161" width="220" height="22" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="1161" width="5" height="22" fill="#C98500"/>
+<text x="48" y="1177.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Delta</text>
+<text x="168" y="1177.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<line x1="160" y1="1117" x2="160" y2="1183" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="40" y="1117" width="220" height="66" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="1205" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">can use the alias n_flights,</text>
+<text x="40" y="1221" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">because SELECT already ran</text>
+<rect x="380" y="1045" width="320" height="215" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="390" y="1067" font-size="15" font-weight="bold" fill="#222222"><tspan fill="#D55E00">8</tspan>  LIMIT</text>
+<text x="390" y="1087" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">LIMIT 1</text>
+<rect x="390" y="1117" width="220" height="22" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="398" y="1133.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="518" y="1133.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">n_flights</text>
+<rect x="390" y="1139" width="220" height="22" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="1139" width="5" height="22" fill="#0072B2"/>
+<text x="398" y="1155.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">United</text>
+<text x="518" y="1155.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<rect x="390" y="1161" width="220" height="22" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="398" y="1177.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">Delta</text>
+<text x="518" y="1177.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">2</text>
+<line x1="510" y1="1117" x2="510" y2="1183" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="390" y="1117" width="220" height="66" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="390" y="1205" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">final result: 1 row</text>
+<rect x="730" y="1045" width="320" height="215" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="740" y="1067" font-size="15" font-weight="bold" fill="#222222" text-anchor="start">The same query, as written</text>
+<text x="758" y="1093" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">6</text>
+<text x="768" y="1093" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">SELECT a.name, COUNT(*) AS n_flights</text>
+<text x="758" y="1111" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">1</text>
+<text x="768" y="1111" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">FROM flights AS f</text>
+<text x="758" y="1129" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">1</text>
+<text x="768" y="1129" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">INNER JOIN airlines AS a</text>
+<text x="758" y="1147" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">1</text>
+<text x="768" y="1147" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  ON f.carrier = a.carrier</text>
+<text x="758" y="1165" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">2</text>
+<text x="768" y="1165" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">WHERE f.dep_delay &gt; 0</text>
+<text x="758" y="1183" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">3</text>
+<text x="768" y="1183" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">GROUP BY a.name</text>
+<text x="758" y="1201" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">5</text>
+<text x="768" y="1201" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">HAVING COUNT(*) &gt;= 2</text>
+<text x="758" y="1219" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">7</text>
+<text x="768" y="1219" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ORDER BY n_flights DESC</text>
+<text x="758" y="1237" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="end">8</text>
+<text x="768" y="1237" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">LIMIT 1;</text>
+<line x1="353" y1="102" x2="375" y2="102" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow-777777)"/>
+<line x1="703" y1="102" x2="725" y2="102" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow-777777)"/>
+<line x1="353" y1="597" x2="375" y2="597" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow-777777)"/>
+<line x1="703" y1="597" x2="725" y2="597" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow-777777)"/>
+<line x1="353" y1="1067" x2="375" y2="1067" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow-777777)"/>
+<path d="M890.0,528 V550.0 H190.0 V570" fill="none" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow-777777)"/>
+<path d="M890.0,998 V1020.0 H190.0 V1040" fill="none" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow-777777)"/>
+<text x="30" y="1292" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Red numbers are the step in which each clause runs. SELECT is written first but runs sixth, so a column</text>
+<text x="30" y="1312" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">alias such as n_flights works in ORDER BY but not in WHERE, GROUP BY, or HAVING. That is why HAVING repeats COUNT(*).</text>
+</svg>

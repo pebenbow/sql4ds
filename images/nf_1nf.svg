@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 870 540" width="870" height="540" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">First normal form: one value per cell</title>
+<desc id="desc">The orders table stores lists in two cells: order 1 has products 'Laptop, Mouse' with quantities '1, 2', and order 3 has 'Monitor, Keyboard' with '1, 1'. Splitting each list gives one row per product: 3 rows become 5, and the primary key becomes order_id plus product. Alice's name and email now repeat on 4 rows, which 2NF fixes next.</desc>
+<defs><marker id="arrow-0072B2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">First normal form: one value per cell</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">products and quantities hold lists, so a query cannot filter, join, or sum them reliably.</text>
+<text x="30" y="99" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">orders</text>
+<text x="89.19999999999999" y="99" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">not in 1NF</text>
+<rect x="30" y="109" width="635" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="38" y="127.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">order_id</text>
+<text x="118" y="127.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">customer</text>
+<text x="218" y="127.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">email</text>
+<text x="343" y="127.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">products</text>
+<text x="483" y="127.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">quantities</text>
+<text x="573" y="127.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">order_date</text>
+<rect x="30" y="135" width="635" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="135" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="153.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="118" y="153.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Alice Smith</text>
+<text x="218" y="153.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">alice@acme.com</text>
+<rect x="337" y="137" width="136" height="22" rx="3" fill="#FBE3D3" stroke="#D55E00" stroke-width="2"/>
+<text x="343" y="153.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Laptop, Mouse</text>
+<rect x="477" y="137" width="86" height="22" rx="3" fill="#FBE3D3" stroke="#D55E00" stroke-width="2"/>
+<text x="483" y="153.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1, 2</text>
+<text x="573" y="153.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2024-01-15</text>
+<rect x="30" y="161" width="635" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="161" width="5" height="26" fill="#C98500"/>
+<text x="38" y="179.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<text x="118" y="179.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Bob Jones</text>
+<text x="218" y="179.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">bob@corp.net</text>
+<text x="343" y="179.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Keyboard</text>
+<text x="483" y="179.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="573" y="179.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2024-01-16</text>
+<rect x="30" y="187" width="635" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="187" width="5" height="26" fill="#009E73"/>
+<text x="38" y="205.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<text x="118" y="205.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Alice Smith</text>
+<text x="218" y="205.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">alice@acme.com</text>
+<rect x="337" y="189" width="136" height="22" rx="3" fill="#FBE3D3" stroke="#D55E00" stroke-width="2"/>
+<text x="343" y="205.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Monitor, Keyboard</text>
+<rect x="477" y="189" width="86" height="22" rx="3" fill="#FBE3D3" stroke="#D55E00" stroke-width="2"/>
+<text x="483" y="205.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1, 1</text>
+<text x="573" y="205.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2024-01-20</text>
+<line x1="110" y1="109" x2="110" y2="213" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="210" y1="109" x2="210" y2="213" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="335" y1="109" x2="335" y2="213" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="475" y1="109" x2="475" y2="213" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="565" y1="109" x2="565" y2="213" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="109" width="635" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="685" y="144.0" font-size="14" font-weight="bold" fill="#D55E00" text-anchor="start">Lists in a cell</text>
+<text x="685" y="162.0" font-size="14" font-weight="bold" fill="#D55E00" text-anchor="start">violate 1NF</text>
+<line x1="330" y1="225" x2="330" y2="265" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow-777777)"/>
+<text x="345" y="250" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">split each list into one row per product</text>
+<text x="30" y="289" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">orders</text>
+<text x="89.19999999999999" y="289" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">1NF</text>
+<rect x="30" y="299" width="580" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="38" y="317.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">order_id</text>
+<line x1="38" y1="320.0" x2="95.6" y2="320.0" stroke="#222222" stroke-width="1.3"/>
+<text x="118" y="317.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">customer</text>
+<text x="218" y="317.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">email</text>
+<text x="343" y="317.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">product</text>
+<line x1="343" y1="320.0" x2="393.4" y2="320.0" stroke="#222222" stroke-width="1.3"/>
+<text x="438" y="317.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">quantity</text>
+<text x="518" y="317.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">order_date</text>
+<rect x="30" y="325" width="580" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="325" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="343.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="118" y="343.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Alice Smith</text>
+<text x="218" y="343.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">alice@acme.com</text>
+<text x="343" y="343.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Laptop</text>
+<text x="438" y="343.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="518" y="343.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2024-01-15</text>
+<rect x="30" y="351" width="580" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="351" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="369.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="118" y="369.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Alice Smith</text>
+<text x="218" y="369.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">alice@acme.com</text>
+<text x="343" y="369.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Mouse</text>
+<text x="438" y="369.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<text x="518" y="369.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2024-01-15</text>
+<rect x="30" y="377" width="580" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="377" width="5" height="26" fill="#C98500"/>
+<text x="38" y="395.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<text x="118" y="395.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Bob Jones</text>
+<text x="218" y="395.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">bob@corp.net</text>
+<text x="343" y="395.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Keyboard</text>
+<text x="438" y="395.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="518" y="395.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2024-01-16</text>
+<rect x="30" y="403" width="580" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="403" width="5" height="26" fill="#009E73"/>
+<text x="38" y="421.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<text x="118" y="421.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Alice Smith</text>
+<text x="218" y="421.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">alice@acme.com</text>
+<text x="343" y="421.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Monitor</text>
+<text x="438" y="421.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="518" y="421.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2024-01-20</text>
+<rect x="30" y="429" width="580" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="429" width="5" height="26" fill="#009E73"/>
+<text x="38" y="447.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<text x="118" y="447.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Alice Smith</text>
+<text x="218" y="447.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">alice@acme.com</text>
+<text x="343" y="447.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Keyboard</text>
+<text x="438" y="447.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="518" y="447.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2024-01-20</text>
+<line x1="110" y1="299" x2="110" y2="455" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="210" y1="299" x2="210" y2="455" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="335" y1="299" x2="335" y2="455" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="430" y1="299" x2="430" y2="455" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="510" y1="299" x2="510" y2="455" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="299" width="580" height="156" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M624,328 h8 V374 h-8" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="640" y="356.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">order 1: 2 rows</text>
+<path d="M624,380 h8 V400 h-8" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="640" y="395.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">order 2: 1 row</text>
+<path d="M624,406 h8 V452 h-8" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="640" y="434.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">order 3: 2 rows</text>
+<text x="30" y="485" font-size="14" font-weight="normal" fill="#222222" text-anchor="start">Underlined columns form the primary key: (order_id, product).</text>
+<text x="30" y="505" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Still redundant: Alice's name and email now repeat on 4 rows. Second normal form fixes that.</text>
+</svg>

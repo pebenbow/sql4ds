@@ -131,6 +131,8 @@ Apply 1NF by giving each product its own row:
 
 Every cell now holds exactly one value. The primary key for this table is the combination of `(order_id, product)`, since each row uniquely identifies one product on one order.
 
+![Applying 1NF: each list is split into one row per product.](images/nf_1nf.svg){fig-alt="The orders table stores lists in two cells: order 1 has products 'Laptop, Mouse' with quantities '1, 2', and order 3 has 'Monitor, Keyboard' with '1, 1'. Splitting each list gives one row per product: 3 rows become 5, and the primary key becomes order_id plus product. Alice's name and email now repeat on 4 rows, which 2NF fixes next." width="100%"}
+
 ### The Remaining Problems
 
 The 1NF table is cleaner, but it still stores redundant information. Notice that `customer`, `email`, and `order_date` appear twice for orders 1 and 3. If Alice Smith changes her email address, you must update every row for every order she has ever placed. If you update some rows but miss others, the database now contains two different email addresses for the same customer. This is an update anomaly, and it signals a deeper structural problem.
@@ -173,6 +175,10 @@ Remove the partial dependencies by splitting the table. Columns that depend on t
 | 2        | Keyboard | 1        |
 | 3        | Monitor  | 1        |
 | 3        | Keyboard | 1        |
+
+The diagram below traces the split. The partial dependencies on `order_id` move to `orders`, and `quantity` stays with the whole key in `order_items`:
+
+![Applying 2NF: columns that depend on only part of the key move to their own table.](images/nf_2nf.svg){fig-alt="In the 1NF orders table the primary key is (order_id, product). quantity depends on the whole key, but customer, email, and order_date depend on order_id alone, a partial dependency. Moving those columns to an orders table keyed by order_id leaves order_items with order_id, product, and quantity. Alice's email goes from 4 copies to 2." width="100%"}
 
 We can visualize this as an ER diagram:
 
@@ -237,6 +243,10 @@ Move the transitively dependent columns to their own table. The non-key column t
 | 2        | Keyboard | 1        |
 | 3        | Monitor  | 1        |
 | 3        | Keyboard | 1        |
+
+Here is the same step as a diagram, starting from the 2NF `orders` table:
+
+![Applying 3NF: the transitive dependency through email moves to a customers table.](images/nf_3nf.svg){fig-alt="In the 2NF orders table, order_id determines email and email determines customer, so customer depends on the key only through email, a transitive dependency. Alice's name and email repeat on orders 1 and 3. Moving customer and email to a customers table with a new customer_id key leaves orders with order_id, customer_id, and order_date. Each customer is now stored once. order_items is unchanged." width="100%"}
 
 Let's take a look at the ER diagram:
 

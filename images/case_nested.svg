@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1110 752" width="1110" height="752" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">Nested CASE</title>
+<desc id="desc">Seven flights go through the chapter's nested CASE. The outer CASE checks dep_delay and sends each flight to exactly one branch: f1 (dep_delay NULL) to Cancelled; f2, f3, and f4 (dep_delay &gt; 0) to the first inner CASE; f5, f6, and f7 (dep_delay -3, -6, and 0) to the ELSE branch's inner CASE. Only that branch's inner CASE runs on a row. f2 made up time, f3 arrived late, and f4 has a NULL arr_delay, so it is Diverted. f5 arrived late, f6 was on time throughout, and f7 is Diverted. GROUP BY flight_outcome then counts the labels: Diverted 2, every other outcome 1.</desc>
+<defs><marker id="arrow-0072B2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">Nested CASE: the outer CASE picks a branch, then only that branch's inner CASE runs</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Read from the outside in. A row is checked against the outer WHENs first; the other branch's inner CASE never sees it.</text>
+<text x="30" y="110" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flights</text>
+<rect x="30" y="120" width="225" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="38" y="138.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="93" y="138.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="178" y="138.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">arr_delay</text>
+<rect x="30" y="146" width="225" height="26" fill="#EDEDED" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="146" width="5" height="26" fill="#777777"/>
+<text x="38" y="164.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f1</text>
+<text x="93" y="164.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<text x="178" y="164.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="30" y="172" width="225" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="172" width="5" height="26" fill="#C98500"/>
+<text x="38" y="190.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f2</text>
+<text x="93" y="190.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">15</text>
+<text x="178" y="190.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-4</text>
+<rect x="30" y="198" width="225" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="198" width="5" height="26" fill="#C98500"/>
+<text x="38" y="216.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f3</text>
+<text x="93" y="216.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">40</text>
+<text x="178" y="216.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">52</text>
+<rect x="30" y="224" width="225" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="224" width="5" height="26" fill="#C98500"/>
+<text x="38" y="242.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f4</text>
+<text x="93" y="242.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">22</text>
+<text x="178" y="242.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="30" y="250" width="225" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="250" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="268.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f5</text>
+<text x="93" y="268.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-3</text>
+<text x="178" y="268.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">18</text>
+<rect x="30" y="276" width="225" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="276" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="294.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f6</text>
+<text x="93" y="294.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-6</text>
+<text x="178" y="294.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-10</text>
+<rect x="30" y="302" width="225" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="302" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="320.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f7</text>
+<text x="93" y="320.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">0</text>
+<text x="178" y="320.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<line x1="85" y1="120" x2="85" y2="328" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="170" y1="120" x2="170" y2="328" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="120" width="225" height="208" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="300" y="120" width="440" height="118" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="310" y="140" font-size="14" font-weight="bold" fill="#222222"><tspan fill="#D55E00">outer 1</tspan>  <tspan font-family="Consolas, Menlo, monospace">WHEN dep_delay IS NULL</tspan></text>
+<text x="310" y="160" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">THEN 'Cancelled'   (no inner CASE)</text>
+<rect x="310" y="172" width="420" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="318" y="190.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="373" y="190.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="458" y="190.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">arr_delay</text>
+<text x="543" y="190.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight_outcome</text>
+<rect x="310" y="198" width="420" height="26" fill="#EDEDED" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="310" y="198" width="5" height="26" fill="#777777"/>
+<text x="318" y="216.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f1</text>
+<text x="373" y="216.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<text x="458" y="216.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="537" y="200" width="191" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="543" y="216.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cancelled</text>
+<line x1="365" y1="172" x2="365" y2="224" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="450" y1="172" x2="450" y2="224" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="535" y1="172" x2="535" y2="224" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="310" y="172" width="420" height="52" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M255,159.0 C282.5,159.0 282.5,211.0 310,211.0" fill="none" stroke="#777777" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="255" cy="159.0" r="3.5" fill="#777777"/>
+<circle cx="310" cy="211.0" r="3.5" fill="#777777"/>
+<rect x="300" y="250" width="440" height="234" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="310" y="270" font-size="14" font-weight="bold" fill="#222222"><tspan fill="#D55E00">outer 2</tspan>  <tspan font-family="Consolas, Menlo, monospace">WHEN dep_delay > 0</tspan></text>
+<text x="310" y="290" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">THEN CASE</text>
+<text x="310" y="306" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  WHEN arr_delay IS NULL THEN 'Diverted'</text>
+<text x="310" y="322" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  WHEN arr_delay &lt;= 0    THEN 'Left late, made up time'</text>
+<text x="310" y="338" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  ELSE 'Left late, arrived late'</text>
+<text x="310" y="354" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">END</text>
+<rect x="310" y="366" width="420" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="318" y="384.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="373" y="384.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="458" y="384.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">arr_delay</text>
+<text x="543" y="384.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight_outcome</text>
+<rect x="310" y="392" width="420" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="310" y="392" width="5" height="26" fill="#C98500"/>
+<text x="318" y="410.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f2</text>
+<text x="373" y="410.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">15</text>
+<text x="458" y="410.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-4</text>
+<rect x="537" y="394" width="191" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="543" y="410.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Left late, made up time</text>
+<rect x="310" y="418" width="420" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="310" y="418" width="5" height="26" fill="#C98500"/>
+<text x="318" y="436.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f3</text>
+<text x="373" y="436.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">40</text>
+<text x="458" y="436.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">52</text>
+<rect x="537" y="420" width="191" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="543" y="436.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Left late, arrived late</text>
+<rect x="310" y="444" width="420" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="310" y="444" width="5" height="26" fill="#C98500"/>
+<text x="318" y="462.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f4</text>
+<text x="373" y="462.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">22</text>
+<text x="458" y="462.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="537" y="446" width="191" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="543" y="462.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Diverted</text>
+<line x1="365" y1="366" x2="365" y2="470" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="450" y1="366" x2="450" y2="470" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="535" y1="366" x2="535" y2="470" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="310" y="366" width="420" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M255,185.0 C282.5,185.0 282.5,405.0 310,405.0" fill="none" stroke="#C98500" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="255" cy="185.0" r="3.5" fill="#C98500"/>
+<circle cx="310" cy="405.0" r="3.5" fill="#C98500"/>
+<path d="M255,211.0 C282.5,211.0 282.5,431.0 310,431.0" fill="none" stroke="#C98500" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="255" cy="211.0" r="3.5" fill="#C98500"/>
+<circle cx="310" cy="431.0" r="3.5" fill="#C98500"/>
+<path d="M255,237.0 C282.5,237.0 282.5,457.0 310,457.0" fill="none" stroke="#C98500" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="255" cy="237.0" r="3.5" fill="#C98500"/>
+<circle cx="310" cy="457.0" r="3.5" fill="#C98500"/>
+<rect x="300" y="496" width="440" height="234" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="310" y="516" font-size="14" font-weight="bold" fill="#222222"><tspan fill="#D55E00">outer 3</tspan>  <tspan font-family="Consolas, Menlo, monospace">ELSE</tspan></text>
+<text x="310" y="536" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">CASE</text>
+<text x="310" y="552" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  WHEN arr_delay IS NULL THEN 'Diverted'</text>
+<text x="310" y="568" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  WHEN arr_delay &gt; 0     THEN 'Left on time, arrived late'</text>
+<text x="310" y="584" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  ELSE 'On time throughout'</text>
+<text x="310" y="600" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">END</text>
+<rect x="310" y="612" width="420" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="318" y="630.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight</text>
+<text x="373" y="630.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="458" y="630.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">arr_delay</text>
+<text x="543" y="630.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight_outcome</text>
+<rect x="310" y="638" width="420" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="310" y="638" width="5" height="26" fill="#0072B2"/>
+<text x="318" y="656.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f5</text>
+<text x="373" y="656.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-3</text>
+<text x="458" y="656.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">18</text>
+<rect x="537" y="640" width="191" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="543" y="656.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Left on time, arrived late</text>
+<rect x="310" y="664" width="420" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="310" y="664" width="5" height="26" fill="#0072B2"/>
+<text x="318" y="682.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f6</text>
+<text x="373" y="682.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-6</text>
+<text x="458" y="682.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">-10</text>
+<rect x="537" y="666" width="191" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="543" y="682.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">On time throughout</text>
+<rect x="310" y="690" width="420" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="310" y="690" width="5" height="26" fill="#0072B2"/>
+<text x="318" y="708.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">f7</text>
+<text x="373" y="708.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">0</text>
+<text x="458" y="708.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="537" y="692" width="191" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="543" y="708.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Diverted</text>
+<line x1="365" y1="612" x2="365" y2="716" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="450" y1="612" x2="450" y2="716" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="535" y1="612" x2="535" y2="716" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="310" y="612" width="420" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M255,263.0 C282.5,263.0 282.5,651.0 310,651.0" fill="none" stroke="#0072B2" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="255" cy="263.0" r="3.5" fill="#0072B2"/>
+<circle cx="310" cy="651.0" r="3.5" fill="#0072B2"/>
+<path d="M255,289.0 C282.5,289.0 282.5,677.0 310,677.0" fill="none" stroke="#0072B2" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="255" cy="289.0" r="3.5" fill="#0072B2"/>
+<circle cx="310" cy="677.0" r="3.5" fill="#0072B2"/>
+<path d="M255,315.0 C282.5,315.0 282.5,703.0 310,703.0" fill="none" stroke="#0072B2" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="255" cy="315.0" r="3.5" fill="#0072B2"/>
+<circle cx="310" cy="703.0" r="3.5" fill="#0072B2"/>
+<text x="790" y="110" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">GROUP BY flight_outcome</text>
+<rect x="790" y="120" width="295" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="798" y="138.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">flight_outcome</text>
+<text x="998" y="138.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">num_flights</text>
+<rect x="790" y="146" width="295" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="798" y="164.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Diverted</text>
+<text x="998" y="164.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<rect x="790" y="172" width="295" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="798" y="190.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cancelled</text>
+<text x="998" y="190.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<rect x="790" y="198" width="295" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="798" y="216.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Left late, made up time</text>
+<text x="998" y="216.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<rect x="790" y="224" width="295" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="798" y="242.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Left late, arrived late</text>
+<text x="998" y="242.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<rect x="790" y="250" width="295" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="798" y="268.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Left on time, arrived late</text>
+<text x="998" y="268.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<rect x="790" y="276" width="295" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="798" y="294.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">On time throughout</text>
+<text x="998" y="294.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<line x1="990" y1="120" x2="990" y2="302" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="790" y="120" width="295" height="182" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M730,211.0 C760.0,211.0 760.0,185.0 790,185.0" fill="none" stroke="#777777" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="730" cy="211.0" r="3.5" fill="#777777"/>
+<circle cx="790" cy="185.0" r="3.5" fill="#777777"/>
+<path d="M730,405.0 C760.0,405.0 760.0,211.0 790,211.0" fill="none" stroke="#C98500" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="730" cy="405.0" r="3.5" fill="#C98500"/>
+<circle cx="790" cy="211.0" r="3.5" fill="#C98500"/>
+<path d="M730,431.0 C760.0,431.0 760.0,237.0 790,237.0" fill="none" stroke="#C98500" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="730" cy="431.0" r="3.5" fill="#C98500"/>
+<circle cx="790" cy="237.0" r="3.5" fill="#C98500"/>
+<path d="M730,457.0 C760.0,457.0 760.0,159.0 790,159.0" fill="none" stroke="#C98500" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="730" cy="457.0" r="3.5" fill="#C98500"/>
+<circle cx="790" cy="159.0" r="3.5" fill="#C98500"/>
+<path d="M730,651.0 C760.0,651.0 760.0,263.0 790,263.0" fill="none" stroke="#0072B2" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="730" cy="651.0" r="3.5" fill="#0072B2"/>
+<circle cx="790" cy="263.0" r="3.5" fill="#0072B2"/>
+<path d="M730,677.0 C760.0,677.0 760.0,289.0 790,289.0" fill="none" stroke="#0072B2" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="730" cy="677.0" r="3.5" fill="#0072B2"/>
+<circle cx="790" cy="289.0" r="3.5" fill="#0072B2"/>
+<path d="M730,703.0 C760.0,703.0 760.0,159.0 790,159.0" fill="none" stroke="#0072B2" stroke-width="1.4" stroke-opacity="0.85"/>
+<circle cx="730" cy="703.0" r="3.5" fill="#0072B2"/>
+<circle cx="790" cy="159.0" r="3.5" fill="#0072B2"/>
+<text x="790" y="332" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">Diverted comes from both inner CASEs.</text>
+<text x="790" y="352" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Each level checks arr_delay IS NULL on its</text>
+<text x="790" y="372" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">own; without it, a diverted flight fails</text>
+<text x="790" y="392" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">arr_delay &lt;= 0 and falls through to ELSE.</text>
+<text x="790" y="412" font-size="14" font-weight="normal" fill="#555555" text-anchor="start"></text>
+<text x="790" y="432" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">f7 left at dep_delay = 0. 0 &gt; 0 is false,</text>
+<text x="790" y="452" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">so the outer CASE sends it to the ELSE</text>
+<text x="790" y="472" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">branch, not the late-departure branch.</text>
+</svg>

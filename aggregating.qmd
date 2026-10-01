@@ -100,6 +100,10 @@ ORDER BY actor_count DESC;
 
 The result has one row per genre. Drama dominates with 135 actors and 115 wins. Action comes second by count but its wins are comparatively low, a reflection of the Academy's historical preference for dramatic performances over action roles.
 
+The diagram below shows what `GROUP BY` does to the rows, using a small set of flights. Each row is sorted into the group for its `carrier` value, and each group then collapses into one summary row:
+
+![GROUP BY sorts rows into groups, then collapses each group into one row.](images/group_by.svg){fig-alt="8 flights are sorted into one group per carrier: AA has f4 and f7, DL has f2 and f6, UA has f1, f3, f5, and f8. Each group collapses to a single output row: AA 2 flights averaging 6 minutes, DL 2 flights averaging 17.5, UA 4 flights averaging 7.75. The individual flight rows are gone from the result." width="100%"}
+
 ### Grouping by Multiple Columns
 
 You can group by more than one column by listing them in `GROUP BY`, separated by commas. The database creates one group per unique combination of those columns.

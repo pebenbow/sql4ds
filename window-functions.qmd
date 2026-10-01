@@ -70,6 +70,14 @@ LIMIT 10;
 
 Every individual flight row survives, and every row belonging to the same carrier shows that carrier's average delay sitting right alongside its own. Nothing was collapsed; the average was simply *attached* to each row that contributed to it. That is the defining trait of a window function: it looks across a set of related rows to compute something, but it never reduces the row count.
 
+The two diagrams below show the difference on a small set of eight flights. First, `GROUP BY` collapses each carrier's rows into one:
+
+![GROUP BY: 8 rows in, 3 rows out.](images/group_by.svg){fig-alt="8 flights are sorted into one group per carrier: AA has f4 and f7, DL has f2 and f6, UA has f1, f3, f5, and f8. Each group collapses to a single output row: AA 2 flights averaging 6 minutes, DL 2 flights averaging 17.5, UA 4 flights averaging 7.75. The individual flight rows are gone from the result." width="100%"}
+
+A window function with `PARTITION BY` forms the same groups but keeps every row:
+
+![AVG() OVER (PARTITION BY carrier): 8 rows in, 8 rows out.](images/window_partition_avg.svg){fig-alt="The same 8 flights are partitioned by carrier. AVG(dep_delay) OVER (PARTITION BY carrier) computes each carrier's average, 6 for AA, 17.5 for DL, and 7.75 for UA, and writes it on every row of that carrier. All 8 rows remain in the result." width="100%"}
+
 ## The OVER Clause: PARTITION BY and ORDER BY
 
 Every window function is written as `function() OVER (...)`. The `OVER` clause defines the "window", the set of rows the function is allowed to look at for each row of output:
@@ -109,6 +117,10 @@ Flights 1837 and 753 are tied at a 13-minute delay, and the three functions hand
 - **`DENSE_RANK()`** also gives both tied rows the same rank, 4, but does *not* skip the next rank: the next distinct value gets rank 5. Dense rank counts the number of distinct values seen so far, with no gaps.
 
 Choosing between them depends on what the rank is meant to represent. Use `ROW_NUMBER()` when you need a genuinely unique sequence number regardless of ties (for example, to pick exactly one row per group). Use `RANK()` when ties should be visible as ties, and later ranks should reflect how many rows came before. Use `DENSE_RANK()` when you want a compact, gap-free scale, such as when the rank itself will be displayed as a category (1st tier, 2nd tier, and so on).
+
+The examples above rank one set of rows. Add `PARTITION BY` and the numbering starts over at 1 in each partition, which is what makes `ROW_NUMBER()` the usual tool for picking one row per group:
+
+![ROW_NUMBER() with PARTITION BY restarts the numbering in every partition.](images/window_row_number.svg){fig-alt="The 8 flights are partitioned by carrier and sorted by dep_delay, largest first. ROW_NUMBER numbers the rows within each partition starting at 1: AA f4 is 1 and f7 is 2; DL f6 is 1 and f2 is 2; UA f8 is 1, f1 is 2, f5 is 3, and f3 is 4. Keeping rows where the number is 1 gives the most delayed flight per carrier." width="100%"}
 
 ## Looking Ahead and Behind: LAG and LEAD
 
@@ -156,6 +168,10 @@ LIMIT 6;
 ```
 
 By month 6, `running_total` reflects every Delta flight recorded from January through June, while `num_flights` still shows only that individual month's count. This same pattern, an aggregate function combined with `ORDER BY` inside `OVER()`, works for `AVG()`, `MIN()`, `MAX()`, and any other aggregate: each becomes a "running" version of itself.
+
+With `PARTITION BY`, each partition keeps its own running total, which starts over at the first row of the next partition:
+
+![A running total with SUM() OVER (PARTITION BY carrier ORDER BY dep_time).](images/window_running_total.svg){fig-alt="The 8 flights are partitioned by carrier and sorted by dep_time. SUM(dep_delay) OVER (PARTITION BY carrier ORDER BY dep_time) adds each row's delay to the total of the rows before it in the same partition. AA: f4 20, then f7 20 + (-8) = 12. DL: f2 5, then f6 5 + 30 = 35. UA: f1 12, f3 12 + (-3) = 9, f5 9 + 7 = 16, f8 16 + 15 = 31. The total resets at the start of each partition, and all 8 rows remain." width="100%"}
 
 ## Custom Window Frames: ROWS BETWEEN and RANGE BETWEEN
 
