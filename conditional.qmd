@@ -8,6 +8,7 @@ By the end of this chapter, students will be able to:
 
 - **Write** a searched `CASE WHEN` expression to produce a conditional column in query output.
 - **Write** a simple `CASE` expression that compares a single value against a list of alternatives.
+- **Construct** a nested `CASE` expression for multi-stage decisions, and rewrite it as an equivalent flat `CASE` using combined conditions.
 - **Apply** `CASE WHEN` inside aggregate functions to compute conditional counts and sums in a single query.
 - **Use** `COALESCE` to substitute a default value for `NULL` in query results.
 - **Apply** `NULLIF` to return `NULL` when two expressions are equal, preventing division-by-zero errors.
@@ -112,6 +113,67 @@ ORDER BY num_flights DESC;
 ```
 
 `EXTRACT(DOW FROM time_hour)` (introduced in the data types chapter) returns an integer from 0 (Sunday) to 6 (Saturday). The simple `CASE` matches that single value against each `WHEN`, exactly the way a switch statement works in most general-purpose programming languages. If you find yourself writing `WHEN x = 0`, `WHEN x = 1`, `WHEN x = 2` repeatedly with a searched `CASE`, the simple form is almost always the better fit.
+
+## Nested CASE Expressions
+
+Because `CASE` is an expression, the result in any `THEN` or `ELSE` branch can itself be another `CASE` expression. This is called a **nested `CASE`**, and it is useful when a decision naturally happens in stages: first split the rows on one question, then split each of those groups on a second question.
+
+Suppose you want to describe each flight's whole journey, not just its departure. The first question is whether the flight left late. The second question depends on the answer to the first: for a late departure, did the pilot make up the time in the air? For an on-time departure, did the flight still arrive late?
+
+```{sql}
+--| connection: con
+--| label: case-nested
+SELECT
+    CASE
+        WHEN dep_delay IS NULL THEN 'Cancelled'
+        WHEN dep_delay > 0 THEN
+            CASE
+                WHEN arr_delay IS NULL THEN 'Diverted'
+                WHEN arr_delay <= 0    THEN 'Left late, made up time'
+                ELSE 'Left late, arrived late'
+            END
+        ELSE
+            CASE
+                WHEN arr_delay IS NULL THEN 'Diverted'
+                WHEN arr_delay > 0     THEN 'Left on time, arrived late'
+                ELSE 'On time throughout'
+            END
+    END AS flight_outcome,
+    COUNT(*) AS num_flights
+FROM flights
+GROUP BY flight_outcome
+ORDER BY num_flights DESC;
+```
+
+Read a nested `CASE` from the outside in. The outer expression decides which branch a row belongs to, and only then does the inner `CASE` in that branch get evaluated. A flight with `dep_delay = 12` matches the outer `WHEN dep_delay > 0`, so SQL evaluates the first inner `CASE` and never looks at the second one. Each inner `CASE` needs its own `END`, and indenting each level consistently is the easiest way to keep track of which `END` closes which expression.
+
+The inner `WHEN arr_delay IS NULL` checks handle diverted flights, which departed (so `dep_delay` has a value) but never arrived at their destination (so `arr_delay` is `NULL`). Without that check, a diverted flight would fail `arr_delay <= 0`, since any comparison with `NULL` is unknown rather than true, and it would fall through to `ELSE 'Left late, arrived late'`. Every level of a nested `CASE` has to account for `NULL` on its own.
+
+### Nesting vs. Combining Conditions
+
+Any nested `CASE` can be rewritten as a single, flat `CASE` by combining the outer and inner conditions with `AND`. This query produces exactly the same result as the one above:
+
+```{sql}
+--| connection: con
+--| label: case-nested-flat
+SELECT
+    CASE
+        WHEN dep_delay IS NULL                THEN 'Cancelled'
+        WHEN arr_delay IS NULL                THEN 'Diverted'
+        WHEN dep_delay > 0 AND arr_delay <= 0 THEN 'Left late, made up time'
+        WHEN dep_delay > 0                    THEN 'Left late, arrived late'
+        WHEN arr_delay > 0                    THEN 'Left on time, arrived late'
+        ELSE 'On time throughout'
+    END AS flight_outcome,
+    COUNT(*) AS num_flights
+FROM flights
+GROUP BY flight_outcome
+ORDER BY num_flights DESC;
+```
+
+The flat version is shorter here, and it only has to check for diverted flights once. It also leans heavily on top-to-bottom evaluation: `WHEN dep_delay > 0` on the fourth line only means "left late and arrived late" because the line above it already caught the late departures that made up time. The nested version makes that two-step logic visible in its structure instead of leaving the reader to infer it from the ordering.
+
+Neither form is always better. Nesting tends to read more clearly when the outer split is the main decision and each branch asks a different follow-up question. A flat `CASE` tends to read more clearly when the conditions are short and the branches share checks, as the diverted-flight check does here. If you find yourself three or more levels deep, that is usually a sign the logic would be easier to follow flattened, or broken into steps with a CTE (covered in the next chapter).
 
 ## CASE WHEN Inside Aggregate Functions
 
@@ -268,12 +330,16 @@ In practice these tools compose. A `CASE WHEN` can contain a `COALESCE`, a `COAL
 
 ---
 
-**6.** Write a query that computes, for each carrier, the number of flights with `air_time` longer than 180 minutes and the number with `air_time` of 180 minutes or less, using `CASE WHEN` inside `COUNT()`. Handle `NULL` `air_time` values explicitly and explain in a comment which category they fall into and why.
+**6.** Using `flights`, write a nested `CASE` expression whose outer level checks whether a flight's `distance` is greater than 1,000 miles (`'Long-haul'`) or not (`'Short-haul'`), and whose inner level labels each flight within those groups as `'Delayed'` or `'Not delayed'` based on `dep_delay`. Produce combined labels such as `'Long-haul, Delayed'`, and count how many flights fall into each label. Then rewrite the query as a single flat `CASE` and confirm that both versions return the same counts. Which version do you find easier to read, and why?
 
 ---
 
-**7.** The `planes` table's `engines` column is never `NULL`, but suppose a future data load introduced planes with a missing `engines` value. Write a query that uses `COALESCE` to treat a missing `engines` value as `1` when computing the total number of engines across all planes with `SUM(COALESCE(engines, 1))`.
+**7.** Write a query that computes, for each carrier, the number of flights with `air_time` longer than 180 minutes and the number with `air_time` of 180 minutes or less, using `CASE WHEN` inside `COUNT()`. Handle `NULL` `air_time` values explicitly and explain in a comment which category they fall into and why.
 
 ---
 
-**8.** Write a query that computes the percentage of cancelled flights (`dep_delay IS NULL`) for each origin airport in `flights`, using `NULLIF` to guard against a division by zero. Even though this dataset has only one origin airport, write the query as though it might not.
+**8.** The `planes` table's `engines` column is never `NULL`, but suppose a future data load introduced planes with a missing `engines` value. Write a query that uses `COALESCE` to treat a missing `engines` value as `1` when computing the total number of engines across all planes with `SUM(COALESCE(engines, 1))`.
+
+---
+
+**9.** Write a query that computes the percentage of cancelled flights (`dep_delay IS NULL`) for each origin airport in `flights`, using `NULLIF` to guard against a division by zero. Even though this dataset has only one origin airport, write the query as though it might not.
