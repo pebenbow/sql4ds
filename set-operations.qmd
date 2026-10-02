@@ -54,6 +54,8 @@ These rules apply to all three operations. Violating any of them produces an err
 
 `UNION ALL` stacks two result sets together and returns every row from both, including duplicates. It is the simplest set operation conceptually: the result is everything on the left, followed by everything on the right.
 
+![UNION ALL stacks every row from both queries.](images/set_union_all.svg){fig-alt="chess_club has Ana 2027, Ben 2028, Cai 2027, and Dev 2029. robotics_club has Cai 2027, Dev 2029, and Eli 2028. Cai and Dev appear in both. UNION ALL returns all 7 rows: the 4 chess rows followed by the 3 robotics rows, so Cai and Dev each appear twice." width="100%"}
+
 The query below combines all low-income and lower-middle-income countries into a single list.
 
 ```{sql}
@@ -83,6 +85,8 @@ The result has one row per country across both income groups. Because no country
 ## UNION
 
 `UNION` works exactly like `UNION ALL` but adds a deduplication step: any row that appears in both result sets is included only once in the final output.
+
+![UNION stacks both results, then keeps each distinct row once.](images/set_union.svg){fig-alt="chess_club has Ana 2027, Ben 2028, Cai 2027, and Dev 2029. robotics_club has Cai 2027, Dev 2029, and Eli 2028. Cai and Dev appear in both. UNION returns 5 rows: Ana, Ben, Cai, Dev, and Eli. The two copies of Cai and of Dev each collapse into one row." width="100%"}
 
 To see the difference, consider the question: which countries appeared in the top ten by GDP per capita in both 2000 and 2022? `UNION ALL` gives every entry from both ranked lists, while `UNION` collapses the countries that appeared in both down to a single row.
 
@@ -152,6 +156,8 @@ When each component query needs its own `ORDER BY` or `LIMIT`, wrap it in parent
 
 `INTERSECT` returns only the rows that appear in **both** result sets. It is the overlap.
 
+![INTERSECT keeps only the rows found in both queries.](images/set_intersect.svg){fig-alt="chess_club has Ana 2027, Ben 2028, Cai 2027, and Dev 2029. robotics_club has Cai 2027, Dev 2029, and Eli 2028. Cai and Dev appear in both. INTERSECT returns 2 rows, Cai 2027 and Dev 2029, the rows found in both clubs. Ana, Ben, and Eli are left out." width="100%"}
+
 The `UNION` example above showed which countries appeared in either top-ten list. `INTERSECT` answers the narrower question: which countries appeared in both? The threshold here is raised to the top twenty to produce a more interesting result.
 
 ```{sql}
@@ -187,6 +193,8 @@ Fourteen countries appear in the top twenty by GDP per capita in both 2000 and 2
 ## EXCEPT
 
 `EXCEPT` returns rows from the first result set that do **not** appear in the second. The order of the two queries matters: `A EXCEPT B` and `B EXCEPT A` return different results.
+
+![EXCEPT keeps rows of the first query that are not in the second.](images/set_except.svg){fig-alt="chess_club has Ana 2027, Ben 2028, Cai 2027, and Dev 2029. robotics_club has Cai 2027, Dev 2029, and Eli 2028. Cai and Dev appear in both. chess_club EXCEPT robotics_club returns Ana 2027 and Ben 2028; Cai and Dev are removed because they also appear in robotics_club. Reversed, robotics_club EXCEPT chess_club returns only Eli 2028." width="100%"}
 
 The `indicators` table contains data stretching back to 1960, but many countries did not exist as independent nations at the start of that period. The query below identifies countries that have forest area data for 2022 but not for 1990, a gap that reveals which nations were established after 1990 rather than which ones simply have incomplete records.
 
