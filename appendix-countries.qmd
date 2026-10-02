@@ -1,5 +1,5 @@
 ---
-title: "The countries Database"
+title: "countries"
 ---
 
 ```{r}
