@@ -107,3 +107,17 @@ details.sql-output-accordion[open] > summary {
 details.sql-output-accordion > div[data-pagedtable] {
     padding: 0.75em 1em;
 }
+
+/* Database appendix data dictionaries (_data_dictionary.R wraps each table in
+   .data-dictionary). Keep tables inside the text column: fixed layout honors the
+   column widths, and long code values such as customers.customer_id wrap instead of
+   pushing the table into the right margin, where the page TOC sits. */
+.data-dictionary table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* break code at the <wbr> hints first; break mid-word only if a piece still won't fit */
+.data-dictionary td {
+    overflow-wrap: break-word;
+}

@@ -1,6 +1,9 @@
 project:
   type: book
   output-dir: _book
+  # schema files linked from the database appendices (scripts/build_schema_sql.py)
+  resources:
+    - data-dictionaries/*.sql
 
 book:
   title: "SQL for Data Science"
@@ -83,13 +86,15 @@ book:
     - references.qmd
 
   appendices:
-    - appendix-actors.qmd
-    - appendix-worldbank.qmd
-    - appendix-nycflights.qmd
-    - appendix-countries.qmd
-    - appendix-library.qmd
-    - appendix-murdermystery.qmd
-    - appendix-northwind.qmd
+    - part: "Database Appendix"
+      chapters:
+        - appendix-actors.qmd
+        - appendix-worldbank.qmd
+        - appendix-nycflights.qmd
+        - appendix-countries.qmd
+        - appendix-library.qmd
+        - appendix-murdermystery.qmd
+        - appendix-northwind.qmd
 
 filters:
   - quarto-dbml
