@@ -1,0 +1,10 @@
+---
+title: "worldbank"
+---
+
+```{r}
+#| echo: false
+#| output: asis
+source("_data_dictionary.R")
+render_dictionary("worldbank")
+```

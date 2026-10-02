@@ -6,6 +6,8 @@ book:
   title: "SQL for Data Science"
   subtitle: "Querying, Designing, and Deploying Databases"
   reader-mode: true
+  sidebar:
+    collapse-level: 1
   author: "Pete Benbow"
   cover-image: cover.png
   favicon: cover.png
@@ -79,6 +81,15 @@ book:
         - sqli.qmd
 
     - references.qmd
+
+  appendices:
+    - appendix-actors.qmd
+    - appendix-worldbank.qmd
+    - appendix-nycflights.qmd
+    - appendix-countries.qmd
+    - appendix-library.qmd
+    - appendix-murdermystery.qmd
+    - appendix-northwind.qmd
 
 filters:
   - quarto-dbml

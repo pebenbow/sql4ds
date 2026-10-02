@@ -1,0 +1,10 @@
+---
+title: "actors"
+---
+
+```{r}
+#| echo: false
+#| output: asis
+source("_data_dictionary.R")
+render_dictionary("actors")
+```

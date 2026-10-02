@@ -1,0 +1,221 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1279 670" width="1918.5" height="1005" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">murdermystery ER diagram (all columns)</title>
+<desc id="desc">Entity relationship diagram of the murdermystery database (all columns), in crow's foot notation. facebook_event_checkin.person_id references person.id. get_fit_now_check_in.membership_id references get_fit_now_member.id. get_fit_now_member.person_id references person.id. income.ssn references person.ssn. interview.person_id references person.id. person.license_id references drivers_license.id.</desc>
+<defs><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">murdermystery: the SQL Murder Mystery</text>
+<path d="M392.0,308.0 H416.0 C419.0,308.0 419.0,324.0 470.0,324.0 H494.0" fill="none" stroke="#0072B2" stroke-width="2" stroke-opacity="0.9"/>
+<path d="M406.0,308.0 L392.0,300.0 M406.0,308.0 L392.0,316.0" fill="none" stroke="#0072B2" stroke-width="2"/>
+<circle cx="413.0" cy="308.0" r="4.5" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
+<line x1="486.0" y1="320.5" x2="486.0" y2="327.5" stroke="#0072B2" stroke-width="2"/>
+<circle cx="474.0" cy="324.0" r="3.5" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
+<path d="M494.0,124.0 H470.0 C443.0,124.0 443.0,100.0 416.0,100.0 H355.7" fill="none" stroke="#C98500" stroke-width="2" stroke-opacity="0.9"/>
+<path d="M480.0,124.0 L494.0,116.0 M480.0,124.0 L494.0,132.0" fill="none" stroke="#C98500" stroke-width="2"/>
+<circle cx="473.0" cy="124.0" r="4.5" fill="#FFFFFF" stroke="#C98500" stroke-width="2"/>
+<line x1="363.7" y1="93.0" x2="363.7" y2="107.0" stroke="#C98500" stroke-width="2"/>
+<circle cx="375.7" cy="100.0" r="4.5" fill="#FFFFFF" stroke="#C98500" stroke-width="2"/>
+<path d="M355.7,124.0 H416.0 C431.0,124.0 431.0,315.0 470.0,315.0 H494.0" fill="none" stroke="#009E73" stroke-width="2" stroke-opacity="0.9"/>
+<path d="M369.7,124.0 L355.7,116.0 M369.7,124.0 L355.7,132.0" fill="none" stroke="#009E73" stroke-width="2"/>
+<circle cx="376.7" cy="124.0" r="4.5" fill="#FFFFFF" stroke="#009E73" stroke-width="2"/>
+<line x1="486.0" y1="311.5" x2="486.0" y2="318.5" stroke="#009E73" stroke-width="2"/>
+<circle cx="474.0" cy="315.0" r="3.5" fill="#FFFFFF" stroke="#009E73" stroke-width="2"/>
+<path d="M265.7,580.0 H416.0 C467.0,580.0 467.0,372.0 470.0,372.0 H494.0" fill="none" stroke="#B0558A" stroke-width="2" stroke-opacity="0.9"/>
+<line x1="273.7" y1="573.0" x2="273.7" y2="587.0" stroke="#B0558A" stroke-width="2"/>
+<circle cx="285.7" cy="580.0" r="4.5" fill="#FFFFFF" stroke="#B0558A" stroke-width="2"/>
+<line x1="486.0" y1="365.0" x2="486.0" y2="379.0" stroke="#B0558A" stroke-width="2"/>
+<line x1="480.0" y1="365.0" x2="480.0" y2="379.0" stroke="#B0558A" stroke-width="2"/>
+<path d="M245.7,468.0 H416.0 C455.0,468.0 455.0,333.0 470.0,333.0 H494.0" fill="none" stroke="#3A8FC7" stroke-width="2" stroke-opacity="0.9"/>
+<line x1="253.7" y1="461.0" x2="253.7" y2="475.0" stroke="#3A8FC7" stroke-width="2"/>
+<circle cx="265.7" cy="468.0" r="4.5" fill="#FFFFFF" stroke="#3A8FC7" stroke-width="2"/>
+<line x1="486.0" y1="329.5" x2="486.0" y2="336.5" stroke="#3A8FC7" stroke-width="2"/>
+<line x1="480.0" y1="329.5" x2="480.0" y2="336.5" stroke="#3A8FC7" stroke-width="2"/>
+<path d="M830.1,348.0 H931.8 C940.7999999999998,348.0 940.7999999999998,324.0 949.8,324.0 H973.8" fill="none" stroke="#A88A00" stroke-width="2" stroke-opacity="0.9"/>
+<path d="M844.1,348.0 L830.1,340.0 M844.1,348.0 L830.1,356.0" fill="none" stroke="#A88A00" stroke-width="2"/>
+<circle cx="851.1" cy="348.0" r="4.5" fill="#FFFFFF" stroke="#A88A00" stroke-width="2"/>
+<line x1="965.8" y1="317.0" x2="965.8" y2="331.0" stroke="#A88A00" stroke-width="2"/>
+<circle cx="953.8" cy="324.0" r="4.5" fill="#FFFFFF" stroke="#A88A00" stroke-width="2"/>
+<rect x="494.0" y="496" width="300.7" height="144" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M494.0,520 V502 Q494.0,496 500.0,496 H788.7 Q794.7,496 794.7,502 V520 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="504.0" y="513.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">crime_scene_report</text>
+<text x="504.0" y="537.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="504.0" y1="540.0" x2="519.2" y2="540.0" stroke="#222222" stroke-width="1.2"/>
+<text x="668.8" y="537.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M773.6999999999999,530.6 H782.6999999999999 V535.6 H780.9999999999999 V533.4 H779.4 V535.0 H777.8 V533.4 H773.6999999999999 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="770.6999999999999" cy="532.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="770.0999999999999" cy="532.0" r="1.4" fill="#FFFFFF"/>
+<line x1="494.0" y1="544" x2="794.7" y2="544" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="561.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">date</text>
+<text x="668.8" y="561.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">date</text>
+<line x1="494.0" y1="568" x2="794.7" y2="568" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="585.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">type</text>
+<text x="668.8" y="585.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(20)</text>
+<line x1="494.0" y1="592" x2="794.7" y2="592" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="609.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">description</text>
+<text x="668.8" y="609.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">text</text>
+<line x1="494.0" y1="616" x2="794.7" y2="616" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="633.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">city</text>
+<text x="668.8" y="633.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(20)</text>
+<rect x="973.8" y="288" width="274.9" height="240" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M973.8,312 V294 Q973.8,288 979.8,288 H1242.6999999999998 Q1248.6999999999998,288 1248.6999999999998,294 V312 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="983.8" y="305.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">drivers_license</text>
+<text x="983.8" y="329.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="983.8" y1="332.0" x2="999.0" y2="332.0" stroke="#222222" stroke-width="1.2"/>
+<text x="1122.8" y="329.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M1227.7,322.6 H1236.7 V327.6 H1235.0 V325.4 H1233.4 V327.0 H1231.8 V325.4 H1227.7 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="1224.7" cy="324.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="1224.1000000000001" cy="324.0" r="1.4" fill="#FFFFFF"/>
+<line x1="973.8" y1="336" x2="1248.6999999999998" y2="336" stroke="#DDDDDD" stroke-width="1"/>
+<text x="983.8" y="353.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">age</text>
+<text x="1122.8" y="353.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<line x1="973.8" y1="360" x2="1248.6999999999998" y2="360" stroke="#DDDDDD" stroke-width="1"/>
+<text x="983.8" y="377.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">height</text>
+<text x="1122.8" y="377.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<line x1="973.8" y1="384" x2="1248.6999999999998" y2="384" stroke="#DDDDDD" stroke-width="1"/>
+<text x="983.8" y="401.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">eye_color</text>
+<text x="1122.8" y="401.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(10)</text>
+<line x1="973.8" y1="408" x2="1248.6999999999998" y2="408" stroke="#DDDDDD" stroke-width="1"/>
+<text x="983.8" y="425.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">hair_color</text>
+<text x="1122.8" y="425.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(10)</text>
+<line x1="973.8" y1="432" x2="1248.6999999999998" y2="432" stroke="#DDDDDD" stroke-width="1"/>
+<text x="983.8" y="449.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">gender</text>
+<text x="1122.8" y="449.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(10)</text>
+<line x1="973.8" y1="456" x2="1248.6999999999998" y2="456" stroke="#DDDDDD" stroke-width="1"/>
+<text x="983.8" y="473.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">plate_number</text>
+<text x="1122.8" y="473.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(10)</text>
+<line x1="973.8" y1="480" x2="1248.6999999999998" y2="480" stroke="#DDDDDD" stroke-width="1"/>
+<text x="983.8" y="497.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">car_make</text>
+<text x="1122.8" y="497.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(20)</text>
+<line x1="973.8" y1="504" x2="1248.6999999999998" y2="504" stroke="#DDDDDD" stroke-width="1"/>
+<text x="983.8" y="521.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">car_model</text>
+<text x="1122.8" y="521.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(20)</text>
+<rect x="30" y="248" width="362.0" height="144" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M30,272 V254 Q30,248 36,248 H386.0 Q392.0,248 392.0,254 V272 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="265.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">facebook_event_checkin</text>
+<text x="40" y="289.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="40" y1="292.0" x2="55.2" y2="292.0" stroke="#222222" stroke-width="1.2"/>
+<text x="239.2" y="289.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M351.0,282.6 H360.0 V287.6 H358.3 V285.4 H356.7 V287.0 H355.1 V285.4 H351.0 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="348.0" cy="284.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="347.4" cy="284.0" r="1.4" fill="#FFFFFF"/>
+<rect x="31" y="296" width="360.0" height="24" fill="#DCEAF5"/>
+<rect x="31" y="296" width="5" height="24" fill="#0072B2"/>
+<line x1="30" y1="296" x2="392.0" y2="296" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="313.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">person_id</text>
+<text x="239.2" y="313.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<g transform="rotate(-40 372.0 308.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="364.0" y="305.0" width="9.5" height="6" rx="3"/><rect x="370.5" y="305.0" width="9.5" height="6" rx="3"/></g>
+<line x1="30" y1="320" x2="392.0" y2="320" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="337.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">event_id</text>
+<text x="239.2" y="337.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<line x1="30" y1="344" x2="392.0" y2="344" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="361.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">event_name</text>
+<text x="239.2" y="361.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(100)</text>
+<line x1="30" y1="368" x2="392.0" y2="368" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="385.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">date</text>
+<text x="239.2" y="385.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">date</text>
+<rect x="494.0" y="64" width="413.8" height="144" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M494.0,88 V70 Q494.0,64 500.0,64 H901.8 Q907.8,64 907.8,70 V88 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="504.0" y="81.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">get_fit_now_check_in</text>
+<text x="504.0" y="105.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="504.0" y1="108.0" x2="519.2" y2="108.0" stroke="#222222" stroke-width="1.2"/>
+<text x="686.0" y="105.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M866.8,98.6 H875.8 V103.6 H874.0999999999999 V101.4 H872.5 V103.0 H870.9 V101.4 H866.8 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="863.8" cy="100.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="863.1999999999999" cy="100.0" r="1.4" fill="#FFFFFF"/>
+<rect x="495.0" y="112" width="411.8" height="24" fill="#FCEDCC"/>
+<rect x="495.0" y="112" width="5" height="24" fill="#C98500"/>
+<line x1="494.0" y1="112" x2="907.8" y2="112" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="129.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">membership_id</text>
+<text x="686.0" y="129.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(10)</text>
+<g transform="rotate(-40 887.8 124.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="879.8" y="121.0" width="9.5" height="6" rx="3"/><rect x="886.3" y="121.0" width="9.5" height="6" rx="3"/></g>
+<line x1="494.0" y1="136" x2="907.8" y2="136" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="153.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">check_in_date</text>
+<text x="686.0" y="153.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">date</text>
+<line x1="494.0" y1="160" x2="907.8" y2="160" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="177.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">check_in_time</text>
+<text x="686.0" y="177.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">time without time zone</text>
+<line x1="494.0" y1="184" x2="907.8" y2="184" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="201.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">check_out_time</text>
+<text x="686.0" y="201.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">time without time zone</text>
+<rect x="30" y="64" width="325.7" height="144" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M30,88 V70 Q30,64 36,64 H349.7 Q355.7,64 355.7,70 V88 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="81.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">get_fit_now_member</text>
+<text x="40" y="105.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="40" y1="108.0" x2="55.2" y2="108.0" stroke="#222222" stroke-width="1.2"/>
+<text x="209.79999999999998" y="105.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(10)</text>
+<path d="M314.7,98.6 H323.7 V103.6 H322.0 V101.4 H320.4 V103.0 H318.8 V101.4 H314.7 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="311.7" cy="100.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="311.09999999999997" cy="100.0" r="1.4" fill="#FFFFFF"/>
+<rect x="31" y="112" width="323.7" height="24" fill="#D3EFE6"/>
+<rect x="31" y="112" width="5" height="24" fill="#009E73"/>
+<line x1="30" y1="112" x2="355.7" y2="112" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="129.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">person_id</text>
+<text x="209.79999999999998" y="129.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<g transform="rotate(-40 335.7 124.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="327.7" y="121.0" width="9.5" height="6" rx="3"/><rect x="334.2" y="121.0" width="9.5" height="6" rx="3"/></g>
+<line x1="30" y1="136" x2="355.7" y2="136" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="153.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="209.79999999999998" y="153.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(50)</text>
+<line x1="30" y1="160" x2="355.7" y2="160" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="177.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">membership_start_date</text>
+<text x="209.79999999999998" y="177.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">date</text>
+<line x1="30" y1="184" x2="355.7" y2="184" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="201.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">membership_status</text>
+<text x="209.79999999999998" y="201.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(10)</text>
+<rect x="30" y="544" width="235.7" height="72" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M30,568 V550 Q30,544 36,544 H259.7 Q265.7,544 265.7,550 V568 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="561.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">income</text>
+<rect x="31" y="568" width="233.7" height="24" fill="#F5E1EC"/>
+<rect x="31" y="568" width="5" height="24" fill="#B0558A"/>
+<text x="40" y="585.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ssn</text>
+<line x1="40" y1="588.0" x2="62.8" y2="588.0" stroke="#222222" stroke-width="1.2"/>
+<text x="147.39999999999998" y="585.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M224.7,578.6 H233.7 V583.6 H232.0 V581.4 H230.39999999999998 V583.0 H228.79999999999998 V581.4 H224.7 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="221.7" cy="580.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="221.1" cy="580.0" r="1.4" fill="#FFFFFF"/>
+<g transform="rotate(-40 245.7 580.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="237.7" y="577.0" width="9.5" height="6" rx="3"/><rect x="244.2" y="577.0" width="9.5" height="6" rx="3"/></g>
+<line x1="30" y1="592" x2="265.7" y2="592" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="609.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">annual_income</text>
+<text x="147.39999999999998" y="609.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<rect x="30" y="432" width="215.7" height="72" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M30,456 V438 Q30,432 36,432 H239.7 Q245.7,432 245.7,438 V456 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="449.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">interview</text>
+<rect x="31" y="456" width="213.7" height="24" fill="#DDEEF8"/>
+<rect x="31" y="456" width="5" height="24" fill="#3A8FC7"/>
+<text x="40" y="473.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">person_id</text>
+<line x1="40" y1="476.0" x2="108.39999999999999" y2="476.0" stroke="#222222" stroke-width="1.2"/>
+<text x="127.39999999999999" y="473.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M204.7,466.6 H213.7 V471.6 H212.0 V469.4 H210.39999999999998 V471.0 H208.79999999999998 V469.4 H204.7 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="201.7" cy="468.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="201.1" cy="468.0" r="1.4" fill="#FFFFFF"/>
+<g transform="rotate(-40 225.7 468.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="217.7" y="465.0" width="9.5" height="6" rx="3"/><rect x="224.2" y="465.0" width="9.5" height="6" rx="3"/></g>
+<line x1="30" y1="480" x2="245.7" y2="480" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="497.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">transcript</text>
+<text x="127.39999999999999" y="497.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">text</text>
+<rect x="494.0" y="288" width="336.1" height="168" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M494.0,312 V294 Q494.0,288 500.0,288 H824.1 Q830.1,288 830.1,294 V312 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="504.0" y="305.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">person</text>
+<text x="504.0" y="329.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="504.0" y1="332.0" x2="519.2" y2="332.0" stroke="#222222" stroke-width="1.2"/>
+<text x="658.2" y="329.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M763.1,322.6 H772.1 V327.6 H770.4 V325.4 H768.8000000000001 V327.0 H767.2 V325.4 H763.1 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="760.1" cy="324.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="759.5" cy="324.0" r="1.4" fill="#FFFFFF"/>
+<rect x="495.0" y="336" width="334.1" height="24" fill="#F7F0C8"/>
+<rect x="495.0" y="336" width="5" height="24" fill="#A88A00"/>
+<line x1="494.0" y1="336" x2="830.1" y2="336" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="353.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">license_id</text>
+<text x="658.2" y="353.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<g transform="rotate(-40 784.1 348.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="776.1" y="345.0" width="9.5" height="6" rx="3"/><rect x="782.6" y="345.0" width="9.5" height="6" rx="3"/></g>
+<line x1="494.0" y1="360" x2="830.1" y2="360" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="377.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ssn</text>
+<text x="658.2" y="377.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<text x="807.1" y="376.0" font-size="11" font-weight="bold" fill="#555555" text-anchor="middle">UQ</text>
+<line x1="494.0" y1="384" x2="830.1" y2="384" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="401.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="658.2" y="401.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(50)</text>
+<line x1="494.0" y1="408" x2="830.1" y2="408" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="425.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">address_number</text>
+<text x="658.2" y="425.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<line x1="494.0" y1="432" x2="830.1" y2="432" stroke="#DDDDDD" stroke-width="1"/>
+<text x="504.0" y="449.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">address_street_name</text>
+<text x="658.2" y="449.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(50)</text>
+</svg>

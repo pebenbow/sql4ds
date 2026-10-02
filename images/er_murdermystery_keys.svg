@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1141 550" width="1711.5" height="825" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">murdermystery ER diagram (keys only)</title>
+<desc id="desc">Entity relationship diagram of the murdermystery database (keys only), in crow's foot notation. facebook_event_checkin.person_id references person.id. get_fit_now_check_in.membership_id references get_fit_now_member.id. get_fit_now_member.person_id references person.id. income.ssn references person.ssn. interview.person_id references person.id. person.license_id references drivers_license.id.</desc>
+<defs><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">murdermystery: the SQL Murder Mystery</text>
+<path d="M357.5,260.0 H381.5 C384.5,260.0 384.5,276.0 435.5,276.0 H459.5" fill="none" stroke="#0072B2" stroke-width="2" stroke-opacity="0.9"/>
+<path d="M371.5,260.0 L357.5,252.0 M371.5,260.0 L357.5,268.0" fill="none" stroke="#0072B2" stroke-width="2"/>
+<circle cx="378.5" cy="260.0" r="4.5" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
+<line x1="451.5" y1="272.5" x2="451.5" y2="279.5" stroke="#0072B2" stroke-width="2"/>
+<circle cx="439.5" cy="276.0" r="3.5" fill="#FFFFFF" stroke="#0072B2" stroke-width="2"/>
+<path d="M459.5,124.0 H435.5 C408.5,124.0 408.5,100.0 381.5,100.0 H350.7" fill="none" stroke="#C98500" stroke-width="2" stroke-opacity="0.9"/>
+<path d="M445.5,124.0 L459.5,116.0 M445.5,124.0 L459.5,132.0" fill="none" stroke="#C98500" stroke-width="2"/>
+<circle cx="438.5" cy="124.0" r="4.5" fill="#FFFFFF" stroke="#C98500" stroke-width="2"/>
+<line x1="358.7" y1="93.0" x2="358.7" y2="107.0" stroke="#C98500" stroke-width="2"/>
+<circle cx="370.7" cy="100.0" r="4.5" fill="#FFFFFF" stroke="#C98500" stroke-width="2"/>
+<path d="M350.7,124.0 H381.5 C396.5,124.0 396.5,267.0 435.5,267.0 H459.5" fill="none" stroke="#009E73" stroke-width="2" stroke-opacity="0.9"/>
+<path d="M364.7,124.0 L350.7,116.0 M364.7,124.0 L350.7,132.0" fill="none" stroke="#009E73" stroke-width="2"/>
+<circle cx="371.7" cy="124.0" r="4.5" fill="#FFFFFF" stroke="#009E73" stroke-width="2"/>
+<line x1="451.5" y1="263.5" x2="451.5" y2="270.5" stroke="#009E73" stroke-width="2"/>
+<circle cx="439.5" cy="267.0" r="3.5" fill="#FFFFFF" stroke="#009E73" stroke-width="2"/>
+<path d="M219.9,484.0 H381.5 C432.5,484.0 432.5,324.0 435.5,324.0 H459.5" fill="none" stroke="#B0558A" stroke-width="2" stroke-opacity="0.9"/>
+<line x1="227.9" y1="477.0" x2="227.9" y2="491.0" stroke="#B0558A" stroke-width="2"/>
+<circle cx="239.9" cy="484.0" r="4.5" fill="#FFFFFF" stroke="#B0558A" stroke-width="2"/>
+<line x1="451.5" y1="317.0" x2="451.5" y2="331.0" stroke="#B0558A" stroke-width="2"/>
+<line x1="445.5" y1="317.0" x2="445.5" y2="331.0" stroke="#B0558A" stroke-width="2"/>
+<path d="M245.7,372.0 H381.5 C420.5,372.0 420.5,285.0 435.5,285.0 H459.5" fill="none" stroke="#3A8FC7" stroke-width="2" stroke-opacity="0.9"/>
+<line x1="253.7" y1="365.0" x2="253.7" y2="379.0" stroke="#3A8FC7" stroke-width="2"/>
+<circle cx="265.7" cy="372.0" r="4.5" fill="#FFFFFF" stroke="#3A8FC7" stroke-width="2"/>
+<line x1="451.5" y1="281.5" x2="451.5" y2="288.5" stroke="#3A8FC7" stroke-width="2"/>
+<line x1="445.5" y1="281.5" x2="445.5" y2="288.5" stroke="#3A8FC7" stroke-width="2"/>
+<path d="M697.8,300.0 H821.4 C830.4,300.0 830.4,276.0 839.4,276.0 H863.4" fill="none" stroke="#A88A00" stroke-width="2" stroke-opacity="0.9"/>
+<path d="M711.8,300.0 L697.8,292.0 M711.8,300.0 L697.8,308.0" fill="none" stroke="#A88A00" stroke-width="2"/>
+<circle cx="718.8" cy="300.0" r="4.5" fill="#FFFFFF" stroke="#A88A00" stroke-width="2"/>
+<line x1="855.4" y1="269.0" x2="855.4" y2="283.0" stroke="#A88A00" stroke-width="2"/>
+<circle cx="843.4" cy="276.0" r="4.5" fill="#FFFFFF" stroke="#A88A00" stroke-width="2"/>
+<rect x="459.5" y="400" width="273.1" height="72" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M459.5,424 V406 Q459.5,400 465.5,400 H726.6 Q732.6,400 732.6,406 V424 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="469.5" y="417.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">crime_scene_report</text>
+<text x="469.5" y="441.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="469.5" y1="444.0" x2="484.7" y2="444.0" stroke="#222222" stroke-width="1.2"/>
+<text x="634.3" y="441.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M711.5999999999999,434.6 H720.5999999999999 V439.6 H718.8999999999999 V437.4 H717.3 V439.0 H715.6999999999999 V437.4 H711.5999999999999 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="708.5999999999999" cy="436.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="707.9999999999999" cy="436.0" r="1.4" fill="#FFFFFF"/>
+<line x1="459.5" y1="448" x2="732.6" y2="448" stroke="#DDDDDD" stroke-width="1"/>
+<text x="469.5" y="465.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">+ 4 more columns</text>
+<rect x="863.4" y="240" width="247.3" height="72" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M863.4,264 V246 Q863.4,240 869.4,240 H1104.7 Q1110.7,240 1110.7,246 V264 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="873.4" y="257.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">drivers_license</text>
+<text x="873.4" y="281.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="873.4" y1="284.0" x2="888.6" y2="284.0" stroke="#222222" stroke-width="1.2"/>
+<text x="1012.4" y="281.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M1089.7,274.6 H1098.7 V279.6 H1097.0 V277.4 H1095.4 V279.0 H1093.8 V277.4 H1089.7 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="1086.7" cy="276.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="1086.1000000000001" cy="276.0" r="1.4" fill="#FFFFFF"/>
+<line x1="863.4" y1="288" x2="1110.7" y2="288" stroke="#DDDDDD" stroke-width="1"/>
+<text x="873.4" y="305.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">+ 8 more columns</text>
+<rect x="30" y="200" width="327.5" height="96" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M30,224 V206 Q30,200 36,200 H351.5 Q357.5,200 357.5,206 V224 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="217.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">facebook_event_checkin</text>
+<text x="40" y="241.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="40" y1="244.0" x2="55.2" y2="244.0" stroke="#222222" stroke-width="1.2"/>
+<text x="239.2" y="241.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M316.5,234.6 H325.5 V239.6 H323.8 V237.4 H322.2 V239.0 H320.6 V237.4 H316.5 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="313.5" cy="236.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="312.9" cy="236.0" r="1.4" fill="#FFFFFF"/>
+<rect x="31" y="248" width="325.5" height="24" fill="#DCEAF5"/>
+<rect x="31" y="248" width="5" height="24" fill="#0072B2"/>
+<line x1="30" y1="248" x2="357.5" y2="248" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="265.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">person_id</text>
+<text x="239.2" y="265.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<g transform="rotate(-40 337.5 260.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="329.5" y="257.0" width="9.5" height="6" rx="3"/><rect x="336.0" y="257.0" width="9.5" height="6" rx="3"/></g>
+<line x1="30" y1="272" x2="357.5" y2="272" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="289.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">+ 3 more columns</text>
+<rect x="459.5" y="64" width="337.9" height="96" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M459.5,88 V70 Q459.5,64 465.5,64 H791.4 Q797.4,64 797.4,70 V88 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="469.5" y="81.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">get_fit_now_check_in</text>
+<text x="469.5" y="105.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="469.5" y1="108.0" x2="484.7" y2="108.0" stroke="#222222" stroke-width="1.2"/>
+<text x="651.5" y="105.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M756.4,98.6 H765.4 V103.6 H763.6999999999999 V101.4 H762.1 V103.0 H760.5 V101.4 H756.4 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="753.4" cy="100.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="752.8" cy="100.0" r="1.4" fill="#FFFFFF"/>
+<rect x="460.5" y="112" width="335.9" height="24" fill="#FCEDCC"/>
+<rect x="460.5" y="112" width="5" height="24" fill="#C98500"/>
+<line x1="459.5" y1="112" x2="797.4" y2="112" stroke="#DDDDDD" stroke-width="1"/>
+<text x="469.5" y="129.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">membership_id</text>
+<text x="651.5" y="129.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(10)</text>
+<g transform="rotate(-40 777.4 124.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="769.4" y="121.0" width="9.5" height="6" rx="3"/><rect x="775.9" y="121.0" width="9.5" height="6" rx="3"/></g>
+<line x1="459.5" y1="136" x2="797.4" y2="136" stroke="#DDDDDD" stroke-width="1"/>
+<text x="469.5" y="153.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">+ 3 more columns</text>
+<rect x="30" y="64" width="320.7" height="96" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M30,88 V70 Q30,64 36,64 H344.7 Q350.7,64 350.7,70 V88 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="81.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">get_fit_now_member</text>
+<text x="40" y="105.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="40" y1="108.0" x2="55.2" y2="108.0" stroke="#222222" stroke-width="1.2"/>
+<text x="204.79999999999998" y="105.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(10)</text>
+<path d="M309.7,98.6 H318.7 V103.6 H317.0 V101.4 H315.4 V103.0 H313.8 V101.4 H309.7 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="306.7" cy="100.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="306.09999999999997" cy="100.0" r="1.4" fill="#FFFFFF"/>
+<rect x="31" y="112" width="318.7" height="24" fill="#D3EFE6"/>
+<rect x="31" y="112" width="5" height="24" fill="#009E73"/>
+<line x1="30" y1="112" x2="350.7" y2="112" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="129.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">person_id</text>
+<text x="204.79999999999998" y="129.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<g transform="rotate(-40 330.7 124.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="322.7" y="121.0" width="9.5" height="6" rx="3"/><rect x="329.2" y="121.0" width="9.5" height="6" rx="3"/></g>
+<line x1="30" y1="136" x2="350.7" y2="136" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="153.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">+ 3 more columns</text>
+<rect x="30" y="448" width="189.9" height="72" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M30,472 V454 Q30,448 36,448 H213.9 Q219.9,448 219.9,454 V472 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="465.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">income</text>
+<rect x="31" y="472" width="187.9" height="24" fill="#F5E1EC"/>
+<rect x="31" y="472" width="5" height="24" fill="#B0558A"/>
+<text x="40" y="489.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ssn</text>
+<line x1="40" y1="492.0" x2="62.8" y2="492.0" stroke="#222222" stroke-width="1.2"/>
+<text x="101.6" y="489.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M178.9,482.6 H187.9 V487.6 H186.20000000000002 V485.4 H184.6 V487.0 H183.0 V485.4 H178.9 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="175.9" cy="484.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="175.3" cy="484.0" r="1.4" fill="#FFFFFF"/>
+<g transform="rotate(-40 199.9 484.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="191.9" y="481.0" width="9.5" height="6" rx="3"/><rect x="198.4" y="481.0" width="9.5" height="6" rx="3"/></g>
+<line x1="30" y1="496" x2="219.9" y2="496" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="513.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">+ 1 more column</text>
+<rect x="30" y="336" width="215.7" height="72" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M30,360 V342 Q30,336 36,336 H239.7 Q245.7,336 245.7,342 V360 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="353.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">interview</text>
+<rect x="31" y="360" width="213.7" height="24" fill="#DDEEF8"/>
+<rect x="31" y="360" width="5" height="24" fill="#3A8FC7"/>
+<text x="40" y="377.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">person_id</text>
+<line x1="40" y1="380.0" x2="108.39999999999999" y2="380.0" stroke="#222222" stroke-width="1.2"/>
+<text x="127.39999999999999" y="377.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M204.7,370.6 H213.7 V375.6 H212.0 V373.4 H210.39999999999998 V375.0 H208.79999999999998 V373.4 H204.7 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="201.7" cy="372.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="201.1" cy="372.0" r="1.4" fill="#FFFFFF"/>
+<g transform="rotate(-40 225.7 372.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="217.7" y="369.0" width="9.5" height="6" rx="3"/><rect x="224.2" y="369.0" width="9.5" height="6" rx="3"/></g>
+<line x1="30" y1="384" x2="245.7" y2="384" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="401.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">+ 1 more column</text>
+<rect x="459.5" y="240" width="238.3" height="120" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M459.5,264 V246 Q459.5,240 465.5,240 H691.8 Q697.8,240 697.8,246 V264 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="469.5" y="257.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">person</text>
+<text x="469.5" y="281.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<line x1="469.5" y1="284.0" x2="484.7" y2="284.0" stroke="#222222" stroke-width="1.2"/>
+<text x="553.5" y="281.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M630.8,274.6 H639.8 V279.6 H638.0999999999999 V277.4 H636.5 V279.0 H634.9 V277.4 H630.8 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="627.8" cy="276.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="627.1999999999999" cy="276.0" r="1.4" fill="#FFFFFF"/>
+<rect x="460.5" y="288" width="236.3" height="24" fill="#F7F0C8"/>
+<rect x="460.5" y="288" width="5" height="24" fill="#A88A00"/>
+<line x1="459.5" y1="288" x2="697.8" y2="288" stroke="#DDDDDD" stroke-width="1"/>
+<text x="469.5" y="305.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">license_id</text>
+<text x="553.5" y="305.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<g transform="rotate(-40 651.8 300.0)" fill="none" stroke="#2E8B57" stroke-width="1.8"><rect x="643.8" y="297.0" width="9.5" height="6" rx="3"/><rect x="650.3" y="297.0" width="9.5" height="6" rx="3"/></g>
+<line x1="459.5" y1="312" x2="697.8" y2="312" stroke="#DDDDDD" stroke-width="1"/>
+<text x="469.5" y="329.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ssn</text>
+<text x="553.5" y="329.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<text x="674.8" y="328.0" font-size="11" font-weight="bold" fill="#555555" text-anchor="middle">UQ</text>
+<line x1="459.5" y1="336" x2="697.8" y2="336" stroke="#DDDDDD" stroke-width="1"/>
+<text x="469.5" y="353.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">+ 3 more columns</text>
+</svg>

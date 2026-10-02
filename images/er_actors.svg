@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 467 478" width="700.5" height="717" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">actors ER diagram (all columns)</title>
+<desc id="desc">Entity relationship diagram of the actors database (all columns), in crow's foot notation. </desc>
+<defs><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">actors: film actors and their careers</text>
+<rect x="30" y="64" width="311.7" height="384" rx="6" fill="#FFFFFF" stroke="#777777" stroke-width="1.5"/>
+<path d="M30,88 V70 Q30,64 36,64 H335.7 Q341.7,64 341.7,70 V88 Z" fill="#E4E4E4" stroke="#777777" stroke-width="1.5"/>
+<text x="40" y="81.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">actors</text>
+<text x="40" y="105.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">actor_id</text>
+<line x1="40" y1="108.0" x2="100.8" y2="108.0" stroke="#222222" stroke-width="1.2"/>
+<text x="202.0" y="105.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">integer</text>
+<path d="M320.7,98.6 H329.7 V103.6 H328.0 V101.4 H326.4 V103.0 H324.8 V101.4 H320.7 Z" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="317.7" cy="100.0" r="4.2" fill="#E3B32B" stroke="#8C6D00" stroke-width="0.8"/>
+<circle cx="317.09999999999997" cy="100.0" r="1.4" fill="#FFFFFF"/>
+<line x1="30" y1="112" x2="341.7" y2="112" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="129.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">first_name</text>
+<text x="202.0" y="129.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(50)</text>
+<line x1="30" y1="136" x2="341.7" y2="136" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="153.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">last_name</text>
+<text x="202.0" y="153.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(50)</text>
+<line x1="30" y1="160" x2="341.7" y2="160" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="177.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">birth_name</text>
+<text x="202.0" y="177.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(100)</text>
+<line x1="30" y1="184" x2="341.7" y2="184" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="201.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">sex</text>
+<text x="202.0" y="201.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">char(1)</text>
+<line x1="30" y1="208" x2="341.7" y2="208" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="225.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">birth_date</text>
+<text x="202.0" y="225.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">date</text>
+<line x1="30" y1="232" x2="341.7" y2="232" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="249.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">death_date</text>
+<text x="202.0" y="249.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">date</text>
+<line x1="30" y1="256" x2="341.7" y2="256" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="273.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">birth_country</text>
+<text x="202.0" y="273.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(50)</text>
+<line x1="30" y1="280" x2="341.7" y2="280" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="297.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">height_cm</text>
+<text x="202.0" y="297.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">smallint</text>
+<line x1="30" y1="304" x2="341.7" y2="304" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="321.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">oscar_nominations</text>
+<text x="202.0" y="321.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">smallint</text>
+<line x1="30" y1="328" x2="341.7" y2="328" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="345.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">oscar_wins</text>
+<text x="202.0" y="345.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">smallint</text>
+<line x1="30" y1="352" x2="341.7" y2="352" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="369.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">primary_genre</text>
+<text x="202.0" y="369.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">varchar(20)</text>
+<line x1="30" y1="376" x2="341.7" y2="376" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="393.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">has_honorary_oscar</text>
+<text x="202.0" y="393.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">boolean</text>
+<line x1="30" y1="400" x2="341.7" y2="400" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="417.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">notable_role</text>
+<text x="202.0" y="417.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">text</text>
+<line x1="30" y1="424" x2="341.7" y2="424" stroke="#DDDDDD" stroke-width="1"/>
+<text x="40" y="441.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">total_box_office_usd</text>
+<text x="202.0" y="441.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">numeric(12,0)</text>
+</svg>
