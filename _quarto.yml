@@ -83,13 +83,15 @@ book:
     - references.qmd
 
   appendices:
-    - appendix-actors.qmd
-    - appendix-worldbank.qmd
-    - appendix-nycflights.qmd
-    - appendix-countries.qmd
-    - appendix-library.qmd
-    - appendix-murdermystery.qmd
-    - appendix-northwind.qmd
+    - part: "Database Appendix"
+      chapters:
+        - appendix-actors.qmd
+        - appendix-worldbank.qmd
+        - appendix-nycflights.qmd
+        - appendix-countries.qmd
+        - appendix-library.qmd
+        - appendix-murdermystery.qmd
+        - appendix-northwind.qmd
 
 filters:
   - quarto-dbml

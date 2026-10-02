@@ -20,7 +20,20 @@ dd_cell <- function(x) {
   # one line, with pipes escaped, so the text fits in a Markdown table cell
   x <- if (is.null(x)) "" else as.character(x)
   x <- gsub("\\s*\n\\s*", " ", trimws(x))
-  gsub("|", "\\|", x, fixed = TRUE)
+  x <- gsub("|", "\\|", x, fixed = TRUE)
+  # `code` spans get the same natural break points as the code columns
+  m <- gregexpr("`[^`]+`", x)
+  regmatches(x, m) <- lapply(regmatches(x, m), function(s) vapply(s, function(v) dd_code(substr(v, 2, nchar(v) - 1)), ""))
+  x
+}
+
+dd_code <- function(x) {
+  # inline code with line-break hints after _ and . and before (, so a long name like
+  # customers.customer_id wraps at a natural point in a narrow column; <wbr> adds no
+  # characters, so copying the name still gives exactly the identifier
+  x <- gsub("<", "&lt;", gsub("&", "&amp;", x, fixed = TRUE), fixed = TRUE)
+  x <- gsub("([_.])", "\\1<wbr>", x)
+  sprintf("<code>%s</code>", gsub("(", "<wbr>(", x, fixed = TRUE))
 }
 
 dd_svg_desc <- function(path) {
@@ -78,9 +91,11 @@ render_dictionary <- function(db) {
   for (t in d$tables) {
     add(sprintf("### `%s` {#sec-%s-%s}", t$name, db, gsub("_", "-", t$name)), "")
     add(trimws(t$description), "")
-    # Pandoc sizes the columns of a wide pipe table by the dashes in this separator row
-    add("| Column | Type | Key | Nullable | Description |",
-        "|--------------|--------------|------------------|--------|------------------------------------------|")
+    # Pandoc sizes the columns of a wide pipe table by the dashes in this separator row;
+    # the .data-dictionary class (custom.css) keeps the table inside the text column
+    add("::: {.data-dictionary}", "")
+    add("| Column | Type | Key | Null? | Description |",
+        "|----------------------|--------------|--------------------|---------|----------------------------------|")
     # same row order as the ER diagrams: primary key columns, then foreign keys, then the rest
     rank <- vapply(t$columns, function(col) {
       k <- if (is.null(col$key)) "" else col$key
@@ -88,11 +103,11 @@ render_dictionary <- function(db) {
     }, numeric(1))
     for (col in t$columns[order(rank)]) {
       key <- if (is.null(col$key)) "" else col$key
-      if (!is.null(col$references)) key <- sprintf("%s → `%s`", key, col$references)
-      add(sprintf("| `%s` | `%s` | %s | %s | %s |", col$name, col$type, key,
+      if (!is.null(col$references)) key <- sprintf("%s → %s", key, dd_code(col$references))
+      add(sprintf("| %s | %s | %s | %s | %s |", dd_code(col$name), dd_code(col$type), key,
                   if (isTRUE(col$nullable)) "yes" else "no", dd_cell(col$description)))
     }
-    add("")
+    add("", ":::", "")
   }
 
   ch <- dd_chapters(db, d$extra_chapters)
