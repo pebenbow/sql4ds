@@ -1,5 +1,5 @@
 ---
-title: "The worldbank Database"
+title: "worldbank"
 ---
 
 ```{r}
