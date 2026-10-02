@@ -64,8 +64,13 @@ The two terms describe different things: *cardinality* is a property of a column
 
 Before creating any index, it is worth understanding how to read the query plan that PostgreSQL produces. The `EXPLAIN` command shows the plan without executing the query; `EXPLAIN ANALYZE` executes it and adds actual timing and row counts alongside the estimates.
 
+```sql
+EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 120;
+```
+
 ```{r}
 #| label: explain-no-index
+#| echo: false
 writeLines(dbGetQuery(con,
   "EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 120"
 )[[1]])
@@ -118,8 +123,13 @@ dbExecute(con, "CREATE INDEX idx_flights_dep_delay ON flights(dep_delay)")
 
 With the index in place, the plan changes:
 
+```sql
+EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 120;
+```
+
 ```{r}
 #| label: explain-with-index
+#| echo: false
 writeLines(dbGetQuery(con,
   "EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 120"
 )[[1]])
@@ -129,8 +139,13 @@ The planner switched to a **Bitmap Heap Scan**. It first ran a `Bitmap Index Sca
 
 For a more selective filter (flights delayed over five hours), the same index is even more effective:
 
+```sql
+EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 300;
+```
+
 ```{r}
 #| label: explain-highly-selective
+#| echo: false
 writeLines(dbGetQuery(con,
   "EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 300"
 )[[1]])
@@ -152,8 +167,13 @@ When queries frequently filter on two or more columns together, a multi-column i
 
 Without any additional index, filtering on both month and carrier requires a full sequential scan:
 
+```sql
+EXPLAIN ANALYZE SELECT * FROM flights WHERE month = 7 AND carrier = 'UA';
+```
+
 ```{r}
 #| label: explain-multi-before
+#| echo: false
 writeLines(dbGetQuery(con,
   "EXPLAIN ANALYZE SELECT * FROM flights WHERE month = 7 AND carrier = 'UA'"
 )[[1]])
@@ -167,8 +187,13 @@ writeLines(dbGetQuery(con,
 dbExecute(con, "CREATE INDEX idx_flights_month_carrier ON flights(month, carrier)")
 ```
 
+```sql
+EXPLAIN ANALYZE SELECT * FROM flights WHERE month = 7 AND carrier = 'UA';
+```
+
 ```{r}
 #| label: explain-multi-after
+#| echo: false
 writeLines(dbGetQuery(con,
   "EXPLAIN ANALYZE SELECT * FROM flights WHERE month = 7 AND carrier = 'UA'"
 )[[1]])
@@ -180,8 +205,13 @@ Execution time drops from about 11 milliseconds to well under 1 millisecond.
 
 The order of columns in a multi-column index determines which queries can use it. An index on `(month, carrier)` is organized first by month, then by carrier within each month. A query that filters on `month` alone can use this index, because month is the leading column. A query that filters on `carrier` alone cannot use the index efficiently: carrier values are interleaved across all months, so the index provides no useful ordering.
 
+```sql
+EXPLAIN ANALYZE SELECT * FROM flights WHERE carrier = 'UA';
+```
+
 ```{r}
 #| label: explain-non-leading
+#| echo: false
 writeLines(dbGetQuery(con,
   "EXPLAIN ANALYZE SELECT * FROM flights WHERE carrier = 'UA'"
 )[[1]])
@@ -216,8 +246,13 @@ This index covers only the 33,690 rows with a positive delay, about a third of t
 dbExecute(con, "CREATE INDEX idx_flights_delayed ON flights(dep_delay) WHERE dep_delay > 0")
 ```
 
+```sql
+EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 120;
+```
+
 ```{r}
 #| label: explain-partial
+#| echo: false
 writeLines(dbGetQuery(con,
   "EXPLAIN ANALYZE SELECT * FROM flights WHERE dep_delay > 120"
 )[[1]])
@@ -237,8 +272,13 @@ An **index-only scan** occurs when every column needed by a query is present in 
 
 Consider a query that selects only `dep_delay`, `carrier`, and `dest`:
 
+```sql
+EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay > 120;
+```
+
 ```{r}
 #| label: explain-covering-before
+#| echo: false
 writeLines(dbGetQuery(con,
   "EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay > 120"
 )[[1]])
@@ -254,8 +294,13 @@ dbExecute(con,
 )
 ```
 
+```sql
+EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay > 120;
+```
+
 ```{r}
 #| label: explain-covering-after
+#| echo: false
 writeLines(dbGetQuery(con,
   "EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay > 120"
 )[[1]])

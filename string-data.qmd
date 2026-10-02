@@ -1,0 +1,565 @@
+---
+title: "Manipulating String Data"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Measure** and **normalize** text with `length()`, `upper()`, `lower()`, `initcap()`, and `trim()`.
+- **Extract** pieces of a string by position with `left()`, `right()`, and `substring()`, and by delimiter with `split_part()`.
+- **Replace** characters and substrings with `replace()` and `translate()`.
+- **Build** strings with `||`, `concat()`, `concat_ws()`, `lpad()`, and `format()`, and explain how each one treats `NULL`.
+- **Write** regular expressions to match, extract, and replace patterns in text with `~`, `regexp_match()`, and `regexp_replace()`.
+- **Split** text into rows with `regexp_split_to_table()` to count words.
+- **Combine** these techniques to clean messy, user-entered text into a consistent format and verify the result.
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 100)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
+
+con <- dbConnect(
+  Postgres(),
+  host     = "localhost",
+  port     = as.integer(Sys.getenv("PGPORT", unset = "5432")),
+  dbname   = "library",
+  user     = "postgres",
+  password = Sys.getenv("PGPASS", unset = "postgres")
+)
+```
+
+Text is the most flexible data type and the least disciplined. A `DATE` column cannot hold February 30th, and an `INTEGER` column cannot hold the word "seven," but a `TEXT` column will accept anything a person types. Names arrive in every combination of upper and lower case. Phone numbers arrive with parentheses, dots, dashes, spaces, and country codes, or with none of them. Stray spaces hide at the ends of values, where nobody can see them, and quietly break equality comparisons.
+
+This chapter covers PostgreSQL's tools for taking text apart, putting it back together, and cleaning it up. It continues with the `library` database from the [previous chapter](date-time-data.qmd).
+
+## Messy Text at the Library
+
+Since 2020, new patrons have been able to apply for a library card through an online form. Each submission is stored exactly as typed in `signup_submissions`. Library staff review each one and create a clean record in `patrons`, and the `patron_id` column links the approved submissions to the records created from them. Comparing a few of each shows the gap between what patrons type and what the library needs:
+
+```{sql}
+--| connection: con
+--| label: submissions-vs-patrons
+SELECT s.submission_id, s.full_name, s.email, s.phone,
+       s.street_address, s.city_state_zip,
+       p.first_name, p.last_name, p.email AS clean_email, p.phone AS clean_phone,
+       p.address, p.city, p.state, p.zip_code
+FROM signup_submissions AS s
+INNER JOIN patrons AS p ON s.patron_id = p.patron_id
+WHERE s.submission_id IN (1, 2, 3, 4);
+```
+
+Four submissions contain four kinds of mess: inconsistent capitalization, a name entered last name first, phone numbers in four different styles, and a street suffix written four different ways. Some of the mess is invisible in this output, too. Submission 1's email address begins with two spaces.
+
+By the end of this chapter, you will write a single query that reproduces every approved `patrons` record from its raw submission. Along the way, you will also work with `catalog_searches`, which records what patrons typed into the library's online catalog search box.
+
+## Length and Case
+
+`length()` returns the number of characters in a string. Wrapping a value in brackets with `||` is a simple way to make leading and trailing spaces visible, and comparing the length before and after `trim()` (covered in the next section) finds every value that has them:
+
+```{sql}
+--| connection: con
+--| label: length-reveals-spaces
+SELECT submission_id,
+       '[' || full_name || ']'  AS bracketed_name,
+       length(full_name)        AS length,
+       length(trim(full_name))  AS trimmed_length
+FROM signup_submissions
+WHERE length(full_name) <> length(trim(full_name))
+ORDER BY submission_id
+LIMIT 5;
+```
+
+Three functions change the case of a string:
+
+- `upper()` converts every letter to uppercase.
+- `lower()` converts every letter to lowercase.
+- `initcap()` capitalizes the first letter of each word and lowercases the rest.
+
+```{sql}
+--| connection: con
+--| label: case-functions
+SELECT full_name,
+       upper(full_name)   AS upper,
+       lower(full_name)   AS lower,
+       initcap(full_name) AS initcap
+FROM signup_submissions
+WHERE submission_id IN (1, 2, 3);
+```
+
+`initcap()` is a good fit for these patron names, but it is a blunt instrument. It turns `McDonald` into `Mcdonald` and `O'BRIEN` into `O'Brien`, and it capitalizes `van` and `de` in names like `Ludwig van Beethoven`. Use it on data you have looked at, not as a universal fix.
+
+The most common use of case functions is not display but **comparison**. Text comparisons are case-sensitive, so `'Matthew.Robinson@example.com'` and `'matthew.robinson@example.com'` are different strings. Lowercasing both sides before comparing makes the comparison case-insensitive:
+
+```{sql}
+--| connection: con
+--| label: case-insensitive-compare
+SELECT
+    COUNT(*) FILTER (WHERE s.email = p.email)               AS exact_matches,
+    COUNT(*) FILTER (WHERE lower(s.email) = p.email)        AS lowercase_matches,
+    COUNT(*) FILTER (WHERE lower(trim(s.email)) = p.email)  AS trimmed_lowercase_matches,
+    COUNT(*)                                                AS approved_submissions
+FROM signup_submissions AS s
+INNER JOIN patrons AS p ON s.patron_id = p.patron_id;
+```
+
+Lowercasing alone is not enough. Only after trimming as well does every submitted email match the address on file.
+
+## Removing Whitespace
+
+`trim()` removes spaces from both ends of a string. `ltrim()` removes them from the left (leading) end only, and `rtrim()` from the right (trailing) end only. None of them touch the spaces *inside* a string.
+
+```{sql}
+--| connection: con
+--| label: trim-functions
+SELECT '[' || full_name        || ']' AS original,
+       '[' || trim(full_name)  || ']' AS trimmed,
+       '[' || ltrim(full_name) || ']' AS left_trimmed,
+       '[' || rtrim(full_name) || ']' AS right_trimmed
+FROM signup_submissions
+WHERE submission_id IN (40, 106);
+```
+
+Submission 40 still has two spaces between `Linda` and `Harris` after trimming. Collapsing internal runs of spaces requires a regular expression, which you will see later in the chapter.
+
+The trim functions accept an optional second argument listing which characters to remove, instead of spaces. Every copy's barcode is the letters `LIB` followed by its `copy_id`, padded with zeros to seven digits. Trimming those characters from the left leaves just the number:
+
+```{sql}
+--| connection: con
+--| label: ltrim-characters
+SELECT copy_id, barcode,
+       ltrim(barcode, 'LIB0') AS trimmed,
+       ltrim(barcode, 'LIB0')::integer = copy_id AS matches_copy_id
+FROM copies
+WHERE copy_id IN (1, 100, 385);
+```
+
+::: {.callout-warning}
+The second argument to `ltrim()`, `rtrim()`, and `trim()` is a **set of characters**, not a prefix or suffix. `ltrim(barcode, 'LIB0')` removes any run of `L`, `I`, `B`, and `0` characters, in any order, from the start of the string. It works here because every barcode starts with exactly those characters and the number never begins with zero. `ltrim('LIBBY', 'LIB')` returns `'Y'`, not `'BY'`: after removing the `L`, `I`, and `B`, it keeps going and removes the second `B` as well. To remove a fixed prefix, use one of the extraction functions in the next section.
+:::
+
+## Extracting Pieces of a String
+
+### By Position: left(), right(), and substring()
+
+`left(string, n)` returns the first `n` characters of a string, and `right(string, n)` returns the last `n`. Every ISBN-13 begins with a three-digit prefix, `978` or `979`, that identifies it as a book:
+
+```{sql}
+--| connection: con
+--| label: isbn-prefix
+SELECT left(isbn13, 3) AS prefix, COUNT(*) AS books
+FROM books
+GROUP BY prefix;
+```
+
+`substring()` extracts characters from the middle of a string. Its SQL standard form names the starting position with `FROM` and the number of characters with `FOR`. Positions start at 1, not 0.
+
+```{sql}
+--| connection: con
+--| label: substring
+SELECT barcode,
+       substring(barcode FROM 1 FOR 3) AS prefix,
+       substring(barcode FROM 4)       AS number_part
+FROM copies
+WHERE copy_id IN (1, 100, 385);
+```
+
+Leaving off `FOR` returns everything from the starting position to the end of the string.
+
+Positions are only useful when you know them in advance. When the part you want starts at a different position in each value, `position(substring IN string)` finds it, returning the position of the first match (or 0 if there is none). Combined with `substring()`, it extracts everything after the `@` in an email address:
+
+```{sql}
+--| connection: con
+--| label: position
+SELECT email,
+       position('@' IN email)                            AS at_sign,
+       substring(email FROM position('@' IN email) + 1)  AS domain
+FROM patrons
+WHERE patron_id IN (1, 2, 3);
+```
+
+### By Delimiter: split_part()
+
+When a string is made of parts separated by a known character, `split_part(string, delimiter, n)` is simpler. It splits the string at each occurrence of the delimiter and returns the `n`th part:
+
+```{sql}
+--| connection: con
+--| label: split-part-email
+SELECT email,
+       split_part(email, '@', 1) AS username,
+       split_part(email, '@', 2) AS domain
+FROM patrons
+WHERE patron_id IN (1, 2, 3);
+```
+
+Splitting the submitted emails and counting the domains shows why extraction and cleaning go together:
+
+```{sql}
+--| connection: con
+--| label: domain-counts-messy
+SELECT '[' || split_part(email, '@', 2) || ']' AS domain,
+       COUNT(*) AS submissions
+FROM signup_submissions
+GROUP BY domain
+ORDER BY submissions DESC;
+```
+
+The same domain, `example.com`, appears in several rows: once in uppercase and several times with trailing spaces of different lengths. Normalizing the email first collapses them into a single group:
+
+```{sql}
+--| connection: con
+--| label: domain-counts-clean
+SELECT split_part(lower(trim(email)), '@', 2) AS domain,
+       COUNT(*) AS submissions
+FROM signup_submissions
+GROUP BY domain
+ORDER BY submissions DESC;
+```
+
+### When Splitting Fails
+
+It is tempting to split a full name at its space to get a first and last name. That works for names like `Matthew Robinson`, but names are not reliably two words. The `authors` table stores each author's name as a single `full_name` column for exactly this reason:
+
+```{sql}
+--| connection: con
+--| label: split-author-names
+SELECT full_name,
+       split_part(full_name, ' ', 1) AS first_part,
+       split_part(full_name, ' ', 2) AS second_part
+FROM authors
+WHERE full_name IN ('L. Frank Baum', 'Miguel de Cervantes Saavedra',
+                    'Arthur Conan Doyle', 'H. G. Wells');
+```
+
+None of these splits produces a sensible first and last name. Before splitting text on a delimiter, check that every value follows the structure you expect. The patron names in `signup_submissions` do: every one is a single first name and a single last name, in one of two orders.
+
+## Replacing Text
+
+`replace(string, from, to)` replaces every occurrence of one substring with another. The street addresses on file always abbreviate "Street" as `St`, but the form submissions spell it three ways:
+
+```{sql}
+--| connection: con
+--| label: replace
+SELECT street_address,
+       replace(replace(street_address, 'Street', 'St'), 'St.', 'St') AS standardized
+FROM signup_submissions
+WHERE submission_id IN (1, 2, 3, 4);
+```
+
+Like every comparison you have seen so far, `replace()` is case-sensitive. It missed `ST.` in submission 3. Applying `initcap()` first turns `267 DEPOT ST.` into `267 Depot St.`, which `replace()` can then handle.
+
+`translate(string, from, to)` works character by character instead. Each character in `from` is replaced by the character in the same position in `to`, and characters in `from` with no counterpart in `to` are deleted. With an empty `to`, `translate()` deletes every listed character, which strips the punctuation from a phone number:
+
+```{sql}
+--| connection: con
+--| label: translate-phone
+SELECT phone,
+       translate(phone, '()-. +', '') AS digits_only
+FROM signup_submissions
+WHERE submission_id IN (1, 2, 3, 4, 7);
+```
+
+Most of the results are ten digits. A few patrons included the United States country code as `+1` or `1-`, which leaves an eleventh digit at the front.
+
+## Building Strings
+
+### Concatenation and NULL
+
+The [first chapter on queries](select-statements.qmd) introduced the `||` operator for joining strings. It has one property that causes trouble with messy data: if any piece is `NULL`, the entire result is `NULL`. The `concat()` function treats `NULL` as an empty string instead, and `concat_ws()` ("concatenate with separator") places a separator between the non-`NULL` pieces and skips the `NULL` ones entirely:
+
+```{sql}
+--| connection: con
+--| label: concat-null
+SELECT submission_id, full_name, phone,
+       full_name || ' / ' || phone         AS with_pipes,
+       concat(full_name, ' / ', phone)     AS with_concat,
+       concat_ws(' / ', full_name, phone)  AS with_concat_ws
+FROM signup_submissions
+WHERE submission_id IN (24, 25, 26);
+```
+
+Submission 25 has no phone number (the book's output displays `NULL` values as `NA`). `||` loses the whole value, `concat()` leaves a dangling separator, and `concat_ws()` produces exactly what you would want.
+
+### Padding: lpad() and rpad()
+
+`lpad(string, length, fill)` pads a string on the left with a fill character until it reaches the given length. `rpad()` pads on the right. Padding is the inverse of the `ltrim()` example earlier: it rebuilds a barcode from a `copy_id`.
+
+```{sql}
+--| connection: con
+--| label: lpad-barcode
+SELECT copy_id,
+       lpad(copy_id::text, 7, '0')          AS padded,
+       'LIB' || lpad(copy_id::text, 7, '0') AS rebuilt_barcode,
+       barcode
+FROM copies
+WHERE copy_id IN (1, 100, 385);
+```
+
+### format()
+
+`format()` builds a string from a template, replacing each `%s` with the next argument in turn. It reads more clearly than a long chain of `||` operators, especially when the pieces need separators between them. Paired with `substring()`, it can format a string of ten digits as a phone number:
+
+```{sql}
+--| connection: con
+--| label: format-phone
+SELECT format('%s-%s-%s',
+              substring('7042519909' FROM 1 FOR 3),
+              substring('7042519909' FROM 4 FOR 3),
+              substring('7042519909' FROM 7 FOR 4)) AS formatted_phone;
+```
+
+Like `concat()`, `format()` treats a `NULL` argument as an empty string.
+
+## Regular Expressions
+
+Every function so far works with literal text: a specific character, a fixed position, an exact substring. Many cleaning tasks are about *patterns* instead. "Any run of spaces." "Any character that is not a digit." "A two-letter state code followed by a five-digit ZIP code at the end." A **regular expression** is a small language for describing patterns like these, and PostgreSQL supports it throughout its string functions.
+
+You have already seen a simple pattern language in `LIKE`, where `%` matches any run of characters and `_` matches any single character. Regular expressions are far more expressive. The most useful pieces are:
+
+| Pattern | Matches |
+|---|---|
+| `.` | Any single character |
+| `\d` / `\D` | Any digit / any character that is not a digit |
+| `\s` / `\S` | Any whitespace character / any non-whitespace character |
+| `\w` | Any letter, digit, or underscore |
+| `[abc]` | Any one of the characters `a`, `b`, or `c` |
+| `[^abc]` | Any character *except* `a`, `b`, or `c` |
+| `[A-Za-z]` | Any character in a range: here, any letter |
+| `^` / `$` | The start / the end of the string |
+| `*` | The preceding item, zero or more times |
+| `+` | The preceding item, one or more times |
+| `?` | The preceding item, zero or one time (that is, optional) |
+| `{n}` / `{n,m}` | The preceding item exactly `n` times / between `n` and `m` times |
+| `(...)` | A group, which can be repeated, captured, or referred to later |
+| `a|b` | Either `a` or `b` |
+
+### Matching with ~
+
+The `~` operator tests whether a string matches a regular expression, returning `true` or `false`. Unlike `LIKE`, which must match the entire string, a regular expression can match anywhere in the string unless you anchor it with `^` and `$`. The `~*` operator matches regardless of case, and `!~` and `!~*` are the negated versions.
+
+Patrons sometimes search the catalog by ISBN, with or without hyphens. A pattern for "optional spaces, then `978` or `979`, then only digits and hyphens to the end" finds those searches:
+
+```{sql}
+--| connection: con
+--| label: regex-match-isbn
+SELECT search_id, '[' || query_text || ']' AS query
+FROM catalog_searches
+WHERE query_text ~ '^\s*97[89][\d-]+\s*$'
+ORDER BY search_id
+LIMIT 8;
+```
+
+Reading the pattern piece by piece: `^` anchors it to the start of the string, `\s*` allows any number of spaces, `97[89]` matches `978` or `979`, `[\d-]+` matches one or more digits or hyphens, `\s*` allows trailing spaces, and `$` anchors it to the end.
+
+### Replacing with regexp_replace()
+
+`regexp_replace(string, pattern, replacement, flags)` replaces text that matches a pattern. By default, it replaces only the first match. The `'g'` ("global") flag replaces every match.
+
+Two patterns solve problems from earlier in the chapter. The pattern `\s+` matches any run of whitespace, so replacing it with a single space collapses the double spaces that `trim()` could not reach. The pattern `\D` matches any character that is not a digit, so replacing it with nothing reduces a phone number to its digits, whatever punctuation the patron used:
+
+```{sql}
+--| connection: con
+--| label: regexp-replace
+SELECT '[' || full_name || ']'                                   AS name,
+       '[' || trim(regexp_replace(full_name, '\s+', ' ', 'g')) || ']' AS name_collapsed,
+       phone,
+       regexp_replace(phone, '\D', '', 'g')                      AS phone_digits
+FROM signup_submissions
+WHERE submission_id IN (3, 40, 106);
+```
+
+The ISBN searches need the same treatment before they can be matched against the catalog. Removing spaces and hyphens with the pattern `[\s-]` leaves a plain thirteen-digit ISBN that can be joined to `books`:
+
+```{sql}
+--| connection: con
+--| label: isbn-search-join
+SELECT s.search_id, s.query_text, b.title
+FROM catalog_searches AS s
+INNER JOIN books AS b
+    ON b.isbn13 = regexp_replace(s.query_text, '[\s-]', '', 'g')
+ORDER BY s.search_id
+LIMIT 8;
+```
+
+### Capturing Groups and Backreferences
+
+Parentheses in a pattern **capture** the text they match, and the replacement string can refer back to the captured text: `\1` for the first group, `\2` for the second, and so on. That makes it possible to rearrange the parts of a string. Thirty-five submissions have the name typed as `Last, First`. This pattern captures the non-space text before the comma and the non-space text after it, and the replacement writes them in the opposite order:
+
+```{sql}
+--| connection: con
+--| label: backreference
+SELECT full_name,
+       regexp_replace(trim(full_name), '^(\S+),\s*(\S+)$', '\2 \1') AS reordered
+FROM signup_submissions
+WHERE submission_id IN (3, 140, 2);
+```
+
+Names that do not match the pattern, like `michelle smith` in submission 2, pass through unchanged. That is a useful property of `regexp_replace()`: it leaves alone any value its pattern does not describe.
+
+### Extracting with regexp_match()
+
+`regexp_match(string, pattern)` returns the captured groups themselves, as an **array**: a single value that holds a list of values. Square brackets pull out individual elements, starting at 1. This pattern breaks the free-form `city_state_zip` field into its three parts, tolerating a missing comma, extra spaces, and a lowercase state code:
+
+```{sql}
+--| connection: con
+--| label: regexp-match
+SELECT city_state_zip,
+       regexp_match(trim(city_state_zip), '^(.+?),?\s*([A-Za-z]{2})\s+(\d{5})$') AS parts,
+       (regexp_match(trim(city_state_zip), '^(.+?),?\s*([A-Za-z]{2})\s+(\d{5})$'))[1] AS city,
+       (regexp_match(trim(city_state_zip), '^(.+?),?\s*([A-Za-z]{2})\s+(\d{5})$'))[2] AS state,
+       (regexp_match(trim(city_state_zip), '^(.+?),?\s*([A-Za-z]{2})\s+(\d{5})$'))[3] AS zip_code
+FROM signup_submissions
+WHERE submission_id IN (1, 2, 8, 148);
+```
+
+The first group, `(.+?)`, uses a *lazy* quantifier. A plain `.+` would try to match as much text as possible, while `.+?` matches as little as possible, so the city stops as soon as the rest of the pattern (an optional comma, spaces, two letters, spaces, and five digits at the end) can match. If a value does not match the pattern at all, `regexp_match()` returns `NULL`.
+
+::: {.callout-tip}
+Regular expressions are compact and easy to get subtly wrong. Build them incrementally, testing each version against a handful of values from the table, and then count how many rows fail to match (`WHERE value !~ pattern`) before trusting the result on the whole table.
+:::
+
+## Splitting Text into Rows
+
+`split_part()` returns one piece of a string. Sometimes you want all of the pieces, each on its own row. `regexp_split_to_table(string, pattern)` splits a string wherever the pattern matches and returns one row per piece. Like `generate_series()` in the previous chapter, it goes in the `FROM` clause, here alongside the table whose values it splits:
+
+```{sql}
+--| connection: con
+--| label: split-to-table
+SELECT s.search_id, s.query_text, word
+FROM catalog_searches AS s,
+     regexp_split_to_table(lower(trim(s.query_text)), '\s+') AS word
+WHERE s.search_id IN (4, 12);
+```
+
+Each search contributes as many rows as it has words. Grouping those rows answers a question that would otherwise be hard to ask: which words do patrons search for most often?
+
+```{sql}
+--| connection: con
+--| label: top-search-words
+SELECT word, COUNT(*) AS searches
+FROM catalog_searches AS s,
+     regexp_split_to_table(lower(trim(s.query_text)), '\s+') AS word
+WHERE word NOT IN ('the', 'of', 'and', 'a', 'an', 'in', 'to', 'de', 'la', 'for', 'on')
+GROUP BY word
+ORDER BY searches DESC
+LIMIT 15;
+```
+
+One entry, `classics)`, still has a parenthesis attached, from searches for titles like *The Red House Mystery (Vintage Classics)*. Splitting on the pattern `[\s()]+` instead of `\s+` would treat parentheses as separators too. The excluded words, called **stop words**, are so common that they would crowd the top of the list without saying anything about what patrons want. The `'de'` and `'la'` entries are there because the catalog includes Spanish- and French-language titles.
+
+::: {.callout-note}
+`string_to_array(string, delimiter)` splits a string into an array instead of rows, which is useful when you want to keep all of the pieces together in a single value. `regexp_split_to_array()` does the same with a pattern for the delimiter.
+:::
+
+## Putting It All Together
+
+The techniques in this chapter combine into a query that cleans every approved submission into the format of the `patrons` table:
+
+- **Names**: trim, collapse internal spaces, reorder `Last, First` names, fix the capitalization, and split at the remaining space.
+- **Email**: trim and lowercase.
+- **Phone**: reduce to digits, drop a leading country code, and reformat as `704-555-1234`.
+- **Address**: trim, collapse spaces, fix the capitalization, and standardize the street suffix.
+- **City, state, and ZIP code**: extract with `regexp_match()`, then fix the capitalization of the city and state.
+
+```{sql}
+--| connection: con
+--| label: clean-submissions
+SELECT submission_id, patron_id,
+       split_part(initcap(regexp_replace(regexp_replace(trim(full_name), '\s+', ' ', 'g'),
+                  '^(\S+), (\S+)$', '\2 \1')), ' ', 1)               AS first_name,
+       split_part(initcap(regexp_replace(regexp_replace(trim(full_name), '\s+', ' ', 'g'),
+                  '^(\S+), (\S+)$', '\2 \1')), ' ', 2)               AS last_name,
+       lower(trim(email))                                            AS email,
+       regexp_replace(regexp_replace(phone, '\D', '', 'g'),
+                      '^1?(\d{3})(\d{3})(\d{4})$', '\1-\2-\3')       AS phone,
+       regexp_replace(initcap(regexp_replace(trim(street_address), '\s+', ' ', 'g')),
+                      ' (Street|St\.)$', ' St')                      AS address,
+       initcap((regexp_match(trim(city_state_zip),
+                '^(.+?),?\s*([A-Za-z]{2})\s+(\d{5})$'))[1])          AS city,
+       upper((regexp_match(trim(city_state_zip),
+              '^(.+?),?\s*([A-Za-z]{2})\s+(\d{5})$'))[2])            AS state,
+       (regexp_match(trim(city_state_zip),
+        '^(.+?),?\s*([A-Za-z]{2})\s+(\d{5})$'))[3]                   AS zip_code
+FROM signup_submissions
+WHERE patron_id IS NOT NULL
+ORDER BY submission_id
+LIMIT 10;
+```
+
+Two of these expressions use regular expressions in new ways. The phone pattern captures the three groups of digits and writes them back with hyphens between them, while `1?` at the start silently drops a leading country code. The address pattern ends in `$`, so it only rewrites a suffix at the very end of the address.
+
+A cleaning query is only as good as its verification. Comparing each cleaned row with the patron record it should reproduce, using the [row comparison](data-types.qmd) you saw in the Data Types chapter, counts the rows where any column disagrees:
+
+```{sql}
+--| connection: con
+--| label: verify-cleaning
+SELECT COUNT(*) AS approved_submissions,
+       COUNT(*) FILTER (WHERE
+           (split_part(initcap(regexp_replace(regexp_replace(trim(s.full_name), '\s+', ' ', 'g'),
+                       '^(\S+), (\S+)$', '\2 \1')), ' ', 1),
+            split_part(initcap(regexp_replace(regexp_replace(trim(s.full_name), '\s+', ' ', 'g'),
+                       '^(\S+), (\S+)$', '\2 \1')), ' ', 2),
+            lower(trim(s.email)),
+            regexp_replace(regexp_replace(s.phone, '\D', '', 'g'),
+                           '^1?(\d{3})(\d{3})(\d{4})$', '\1-\2-\3'),
+            regexp_replace(initcap(regexp_replace(trim(s.street_address), '\s+', ' ', 'g')),
+                           ' (Street|St\.)$', ' St'),
+            initcap((regexp_match(trim(s.city_state_zip), '^(.+?),?\s*([A-Za-z]{2})\s+(\d{5})$'))[1]),
+            upper((regexp_match(trim(s.city_state_zip), '^(.+?),?\s*([A-Za-z]{2})\s+(\d{5})$'))[2]),
+            (regexp_match(trim(s.city_state_zip), '^(.+?),?\s*([A-Za-z]{2})\s+(\d{5})$'))[3])
+           <>
+           (p.first_name, p.last_name, p.email, p.phone, p.address, p.city, p.state, p.zip_code)
+       ) AS mismatched_submissions
+FROM signup_submissions AS s
+INNER JOIN patrons AS p ON s.patron_id = p.patron_id;
+```
+
+Every approved submission cleans to exactly the record on file. The query is long because each cleaning expression appears twice. The [Subqueries](subqueries.qmd) chapter introduces common table expressions, which let you write each expression once, give the cleaned result a name, and compare against it.
+
+Clean data also makes new questions answerable. The submissions without a `patron_id` were never approved. Grouping all submissions by their normalized email address reveals why most of them were rejected:
+
+```{sql}
+--| connection: con
+--| label: duplicate-submissions
+SELECT lower(trim(email))         AS email,
+       COUNT(*)                   AS submissions,
+       COUNT(patron_id)           AS approved
+FROM signup_submissions
+GROUP BY lower(trim(email))
+HAVING COUNT(*) > 1
+ORDER BY email;
+```
+
+Each of these people submitted the form more than once, and each was approved exactly once. Grouping by the raw `email` column finds only 11 of these 22 duplicates, because the other copies differ in capitalization or spacing. The handful of remaining unapproved submissions are test entries and junk, such as `asdf@asdf.com`.
+
+## Exercises {.unnumbered}
+
+### Reflection {.unnumbered}
+
+1. Explain why `WHERE email = 'larry.hernandez@example.com'` might return no rows even when Larry Hernandez's email is in the table. Name two functions that could make the comparison more robust.
+
+2. What is the difference between `replace()` and `translate()`? Give an example of a task that suits each one.
+
+3. A colleague splits every author's `full_name` at the first space to create `first_name` and `last_name` columns. Using examples from the `authors` table, explain what goes wrong.
+
+4. `||`, `concat()`, and `concat_ws()` handle `NULL` differently. Describe a situation in which you would want the `||` behavior, where a single `NULL` makes the whole result `NULL`.
+
+### Coding {.unnumbered}
+
+5. Find every book in `books` whose title is longer than 50 characters. Return the title and its length, sorted from longest to shortest.
+
+6. Using `split_part()`, return the username portion (everything before the `@`) of each patron's email address in `patrons`, along with the patron's first and last name. Then count how many usernames contain a digit.
+
+7. Write a query that formats each staff member's name as `Last, First` (for example, `Jones, Gary`) using `format()`. Sort by the formatted name.
+
+8. Using `regexp_replace()`, normalize every `query_text` in `catalog_searches` by trimming it, collapsing runs of whitespace to a single space, and lowercasing it. Then find the ten most frequent normalized queries.
+
+9. Using a regular expression, find every title in `books` that contains a number (any digit). How many are there?
+
+10. Write a query that finds the catalog searches whose normalized text (from exercise 8) appears somewhere in a book's title, using `ILIKE`. How many searches match at least one title? Look at a sample of the searches that do *not* match. What kinds of searches are they, and what would it take to match them?
+
+11. The cleaning query in this chapter reformats phone numbers with `regexp_replace()` and capture groups. Rewrite the phone cleanup using `regexp_replace()` to strip non-digits, then `right()` to keep the last ten digits, then `format()` and `substring()` to add the hyphens. Verify that your version produces the same result as the chapter's for every approved submission.

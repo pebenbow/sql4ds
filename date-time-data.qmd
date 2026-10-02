@@ -1,0 +1,654 @@
+---
+title: "Manipulating Date/Time Data"
+---
+
+## Learning Objectives
+
+By the end of this chapter, students will be able to:
+
+- **Distinguish** between `DATE`, `TIMESTAMP`, and `TIMESTAMPTZ` values and explain what each one represents.
+- **Convert** `TIMESTAMPTZ` values to a local time zone with `AT TIME ZONE` before extracting parts of them.
+- **Group** date and time data into periods with `date_trunc()` and `EXTRACT()`.
+- **Calculate** durations by subtracting dates and timestamps, and convert the resulting intervals into numbers.
+- **Generate** a complete calendar of dates with `generate_series()` to report on periods with no activity.
+- **Detect** overlapping time ranges with the `OVERLAPS` operator.
+- **Format** dates and times as text with `to_char()`.
+- **Parse** dates and times stored as text with `to_date()` and `to_timestamp()`, including data that mixes several formats.
+
+```{r}
+#| include: false
+library(DBI)
+library(RPostgres)
+
+options(knitr.kable.NA = "NULL")
+knitr::opts_chunk$set(max.print = 100)
+knitr::opts_knit$set(sql.print = function(x) as.character(knitr::knit_print(rmarkdown::paged_table(x))))
+
+con <- dbConnect(
+  Postgres(),
+  host     = "localhost",
+  port     = as.integer(Sys.getenv("PGPORT", unset = "5432")),
+  dbname   = "library",
+  user     = "postgres",
+  password = Sys.getenv("PGPASS", unset = "postgres")
+)
+```
+
+Almost every dataset a data scientist touches has a time dimension. Sales happen on a date, sensors report at a timestamp, and users log in, click, and log out at particular moments. Questions about that data are usually questions about time: how many per month, which hour is busiest, how long did it take, what changed since last year. The [Data Types](data-types.qmd) chapter introduced the types PostgreSQL uses to store dates and times. This chapter is about working with them: converting, grouping, measuring, generating, formatting, and parsing.
+
+## The library Database
+
+The examples in this chapter and the next use the `library` database, which models the circulation system of a small public library. Its books, authors, and publishers are drawn from Open Library. Its patrons, staff, and circulation history are fabricated.
+
+The core of the database is the loan cycle: the library owns physical `copies` of `books`, `patrons` borrow those copies, and each loan is a row in `checkouts`. This chapter also uses four tables that capture time in different ways:
+
+| Table | What it records | How it stores time |
+|---|---|---|
+| `checkouts` | One row per loan | `DATE` columns: `checkout_date`, `due_date`, `return_date` |
+| `circulation_scans` | Every barcode scan at the circulation desk | `TIMESTAMPTZ`: `scanned_at` |
+| `room_reservations` | Bookings for the library's study rooms | `TIMESTAMP`: `start_time`, `end_time`; `TIMESTAMPTZ`: `booked_at` |
+| `legacy_checkouts` | An export from the library's previous circulation system | `TEXT`, in several formats |
+
+The data is a snapshot that ends on August 7, 2026. Several queries below measure time "as of" that date. Use `DATE '2026-08-07'` rather than `CURRENT_DATE` in those queries so that your results match the book no matter when you run them.
+
+## Dates, Timestamps, and Time Zones
+
+A loan in `checkouts` records the day a copy went out and the day it came back. The circulation desk also logs the exact moment each copy was scanned. Joining the two tables shows both views of the same loan:
+
+```{sql}
+--| connection: con
+--| label: checkout-and-scans
+SELECT c.checkout_id, c.checkout_date, c.return_date,
+       s.scan_type, s.scanned_at
+FROM checkouts AS c
+INNER JOIN circulation_scans AS s ON c.checkout_id = s.checkout_id
+WHERE c.checkout_id = 954;
+```
+
+The copy went out on August 12, 2024, and the checkout scan happened at 19:51:37 that day. The library is in North Carolina, though, and it does not open until 9:00 in the morning or stay open past 8:00 at night. Did a patron check out a book at nearly 8 PM?
+
+No. The `scanned_at` column is a `TIMESTAMPTZ` (`TIMESTAMP WITH TIME ZONE`), and the difference between `TIMESTAMPTZ` and `TIMESTAMP` is more than a label:
+
+- A `TIMESTAMP` is a **wall-clock reading**: a date and a time of day, with no information about where in the world it was read. `'2024-08-12 15:51:37'` means 3:51 PM, and that is all it means.
+- A `TIMESTAMPTZ` is an **instant**: a single, unambiguous moment in time. PostgreSQL stores it internally in UTC (Coordinated Universal Time) and converts it to the session's time zone whenever it displays one.
+
+The session time zone is a setting, and you can inspect it:
+
+```{sql}
+--| connection: con
+--| label: show-timezone
+SHOW TimeZone;
+```
+
+This book's session uses UTC, which is also the default for the course Docker container. So the scan above happened at 19:51:37 UTC, which was 3:51 PM in North Carolina.
+
+::: {.callout-note}
+When you run these queries in psql or VS Code, `TIMESTAMPTZ` values display with their UTC offset, such as `2024-08-12 19:51:37+00`. The tables in this book omit the `+00` suffix, but every `TIMESTAMPTZ` value shown in this chapter is in UTC.
+:::
+
+### Converting to Local Time with AT TIME ZONE
+
+The `AT TIME ZONE` operator converts an instant into the wall-clock time in a particular place. Applied to a `TIMESTAMPTZ`, it returns a `TIMESTAMP`: what a clock on the wall in that time zone would have read at that instant.
+
+```{sql}
+--| connection: con
+--| label: at-time-zone
+SELECT scan_id, scan_type,
+       scanned_at,
+       scanned_at AT TIME ZONE 'America/New_York' AS scanned_local
+FROM circulation_scans
+WHERE scan_id IN (2, 875);
+```
+
+The first scan was in August, when North Carolina observes Eastern Daylight Time (UTC minus four hours). The second was in January, during Eastern Standard Time (UTC minus five hours). Because the conversion uses a named zone (`'America/New_York'`) instead of a fixed offset, PostgreSQL applies the correct offset for each date automatically, including the daylight saving changes each March and November.
+
+::: {.callout-tip}
+Always convert with a named time zone such as `'America/New_York'`, `'Europe/London'`, or `'Asia/Tokyo'`. A fixed offset like `'-05:00'` is only correct for part of the year in any place that observes daylight saving time. The full list of names PostgreSQL recognizes is in the `pg_timezone_names` view.
+:::
+
+### Convert Before You Extract
+
+Converting matters as soon as you pull a piece out of a timestamp. Suppose you want to know which hours of the day keep the circulation desk busiest. Extracting the hour directly from `scanned_at` gives the hour **in UTC**:
+
+```{sql}
+--| connection: con
+--| label: hours-utc
+SELECT EXTRACT(hour FROM scanned_at) AS hour, COUNT(*) AS scans
+FROM circulation_scans
+GROUP BY hour
+ORDER BY hour;
+```
+
+This result suggests the desk is busiest at 8 PM and still has activity after midnight, which is impossible for a library that closes at 8:00. Converting to local time first fixes it:
+
+```{sql}
+--| connection: con
+--| label: hours-local
+SELECT EXTRACT(hour FROM scanned_at AT TIME ZONE 'America/New_York') AS hour,
+       COUNT(*) AS scans
+FROM circulation_scans
+GROUP BY hour
+ORDER BY hour;
+```
+
+Now every scan falls between 9 AM and 8 PM, with a lunchtime bump and a larger peak in the 3 PM and 4 PM hours, as school lets out.
+
+The same problem affects dates. Casting a `TIMESTAMPTZ` to `DATE` gives the date in the session's time zone, and a scan at 7:30 PM Eastern Standard Time is already past midnight in UTC. Comparing both versions of each scan's date against the business dates in `checkouts` shows how often that happens:
+
+```{sql}
+--| connection: con
+--| label: date-mismatch
+SELECT
+    COUNT(*) FILTER (
+        WHERE s.scanned_at::date <> c.checkout_date
+    ) AS utc_date_mismatches,
+    COUNT(*) FILTER (
+        WHERE (s.scanned_at AT TIME ZONE 'America/New_York')::date <> c.checkout_date
+    ) AS local_date_mismatches
+FROM circulation_scans AS s
+INNER JOIN checkouts AS c ON s.checkout_id = c.checkout_id
+WHERE s.scan_type = 'checkout';
+```
+
+A handful of evening checkouts land on the wrong day when you skip the conversion. That is exactly the kind of error that survives into a report unnoticed, because almost every row looks fine.
+
+## Grouping by Periods
+
+Grouping by individual dates or timestamps rarely produces a useful summary: there are too many distinct values. Analysts usually want counts per month, per week, or per hour instead.
+
+### date_trunc()
+
+`date_trunc()` rounds a date or timestamp *down* to the start of a period. Its first argument names the period, such as `'year'`, `'quarter'`, `'month'`, `'week'`, `'day'`, or `'hour'`.
+
+```{sql}
+--| connection: con
+--| label: date-trunc-examples
+SELECT
+    TIMESTAMP '2025-11-19 15:42:07'                         AS original,
+    date_trunc('hour',  TIMESTAMP '2025-11-19 15:42:07')    AS to_hour,
+    date_trunc('day',   TIMESTAMP '2025-11-19 15:42:07')    AS to_day,
+    date_trunc('week',  TIMESTAMP '2025-11-19 15:42:07')    AS to_week,
+    date_trunc('month', TIMESTAMP '2025-11-19 15:42:07')    AS to_month;
+```
+
+Weeks start on Monday, so November 19, 2025 (a Wednesday) truncates to Monday, November 17. Because every value in the same month truncates to the same first-of-the-month timestamp, `date_trunc()` makes a natural `GROUP BY` key:
+
+```{sql}
+--| connection: con
+--| label: checkouts-per-month
+SELECT date_trunc('month', checkout_date)::date AS month,
+       COUNT(*) AS checkouts
+FROM checkouts
+GROUP BY month
+ORDER BY month;
+```
+
+`date_trunc()` returns a timestamp even when given a `DATE`, so the `::date` cast trims off the meaningless `00:00:00` time. The first and last months are partial: the current circulation system went live in August 2024, and the data ends a week into August 2026.
+
+### EXTRACT() for Recurring Patterns
+
+`date_trunc()` keeps the larger parts of a date: truncating to the month keeps the year, so March 2025 and March 2026 stay separate. `EXTRACT()`, which you met in the [Data Types](data-types.qmd) chapter, pulls out a single field and discards the rest. That makes it the right tool for *recurring* patterns, such as the hour-of-day analysis above, or comparing days of the week:
+
+```{sql}
+--| connection: con
+--| label: scans-by-weekday
+SELECT EXTRACT(isodow FROM scanned_at AT TIME ZONE 'America/New_York') AS weekday,
+       COUNT(*) AS scans
+FROM circulation_scans
+GROUP BY weekday
+ORDER BY weekday;
+```
+
+The `isodow` field numbers the days from 1 (Monday) through 7 (Sunday). The `dow` field also exists, but it numbers Sunday as 0, which sorts Sunday to the front of the week. Activity is spread fairly evenly across the week. Sunday holds its own despite the library opening only from 1 to 5 PM that day.
+
+## Calculating Durations
+
+Subtraction is the core of most duration calculations, and the type of the result depends on the types you subtract.
+
+### Subtracting Dates
+
+Subtracting one `DATE` from another returns an `INTEGER`: the number of days between them. The loan period at this library is 21 days, which you can confirm directly:
+
+```{sql}
+--| connection: con
+--| label: loan-period
+SELECT due_date - checkout_date AS loan_period_days,
+       COUNT(*) AS checkouts
+FROM checkouts
+GROUP BY loan_period_days;
+```
+
+The same arithmetic measures how late each overdue return was:
+
+```{sql}
+--| connection: con
+--| label: days-late
+SELECT COUNT(*)                            AS late_returns,
+       ROUND(AVG(return_date - due_date), 1) AS avg_days_late,
+       MAX(return_date - due_date)           AS max_days_late
+FROM checkouts
+WHERE return_date > due_date;
+```
+
+Loans that have not come back yet have a `NULL` `return_date`, so "how overdue is it" needs a reference date to measure against. This is where the snapshot date comes in:
+
+```{sql}
+--| connection: con
+--| label: days-overdue
+SELECT checkout_id, patron_id, due_date,
+       DATE '2026-08-07' - due_date AS days_overdue
+FROM checkouts
+WHERE return_date IS NULL
+  AND due_date < DATE '2026-08-07'
+ORDER BY days_overdue DESC
+LIMIT 10;
+```
+
+Adding an integer to a date works in the other direction, returning the date that many days later. The expression `checkout_date + 21` computes a due date.
+
+### Subtracting Timestamps
+
+Subtracting one `TIMESTAMP` from another returns an `INTERVAL`, which can express hours, minutes, and seconds as well as days. Study room reservations have a start and an end time, so their difference is the length of the booking:
+
+```{sql}
+--| connection: con
+--| label: reservation-length
+SELECT reservation_id, room_id, start_time, end_time,
+       end_time - start_time AS duration
+FROM room_reservations
+ORDER BY reservation_id
+LIMIT 5;
+```
+
+Intervals can be added together, so `SUM()` totals the hours each room was used:
+
+```{sql}
+--| connection: con
+--| label: room-usage
+SELECT r.room_name,
+       SUM(rr.end_time - rr.start_time) AS total_booked
+FROM room_reservations AS rr
+INNER JOIN study_rooms AS r ON rr.room_id = r.room_id
+WHERE rr.status = 'Completed'
+GROUP BY r.room_name
+ORDER BY r.room_name;
+```
+
+PostgreSQL displays a large interval like `508:00:00` as hours, minutes, and seconds. That reads well, but you cannot round it, chart it, or divide it by a number of days. To turn an interval into a plain number, extract its `epoch`, the total number of seconds it contains, and divide:
+
+```{sql}
+--| connection: con
+--| label: room-usage-hours
+SELECT r.room_name,
+       ROUND(EXTRACT(epoch FROM SUM(rr.end_time - rr.start_time)) / 3600, 1)
+           AS hours_booked
+FROM room_reservations AS rr
+INNER JOIN study_rooms AS r ON rr.room_id = r.room_id
+WHERE rr.status = 'Completed'
+GROUP BY r.room_name
+ORDER BY hours_booked DESC;
+```
+
+### Mixing TIMESTAMP and TIMESTAMPTZ
+
+The reservation table mixes both kinds of timestamp on purpose. `start_time` and `end_time` are `TIMESTAMP` values because a booking "at 2 PM" means 2 PM on the library's clock, in any season. `booked_at` is a `TIMESTAMPTZ` because it records the instant a patron clicked the button on the library's website, from wherever they happened to be.
+
+To measure how far in advance rooms are booked, both sides of the subtraction need to describe time the same way. Converting `booked_at` to the library's local time does that:
+
+```{sql}
+--| connection: con
+--| label: booking-lead-time
+SELECT status,
+       AVG(start_time - (booked_at AT TIME ZONE 'America/New_York')) AS avg_lead_time
+FROM room_reservations
+GROUP BY status
+ORDER BY status;
+```
+
+Look closely at the result for completed reservations: an average of 3 days and *34* hours. PostgreSQL keeps days and hours as separate fields when it averages intervals, and it does not roll extra hours over into days on its own. `justify_interval()` normalizes the result:
+
+```{sql}
+--| connection: con
+--| label: justify-interval
+SELECT status,
+       justify_interval(
+           AVG(start_time - (booked_at AT TIME ZONE 'America/New_York'))
+       ) AS avg_lead_time
+FROM room_reservations
+GROUP BY status
+ORDER BY status;
+```
+
+On average, patrons book rooms about four and a half days ahead, and that lead time is nearly the same whether the reservation was completed, cancelled, or a no-show.
+
+### age()
+
+`age()` subtracts two dates or timestamps and expresses the result in years, months, and days, the way a person would describe it. It answers questions like "how long has this patron been a member?"
+
+```{sql}
+--| connection: con
+--| label: membership-age
+SELECT patron_id, first_name, last_name, membership_start_date,
+       age(DATE '2026-08-07', membership_start_date) AS member_for
+FROM patrons
+ORDER BY membership_start_date
+LIMIT 5;
+```
+
+Called with a single argument, `age(membership_start_date)` measures from the start of the current day, which changes the answer every time you run it.
+
+## Generating a Calendar
+
+Counting checkouts per day with `GROUP BY checkout_date` has a blind spot: a day with no checkouts has no rows to group, so it silently disappears from the result. A report that skips days is easy to misread, and a chart built from it will draw a straight line across the gap as if nothing were missing.
+
+The fix is to start from a complete list of dates and join the data to it. `generate_series()` produces that list. Given a start, an end, and a step, it returns one row per value:
+
+```{sql}
+--| connection: con
+--| label: generate-series
+SELECT day::date
+FROM generate_series(DATE '2026-07-01', DATE '2026-07-07', INTERVAL '1 day') AS day;
+```
+
+`generate_series()` appears in the `FROM` clause because it returns a set of rows, just like a table. A `LEFT JOIN` from that calendar to `checkouts` keeps every day, and `COUNT(c.checkout_id)` counts zero for the days with no match. (Recall from the [Aggregating Data](aggregating.qmd) chapter that `COUNT(column)` skips `NULL` values, while `COUNT(*)` would count the calendar row itself.)
+
+```{sql}
+--| connection: con
+--| label: calendar-left-join
+SELECT day::date AS day,
+       COUNT(c.checkout_id) AS checkouts
+FROM generate_series(DATE '2026-07-01', DATE '2026-07-31', INTERVAL '1 day') AS day
+LEFT JOIN checkouts AS c ON c.checkout_date = day::date
+GROUP BY day
+ORDER BY day;
+```
+
+July 16, 2026 appears with a count of zero. Without the calendar, it would not appear at all.
+
+## Detecting Overlapping Time Ranges
+
+The study room booking system should prevent two patrons from reserving the same room at the same time. Library staff suspect it did not always succeed. Finding double bookings means comparing every reservation with every other reservation for the same room, which calls for joining `room_reservations` to itself. A **self-join** works like any other join: give the table two different aliases and treat them as two tables.
+
+Two time ranges overlap when each one starts before the other ends. PostgreSQL's `OVERLAPS` operator tests exactly that:
+
+```sql
+(start1, end1) OVERLAPS (start2, end2)
+```
+
+Each range includes its start but not its end, so a booking that ends at 2:00 does not overlap one that starts at 2:00. Back-to-back bookings are fine.
+
+```{sql}
+--| connection: con
+--| label: double-bookings
+SELECT a.room_id,
+       a.reservation_id AS first_booking,  a.start_time AS first_start,  a.end_time AS first_end,
+       b.reservation_id AS second_booking, b.start_time AS second_start, b.end_time AS second_end
+FROM room_reservations AS a
+INNER JOIN room_reservations AS b
+    ON  a.room_id = b.room_id
+    AND a.reservation_id < b.reservation_id
+    AND (a.start_time, a.end_time) OVERLAPS (b.start_time, b.end_time)
+WHERE a.status <> 'Cancelled'
+  AND b.status <> 'Cancelled'
+ORDER BY a.start_time;
+```
+
+The condition `a.reservation_id < b.reservation_id` serves two purposes. It stops each reservation from matching itself, and it reports each conflicting pair once instead of twice (as A-with-B and again as B-with-A). Cancelled bookings are excluded because they never occupied the room.
+
+All nine conflicts fall in February 2026, which points to a specific cause rather than random noise: a bug in the booking system during that month. Finding a pattern like that is often the first step in tracking down a data quality problem.
+
+## Formatting Dates as Text
+
+PostgreSQL displays dates and timestamps in ISO 8601 format (`2026-02-04 11:30:00`) because it sorts correctly and is unambiguous. For reports, emails, and labels, you often want something friendlier. `to_char()` converts a date or timestamp into text using a **format pattern**:
+
+```{sql}
+--| connection: con
+--| label: to-char
+SELECT reservation_id,
+       to_char(start_time, 'FMDay, FMMonth FMDD, YYYY') AS reservation_date,
+       to_char(start_time, 'FMHH12:MI AM') || ' to ' ||
+       to_char(end_time,   'FMHH12:MI AM')              AS reservation_time
+FROM room_reservations
+WHERE reservation_id IN (880, 882, 886);
+```
+
+The most useful pattern codes are:
+
+| Pattern | Meaning | Example |
+|---|---|---|
+| `YYYY` | Four-digit year | `2026` |
+| `YY` | Two-digit year | `26` |
+| `MM` | Month number, zero-padded | `02` |
+| `Month` / `Mon` | Month name / abbreviation | `February ` / `Feb` |
+| `MON` | Uppercase month abbreviation | `FEB` |
+| `DD` | Day of the month, zero-padded | `04` |
+| `Day` / `Dy` | Weekday name / abbreviation | `Wednesday` / `Wed` |
+| `HH24` | Hour, 00 to 23 | `14` |
+| `HH12` | Hour, 01 to 12 | `02` |
+| `MI` | Minute | `30` |
+| `SS` | Second | `00` |
+| `AM` / `PM` | Meridiem indicator | `PM` |
+
+By default, `to_char()` pads names and numbers to a fixed width: `Month` is always nine characters wide, so `'May'` comes out as `'May      '`. The `FM` ("fill mode") prefix turns padding off for the code that follows it, which is why the query above uses `FMDay`, `FMMonth`, `FMDD`, and `FMHH12`.
+
+::: {.callout-warning}
+`to_char()` returns `TEXT`, and text sorts character by character. Sorting by a column formatted as `'FMMonth YYYY'` puts April before February, and `'10/01/2025'` before `'9/15/2025'`. Format dates for display at the very end of a query, and sort by the original date or timestamp column.
+:::
+
+## Parsing Text into Dates
+
+Everything so far has assumed that dates arrive as dates. In practice, they often arrive as text: in CSV files, spreadsheet exports, API responses, and old systems. Before the library adopted its current circulation system in August 2024, it ran a different one. Its loan records survive as an export in which every column is `TEXT`:
+
+```{sql}
+--| connection: con
+--| label: legacy-first-look
+SELECT *
+FROM legacy_checkouts
+WHERE legacy_id IN ('000001', '000693', '001384');
+```
+
+Three problems are visible in just three rows:
+
+- `due_back` is written as `YYYYMMDD`, with no separators.
+- `checked_out` and `returned` use **two different formats**. The library upgraded the old system in June 2023, and the upgrade changed how it wrote timestamps. Record `000693` was checked out before the upgrade and returned after it, so it mixes both formats in a single row.
+- Lost copies have the word `LOST` where a return timestamp should be.
+
+Text that looks like a date does not behave like one. Asking for the most recent checkout with `MAX()` compares the values character by character, the way a dictionary would:
+
+```{sql}
+--| connection: con
+--| label: legacy-text-max
+SELECT MAX(checked_out) AS latest_checkout
+FROM legacy_checkouts;
+```
+
+The answer is a loan from October 2023, but the legacy records continue into August 2024. `'31-OCT-23 12.36.19 PM'` wins only because it begins with `'31'`, and no other value in the column begins with a larger pair of characters. The year never enters into the comparison. Before any date logic can work, the text has to become dates.
+
+### Casting
+
+Some text converts with an ordinary cast. PostgreSQL recognizes `YYYYMMDD` as a date:
+
+```{sql}
+--| connection: con
+--| label: legacy-cast-due
+SELECT due_back, due_back::date AS due_date
+FROM legacy_checkouts
+WHERE legacy_id IN ('000001', '000693', '001384');
+```
+
+The cast also accepts the pre-upgrade format, `'10/07/2021 5:53 PM'`, but it rejects the post-upgrade one:
+
+```{sql}
+--| connection: con
+--| label: legacy-cast-error
+--| error: TRUE
+SELECT checked_out::timestamp
+FROM legacy_checkouts
+WHERE legacy_id = '001384';
+```
+
+There is a subtler problem with the format that does cast successfully. To read `10/07/2021`, PostgreSQL has to guess whether `10` is the month or the day, and it guesses based on a session setting called `DateStyle`. Under the default setting, the value means October 7. Change the setting to the day-first convention used in most of Europe, and the identical cast returns July 10, without any error. Relying on a cast to interpret an ambiguous format means your results depend on a setting that someone else may have changed.
+
+### to_date() and to_timestamp()
+
+`to_date()` and `to_timestamp()` remove the guesswork. Each takes the text to parse and a format pattern that spells out exactly how to read it. The pattern codes are the same ones `to_char()` uses, so parsing is formatting in reverse.
+
+```{sql}
+--| connection: con
+--| label: to-date-patterns
+SELECT
+    to_date('10/07/2021', 'MM/DD/YYYY') AS month_first,
+    to_date('10/07/2021', 'DD/MM/YYYY') AS day_first,
+    to_date('20211021',   'YYYYMMDD')   AS compact;
+```
+
+The same text produces different dates under different patterns. Whoever writes the pattern decides, explicitly, what the text means.
+
+Each of the legacy timestamp formats needs its own pattern:
+
+| Era | Example | Pattern |
+|---|---|---|
+| Before the June 2023 upgrade | `10/07/2021 5:53 PM` | `MM/DD/YYYY HH12:MI AM` |
+| After the upgrade | `02-JAN-24 02.39.18 PM` | `DD-MON-YY HH12.MI.SS AM` |
+
+The `AM` code matches either `AM` or `PM` in the text. `MON` matches an uppercase month abbreviation, and `YY` reads a two-digit year as one in the 2000s.
+
+`to_timestamp()` returns a `TIMESTAMPTZ`, interpreting the text as a wall-clock time in the session's time zone. The legacy timestamps are the library's local wall-clock times with no time zone attached, so cast the result to `TIMESTAMP` to keep them that way:
+
+```{sql}
+--| connection: con
+--| label: to-timestamp-each
+SELECT
+    to_timestamp('10/07/2021 5:53 PM',    'MM/DD/YYYY HH12:MI AM')::timestamp   AS old_format,
+    to_timestamp('02-JAN-24 02.39.18 PM', 'DD-MON-YY HH12.MI.SS AM')::timestamp AS new_format;
+```
+
+### Parsing Mixed Formats
+
+A pattern only works on text that follows it, so a column that mixes formats has to be handled one format at a time. The first step is telling the formats apart. The old format has a slash in the third position and the new format has a hyphen there, which `LIKE` can test with the single-character `_` wildcard:
+
+```{sql}
+--| connection: con
+--| label: legacy-format-counts
+SELECT
+    COUNT(*) FILTER (WHERE checked_out LIKE '__/__/____ %')  AS old_format,
+    COUNT(*) FILTER (WHERE checked_out LIKE '__-___-__ %')   AS new_format,
+    COUNT(*)                                                 AS total
+FROM legacy_checkouts;
+```
+
+The two patterns account for every row, so no third format is hiding in the data. Now each group can be parsed with its own pattern and the results stacked with `UNION ALL`, which you learned in the [Set Operations](set-operations.qmd) chapter:
+
+```{sql}
+--| connection: con
+--| label: legacy-union-parse
+SELECT legacy_id,
+       to_timestamp(checked_out, 'MM/DD/YYYY HH12:MI AM')::timestamp AS checked_out
+FROM legacy_checkouts
+WHERE checked_out LIKE '__/__/____ %'
+
+UNION ALL
+
+SELECT legacy_id,
+       to_timestamp(checked_out, 'DD-MON-YY HH12.MI.SS AM')::timestamp AS checked_out
+FROM legacy_checkouts
+WHERE checked_out LIKE '__-___-__ %'
+
+ORDER BY checked_out
+LIMIT 10;
+```
+
+This approach works well for one column. The `returned` column is harder: a single row can need one pattern for `checked_out` and a different one for `returned`, and the `LOST` values should become `NULL` rather than an error. Choosing a pattern row by row and column by column calls for a `CASE` expression, which tests conditions in order and returns the result for the first one that is true:
+
+```{sql}
+--| connection: con
+--| label: legacy-case-parse
+SELECT legacy_id, barcode, patron_id::integer AS patron_id,
+       CASE
+           WHEN checked_out LIKE '__/__/____ %'
+               THEN to_timestamp(checked_out, 'MM/DD/YYYY HH12:MI AM')::timestamp
+           ELSE to_timestamp(checked_out, 'DD-MON-YY HH12.MI.SS AM')::timestamp
+       END AS checked_out,
+       to_date(due_back, 'YYYYMMDD') AS due_back,
+       CASE
+           WHEN returned = 'LOST' THEN NULL
+           WHEN returned LIKE '__/__/____ %'
+               THEN to_timestamp(returned, 'MM/DD/YYYY HH12:MI AM')::timestamp
+           ELSE to_timestamp(returned, 'DD-MON-YY HH12.MI.SS AM')::timestamp
+       END AS returned
+FROM legacy_checkouts
+WHERE legacy_id IN ('000001', '000693', '001384');
+```
+
+The lost copy's `returned` value is now `NULL`, which the book's output displays as `NA`. The [Conditional Expressions](conditional.qmd) chapter covers `CASE` in depth. Here it is enough to read it as "if the text looks like the old format, use the old pattern; otherwise, use the new one."
+
+With the text parsed, the legacy records can finally be compared with the current system. The old system's loan period, for instance, was different:
+
+```{sql}
+--| connection: con
+--| label: loan-period-comparison
+SELECT 'legacy' AS system,
+       to_date(due_back, 'YYYYMMDD') - to_date(left(checked_out, 10), 'MM/DD/YYYY') AS loan_period_days,
+       COUNT(*) AS loans
+FROM legacy_checkouts
+WHERE checked_out LIKE '__/__/____ %'
+GROUP BY loan_period_days
+
+UNION ALL
+
+SELECT 'current', due_date - checkout_date, COUNT(*)
+FROM checkouts
+GROUP BY due_date - checkout_date;
+```
+
+Loans in the old system were due after 14 days. The current system allows 21. (The query checks only the pre-upgrade records to keep the expression short. The `left()` function, which keeps the first ten characters of the text, is one of the string functions covered in the next chapter.)
+
+Stacking yearly loan counts from both systems gives the library its complete circulation history for the first time:
+
+```{sql}
+--| connection: con
+--| label: full-history
+SELECT 'legacy' AS system,
+       EXTRACT(year FROM to_date(due_back, 'YYYYMMDD') - 14) AS year,
+       COUNT(*) AS loans
+FROM legacy_checkouts
+GROUP BY year
+
+UNION ALL
+
+SELECT 'current', EXTRACT(year FROM checkout_date), COUNT(*)
+FROM checkouts
+GROUP BY EXTRACT(year FROM checkout_date)
+
+ORDER BY year, system;
+```
+
+This version recovers each legacy checkout date from its due date, since every legacy due date is exactly 14 days after its checkout. That shortcut avoids parsing two timestamp formats, but it only works because the earlier query proved the 14-day rule holds. 2021 and 2026 are partial years. 2024 appears twice because the migration happened that August, with each system covering part of the year.
+
+## Exercises {.unnumbered}
+
+### Reflection {.unnumbered}
+
+1. Explain the difference between a `TIMESTAMP` and a `TIMESTAMPTZ`. For each of the following, which type would you choose, and why? (a) The moment a payment was processed by an online store. (b) The start time of a recurring Tuesday 6 PM book club meeting.
+
+2. A colleague computes the busiest hour of the day with `EXTRACT(hour FROM scanned_at)` and concludes that the library is busiest at 8 PM. What went wrong, and how would you fix the query?
+
+3. Why does a daily report built with `GROUP BY checkout_date` risk misleading its readers, even if every number in it is correct? How does `generate_series()` address the problem?
+
+4. A CSV file contains the date `03/04/2025`. Explain why casting it with `::date` is risky, and how `to_date()` removes the risk.
+
+### Coding {.unnumbered}
+
+5. Using `checkouts`, count the number of checkouts in each quarter. Display the quarter as a date (the first day of the quarter) and sort chronologically.
+
+6. Using `circulation_scans`, count the return scans for each day of the week, by **local** time. Display the weekday's name using `to_char()` and sort the days from Monday to Sunday.
+
+7. For each membership type in `patrons`, compute the average number of days a returned loan was kept, rounded to one decimal place. Which group keeps books the longest?
+
+8. Find every completed reservation in `room_reservations` that lasted longer than two hours. Show the room name, the patron ID, the start time formatted like `Tue Mar 3, 2026 2:00 PM`, and the duration in hours as a number.
+
+9. Using `generate_series()` and a `LEFT JOIN`, list every day in February 2026 along with the number of study room reservations that started on that day. Include days with zero reservations.
+
+10. The double-booking query in this chapter excluded cancelled reservations. Modify it to include them. How many additional overlapping pairs appear? Why does it make sense to exclude cancelled reservations?
+
+11. Parse the `returned` column of `legacy_checkouts` and compute the average number of days a legacy loan was kept, excluding lost copies. How does it compare with the current system's average loan length?
