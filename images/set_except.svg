@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 576" width="1200" height="864" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">EXCEPT: rows in the first query that are not in the second</title>
+<desc id="desc">chess_club has Ana 2027, Ben 2028, Cai 2027, and Dev 2029. robotics_club has Cai 2027, Dev 2029, and Eli 2028. Cai and Dev appear in both. chess_club EXCEPT robotics_club returns Ana 2027 and Ben 2028; Cai and Dev are removed because they also appear in robotics_club. Reversed, robotics_club EXCEPT chess_club returns only Eli 2028.</desc>
+<defs><marker id="arrow-0072B2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">EXCEPT: rows in the first query that are not in the second</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Start with the first result and remove every row that also appears in the second. Order matters.</text>
+<text x="120" y="110" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">chess_club</text>
+<rect x="120" y="120" width="160" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="128" y="138.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="218" y="138.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">year</text>
+<rect x="120" y="146" width="160" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="120" y="146" width="5" height="26" fill="#0072B2"/>
+<text x="128" y="164.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ana</text>
+<text x="218" y="164.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2027</text>
+<rect x="120" y="172" width="160" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="120" y="172" width="5" height="26" fill="#0072B2"/>
+<text x="128" y="190.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ben</text>
+<text x="218" y="190.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2028</text>
+<rect x="120" y="198" width="160" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="120" y="198" width="5" height="26" fill="#009E73"/>
+<text x="128" y="216.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cai</text>
+<text x="218" y="216.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2027</text>
+<rect x="120" y="224" width="160" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="120" y="224" width="5" height="26" fill="#009E73"/>
+<text x="128" y="242.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Dev</text>
+<text x="218" y="242.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2029</text>
+<line x1="210" y1="120" x2="210" y2="250" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="120" y="120" width="160" height="130" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="120" y="280" font-size="15" font-weight="bold" fill="#D55E00" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">EXCEPT</text>
+<text x="120" y="308" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">robotics_club</text>
+<rect x="120" y="318" width="160" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="128" y="336.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="218" y="336.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">year</text>
+<rect x="120" y="344" width="160" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="120" y="344" width="5" height="26" fill="#009E73"/>
+<text x="128" y="362.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cai</text>
+<text x="218" y="362.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2027</text>
+<rect x="120" y="370" width="160" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="120" y="370" width="5" height="26" fill="#009E73"/>
+<text x="128" y="388.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Dev</text>
+<text x="218" y="388.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2029</text>
+<rect x="120" y="396" width="160" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="120" y="396" width="5" height="26" fill="#C98500"/>
+<text x="128" y="414.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Eli</text>
+<text x="218" y="414.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2028</text>
+<line x1="210" y1="318" x2="210" y2="422" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="120" y="318" width="160" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M120,211.0 C46,211.0 46,357.0 120,357.0" fill="none" stroke="#009E73" stroke-width="1.8" stroke-opacity="0.85"/>
+<circle cx="120" cy="211.0" r="3.5" fill="#009E73"/>
+<circle cx="120" cy="357.0" r="3.5" fill="#009E73"/>
+<path d="M120,237.0 C34,237.0 34,383.0 120,383.0" fill="none" stroke="#009E73" stroke-width="1.8" stroke-opacity="0.85"/>
+<circle cx="120" cy="237.0" r="3.5" fill="#009E73"/>
+<circle cx="120" cy="383.0" r="3.5" fill="#009E73"/>
+<text x="50" y="291.0" font-size="12" font-weight="bold" fill="#009E73" text-anchor="end" font-style="italic">same</text>
+<text x="50" y="307.0" font-size="12" font-weight="bold" fill="#009E73" text-anchor="end" font-style="italic">row</text>
+<text x="520" y="110" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">result</text>
+<rect x="520" y="120" width="160" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="528" y="138.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="618" y="138.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">year</text>
+<rect x="520" y="146" width="160" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="146" width="5" height="26" fill="#0072B2"/>
+<text x="528" y="164.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ana</text>
+<text x="618" y="164.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2027</text>
+<rect x="520" y="172" width="160" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="172" width="5" height="26" fill="#0072B2"/>
+<text x="528" y="190.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ben</text>
+<text x="618" y="190.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2028</text>
+<line x1="610" y1="120" x2="610" y2="198" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="120" width="160" height="78" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M280,159.0 C400.0,159.0 400.0,159.0 520,159.0" fill="none" stroke="#0072B2" stroke-width="1.8" stroke-opacity="0.85"/>
+<circle cx="280" cy="159.0" r="3.5" fill="#0072B2"/>
+<circle cx="520" cy="159.0" r="3.5" fill="#0072B2"/>
+<path d="M280,185.0 C400.0,185.0 400.0,185.0 520,185.0" fill="none" stroke="#0072B2" stroke-width="1.8" stroke-opacity="0.85"/>
+<circle cx="280" cy="185.0" r="3.5" fill="#0072B2"/>
+<circle cx="520" cy="185.0" r="3.5" fill="#0072B2"/>
+<text x="520" y="226" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">2 rows: Ana and Ben.</text>
+<text x="520" y="246" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Cai and Dev are removed because</text>
+<text x="520" y="266" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">they also appear in robotics_club.</text>
+<text x="520" y="286" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Only rows from the first query</text>
+<text x="520" y="306" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">can be returned.</text>
+<text x="520" y="360" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">robotics_club EXCEPT chess_club</text>
+<rect x="520" y="370" width="160" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="528" y="388.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="618" y="388.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">year</text>
+<rect x="520" y="396" width="160" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="396" width="5" height="26" fill="#C98500"/>
+<text x="528" y="414.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Eli</text>
+<text x="618" y="414.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2028</text>
+<line x1="610" y1="370" x2="610" y2="422" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="370" width="160" height="52" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M280,409.0 C400.0,409.0 400.0,409.0 520,409.0" fill="none" stroke="#C98500" stroke-width="1.8" stroke-opacity="0.85"/>
+<circle cx="280" cy="409.0" r="3.5" fill="#C98500"/>
+<circle cx="520" cy="409.0" r="3.5" fill="#C98500"/>
+<text x="520" y="446" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">Swap the order and the</text>
+<text x="520" y="466" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">answer changes: only Eli.</text>
+<rect x="30" y="452" width="440" height="94" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="44" y="478" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">SELECT name, year FROM chess_club</text>
+<text x="44" y="496" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">EXCEPT</text>
+<text x="44" y="514" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">SELECT name, year FROM robotics_club</text>
+<text x="44" y="532" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ORDER BY name;</text>
+</svg>
