@@ -1,5 +1,5 @@
 ---
-title: "The northwind Database"
+title: "northwind"
 ---
 
 ```{r}
