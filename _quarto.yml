@@ -40,6 +40,8 @@ book:
         - aggregating.qmd
         - joins.qmd
         - set-operations.qmd
+        - date-time-data.qmd
+        - string-data.qmd
 
     - part: analyze.qmd
       chapters:
