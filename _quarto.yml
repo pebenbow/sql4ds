@@ -6,6 +6,8 @@ book:
   title: "SQL for Data Science"
   subtitle: "Querying, Designing, and Deploying Databases"
   reader-mode: true
+  sidebar:
+    collapse-level: 1
   author: "Pete Benbow"
   cover-image: cover.png
   favicon: cover.png
