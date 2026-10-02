@@ -181,6 +181,10 @@ ORDER BY actor_count DESC;
 
 Without `HAVING COUNT(*) >= 5`, this query would return all 19 birth countries, including several with only one or two actors. `HAVING` lets you focus on groups that meet a meaningful threshold.
 
+The diagram below follows a query that uses both clauses on a small set of flights. `WHERE` removes individual rows before any groups exist, and `HAVING` removes a whole group once its count is known:
+
+![WHERE filters rows before grouping. HAVING filters groups after.](images/having.svg){fig-alt="Eight flights. WHERE dep_delay > 0 removes f3 and f7 before any grouping, leaving six rows. GROUP BY carrier forms three groups: AA with f4, DL with f2 and f6, UA with f1, f5, and f8. Each group collapses to one row with its COUNT(*): AA 1, DL 2, UA 3. HAVING COUNT(*) >= 2 then removes the AA group, leaving DL and UA." width="100%"}
+
 ::: {.callout-tip}
 A useful way to remember the difference: `WHERE` filters **rows** before grouping; `HAVING` filters **groups** after grouping. If the condition references an aggregate function like `COUNT()` or `AVG()`, it belongs in `HAVING`. If it references a plain column value, it belongs in `WHERE`.
 :::
@@ -238,6 +242,10 @@ ORDER BY birth_country NULLS LAST, primary_genre NULLS LAST;
 
 The rows where `primary_genre` is NULL are the per-country subtotals: for example, the row with `birth_country = 'UK'` and `primary_genre = NULL` shows the total actor count across all genres for UK actors. The final row where both columns are NULL is the grand total.
 
+The diagram below shows the same pattern on the smaller UK and USA subset used in the `CUBE` example that follows, so the two diagrams can be compared cell for cell. Each grouping set fills in one part of a country-by-genre grid:
+
+![ROLLUP adds a subtotal per country and a grand total.](images/rollup.svg){fig-alt="Actors born in the UK or USA with a primary genre of Action, Comedy, or Drama, counted by country and genre: UK 3, 3, 23 and USA 8, 14, 68. GROUP BY ROLLUP adds a subtotal for each country (UK 29, USA 90) and a grand total of 119, but no per-genre subtotals. In the result, a NULL in a grouping column marks the column that was summed over. 9 rows in all." width="100%"}
+
 ::: {.callout-warning}
 The NULL values in ROLLUP and CUBE results represent subtotal aggregations, not missing data. This can cause confusion when your grouping columns also contain genuine NULL values. The `GROUPING()` function can distinguish the two cases, but for most analytical work the context makes the distinction clear.
 :::
@@ -263,6 +271,10 @@ ORDER BY birth_country NULLS LAST, primary_genre NULLS LAST;
 ```
 
 Compared to `ROLLUP`, the result includes two additional rows: one per genre summing across both countries (where `birth_country` is NULL but `primary_genre` is not), and one grand total. `CUBE` is most useful when there is no natural hierarchy and you want to slice the data every possible way in a single query.
+
+On the grid, `CUBE` fills in the margin that `ROLLUP` leaves empty, the per-genre subtotals:
+
+![CUBE adds a subtotal for every combination of the grouping columns.](images/cube.svg){fig-alt="Actors born in the UK or USA with a primary genre of Action, Comedy, or Drama, counted by country and genre: UK 3, 3, 23 and USA 8, 14, 68. GROUP BY CUBE adds a subtotal for each country (UK 29, USA 90), a subtotal for each genre (Action 11, Comedy 17, Drama 91), and a grand total of 119. In the result, a NULL in a grouping column marks the column that was summed over. 12 rows in all." width="100%"}
 
 ### Labeling Subtotals with COALESCE and GROUPING
 

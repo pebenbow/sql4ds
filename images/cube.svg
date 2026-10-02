@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1130 674" width="1695" height="1011" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">CUBE: subtotals for every combination of the grouping columns</title>
+<desc id="desc">Actors born in the UK or USA with a primary genre of Action, Comedy, or Drama, counted by country and genre: UK 3, 3, 23 and USA 8, 14, 68. GROUP BY CUBE adds a subtotal for each country (UK 29, USA 90), a subtotal for each genre (Action 11, Comedy 17, Drama 91), and a grand total of 119. In the result, a NULL in a grouping column marks the column that was summed over. 12 rows in all.</desc>
+<defs><marker id="arrow-0072B2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-B0558A" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B0558A"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">CUBE: subtotals for every combination of the grouping columns</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">CUBE (a, b) groups by (a, b), (a), (b), and ( ). Each extra grouping set fills in one margin of the grid.</text>
+<text x="30" y="92" font-size="14" font-weight="bold" fill="#555555" text-anchor="start">Counts of actors, as a grid</text>
+<text x="146.0" y="116" font-size="13" font-weight="bold" fill="#222222" text-anchor="middle" font-family="Consolas, Menlo, 'Courier New', monospace">Action</text>
+<text x="238.0" y="116" font-size="13" font-weight="bold" fill="#222222" text-anchor="middle" font-family="Consolas, Menlo, 'Courier New', monospace">Comedy</text>
+<text x="330.0" y="116" font-size="13" font-weight="bold" fill="#222222" text-anchor="middle" font-family="Consolas, Menlo, 'Courier New', monospace">Drama</text>
+<text x="422.0" y="116" font-size="13" font-weight="bold" fill="#555555" text-anchor="middle" font-style="italic">all genres</text>
+<text x="90" y="151.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="end" font-family="Consolas, Menlo, 'Courier New', monospace">UK</text>
+<rect x="103" y="129" width="86" height="34" rx="4" fill="#DCEAF5" stroke="#0072B2" stroke-width="1.2"/>
+<text x="146.0" y="152.0" font-size="16" font-weight="normal" fill="#222222" text-anchor="middle">3</text>
+<rect x="195" y="129" width="86" height="34" rx="4" fill="#DCEAF5" stroke="#0072B2" stroke-width="1.2"/>
+<text x="238.0" y="152.0" font-size="16" font-weight="normal" fill="#222222" text-anchor="middle">3</text>
+<rect x="287" y="129" width="86" height="34" rx="4" fill="#DCEAF5" stroke="#0072B2" stroke-width="1.2"/>
+<text x="330.0" y="152.0" font-size="16" font-weight="normal" fill="#222222" text-anchor="middle">23</text>
+<rect x="379" y="129" width="86" height="34" rx="4" fill="#FCEDCC" stroke="#C98500" stroke-width="2"/>
+<text x="422.0" y="152.0" font-size="16" font-weight="bold" fill="#222222" text-anchor="middle">29</text>
+<text x="90" y="191.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="end" font-family="Consolas, Menlo, 'Courier New', monospace">USA</text>
+<rect x="103" y="169" width="86" height="34" rx="4" fill="#DCEAF5" stroke="#0072B2" stroke-width="1.2"/>
+<text x="146.0" y="192.0" font-size="16" font-weight="normal" fill="#222222" text-anchor="middle">8</text>
+<rect x="195" y="169" width="86" height="34" rx="4" fill="#DCEAF5" stroke="#0072B2" stroke-width="1.2"/>
+<text x="238.0" y="192.0" font-size="16" font-weight="normal" fill="#222222" text-anchor="middle">14</text>
+<rect x="287" y="169" width="86" height="34" rx="4" fill="#DCEAF5" stroke="#0072B2" stroke-width="1.2"/>
+<text x="330.0" y="192.0" font-size="16" font-weight="normal" fill="#222222" text-anchor="middle">68</text>
+<rect x="379" y="169" width="86" height="34" rx="4" fill="#FCEDCC" stroke="#C98500" stroke-width="2"/>
+<text x="422.0" y="192.0" font-size="16" font-weight="bold" fill="#222222" text-anchor="middle">90</text>
+<text x="90" y="231.0" font-size="13" font-weight="bold" fill="#555555" text-anchor="end" font-style="italic">all</text>
+<rect x="103" y="209" width="86" height="34" rx="4" fill="#F5E1EC" stroke="#B0558A" stroke-width="2"/>
+<text x="146.0" y="232.0" font-size="16" font-weight="bold" fill="#222222" text-anchor="middle">11</text>
+<rect x="195" y="209" width="86" height="34" rx="4" fill="#F5E1EC" stroke="#B0558A" stroke-width="2"/>
+<text x="238.0" y="232.0" font-size="16" font-weight="bold" fill="#222222" text-anchor="middle">17</text>
+<rect x="287" y="209" width="86" height="34" rx="4" fill="#F5E1EC" stroke="#B0558A" stroke-width="2"/>
+<text x="330.0" y="232.0" font-size="16" font-weight="bold" fill="#222222" text-anchor="middle">91</text>
+<rect x="379" y="209" width="86" height="34" rx="4" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="422.0" y="232.0" font-size="16" font-weight="bold" fill="#222222" text-anchor="middle">119</text>
+<text x="30" y="280" font-size="14" font-weight="bold" fill="#555555" text-anchor="start">Grouping sets</text>
+<rect x="30" y="296" width="22" height="18" rx="3" fill="#DCEAF5" stroke="#0072B2" stroke-width="1.5"/>
+<text x="62" y="310" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">(birth_country, primary_genre)</text>
+<rect x="30" y="322" width="22" height="18" rx="3" fill="#FCEDCC" stroke="#C98500" stroke-width="1.5"/>
+<text x="62" y="336" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">(birth_country)</text>
+<rect x="30" y="348" width="22" height="18" rx="3" fill="#F5E1EC" stroke="#B0558A" stroke-width="1.5"/>
+<text x="62" y="362" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">(primary_genre)</text>
+<rect x="30" y="374" width="22" height="18" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="1.5"/>
+<text x="62" y="388" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">( )  grand total</text>
+<text x="520" y="90" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">result</text>
+<rect x="520" y="100" width="330" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="528" y="118.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">birth_country</text>
+<text x="653" y="118.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">primary_genre</text>
+<text x="783" y="118.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">actors</text>
+<rect x="520" y="126" width="330" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="126" width="5" height="26" fill="#0072B2"/>
+<text x="528" y="144.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UK</text>
+<text x="653" y="144.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Action</text>
+<text x="783" y="144.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<rect x="520" y="152" width="330" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="152" width="5" height="26" fill="#0072B2"/>
+<text x="528" y="170.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UK</text>
+<text x="653" y="170.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Comedy</text>
+<text x="783" y="170.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<rect x="520" y="178" width="330" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="178" width="5" height="26" fill="#0072B2"/>
+<text x="528" y="196.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UK</text>
+<text x="653" y="196.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Drama</text>
+<text x="783" y="196.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">23</text>
+<rect x="520" y="204" width="330" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="204" width="5" height="26" fill="#C98500"/>
+<text x="528" y="222.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">UK</text>
+<text x="653" y="222.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<text x="783" y="222.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">29</text>
+<rect x="520" y="230" width="330" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="230" width="5" height="26" fill="#0072B2"/>
+<text x="528" y="248.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">USA</text>
+<text x="653" y="248.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Action</text>
+<text x="783" y="248.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">8</text>
+<rect x="520" y="256" width="330" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="256" width="5" height="26" fill="#0072B2"/>
+<text x="528" y="274.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">USA</text>
+<text x="653" y="274.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Comedy</text>
+<text x="783" y="274.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">14</text>
+<rect x="520" y="282" width="330" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="282" width="5" height="26" fill="#0072B2"/>
+<text x="528" y="300.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">USA</text>
+<text x="653" y="300.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Drama</text>
+<text x="783" y="300.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">68</text>
+<rect x="520" y="308" width="330" height="26" fill="#FCEDCC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="308" width="5" height="26" fill="#C98500"/>
+<text x="528" y="326.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">USA</text>
+<text x="653" y="326.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<text x="783" y="326.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">90</text>
+<rect x="520" y="334" width="330" height="26" fill="#F5E1EC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="334" width="5" height="26" fill="#B0558A"/>
+<text x="528" y="352.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<text x="653" y="352.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Action</text>
+<text x="783" y="352.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">11</text>
+<rect x="520" y="360" width="330" height="26" fill="#F5E1EC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="360" width="5" height="26" fill="#B0558A"/>
+<text x="528" y="378.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<text x="653" y="378.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Comedy</text>
+<text x="783" y="378.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">17</text>
+<rect x="520" y="386" width="330" height="26" fill="#F5E1EC" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="386" width="5" height="26" fill="#B0558A"/>
+<text x="528" y="404.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<text x="653" y="404.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Drama</text>
+<text x="783" y="404.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">91</text>
+<rect x="520" y="412" width="330" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="412" width="5" height="26" fill="#009E73"/>
+<text x="528" y="430.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<text x="653" y="430.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<text x="783" y="430.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">119</text>
+<line x1="645" y1="100" x2="645" y2="438" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="775" y1="100" x2="775" y2="438" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="520" y="100" width="330" height="338" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M862,129 h6 V201 h-6" fill="none" stroke="#0072B2" stroke-width="1.5"/>
+<text x="876" y="170.0" font-size="12" font-weight="normal" fill="#0072B2" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">(birth_country, primary_genre)</text>
+<path d="M862,207 h6 V227 h-6" fill="none" stroke="#C98500" stroke-width="1.5"/>
+<text x="876" y="222.0" font-size="12" font-weight="normal" fill="#C98500" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">(birth_country)</text>
+<path d="M862,233 h6 V305 h-6" fill="none" stroke="#0072B2" stroke-width="1.5"/>
+<text x="876" y="274.0" font-size="12" font-weight="normal" fill="#0072B2" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">(birth_country, primary_genre)</text>
+<path d="M862,311 h6 V331 h-6" fill="none" stroke="#C98500" stroke-width="1.5"/>
+<text x="876" y="326.0" font-size="12" font-weight="normal" fill="#C98500" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">(birth_country)</text>
+<path d="M862,337 h6 V409 h-6" fill="none" stroke="#B0558A" stroke-width="1.5"/>
+<text x="876" y="378.0" font-size="12" font-weight="normal" fill="#B0558A" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">(primary_genre)</text>
+<path d="M862,415 h6 V435 h-6" fill="none" stroke="#009E73" stroke-width="1.5"/>
+<text x="876" y="430.0" font-size="12" font-weight="normal" fill="#009E73" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">( )</text>
+<text x="520" y="466" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">NULL here means "all values", not missing data.</text>
+<text x="520" y="486" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">GROUPING(birth_country) returns 1 on rows where that column was summed over.</text>
+<rect x="30" y="514" width="560" height="138" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="44" y="536" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">SELECT birth_country, primary_genre, COUNT(*) AS actors</text>
+<text x="44" y="554" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">FROM actors</text>
+<text x="44" y="572" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">WHERE birth_country IN ('UK', 'USA')</text>
+<text x="44" y="590" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  AND primary_genre IN ('Drama', 'Action', 'Comedy')</text>
+<text x="44" y="608" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">GROUP BY CUBE (birth_country, primary_genre)</text>
+<text x="44" y="626" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ORDER BY birth_country NULLS LAST, primary_genre NULLS LAST;</text>
+</svg>

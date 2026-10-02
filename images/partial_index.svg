@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 624" width="1500" height="936" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">A partial index</title>
+<desc id="desc">The 104,662 flights sorted by dep_delay, the order a B-tree keeps them in, with NULLs last: 67,819 rows with dep_delay of 0 or less, 33,690 with a positive delay, and 3,153 with no dep_delay. A full index on dep_delay holds an entry for every row and takes 744 KB. A partial index created WITH WHERE dep_delay &gt; 0 holds only the 33,690 delayed rows and takes 264 KB, about a third of the size. A query for dep_delay &gt; 120 falls inside the partial index's range, so the planner can use it. A query for dep_delay &lt; -10 falls outside it and cannot.</desc>
+<defs><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">A partial index holds only the rows its WHERE clause selects</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">flights, sorted by dep_delay (the order a B-tree keeps them in, with NULLs last). Widths are to scale.</text>
+<rect x="30" y="170" width="596.1426305631461" height="46" fill="#DCEAF5" stroke="#0072B2" stroke-width="1.5"/>
+<text x="328.07131528157305" y="198.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="middle">dep_delay &lt;= 0: 67,819 rows</text>
+<rect x="626.1426305631461" y="170" width="296.1418661978559" height="46" fill="#FCEDCC" stroke="#C98500" stroke-width="1.5"/>
+<text x="774.2135636620741" y="198.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="middle">dep_delay &gt; 0: 33,690 rows</text>
+<rect x="922.284496761002" y="170" width="27.715503238997915" height="46" fill="#EDEDED" stroke="#777777" stroke-width="1.5"/>
+<line x1="936.1422483805009" y1="218" x2="936.1422483805009" y2="238" stroke="#777777" stroke-width="1.2"/>
+<text x="936.1422483805009" y="252" font-size="12" font-weight="normal" fill="#555555" text-anchor="end">NULL: 3,153</text>
+<path d="M897.7510462249908,162 V152 H922.284496761002 V162" fill="none" stroke="#009E73" stroke-width="2"/>
+<text x="922.284496761002" y="128" font-size="13" font-weight="bold" fill="#009E73" text-anchor="end" font-family="Consolas, Menlo, 'Courier New', monospace">WHERE dep_delay &gt; 120</text>
+<text x="922.284496761002" y="144" font-size="12" font-weight="normal" fill="#009E73" text-anchor="end">inside the partial index: it can be used</text>
+<path d="M30,162 V152 H62.81381972444631 V162" fill="none" stroke="#D55E00" stroke-width="2"/>
+<text x="30" y="128" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">WHERE dep_delay &lt; -10</text>
+<text x="30" y="144" font-size="12" font-weight="normal" fill="#D55E00" text-anchor="start">outside the partial index: it cannot help</text>
+<path d="M30,276 V286 H950 V276" fill="none" stroke="#777777" stroke-width="2.5"/>
+<text x="30" y="308" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">idx_flights_dep_delay</text>
+<text x="30" y="328" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">every row, including NULLs: 104,662 entries, 744 KB</text>
+<path d="M626.1426305631461,366 V376 H922.284496761002 V366" fill="none" stroke="#C98500" stroke-width="2.5"/>
+<text x="626.1426305631461" y="398" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">idx_flights_delayed</text>
+<text x="626.1426305631461" y="418" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">WHERE dep_delay &gt; 0: 33,690 entries, 264 KB</text>
+<rect x="30" y="464" width="560" height="138" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="44" y="486" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">-- full index</text>
+<text x="44" y="504" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">CREATE INDEX idx_flights_dep_delay ON flights(dep_delay);</text>
+<text x="44" y="522" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace"></text>
+<text x="44" y="540" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">-- partial index</text>
+<text x="44" y="558" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">CREATE INDEX idx_flights_delayed ON flights(dep_delay)</text>
+<text x="44" y="576" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">WHERE dep_delay &gt; 0;</text>
+<text x="620" y="476" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">The planner uses a partial index only when</text>
+<text x="620" y="496" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">the query's WHERE clause guarantees every</text>
+<text x="620" y="516" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">matching row is in it.</text>
+<text x="620" y="542" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">dep_delay &gt; 120 implies dep_delay &gt; 0, so it</text>
+<text x="620" y="562" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">qualifies. dep_delay &lt; -10 and dep_delay IS</text>
+<text x="620" y="582" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">NULL do not.</text>
+</svg>

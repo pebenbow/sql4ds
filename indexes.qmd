@@ -48,6 +48,10 @@ The trade-off is straightforward: indexes make reads faster and writes slower. E
 
 PostgreSQL supports several index types. By far the most common is the **B-tree** (balanced tree), which is the default when you write `CREATE INDEX` without specifying a type. A B-tree organizes values in sorted order, which makes it efficient for equality checks (`=`), range queries (`<`, `>`, `BETWEEN`), and sorting. Unless you have a specific reason to choose otherwise, B-tree is the right choice.
 
+The diagram below shows the shape of a B-tree on `flights.dep_delay`, using the table's actual values. Each leaf entry pairs a key with a `ctid`, the row's (page, item) location in the heap:
+
+![A B-tree index on flights(dep_delay): root page, leaf pages, and pointers into the heap.](images/btree.svg){fig-alt="A B-tree index on flights.dep_delay, simplified. A root page holds one entry per leaf page, each labeled with the smallest key on that leaf. The leaf pages hold every dep_delay value in sorted order, each paired with a ctid, the (page, item) location of its row in the table's heap, and each leaf links to its neighbors. Four leaves are shown out of about 90. To find dep_delay > 120, PostgreSQL reads the root, descends to the leaf where 121 begins, follows each entry's ctid into the heap (pages 55, 58, and 141 for the first four matches), and walks right along the leaf chain until the keys run out." width="100%"}
+
 ## Cardinality and Selectivity
 
 A column's **cardinality** is the number of distinct values it contains. `is_active`, a boolean flag, has a cardinality of at most two, since every row's value is either `TRUE` or `FALSE`; this is a **low-cardinality** column. `tailnum`, a plane's tail number, has a cardinality close to the number of distinct planes that have ever flown, since most values belong to only one or two rows; this is a **high-cardinality** column.
@@ -93,6 +97,14 @@ PostgreSQL chooses among three scan strategies depending on how selective the fi
 | **Index Scan** | Very few rows | Traverses index leaf by leaf, fetching each heap row immediately |
 
 A sequential scan is not always wrong. For filters that match a large percentage of a table, reading the table linearly is faster than the random I/O of an index lookup. The planner chooses based on estimated cost.
+
+The difference between the three is the order in which they read the table's pages:
+
+![Sequential, index, and bitmap heap scans read the same table's pages in different orders.](images/scan_strategies.svg){fig-alt="A schematic 12-page table where the matching rows sit on pages 2, 3, 7 (two rows), and 10. A sequential scan reads all 12 pages in order and tests every row. An index scan walks the index in key order and jumps to each row's page as it goes: pages 7, 2, 10, 7, 3, so page 7 is read twice and the reads are out of order. A bitmap heap scan first collects the matching pages from the index into a bitmap, then reads pages 2, 3, 7, and 10 once each, in physical order, rechecking the condition on each page." width="100%"}
+
+Plans for queries with joins and aggregates contain more nodes, arranged as a tree. Each node takes rows from the nodes beneath it, so a plan is read from the bottom up:
+
+![An EXPLAIN ANALYZE plan for a join and aggregate, drawn as a tree.](images/plan_tree.svg){fig-alt="EXPLAIN ANALYZE for a query that joins flights to airlines, keeps flights delayed more than 60 minutes, counts them per airline, and sorts the counts. The plan is a tree read from the bottom up. A sequential scan of airlines (16 rows) feeds a Hash node that builds a hash table. A sequential scan of flights keeps 7,240 of 104,662 rows. The Hash Join matches those 7,240 flights to their airlines, HashAggregate groups them into 13 airlines, and Sort orders the 13 counts." width="100%"}
 
 ## Creating a Basic Index
 
@@ -196,6 +208,8 @@ WHERE dep_delay > 0;
 
 This index covers only the 33,690 rows with a positive delay, about a third of the table. Queries that filter on positive delays use the partial index just as they would a full index, but the index itself is one-third the size.
 
+![A partial index holds only the rows its WHERE clause selects.](images/partial_index.svg){fig-alt="The 104,662 flights sorted by dep_delay, the order a B-tree keeps them in, with NULLs last: 67,819 rows with dep_delay of 0 or less, 33,690 with a positive delay, and 3,153 with no dep_delay. A full index on dep_delay holds an entry for every row and takes 744 KB. A partial index created WITH WHERE dep_delay > 0 holds only the 33,690 delayed rows and takes 264 KB, about a third of the size. A query for dep_delay > 120 falls inside the partial index's range, so the planner can use it. A query for dep_delay < -10 falls outside it and cannot." width="100%"}
+
 ```{r}
 #| label: create-partial-index
 #| include: false
@@ -248,6 +262,8 @@ writeLines(dbGetQuery(con,
 ```
 
 The plan now shows `Index Only Scan` with `Heap Fetches: 0`. Every value the query needs is available directly from the index pages, without reading the heap. Execution time drops from about 11 milliseconds to under half a millisecond.
+
+![A covering index answers the query without reading the table.](images/covering_index.svg){fig-alt="Two ways to answer SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay > 120. With an index on dep_delay alone, the index finds the matching entries, but carrier and dest are not in it, so PostgreSQL follows each entry's ctid into the heap to read them: a bitmap heap scan that touched 890 heap pages. With an index on dep_delay INCLUDE (carrier, dest), the leaf entries carry carrier and dest as extra payload, so the query is answered from the index alone: an index-only scan with Heap Fetches: 0." width="100%"}
 
 Covering indexes are most valuable for queries that run very frequently on large tables and return only a few columns. The cost is a larger index on disk.
 
