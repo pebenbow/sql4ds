@@ -112,7 +112,7 @@ This choice should be deliberate, not accidental. The default in most databases 
 
 When a row in a parent table is deleted or its primary key is updated, the database must decide what to do with child rows that reference it. SQL provides four options, specified in the foreign key constraint declaration.
 
-**RESTRICT (the default in PostgreSQL):** The operation is rejected if any child rows reference the parent row. It prevents orphaned rows by preventing the deletion in the first place. The calling application must resolve the dependent rows before the parent can be removed.
+**RESTRICT:** The operation is rejected if any child rows reference the parent row. It prevents orphaned rows by preventing the deletion in the first place. The calling application must resolve the dependent rows before the parent can be removed. PostgreSQL's default, `NO ACTION`, behaves the same way for nearly every purpose.
 
 **CASCADE:** The operation propagates automatically. Deleting a parent row also deletes all child rows that reference it. Updating a primary key value updates the matching foreign key values in child rows. This is convenient but can silently delete large amounts of data if used carelessly.
 
@@ -130,6 +130,25 @@ Using the orders schema as a concrete example, consider deleting customer 1 (Ali
 | SET DEFAULT | Orders 1 and 3 remain, with `customer_id` set to whatever default was declared for the column. |
 
 The right choice is a business logic decision. CASCADE suits situations where child data has no meaning independent of the parent (a line item on a deleted order is meaningless). RESTRICT suits situations where the application should be forced to handle the relationship explicitly. SET NULL suits situations where the child records should survive the parent's deletion but no longer need to point to it.
+
+The choice is written into the foreign key itself, as an `ON DELETE` clause. In the orders schema, a guest-checkout business might keep orders when a customer account is closed, while line items should disappear with their order:
+
+```sql
+CREATE TABLE orders (
+    order_id     INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
+    customer_id  INTEGER  REFERENCES customers(customer_id) ON DELETE SET NULL,
+    order_date   DATE     NOT NULL DEFAULT CURRENT_DATE
+);
+
+CREATE TABLE order_items (
+    order_id  INTEGER  NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
+    product   TEXT     NOT NULL,
+    quantity  INTEGER  NOT NULL DEFAULT 1,
+    PRIMARY KEY (order_id, product)
+);
+```
+
+`customer_id` allows NULL here, which `SET NULL` requires. The [Creating Tables](create-table.qmd) chapter covers the full foreign key syntax.
 
 `ON UPDATE CASCADE` is less frequently needed than `ON DELETE CASCADE`, but it matters when a natural key is used as a primary key. If the natural key value changes (an ISO code is reassigned, a product SKU is reformatted), CASCADE propagates the new value to all foreign key columns that reference it automatically.
 

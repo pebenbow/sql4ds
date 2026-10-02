@@ -12,6 +12,7 @@ By the end of this chapter, students will be able to:
 - **Write** `DROP TABLE` and `TRUNCATE TABLE` and explain the difference in behavior and reversibility.
 - **Use** `CREATE TABLE AS SELECT` to persist query results as a new permanent table.
 - **Define** an auto-incrementing primary key column using `GENERATED ALWAYS AS IDENTITY`.
+- **Declare** foreign keys with `REFERENCES`, at the column or table level, and specify their `ON DELETE` and `ON UPDATE` behavior.
 - **Distinguish** between a temporary table and a permanent table and identify appropriate use cases for each.
 
 ```{r}
@@ -85,7 +86,7 @@ That's probably confusing for SQL newcomers because I'm telling you that `SELECT
 
 So, if you accept the broad view that `SELECT` belongs with its siblings whose only job is to perform operations agaisnt the data, then you can see why it qualifies as a DML command. But, if you want to get more precise, you can split it out into its own DQL category to honor the separation between read-only commands and write-intent commands.
 
-This chapter and the ones following it will introduce you to DDL and DML commands in SQL by challenging you to create new databases, as well as add and modify data in them. In this chapter specifically, we'll focus on `CREATE TABLE`, the fundamental DDL statement, in the context of building a university database from scratch. By the end, you will know how to create a database, define a table with appropriate constraints, prevent duplicate or invalid data at the schema level, and modify a table's structure after the fact. A later chapter extends this foundation to multi-table schemas with foreign keys.
+This chapter and the ones following it will introduce you to DDL and DML commands in SQL by challenging you to create new databases, as well as add and modify data in them. In this chapter specifically, we'll focus on `CREATE TABLE`, the fundamental DDL statement, in the context of building a university database from scratch. By the end, you will know how to create a database, define a table with appropriate constraints, prevent duplicate or invalid data at the schema level, connect tables with foreign keys, and modify a table's structure after the fact. A later chapter on building a schema assembles these pieces into a complete multi-table design.
 
 ## Creating a Database
 
@@ -240,14 +241,145 @@ When no single column uniquely identifies a row, two or more columns can serve a
 
 ```sql
 CREATE TABLE enrollments (
-    student_id  INTEGER  NOT NULL,
-    course_id   INTEGER  NOT NULL,
-    semester    TEXT     NOT NULL,
-    PRIMARY KEY (student_id, course_id, semester)
+    student_id   INTEGER  NOT NULL,
+    course_code  TEXT     NOT NULL,
+    semester     TEXT     NOT NULL,
+    PRIMARY KEY (student_id, course_code, semester)
 );
 ```
 
-Inline `PRIMARY KEY` syntax cannot express a composite key. The full multi-table schema, including this `enrollments` table and the foreign keys that connect it to `students` and `courses`, is built out in the chapter on building a schema.
+Inline `PRIMARY KEY` syntax cannot express a composite key. As written, though, this table will accept a `student_id` of 9999 even if no such student exists. Connecting it to `students` and `courses` is the job of foreign keys.
+
+## Foreign Keys
+
+The keys and integrity chapter described a foreign key as a column whose values must match the primary key of another table. In SQL, you declare that rule with the `REFERENCES` keyword, and the database enforces it on every `INSERT` and `UPDATE`.
+
+The examples in this section assume a `courses` table whose primary key is a course code such as `'CS101'`. You will write that table yourself in Exercise 5.
+
+### Inline Foreign Keys
+
+The simplest form adds `REFERENCES` to the column definition, naming the parent table and the column inside it:
+
+```sql
+CREATE TABLE enrollments (
+    student_id   INTEGER  NOT NULL REFERENCES students(student_id),
+    course_code  TEXT     NOT NULL REFERENCES courses(course_code),
+    semester     TEXT     NOT NULL,
+    grade        TEXT,
+    PRIMARY KEY (student_id, course_code, semester)
+);
+```
+
+Read `REFERENCES students(student_id)` as "every value in this column must already appear in `students.student_id`." A few rules apply:
+
+- **The parent table must already exist.** `students` and `courses` have to be created before `enrollments`. The chapter on building a schema returns to this ordering problem.
+- **The referenced column must be a primary key or have a `UNIQUE` constraint.** PostgreSQL rejects a foreign key that points at an ordinary column, because it could not guarantee which parent row a value refers to.
+- **The data types must be compatible.** `enrollments.student_id` is a plain `INTEGER`. It stores values that `students` generated, so it does not get `GENERATED ALWAYS AS IDENTITY` of its own.
+- **`REFERENCES` does not imply `NOT NULL`.** As the keys and integrity chapter explained, a foreign key column accepts NULL unless you say otherwise.
+
+If you leave off the column name and write only `REFERENCES students`, PostgreSQL assumes you mean the parent's primary key. Spelling out the column is clearer, and it is the style this book uses.
+
+Once the constraint exists, an enrollment for a student who does not exist is rejected:
+
+```sql
+INSERT INTO enrollments (student_id, course_code, semester)
+VALUES (9999, 'CS101', 'Fall 2026');
+```
+
+```
+ERROR:  insert or update on table "enrollments" violates foreign key constraint "enrollments_student_id_fkey"
+DETAIL:  Key (student_id)=(9999) is not present in table "students".
+```
+
+The constraint protects the parent side as well. Once enrollments point at a student, PostgreSQL will not let you remove that student out from under them. The `DROP TABLE` and `TRUNCATE` sections later in this chapter show what that means for removing whole tables.
+
+### Table-Level Foreign Keys
+
+Like `PRIMARY KEY`, a foreign key can also be written as a table-level constraint after the column definitions. This version of `enrollments` is equivalent to the one above:
+
+```sql
+CREATE TABLE enrollments (
+    student_id   INTEGER  NOT NULL,
+    course_code  TEXT     NOT NULL,
+    semester     TEXT     NOT NULL,
+    grade        TEXT,
+    PRIMARY KEY (student_id, course_code, semester),
+    FOREIGN KEY (student_id)  REFERENCES students(student_id),
+    FOREIGN KEY (course_code) REFERENCES courses(course_code)
+);
+```
+
+For a single column, the choice between the two forms is a matter of style. The table-level form is required when the foreign key spans more than one column, which happens whenever the parent table has a composite primary key. A `grade_appeals` table, for example, records an appeal against one specific enrollment:
+
+```sql
+CREATE TABLE grade_appeals (
+    appeal_id    INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
+    student_id   INTEGER  NOT NULL,
+    course_code  TEXT     NOT NULL,
+    semester     TEXT     NOT NULL,
+    filed_on     DATE     NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (student_id, course_code, semester)
+        REFERENCES enrollments(student_id, course_code, semester)
+);
+```
+
+The two column lists are matched by position, so `student_id` pairs with `student_id`, and so on. Every appeal must match an entire row of `enrollments`. Two separate single-column foreign keys would not do the same job: they would confirm that the student exists and that the course exists, but not that this student took this course in this semester.
+
+### Naming Foreign Key Constraints
+
+The error message above mentioned a constraint called `enrollments_student_id_fkey`. PostgreSQL invents a name like this whenever you do not supply one. You can choose the name yourself with the `CONSTRAINT` keyword, in either form:
+
+```sql
+CREATE TABLE enrollments (
+    student_id   INTEGER  NOT NULL
+        CONSTRAINT enrollments_student_fk REFERENCES students(student_id),
+    course_code  TEXT     NOT NULL,
+    semester     TEXT     NOT NULL,
+    grade        TEXT,
+    PRIMARY KEY (student_id, course_code, semester),
+    CONSTRAINT enrollments_course_fk
+        FOREIGN KEY (course_code) REFERENCES courses(course_code)
+);
+```
+
+A constraint's name appears in every error message it raises, and it is how you refer to the constraint when you want to drop it later with `ALTER TABLE`. A descriptive name makes both of those tasks easier.
+
+### ON DELETE and ON UPDATE
+
+The keys and integrity chapter described what can happen to child rows when their parent row is deleted or its key changes: `RESTRICT`, `CASCADE`, `SET NULL`, or `SET DEFAULT`. You choose one by adding an `ON DELETE` or `ON UPDATE` clause to the end of the foreign key declaration:
+
+```sql
+CREATE TABLE enrollments (
+    student_id   INTEGER  NOT NULL REFERENCES students(student_id),
+    course_code  TEXT     NOT NULL REFERENCES courses(course_code)
+                          ON UPDATE CASCADE,
+    semester     TEXT     NOT NULL,
+    grade        TEXT,
+    PRIMARY KEY (student_id, course_code, semester)
+);
+
+CREATE TABLE grade_appeals (
+    appeal_id    INTEGER  GENERATED ALWAYS AS IDENTITY  PRIMARY KEY,
+    student_id   INTEGER  NOT NULL,
+    course_code  TEXT     NOT NULL,
+    semester     TEXT     NOT NULL,
+    filed_on     DATE     NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (student_id, course_code, semester)
+        REFERENCES enrollments(student_id, course_code, semester)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+```
+
+`courses` uses a natural key, so if the registrar renumbers `'CS101'` as `'CSC101'`, `ON UPDATE CASCADE` carries the new code into every matching enrollment. Without it, the update to `courses` would be rejected. In `grade_appeals`, an appeal has no meaning once the enrollment it challenges is gone, so `ON DELETE CASCADE` removes the appeal along with it.
+
+`grade_appeals` needs `ON UPDATE CASCADE` too. When the new course code reaches `enrollments`, it changes part of the key that appeals point at. If the appeals foreign key had no `ON UPDATE` clause, it would reject that change, and the entire renumbering would fail. A cascade only travels as far as the chain of foreign keys allows it to.
+
+A foreign key can carry both clauses, in either order. Leaving a clause off gives you `NO ACTION`, PostgreSQL's default, which rejects the change just as `RESTRICT` does. The two differ only in when the check happens inside a transaction, which rarely matters in practice.
+
+::: {.callout-warning}
+PostgreSQL does not check whether `ON DELETE SET NULL` makes sense when you create the table. If the foreign key column is also `NOT NULL`, the `CREATE TABLE` succeeds, but every later attempt to delete a referenced parent row fails with a not-null violation. Use `SET NULL` only on a foreign key column that allows NULL.
+:::
 
 ## Putting It Together: The Students Table
 
@@ -467,6 +599,26 @@ ADD CONSTRAINT students_email_lower
 
 Adding a `CHECK` constraint to a populated table causes PostgreSQL to validate every existing row. If any row fails the check, the statement is rejected.
 
+**Add a foreign key to an existing table:**
+
+```sql
+ALTER TABLE enrollments
+ADD CONSTRAINT enrollments_student_fk
+    FOREIGN KEY (student_id) REFERENCES students(student_id)
+    ON DELETE RESTRICT;
+```
+
+This uses the same table-level syntax as `CREATE TABLE`, including the optional `ON DELETE` and `ON UPDATE` clauses. As with `CHECK`, PostgreSQL validates every existing row first. If any enrollment points at a student who does not exist, the statement is rejected, and the orphaned rows have to be fixed before the constraint can be added.
+
+**Remove a constraint:**
+
+```sql
+ALTER TABLE enrollments
+DROP CONSTRAINT enrollments_student_fk;
+```
+
+This is where a constraint's name pays off. A constraint you named yourself is easy to drop. For one that PostgreSQL named, you first have to look up what it called it.
+
 **Remove a column:**
 
 ```sql
@@ -516,3 +668,11 @@ Run the statement twice and confirm the second execution produces no error.
 ---
 
 **8.** Drop the `students` table, then recreate it using `CREATE TABLE IF NOT EXISTS`. Verify that the data is gone after the drop and that the table structure is restored after the recreate.
+
+---
+
+**9.** Create an `enrollments` table that references both `students` and the `courses` table from Exercise 5. Give each foreign key a name of your choosing, and have the `courses` foreign key cascade updates.
+
+- Insert one student and one course, then insert an enrollment that pairs them. Confirm it succeeds.
+- Insert an enrollment for a `student_id` that does not exist. Which constraint name appears in the error?
+- Try to `DROP TABLE courses` without `CASCADE`. What happens, and why?
