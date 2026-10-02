@@ -1,0 +1,219 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 781" width="1770" height="1171.5" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">A covering index</title>
+<desc id="desc">Two ways to answer SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay &gt; 120. With an index on dep_delay alone, the index finds the matching entries, but carrier and dest are not in it, so PostgreSQL follows each entry's ctid into the heap to read them: a bitmap heap scan that touched 890 heap pages. With an index on dep_delay INCLUDE (carrier, dest), the leaf entries carry carrier and dest as extra payload, so the query is answered from the index alone: an index-only scan with Heap Fetches: 0.</desc>
+<defs><marker id="arrow-0072B2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">A covering index answers the query without reading the table</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay &gt; 120</text>
+<text x="30" y="100" font-size="16" font-weight="bold" fill="#222222" text-anchor="start">Index on dep_delay only</text>
+<text x="30" y="122" font-size="13" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">CREATE INDEX ... ON flights(dep_delay);</text>
+<text x="30" y="158" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">leaf entries</text>
+<rect x="30" y="168" width="180" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="38" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="128" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ctid</text>
+<rect x="30" y="194" width="180" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="194" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="128" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(55,54)</text>
+<rect x="30" y="220" width="180" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="220" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="128" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(58,2)</text>
+<rect x="30" y="246" width="180" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="246" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="128" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(58,11)</text>
+<rect x="30" y="272" width="180" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="272" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="290.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="128" y="290.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(141,48)</text>
+<line x1="120" y1="168" x2="120" y2="298" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="168" width="180" height="130" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="330" y="144" width="330" height="170" rx="8" fill="#F4F4F4" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="340" y="164" font-size="13" font-weight="bold" fill="#555555" text-anchor="start">heap: one page visit per matching page</text>
+<rect x="340" y="174" width="310" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="348" y="192.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ctid</text>
+<text x="438" y="192.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="508" y="192.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dest</text>
+<text x="568" y="192.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">...</text>
+<rect x="340" y="200" width="310" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="340" y="200" width="5" height="26" fill="#0072B2"/>
+<text x="348" y="218.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(55,54)</text>
+<text x="438" y="218.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<text x="508" y="218.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DFW</text>
+<text x="568" y="218.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">...</text>
+<rect x="340" y="226" width="310" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="340" y="226" width="5" height="26" fill="#0072B2"/>
+<text x="348" y="244.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(58,2)</text>
+<text x="438" y="244.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">B6</text>
+<text x="508" y="244.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">FLL</text>
+<text x="568" y="244.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">...</text>
+<rect x="340" y="252" width="310" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="340" y="252" width="5" height="26" fill="#0072B2"/>
+<text x="348" y="270.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(58,11)</text>
+<text x="438" y="270.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">MQ</text>
+<text x="508" y="270.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DTW</text>
+<text x="568" y="270.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">...</text>
+<rect x="340" y="278" width="310" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="340" y="278" width="5" height="26" fill="#0072B2"/>
+<text x="348" y="296.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(141,48)</text>
+<text x="438" y="296.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">EV</text>
+<text x="508" y="296.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">BGR</text>
+<text x="568" y="296.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">...</text>
+<line x1="430" y1="174" x2="430" y2="304" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="500" y1="174" x2="500" y2="304" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="560" y1="174" x2="560" y2="304" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="340" y="174" width="310" height="130" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M210,207.0 C275.0,207.0 275.0,213.0 340,213.0" fill="none" stroke="#0072B2" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="210" cy="207.0" r="3.5" fill="#0072B2"/>
+<circle cx="340" cy="213.0" r="3.5" fill="#0072B2"/>
+<path d="M210,233.0 C275.0,233.0 275.0,239.0 340,239.0" fill="none" stroke="#0072B2" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="210" cy="233.0" r="3.5" fill="#0072B2"/>
+<circle cx="340" cy="239.0" r="3.5" fill="#0072B2"/>
+<path d="M210,259.0 C275.0,259.0 275.0,265.0 340,265.0" fill="none" stroke="#0072B2" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="210" cy="259.0" r="3.5" fill="#0072B2"/>
+<circle cx="340" cy="265.0" r="3.5" fill="#0072B2"/>
+<path d="M210,285.0 C275.0,285.0 275.0,291.0 340,291.0" fill="none" stroke="#0072B2" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="210" cy="285.0" r="3.5" fill="#0072B2"/>
+<circle cx="340" cy="291.0" r="3.5" fill="#0072B2"/>
+<text x="760" y="158" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">result</text>
+<rect x="760" y="168" width="240" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="768" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="858" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="938" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dest</text>
+<rect x="760" y="194" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="760" y="194" width="5" height="26" fill="#0072B2"/>
+<text x="768" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="858" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<text x="938" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DFW</text>
+<rect x="760" y="220" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="760" y="220" width="5" height="26" fill="#0072B2"/>
+<text x="768" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="858" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">B6</text>
+<text x="938" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">FLL</text>
+<rect x="760" y="246" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="760" y="246" width="5" height="26" fill="#0072B2"/>
+<text x="768" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="858" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">MQ</text>
+<text x="938" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DTW</text>
+<rect x="760" y="272" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="760" y="272" width="5" height="26" fill="#0072B2"/>
+<text x="768" y="290.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="858" y="290.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">EV</text>
+<text x="938" y="290.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">BGR</text>
+<line x1="850" y1="168" x2="850" y2="298" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="930" y1="168" x2="930" y2="298" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="760" y="168" width="240" height="130" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M650,213.0 C705.0,213.0 705.0,207.0 760,207.0" fill="none" stroke="#0072B2" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="650" cy="213.0" r="3.5" fill="#0072B2"/>
+<circle cx="760" cy="207.0" r="3.5" fill="#0072B2"/>
+<path d="M650,239.0 C705.0,239.0 705.0,233.0 760,233.0" fill="none" stroke="#0072B2" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="650" cy="239.0" r="3.5" fill="#0072B2"/>
+<circle cx="760" cy="233.0" r="3.5" fill="#0072B2"/>
+<path d="M650,265.0 C705.0,265.0 705.0,259.0 760,259.0" fill="none" stroke="#0072B2" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="650" cy="265.0" r="3.5" fill="#0072B2"/>
+<circle cx="760" cy="259.0" r="3.5" fill="#0072B2"/>
+<path d="M650,291.0 C705.0,291.0 705.0,285.0 760,285.0" fill="none" stroke="#0072B2" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="650" cy="291.0" r="3.5" fill="#0072B2"/>
+<circle cx="760" cy="285.0" r="3.5" fill="#0072B2"/>
+<rect x="30" y="320" width="560" height="81" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="44" y="342" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">Bitmap Heap Scan on flights</text>
+<text x="44" y="359" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  Heap Blocks: exact=890</text>
+<text x="44" y="376" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  -&gt;  Bitmap Index Scan on idx_flights_dep_delay</text>
+<text x="620" y="332" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">carrier and dest are not in the index, so every</text>
+<text x="620" y="350" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">match costs a trip to its heap page (890 pages here).</text>
+<line x1="30" y1="418" x2="1150" y2="418" stroke="#DDDDDD" stroke-width="1.5"/>
+<text x="30" y="448" font-size="16" font-weight="bold" fill="#222222" text-anchor="start">Covering index: dep_delay INCLUDE (carrier, dest)</text>
+<text x="30" y="470" font-size="13" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">CREATE INDEX ... ON flights(dep_delay) INCLUDE (carrier, dest);</text>
+<text x="30" y="506" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">leaf entries</text>
+<rect x="30" y="516" width="330" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="38" y="534.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="128" y="534.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="208" y="534.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dest</text>
+<text x="278" y="534.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ctid</text>
+<rect x="30" y="542" width="330" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="542" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="560.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<rect x="122" y="544" width="76" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="128" y="560.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<rect x="202" y="544" width="66" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="208" y="560.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DFW</text>
+<text x="278" y="560.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(55,54)</text>
+<rect x="30" y="568" width="330" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="568" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="586.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<rect x="122" y="570" width="76" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="128" y="586.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">B6</text>
+<rect x="202" y="570" width="66" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="208" y="586.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">FLL</text>
+<text x="278" y="586.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(58,2)</text>
+<rect x="30" y="594" width="330" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="594" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="612.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<rect x="122" y="596" width="76" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="128" y="612.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">MQ</text>
+<rect x="202" y="596" width="66" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="208" y="612.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DTW</text>
+<text x="278" y="612.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(58,11)</text>
+<rect x="30" y="620" width="330" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="620" width="5" height="26" fill="#0072B2"/>
+<text x="38" y="638.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<rect x="122" y="622" width="76" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="128" y="638.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">EV</text>
+<rect x="202" y="622" width="66" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="208" y="638.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">BGR</text>
+<text x="278" y="638.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">(141,48)</text>
+<line x1="120" y1="516" x2="120" y2="646" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="200" y1="516" x2="200" y2="646" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="270" y1="516" x2="270" y2="646" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="30" y="516" width="330" height="130" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="390" y="478" width="250" height="34" rx="8" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="400" y="498" font-size="13" font-weight="bold" fill="#555555" text-anchor="start">heap: never read</text>
+<text x="760" y="506" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">result</text>
+<rect x="760" y="516" width="240" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="768" y="534.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dep_delay</text>
+<text x="858" y="534.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">carrier</text>
+<text x="938" y="534.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">dest</text>
+<rect x="760" y="542" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="760" y="542" width="5" height="26" fill="#0072B2"/>
+<text x="768" y="560.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="858" y="560.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">AA</text>
+<text x="938" y="560.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DFW</text>
+<rect x="760" y="568" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="760" y="568" width="5" height="26" fill="#0072B2"/>
+<text x="768" y="586.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="858" y="586.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">B6</text>
+<text x="938" y="586.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">FLL</text>
+<rect x="760" y="594" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="760" y="594" width="5" height="26" fill="#0072B2"/>
+<text x="768" y="612.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="858" y="612.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">MQ</text>
+<text x="938" y="612.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">DTW</text>
+<rect x="760" y="620" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="760" y="620" width="5" height="26" fill="#0072B2"/>
+<text x="768" y="638.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">121</text>
+<text x="858" y="638.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">EV</text>
+<text x="938" y="638.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">BGR</text>
+<line x1="850" y1="516" x2="850" y2="646" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="930" y1="516" x2="930" y2="646" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="760" y="516" width="240" height="130" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M360,555.0 C560.0,555.0 560.0,555.0 760,555.0" fill="none" stroke="#009E73" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="360" cy="555.0" r="3.5" fill="#009E73"/>
+<circle cx="760" cy="555.0" r="3.5" fill="#009E73"/>
+<path d="M360,581.0 C560.0,581.0 560.0,581.0 760,581.0" fill="none" stroke="#009E73" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="360" cy="581.0" r="3.5" fill="#009E73"/>
+<circle cx="760" cy="581.0" r="3.5" fill="#009E73"/>
+<path d="M360,607.0 C560.0,607.0 560.0,607.0 760,607.0" fill="none" stroke="#009E73" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="360" cy="607.0" r="3.5" fill="#009E73"/>
+<circle cx="760" cy="607.0" r="3.5" fill="#009E73"/>
+<path d="M360,633.0 C560.0,633.0 560.0,633.0 760,633.0" fill="none" stroke="#009E73" stroke-width="1.6" stroke-opacity="0.85"/>
+<circle cx="360" cy="633.0" r="3.5" fill="#009E73"/>
+<circle cx="760" cy="633.0" r="3.5" fill="#009E73"/>
+<rect x="30" y="668" width="560" height="81" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="44" y="690" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">Index Only Scan using idx_flights_dep_delay_covering on flights</text>
+<text x="44" y="707" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  Index Cond: (dep_delay &gt; 120)</text>
+<text x="44" y="724" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  Heap Fetches: 0</text>
+<text x="620" y="680" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">carrier and dest ride along in each leaf entry</text>
+<text x="620" y="698" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">(green). They are stored, not sorted on: the</text>
+<text x="620" y="716" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">index is still ordered by dep_delay alone.</text>
+</svg>
