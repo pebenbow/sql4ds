@@ -1,6 +1,9 @@
 project:
   type: book
   output-dir: _book
+  # schema files linked from the database appendices (scripts/build_schema_sql.py)
+  resources:
+    - data-dictionaries/*.sql
 
 book:
   title: "SQL for Data Science"

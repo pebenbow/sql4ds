@@ -64,6 +64,17 @@ dd_chapters <- function(db, extra = character()) {
   data.frame(file = files, title = titles)[order(pos), , drop = FALSE]
 }
 
+dd_ddl <- function(db) {
+  # each table's CREATE TABLE statement from data-dictionaries/<db>.sql (written by
+  # scripts/build_schema_sql.py), as a named list keyed by table name
+  path <- file.path("data-dictionaries", paste0(db, ".sql"))
+  if (!file.exists(path)) return(list())
+  sql <- paste(readLines(path, warn = FALSE, encoding = "UTF-8"), collapse = "\n")
+  stmts <- regmatches(sql, gregexpr("(?s)CREATE TABLE \\w+ \\(.*?\n\\);", sql, perl = TRUE))[[1]]
+  names(stmts) <- sub("^CREATE TABLE (\\w+).*", "\\1", sub("\n.*", "", stmts))
+  as.list(stmts)
+}
+
 render_dictionary <- function(db) {
   d <- yaml::read_yaml(file.path("data-dictionaries", paste0(db, ".yml")))
   out <- character()
@@ -88,6 +99,11 @@ render_dictionary <- function(db) {
             "a green chain link marks a foreign key column, and each line ends in crow's foot notation."), "")
 
   add("## Data dictionary", "")
+  ddl <- dd_ddl(db)
+  if (length(ddl)) {
+    add(sprintf(paste("Each table's `CREATE TABLE` statement is under its column list. The whole schema is in",
+                      "[`%s.sql`](data-dictionaries/%s.sql), which creates every table in dependency order."), db, db), "")
+  }
   for (t in d$tables) {
     add(sprintf("### `%s` {#sec-%s-%s}", t$name, db, gsub("_", "-", t$name)), "")
     add(trimws(t$description), "")
@@ -108,6 +124,10 @@ render_dictionary <- function(db) {
                   if (isTRUE(col$nullable)) "yes" else "no", dd_cell(col$description)))
     }
     add("", ":::", "")
+    if (!is.null(ddl[[t$name]])) {
+      add(sprintf('::: {.callout-note collapse="true" appearance="simple" icon="false" title="CREATE TABLE %s"}', t$name), "")
+      add("```sql", ddl[[t$name]], "```", "", ":::", "")
+    }
   }
 
   ch <- dd_chapters(db, d$extra_chapters)
