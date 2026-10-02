@@ -205,5 +205,8 @@
 <circle cx="870" cy="168" r="10" fill="#0072B2"/>
 <text x="870" y="172.5" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">3</text>
 <text x="888" y="172" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">follow each entry's ctid (page, item) to its row in the heap</text>
+<circle cx="870" cy="190" r="10" fill="#0072B2"/>
+<text x="870" y="194.5" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">4</text>
+<text x="888" y="194" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">walk right along the leaf chain until the keys run out</text>
 <text x="30" y="702" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">Simplified: the index on 104,662 rows has one root page above about 90 leaf pages.</text>
 </svg>
