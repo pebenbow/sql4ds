@@ -1,5 +1,5 @@
 ---
-title: "The murdermystery Database"
+title: "murdermystery"
 ---
 
 ```{r}
