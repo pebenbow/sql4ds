@@ -14,6 +14,7 @@ By the end of this chapter, students will be able to:
 - **Apply** `NULLIF` to return `NULL` when two expressions are equal, preventing division-by-zero errors.
 - **Distinguish** between `COALESCE` (returns first non-null) and `NULLIF` (returns null on equality) and select the appropriate function for a given scenario.
 - **Combine** `CASE WHEN` with `GROUP BY` to create custom categorical groupings from continuous or multi-valued columns.
+- **Sort** custom categories in a meaningful order by using an aggregate function in `ORDER BY`, and explain why the underlying column cannot be used directly.
 - **Evaluate** whether a conditional expression problem is best solved with `CASE WHEN`, `COALESCE`, or `NULLIF`.
 
 ```{r}
@@ -300,6 +301,152 @@ PostgreSQL allows `GROUP BY` to reference the output alias (`delay_category`) ra
 
 This pattern, inventing categories on the fly with `CASE WHEN` and grouping by them, is one of the most frequently used techniques in analytical SQL. It turns a continuous measurement like `dep_delay` into whatever discrete buckets are useful for the question at hand, without needing to add a new column to the table.
 
+### Sorting Custom Categories
+
+The query above sorts the buckets by how many flights they contain. Often you want them in their *natural* order instead: from on time, through minor and major delays, the way the buckets were defined. The obvious first attempt is to sort by the category itself:
+
+```{sql}
+--| connection: con
+--| label: case-sort-by-label
+SELECT
+    CASE
+        WHEN dep_delay IS NULL THEN 'Cancelled'
+        WHEN dep_delay <= 0    THEN 'On Time'
+        WHEN dep_delay <= 30   THEN 'Minor Delay'
+        ELSE 'Major Delay'
+    END AS delay_category,
+    COUNT(*) AS num_flights
+FROM flights
+GROUP BY delay_category
+ORDER BY delay_category;
+```
+
+The labels are text, so `ORDER BY` sorts them alphabetically, and "Major Delay" lands ahead of "Minor Delay" only because *a* comes before *i*. Alphabetical order has nothing to do with the order the buckets represent. It can be worse with numeric labels: `'$15 and up'` sorts ahead of `'$5 - $14.99'`, because text comparison looks at the character `'1'` before it ever considers how many digits follow.
+
+The second attempt is to sort by the column the buckets were built from:
+
+```sql
+SELECT
+    CASE
+        WHEN dep_delay IS NULL THEN 'Cancelled'
+        WHEN dep_delay <= 0    THEN 'On Time'
+        WHEN dep_delay <= 30   THEN 'Minor Delay'
+        ELSE 'Major Delay'
+    END AS delay_category,
+    COUNT(*) AS num_flights
+FROM flights
+GROUP BY delay_category
+ORDER BY dep_delay;
+```
+
+```
+ERROR:  column "flights.dep_delay" must appear in the GROUP BY clause or be used in an aggregate function
+```
+
+This is the same rule the aggregating chapter described for `SELECT`, and it applies to `ORDER BY` for the same reason. `ORDER BY` runs after `GROUP BY`, and by then each output row stands for an entire bucket of flights. The "Minor Delay" row contains 20,554 different `dep_delay` values, so there is no single `dep_delay` to sort it by.
+
+The error message also points to the fix. An aggregate function collapses all of a bucket's values into one, and that one value is something `ORDER BY` *can* sort on:
+
+```{sql}
+--| connection: con
+--| label: case-sort-by-min
+SELECT
+    CASE
+        WHEN dep_delay IS NULL THEN 'Cancelled'
+        WHEN dep_delay <= 0    THEN 'On Time'
+        WHEN dep_delay <= 30   THEN 'Minor Delay'
+        ELSE 'Major Delay'
+    END AS delay_category,
+    COUNT(*) AS num_flights
+FROM flights
+GROUP BY delay_category
+ORDER BY MIN(dep_delay);
+```
+
+Notice that `MIN(dep_delay)` never appears in the `SELECT` list. `ORDER BY` is free to compute its own aggregate for each group, whether or not that value is displayed. To see why this aggregate produces the right order, here is the same query with each bucket's smallest and largest delay shown alongside it:
+
+```{sql}
+--| connection: con
+--| label: case-sort-by-min-shown
+SELECT
+    CASE
+        WHEN dep_delay IS NULL THEN 'Cancelled'
+        WHEN dep_delay <= 0    THEN 'On Time'
+        WHEN dep_delay <= 30   THEN 'Minor Delay'
+        ELSE 'Major Delay'
+    END AS delay_category,
+    COUNT(*)       AS num_flights,
+    MIN(dep_delay) AS min_delay,
+    MAX(dep_delay) AS max_delay
+FROM flights
+GROUP BY delay_category
+ORDER BY MIN(dep_delay);
+```
+
+Each bucket covers its own stretch of the number line, and the stretches do not overlap: everything in "On Time" is at most 0, everything in "Minor Delay" falls between 1 and 30, and everything in "Major Delay" is 31 or more. Because of that, sorting the buckets by their smallest values sorts them in the same order as the ranges they cover. There is nothing special about `MIN` here. `MAX(dep_delay)` or `AVG(dep_delay)` would produce the same order, since any value that comes from inside a bucket's range lines up with the other buckets the same way.
+
+The "Cancelled" bucket is the exception. Every row in it has a `NULL` `dep_delay`, so its minimum is `NULL` too, and PostgreSQL sorts `NULL` after every other value in ascending order. That happens to be a reasonable place for cancelled flights. If you would rather see them first, add `NULLS FIRST`, just as you would for any other sort:
+
+```{sql}
+--| connection: con
+--| label: case-sort-nulls-first
+SELECT
+    CASE
+        WHEN dep_delay IS NULL THEN 'Cancelled'
+        WHEN dep_delay <= 0    THEN 'On Time'
+        WHEN dep_delay <= 30   THEN 'Minor Delay'
+        ELSE 'Major Delay'
+    END AS delay_category,
+    COUNT(*) AS num_flights
+FROM flights
+GROUP BY delay_category
+ORDER BY MIN(dep_delay) NULLS FIRST;
+```
+
+#### When the Categories Are Not Ranges
+
+Sorting by `MIN` only works when the buckets are ranges of a single column. The `flight_outcome` categories from the nested `CASE` section depend on two columns, `dep_delay` and `arr_delay`, so neither column's minimum puts them in a meaningful order. In that situation you have to state the order yourself by giving each category an explicit rank.
+
+You might try to write that rank as a simple `CASE` on the alias:
+
+```sql
+ORDER BY CASE flight_outcome
+    WHEN 'On time throughout' THEN 1
+    ...
+END
+```
+
+PostgreSQL rejects this with `column "flight_outcome" does not exist`. It allows an output alias in `ORDER BY` only when the alias appears on its own, not inside a larger expression. The workaround is to compute the rank from the original columns, using a second `CASE` with the same conditions as the first, and to wrap it in an aggregate so that it satisfies the `GROUP BY` rule:
+
+```{sql}
+--| connection: con
+--| label: case-sort-explicit-rank
+SELECT
+    CASE
+        WHEN dep_delay IS NULL                THEN 'Cancelled'
+        WHEN arr_delay IS NULL                THEN 'Diverted'
+        WHEN dep_delay > 0 AND arr_delay <= 0 THEN 'Left late, made up time'
+        WHEN dep_delay > 0                    THEN 'Left late, arrived late'
+        WHEN arr_delay > 0                    THEN 'Left on time, arrived late'
+        ELSE 'On time throughout'
+    END AS flight_outcome,
+    COUNT(*) AS num_flights
+FROM flights
+GROUP BY flight_outcome
+ORDER BY MIN(
+    CASE
+        WHEN dep_delay IS NULL                THEN 6
+        WHEN arr_delay IS NULL                THEN 5
+        WHEN dep_delay > 0 AND arr_delay <= 0 THEN 2
+        WHEN dep_delay > 0                    THEN 4
+        WHEN arr_delay > 0                    THEN 3
+        ELSE 1
+    END
+);
+```
+
+Because the second `CASE` uses the same conditions as the first, every row in a group gets the same rank, and `MIN` simply pulls that one shared value out of the group. This works, but repeating the logic is clumsy: if you change a condition in one `CASE` and forget the other, the labels and the ranks quietly disagree. The next chapter introduces CTEs, which let you compute the category once and then sort or rank it in a separate step.
+
 ## Choosing the Right Tool
 
 All three tools covered in this chapter branch on data, but they answer different questions:
@@ -349,3 +496,7 @@ In practice these tools compose. A `CASE WHEN` can contain a `COALESCE`, a `COAL
 ---
 
 **9.** Write a query that computes the percentage of cancelled flights (`dep_delay IS NULL`) for each origin airport in `flights`, using `NULLIF` to guard against a division by zero. Even though this dataset has only one origin airport, write the query as though it might not.
+
+---
+
+**10.** Using `flights`, write a `CASE WHEN` expression that buckets each flight's `distance` as `'Under 250 miles'`, `'250 - 499 miles'`, `'500 - 999 miles'`, or `'1,000 miles and up'`. Count the flights in each bucket and sort the results from the shortest bucket to the longest. Then explain why `ORDER BY distance` raises an error here, and why `ORDER BY MAX(distance)` would produce the same order as `ORDER BY MIN(distance)`.
