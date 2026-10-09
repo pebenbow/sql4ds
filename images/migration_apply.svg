@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 845.0" width="1395" height="1267.5" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">Creating and applying a migration</title>
+<desc id="desc">Three steps for the add_email_to_customers migration. Step 1: supabase migration new creates an empty, timestamped file, 20250203140000_add_email_to_customers.sql, in supabase/migrations next to the two files already there, and you write ALTER TABLE customers ADD COLUMN email TEXT in it. Step 2: supabase migration list shows the new file locally with no matching remote version, so it is pending. Step 3: supabase db push runs the pending file on the remote database. The customers table gains an email column, which is NULL for the three existing customers, and the tracking table supabase_migrations.schema_migrations gains the row 20250203140000, so later pushes skip this file.</desc>
+<defs><marker id="arrow-0072B2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">Creating and applying a migration</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">A new file starts out pending on your machine. supabase db push runs it on the remote database and records that it ran.</text>
+<text x="30" y="100" font-size="16" font-weight="bold" fill="#222222"><tspan fill="#D55E00">1</tspan>  Create the file, then write the SQL in it</text>
+<text x="52" y="122" font-size="13" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">supabase migration new add_email_to_customers</text>
+<text x="52" y="158" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">supabase/migrations/</text>
+<rect x="52" y="168" width="365" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="60" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">version</text>
+<text x="195" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="52" y="194" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="60" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250101120000</text>
+<text x="195" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">create_customers_table</text>
+<rect x="52" y="220" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="60" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250115093000</text>
+<text x="195" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">create_orders_table</text>
+<rect x="52" y="246" width="365" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="52" y="246" width="5" height="26" fill="#009E73"/>
+<rect x="54" y="248" width="131" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="60" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250203140000</text>
+<rect x="189" y="248" width="226" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="195" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">add_email_to_customers</text>
+<line x1="187" y1="168" x2="187" y2="272" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="52" y="168" width="365" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="500" y="209.0" width="345" height="80" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="514" y="235.0" font-size="12" font-weight="bold" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">20250203140000_add_email_to_customers.sql</text>
+<text x="514" y="257.0" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ALTER TABLE customers</text>
+<text x="514" y="275.0" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">    ADD COLUMN email TEXT;</text>
+<path d="M417,259.0 C458.5,259.0 458.5,259.0 500,259.0" fill="none" stroke="#009E73" stroke-width="1.8" stroke-opacity="0.85"/>
+<circle cx="417" cy="259.0" r="3.5" fill="#009E73"/>
+<circle cx="500" cy="259.0" r="3.5" fill="#009E73"/>
+<text x="500" y="309.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">a new, empty file; you write the SQL in it</text>
+<line x1="30" y1="335.0" x2="900" y2="335.0" stroke="#DDDDDD" stroke-width="1"/>
+<text x="30" y="359.0" font-size="16" font-weight="bold" fill="#222222"><tspan fill="#D55E00">2</tspan>  Check what is pending</text>
+<text x="52" y="381.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">supabase migration list</text>
+<rect x="52" y="403.0" width="270" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="60" y="421.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">local</text>
+<text x="195" y="421.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">remote</text>
+<rect x="52" y="429.0" width="270" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="60" y="447.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250101120000</text>
+<text x="195" y="447.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">20250101120000</text>
+<rect x="52" y="455.0" width="270" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="60" y="473.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250115093000</text>
+<text x="195" y="473.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start">20250115093000</text>
+<rect x="52" y="481.0" width="270" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="54" y="483.0" width="131" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="60" y="499.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250203140000</text>
+<rect x="190" y="484.0" width="129" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="195" y="499.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">pending</text>
+<line x1="187" y1="403.0" x2="187" y2="507.0" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="52" y="403.0" width="270" height="104.0" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="352" y="480.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">Pending: the file exists locally, but the</text>
+<text x="352" y="500.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">remote database has no record of running it.</text>
+<line x1="30" y1="533.0" x2="900" y2="533.0" stroke="#DDDDDD" stroke-width="1"/>
+<text x="30" y="557.0" font-size="16" font-weight="bold" fill="#222222"><tspan fill="#D55E00">3</tspan>  Run it on the remote database</text>
+<text x="52" y="579.0" font-size="13" font-weight="normal" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">supabase db push</text>
+<text x="52" y="615.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">customers</text>
+<text x="135.8" y="615.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">before</text>
+<rect x="52" y="625.0" width="160" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="60" y="643.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<text x="105" y="643.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="52" y="651.0" width="160" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="52" y="651.0" width="5" height="26" fill="#0072B2"/>
+<text x="60" y="669.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="105" y="669.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ana Lopez</text>
+<rect x="52" y="677.0" width="160" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="52" y="677.0" width="5" height="26" fill="#0072B2"/>
+<text x="60" y="695.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<text x="105" y="695.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ben Park</text>
+<rect x="52" y="703.0" width="160" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="52" y="703.0" width="5" height="26" fill="#0072B2"/>
+<text x="60" y="721.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<text x="105" y="721.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cai Wu</text>
+<line x1="97" y1="625.0" x2="97" y2="729.0" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="52" y="625.0" width="160" height="104.0" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="280" y="615.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">customers</text>
+<text x="363.8" y="615.0" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">after</text>
+<rect x="280" y="625.0" width="240" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="288" y="643.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<text x="333" y="643.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="448" y="643.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">email</text>
+<rect x="280" y="651.0" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="280" y="651.0" width="5" height="26" fill="#0072B2"/>
+<text x="288" y="669.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="333" y="669.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ana Lopez</text>
+<text x="448" y="669.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="280" y="677.0" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="280" y="677.0" width="5" height="26" fill="#0072B2"/>
+<text x="288" y="695.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<text x="333" y="695.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ben Park</text>
+<text x="448" y="695.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="280" y="703.0" width="240" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="280" y="703.0" width="5" height="26" fill="#0072B2"/>
+<text x="288" y="721.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<text x="333" y="721.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cai Wu</text>
+<text x="448" y="721.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<line x1="325" y1="625.0" x2="325" y2="729.0" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="440" y1="625.0" x2="440" y2="729.0" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="280" y="625.0" width="240" height="104.0" fill="none" stroke="#777777" stroke-width="1.5"/>
+<path d="M212,664.0 C246.0,664.0 246.0,664.0 280,664.0" fill="none" stroke="#0072B2" stroke-width="1.8" stroke-opacity="0.85"/>
+<circle cx="212" cy="664.0" r="3.5" fill="#0072B2"/>
+<circle cx="280" cy="664.0" r="3.5" fill="#0072B2"/>
+<path d="M212,690.0 C246.0,690.0 246.0,690.0 280,690.0" fill="none" stroke="#0072B2" stroke-width="1.8" stroke-opacity="0.85"/>
+<circle cx="212" cy="690.0" r="3.5" fill="#0072B2"/>
+<circle cx="280" cy="690.0" r="3.5" fill="#0072B2"/>
+<path d="M212,716.0 C246.0,716.0 246.0,716.0 280,716.0" fill="none" stroke="#0072B2" stroke-width="1.8" stroke-opacity="0.85"/>
+<circle cx="212" cy="716.0" r="3.5" fill="#0072B2"/>
+<circle cx="280" cy="716.0" r="3.5" fill="#0072B2"/>
+<rect x="442" y="627.0" width="76" height="22" rx="3" fill="none" stroke="#009E73" stroke-width="2"/>
+<text x="280" y="755.0" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">New column, NULL for every</text>
+<text x="280" y="775.0" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">existing customer.</text>
+<text x="590" y="615.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">supabase_migrations.schema_migrations</text>
+<rect x="590" y="625.0" width="150" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="598" y="643.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">version</text>
+<rect x="590" y="651.0" width="150" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="598" y="669.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250101120000</text>
+<rect x="590" y="677.0" width="150" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="598" y="695.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250115093000</text>
+<rect x="590" y="703.0" width="150" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="590" y="703.0" width="5" height="26" fill="#009E73"/>
+<rect x="592" y="705.0" width="146" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="598" y="721.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250203140000</text>
+<rect x="590" y="625.0" width="150" height="104.0" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="590" y="755.0" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">The push records the version it ran,</text>
+<text x="590" y="775.0" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">so every later push skips this file.</text>
+<text x="590" y="795.0" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Run supabase migration list again and</text>
+<text x="590" y="815.0" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">the remote column now matches.</text>
+</svg>
