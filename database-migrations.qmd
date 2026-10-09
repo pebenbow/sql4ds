@@ -133,6 +133,10 @@ The CLI identifies which migrations in `supabase/migrations/` have not yet been 
 
 Supabase tracks applied migrations in a table in the `supabase_migrations` schema on the remote database. You do not need to interact with this table directly, but knowing it exists explains how the CLI knows what has and has not been applied.
 
+The full cycle, from an empty file to a recorded change on the remote database, looks like this:
+
+![Creating a migration, checking that it is pending, and pushing it to the remote database.](images/migration_apply.svg){fig-alt="Three steps for the add_email_to_customers migration. Step 1: supabase migration new creates an empty, timestamped file, 20250203140000_add_email_to_customers.sql, in supabase/migrations next to the two files already there, and you write ALTER TABLE customers ADD COLUMN email TEXT in it. Step 2: supabase migration list shows the new file locally with no matching remote version, so it is pending. Step 3: supabase db push runs the pending file on the remote database. The customers table gains an email column, which is NULL for the three existing customers, and the tracking table supabase_migrations.schema_migrations gains the row 20250203140000, so later pushes skip this file." width="100%"}
+
 ## Rolling Back a Migration
 
 Supabase migrations are forward-only by default: the CLI applies migrations but does not include a built-in mechanism for reverting them. Rolling back is instead handled by writing a new migration that undoes the previous one.
@@ -147,6 +151,10 @@ ALTER TABLE customers
 This becomes a new migration file with its own timestamp, applied with `supabase db push` like any other migration. The schema moves forward through time even when the change is logically a reversal.
 
 This approach has a significant advantage: the rollback itself becomes part of the migration history, is reviewed, tested, and committed like any other change, and does not require special tooling to execute.
+
+It can be tempting to delete the original file instead, or edit it to remove the change. That does not undo anything on a database where the file has already run. It only makes the files and the database disagree:
+
+![Deleting an applied migration file vs. writing a new migration that reverses it.](images/migration_rollback.svg){fig-alt="Two ways to undo the add_email_to_customers migration after it has been pushed. Wrong: delete (or edit) the applied file. The remote database still has the email column, and its tracking table still lists version 20250203140000, but no file in supabase/migrations says so. The files and the database now disagree, and anyone who rebuilds a database from the files gets a different schema than production. Right: leave the file alone and write a new migration, 20250212101500_drop_email_from_customers, containing ALTER TABLE customers DROP COLUMN IF EXISTS email. Pushing it runs only that file. The tracking table gains a fourth row and the email column is gone. History only moves forward, and the undo is itself a reviewed, recorded step. Dropping the column also deletes every email stored in it." width="100%"}
 
 Some teams annotate each migration file with the corresponding rollback SQL in a comment at the bottom, so that the undo logic is always visible alongside the change it reverses:
 
@@ -187,6 +195,10 @@ The full cycle for a schema change under this system:
    ```
 
 5. **Verify.** Check the Supabase dashboard or run a query to confirm the change took effect. Review `supabase migration list` to confirm the migration now shows as applied.
+
+On a team, the same files usually travel to more than one database. In the hypothetical workflow below, a new teammate's empty database, a staging project, and the production project all run the files from the same `supabase/migrations/` folder. Each one runs only the files it is missing, so they all end up with the same schema. Production waits until the newest migration has been checked on staging.
+
+![One folder of migration files, replayed on a new teammate's database, staging, and production.](images/migration_workflow.svg){fig-alt="A hypothetical team workflow. The supabase/migrations folder, committed to git, holds four migration files in timestamp order: create_customers_table, create_orders_table, add_email_to_customers, and drop_internal_notes_from_orders. The newest one was just written and committed. Three databases are shown as supabase migration list would report them. A new teammate's empty database runs all four files in order on its first push. Staging had already run the first three, so its push runs only the fourth. Production also has the first three; the fourth stays pending until it has been checked on staging, and the next push to production will run only that file." width="100%"}
 
 ## Best Practices
 

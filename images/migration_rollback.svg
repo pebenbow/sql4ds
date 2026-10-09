@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 724" width="1410" height="1086" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">Rolling back a migration</title>
+<desc id="desc">Two ways to undo the add_email_to_customers migration after it has been pushed. Wrong: delete (or edit) the applied file. The remote database still has the email column, and its tracking table still lists version 20250203140000, but no file in supabase/migrations says so. The files and the database now disagree, and anyone who rebuilds a database from the files gets a different schema than production. Right: leave the file alone and write a new migration, 20250212101500_drop_email_from_customers, containing ALTER TABLE customers DROP COLUMN IF EXISTS email. Pushing it runs only that file. The tracking table gains a fourth row and the email column is gone. History only moves forward, and the undo is itself a reviewed, recorded step. Dropping the column also deletes every email stored in it.</desc>
+<defs><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">Rolling back: undo a change by adding a migration, not by deleting one</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Once a file has been pushed, the database's tracking table remembers it. The undo has to move forward too.</text>
+<rect x="30" y="92" width="430" height="612" rx="8" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="46" y="122" font-size="16" font-weight="bold" fill="#D55E00" text-anchor="start">Don't: delete or edit the applied file</text>
+<rect x="480" y="92" width="430" height="612" rx="8" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="496" y="122" font-size="16" font-weight="bold" fill="#009E73" text-anchor="start">Do: write a new migration that reverses it</text>
+<text x="46" y="158" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">supabase/migrations/</text>
+<rect x="46" y="168" width="365" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="54" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">version</text>
+<text x="189" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="46" y="194" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="54" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250101120000</text>
+<text x="189" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">create_customers_table</text>
+<rect x="46" y="220" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="54" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250115093000</text>
+<text x="189" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">create_orders_table</text>
+<rect x="46" y="246" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="54" y="264.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">20250203140000</text>
+<text x="189" y="264.0" font-size="13" font-weight="normal" fill="#A8A8A8" text-anchor="start" text-decoration="line-through">add_email_to_customers</text>
+<line x1="181" y1="168" x2="181" y2="272" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="46" y="168" width="365" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="46" y="294" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">File deleted from the folder.</text>
+<text x="46" y="342" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">schema_migrations</text>
+<rect x="46" y="352" width="150" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="54" y="370.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">version</text>
+<rect x="46" y="378" width="150" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="54" y="396.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250101120000</text>
+<rect x="46" y="404" width="150" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="54" y="422.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250115093000</text>
+<rect x="46" y="430" width="150" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="48" y="432" width="146" height="22" rx="3" fill="#FBE3D3" stroke="#D55E00" stroke-width="2"/>
+<text x="54" y="448.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250203140000</text>
+<rect x="46" y="352" width="150" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="218" y="342" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">customers</text>
+<rect x="218" y="352" width="205" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="226" y="370.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<text x="261" y="370.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="356" y="370.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">email</text>
+<rect x="218" y="378" width="205" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="226" y="396.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="261" y="396.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ana Lopez</text>
+<rect x="350" y="380" width="71" height="22" rx="3" fill="#FBE3D3" stroke="#D55E00" stroke-width="2"/>
+<text x="356" y="396.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">ana@…</text>
+<rect x="218" y="404" width="205" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="226" y="422.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<text x="261" y="422.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ben Park</text>
+<rect x="350" y="406" width="71" height="22" rx="3" fill="#FBE3D3" stroke="#D55E00" stroke-width="2"/>
+<text x="356" y="422.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="218" y="430" width="205" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="226" y="448.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<text x="261" y="448.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cai Wu</text>
+<rect x="350" y="432" width="71" height="22" rx="3" fill="#FBE3D3" stroke="#D55E00" stroke-width="2"/>
+<text x="356" y="448.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">cai@…</text>
+<line x1="253" y1="352" x2="253" y2="456" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="348" y1="352" x2="348" y2="456" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="218" y="352" width="205" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="46" y="490" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">The database still has the email column and</text>
+<text x="46" y="510" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">still lists 20250203140000 as applied, but no</text>
+<text x="46" y="530" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">file says so. The files and the database disagree.</text>
+<text x="46" y="550" font-size="14" font-weight="normal" fill="#555555" text-anchor="start"></text>
+<text x="46" y="570" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">A teammate who rebuilds from the files gets no</text>
+<text x="46" y="590" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">email column. Production still has one. Editing</text>
+<text x="46" y="610" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">an applied file causes the same split: push never</text>
+<text x="46" y="630" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">reruns a version it has already recorded.</text>
+<text x="496" y="158" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">supabase/migrations/</text>
+<rect x="496" y="168" width="365" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="504" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">version</text>
+<text x="639" y="186.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="496" y="194" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="504" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250101120000</text>
+<text x="639" y="212.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">create_customers_table</text>
+<rect x="496" y="220" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="504" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250115093000</text>
+<text x="639" y="238.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">create_orders_table</text>
+<rect x="496" y="246" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="504" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250203140000</text>
+<text x="639" y="264.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">add_email_to_customers</text>
+<rect x="496" y="272" width="365" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="496" y="272" width="5" height="26" fill="#009E73"/>
+<rect x="498" y="274" width="131" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="504" y="290.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250212101500</text>
+<rect x="633" y="274" width="226" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="639" y="290.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">drop_email_from_customers</text>
+<line x1="631" y1="168" x2="631" y2="298" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="496" y="168" width="365" height="130" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="496" y="314" width="365" height="80" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="510" y="340" font-size="12" font-weight="bold" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">the new file, applied with supabase db push</text>
+<text x="510" y="362" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ALTER TABLE customers</text>
+<text x="510" y="380" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">    DROP COLUMN IF EXISTS email;</text>
+<text x="496" y="438" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">schema_migrations</text>
+<rect x="496" y="448" width="150" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="504" y="466.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">version</text>
+<rect x="496" y="474" width="150" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="504" y="492.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250101120000</text>
+<rect x="496" y="500" width="150" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="504" y="518.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250115093000</text>
+<rect x="496" y="526" width="150" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="504" y="544.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250203140000</text>
+<rect x="496" y="552" width="150" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="496" y="552" width="5" height="26" fill="#009E73"/>
+<rect x="498" y="554" width="146" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="504" y="570.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250212101500</text>
+<rect x="496" y="448" width="150" height="130" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="668" y="438" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">customers</text>
+<rect x="668" y="448" width="130" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="676" y="466.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<text x="711" y="466.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="668" y="474" width="130" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="676" y="492.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="711" y="492.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ana Lopez</text>
+<rect x="668" y="500" width="130" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="676" y="518.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<text x="711" y="518.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ben Park</text>
+<rect x="668" y="526" width="130" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="676" y="544.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<text x="711" y="544.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cai Wu</text>
+<line x1="703" y1="448" x2="703" y2="552" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="668" y="448" width="130" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="496" y="612" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">The undo is a reviewed, recorded step, and</text>
+<text x="496" y="632" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">every database replays it the same way.</text>
+<text x="496" y="652" font-size="14" font-weight="normal" fill="#555555" text-anchor="start"></text>
+<text x="496" y="672" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Dropping the column deletes the emails stored</text>
+<text x="496" y="692" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">in it. Reversing a change can still lose data.</text>
+</svg>
