@@ -182,6 +182,30 @@ LIMIT 5;
 
 The result matches the correlated version exactly, but `carrier_avg_delay` is computed a single time, then joined like any other table, rather than being conceptually re-run for every candidate row. This is the general lesson: a correlated subquery is easy to write and often the first thing that comes to mind, but when the same per-group value is needed repeatedly, computing it once in a CTE (or derived table) and joining to it is usually both faster and easier to read.
 
+### Written First Does Not Mean Run First
+
+Because CTEs appear at the top of a query, it is tempting to picture the database working through them in order: run `dest_counts`, save the result somewhere, run `overall_avg`, save that too, and only then start on the final `SELECT`. That is how the equivalent code would behave in R or Python, where a line like `dest_counts <- ...` or `dest_counts = ...` executes the moment it is reached. A CTE does not work that way.
+
+A query with a `WITH` clause is still a single statement, and like every SQL statement it is declarative. Each CTE is a definition: it gives a name to one piece of the logic so the main `SELECT` can refer to it. When PostgreSQL plans the query, it considers the CTEs and the main `SELECT` together and decides how to produce the final result as a whole. The principle from [the logical order of execution](select-statements.qmd) applies here too: the order in which a query is written is not the order in which the database evaluates it.
+
+In fact, PostgreSQL often folds a CTE directly into the main query, treating it exactly as if it had been written as a derived table in the `FROM` clause. Consider this query:
+
+```sql
+WITH all_flights AS (
+    SELECT carrier, flight, dest, dep_delay, month, day
+    FROM flights
+)
+SELECT carrier, flight, dep_delay
+FROM all_flights
+WHERE month = 7 AND day = 4;
+```
+
+Read top to bottom, it looks as though the database first copies every row of `flights` into `all_flights` and only afterward discards everything that did not depart on July 4th. It does not. PostgreSQL merges the CTE into the outer query and applies the `WHERE` condition while reading `flights`, so the full intermediate table is never built. The CTE was written first, but the filter in the main query determined how it ran.
+
+PostgreSQL does not fold every CTE this way. A CTE referenced more than once in the same query (as `dest_counts` is in the earlier example, once by `overall_avg` and once by the final `SELECT`) is normally computed once and its rows kept for reuse, and recursive CTEs, covered next, are always computed on their own. Even then, those rows are produced on demand as the main query asks for them, as part of running one statement, not in a separate step that finishes before the main `SELECT` begins.
+
+The practical takeaway: a CTE is a tool for organizing a query for the people who read it. Arrange your CTEs in whatever order makes the logic easiest to follow, and leave the execution strategy to the database. When you do need to see what the database actually does, the `EXPLAIN` command, introduced in the chapter on indexes, shows the plan it chose.
+
 ## Recursive CTEs
 
 Some data is naturally hierarchical: an employee reporting structure, a category with subcategories, a bill of materials made of parts that contain other parts. A **recursive CTE** is built to walk exactly this kind of structure, one level at a time, without knowing in advance how many levels deep it goes.
@@ -304,17 +328,21 @@ None of these tools change what a query is *capable* of expressing; a correlated
 
 ---
 
+**4.** A classmate looks at a query that begins with two CTEs and says, "The database runs the first CTE, then the second, and then the main `SELECT` last, because that is the order they are written in." Explain why this description is misleading. In your answer, describe how PostgreSQL treats a CTE that is referenced only once, and explain how this differs from assigning a variable in R or Python.
+
+---
+
 ### Practical {.unnumbered}
 
-**4.** Write a query against `flights` that adds a column showing each flight's `dep_delay` alongside the *maximum* `dep_delay` recorded anywhere in the table, using a scalar subquery in the `SELECT` list.
+**5.** Write a query against `flights` that adds a column showing each flight's `dep_delay` alongside the *maximum* `dep_delay` recorded anywhere in the table, using a scalar subquery in the `SELECT` list.
 
 ---
 
-**5.** Write a query that returns every airline from `airlines` whose `carrier` code never appears in `flights`, first using `NOT IN`, then using `NOT EXISTS`. Do the two versions agree in this case? Explain why or why not, referencing whether `flights.carrier` can be `NULL`.
+**6.** Write a query that returns every airline from `airlines` whose `carrier` code never appears in `flights`, first using `NOT IN`, then using `NOT EXISTS`. Do the two versions agree in this case? Explain why or why not, referencing whether `flights.carrier` can be `NULL`.
 
 ---
 
-**6.** Rewrite this nested query as a CTE with at least one intermediate step, and explain in a comment what each step computes:
+**7.** Rewrite this nested query as a CTE with at least one intermediate step, and explain in a comment what each step computes:
 
 ```sql
 SELECT p.manufacturer, plane_counts.num_planes
@@ -332,12 +360,12 @@ GROUP BY p.manufacturer, plane_counts.num_planes;
 
 ---
 
-**7.** Restricting to flights in December (`month = 12`), write a correlated subquery that finds every flight whose `air_time` is longer than the average `air_time` for flights to the same `dest`. Then rewrite it using a CTE that computes each destination's average `air_time` once (computed across the same December flights). Confirm both versions return the same number of rows. If you have time, try removing the `month = 12` restriction from the correlated version and compare how much longer it takes to run.
+**8.** Restricting to flights in December (`month = 12`), write a correlated subquery that finds every flight whose `air_time` is longer than the average `air_time` for flights to the same `dest`. Then rewrite it using a CTE that computes each destination's average `air_time` once (computed across the same December flights). Confirm both versions return the same number of rows. If you have time, try removing the `month = 12` restriction from the correlated version and compare how much longer it takes to run.
 
 ---
 
-**8.** Using the `employees` pattern from this chapter (recreate the table with your own hierarchy of at least three levels and six people), write a recursive CTE that finds everyone below a manager of your choosing, along with each person's depth relative to that manager. Remember to drop the table when you are finished.
+**9.** Using the `employees` pattern from this chapter (recreate the table with your own hierarchy of at least three levels and six people), write a recursive CTE that finds everyone below a manager of your choosing, along with each person's depth relative to that manager. Remember to drop the table when you are finished.
 
 ---
 
-**9.** A colleague suggests replacing a frequently-run CTE with a temporary table instead, arguing it will be faster. Under what circumstances would you agree with them, and under what circumstances would you push back? Justify your answer using the considerations from the final section of this chapter.
+**10.** A colleague suggests replacing a frequently-run CTE with a temporary table instead, arguing it will be faster. Under what circumstances would you agree with them, and under what circumstances would you push back? Justify your answer using the considerations from the final section of this chapter.
