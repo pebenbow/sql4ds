@@ -232,6 +232,16 @@ The World Bank publishes a free, open API for the development indicators we have
 ```{python}
 #| label: api-fetch
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
+session = requests.Session()
+retries = Retry(
+    total=5,
+    backoff_factor=1,
+    status_forcelist=[429, 500, 502, 503, 504]
+)
+session.mount("https://", HTTPAdapter(max_retries=retries))
 
 url = "https://api.worldbank.org/v2/country/US;GB;DE;JP/indicator/SP.POP.TOTL"
 params = {
@@ -240,7 +250,7 @@ params = {
     "mrv": 5
 }
 
-resp = requests.get(url, params=params, timeout=10)
+resp = session.get(url, params=params, timeout=30)
 resp.raise_for_status()
 
 envelope, records = resp.json()
@@ -249,8 +259,9 @@ print(f"Total records: {envelope['total']}")
 
 The World Bank API returns a two-element list: the envelope (containing pagination metadata) followed by the array of records. We unpack them in a single assignment.
 
-Two details worth noting:
+Three details worth noting:
 
+- Public APIs are sometimes slow or briefly unavailable. Instead of calling `requests.get()` directly, we create a `Session` that automatically retries a failed request up to five times, waiting a little longer before each attempt (`backoff_factor`). The `timeout` argument caps how long any single attempt can wait for a response.
 - `resp.raise_for_status()` raises an exception immediately if the server returned an HTTP error code (4xx or 5xx). Call it every time so you catch problems before silently processing an error response.
 - The API returns `"date"` as a string and `"value"` as either a number or `None`. We handle both below.
 
@@ -281,10 +292,10 @@ all_records = []
 page = 1
 
 while True:
-    resp = requests.get(
+    resp = session.get(
         "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL",
         params={"format": "json", "per_page": 1000, "page": page, "mrv": 1},
-        timeout=10
+        timeout=30
     )
     resp.raise_for_status()
     envelope, records = resp.json()
@@ -315,7 +326,7 @@ The table below summarizes the extraction approach for each source type:
 | Flat JSON array | `pl.read_json()` | Works directly on arrays of objects |
 | JSON envelope | `json.load()` + `pl.DataFrame()` | Extract the records key before building the DataFrame |
 | Parquet file | `pl.read_parquet()` | Embedded schema; use `columns=` for column pruning |
-| REST API | `requests.get()` + `pl.DataFrame()` | Call `.raise_for_status()`; handle pagination |
+| REST API | `requests.Session` + `pl.DataFrame()` | Retry transient failures; call `.raise_for_status()`; handle pagination |
 
 In the next chapter, you will take the extracted data and apply transformations with Polars: filtering, reshaping, computing new columns, and summarizing.
 
