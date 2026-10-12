@@ -13,6 +13,8 @@ By the end of this chapter, students will be able to:
 - **Write** a Common Table Expression (CTE) using the `WITH` clause to break a complex query into named, readable steps.
 - **Rewrite** a nested subquery as a CTE and explain the readability advantage.
 - **Write** a recursive CTE to traverse a hierarchical data structure such as an organizational chart or category tree.
+- **Write** a `LATERAL` subquery, in the `FROM` clause or with `CROSS JOIN LATERAL` and `LEFT JOIN LATERAL`, to return several rows for each outer row.
+- **Explain** why set-returning functions such as `unnest()` can refer to earlier tables in the `FROM` clause without the `LATERAL` keyword.
 - **Evaluate** when to use a subquery, a CTE, or a temporary table based on readability, reuse, and performance considerations.
 - **Apply** `NOT EXISTS` as a safer alternative to `NOT IN` when the subquery may return `NULL` values.
 
@@ -272,6 +274,171 @@ Clean up the demonstration table before moving on:
 DROP TABLE employees;
 ```
 
+## LATERAL: Subqueries That Can See the Outer Row
+
+The subqueries in this chapter so far each come with a trade-off. A correlated subquery can refer to the outer row, but in the `SELECT` list it must return a single value. A derived table can return as many rows and columns as it likes, but it is computed on its own, with no access to the other tables in the `FROM` clause. The `LATERAL` keyword combines the strengths of both: it marks a derived table that is allowed to refer to the tables listed before it, so it can return a whole set of rows *for each outer row*.
+
+### The Problem: Top N per Group
+
+Suppose you want the two most delayed flights for each airline. A scalar subquery cannot do this, because the answer for each airline is two rows of several columns, not one value. A derived table looks promising, since it can return rows, so a first attempt might filter the derived table down to the current airline's flights:
+
+```sql
+SELECT a.name, worst.flight, worst.dest, worst.dep_delay
+FROM airlines a,
+     (
+         SELECT f.flight, f.dest, f.dep_delay
+         FROM flights f
+         WHERE f.carrier = a.carrier
+         ORDER BY f.dep_delay DESC NULLS LAST
+         LIMIT 2
+     ) AS worst;
+```
+
+PostgreSQL rejects this query:
+
+```
+ERROR:  invalid reference to FROM-clause entry for table "a"
+DETAIL:  There is an entry for table "a", but it cannot be referenced from this part of the query.
+HINT:  To reference that table, you must mark this subquery with LATERAL.
+```
+
+The comma between `airlines a` and the subquery is the implicit join syntax from [the joins chapter](joins.qmd): it pairs every row on the left with every row on the right. Ordinarily, each item in a `FROM` clause is independent of the others. The database computes the derived table once, as if `airlines` were not there, and only then pairs the two. From inside that derived table there is no "current airline" to compare against, so `a.carrier` means nothing.
+
+### LATERAL in the FROM Clause
+
+The error message's hint is the fix. Adding `LATERAL` in front of the subquery tells PostgreSQL to evaluate it once for each row of the tables to its left:
+
+```{sql}
+--| connection: con
+--| label: lateral-from
+SELECT a.name, worst.flight, worst.dest, worst.dep_delay
+FROM airlines a,
+     LATERAL (
+         SELECT f.flight, f.dest, f.dep_delay
+         FROM flights f
+         WHERE f.carrier = a.carrier
+         ORDER BY f.dep_delay DESC NULLS LAST
+         LIMIT 2
+     ) AS worst
+ORDER BY a.name, worst.dep_delay DESC;
+```
+
+Read it the way you read the correlated subquery earlier in this chapter. PostgreSQL takes one row from `airlines`, plugs that row's `carrier` into the subquery, runs it to get that airline's two most delayed flights, and attaches each of those rows to the airline row. Then it moves on to the next airline. The difference from a correlated subquery is the shape of what comes back: a whole table (here, up to two rows of three columns) instead of a single value.
+
+The word *lateral* means "sideways," and the name describes the rule: a `LATERAL` subquery can look sideways at the items listed *before* it in the `FROM` clause, but not at items listed after it.
+
+### LATERAL in JOIN Clauses
+
+`airlines` has 16 rows, but the result above has 26: two flights each for 13 airlines. Three airlines (Alaska, Hawaiian, and Virgin America) have no flights in this data, so their subqueries return zero rows, and an airline with nothing to pair with drops out of the result. The comma behaves this way because it is an implicit `CROSS JOIN`, and the explicit form of the same query uses `CROSS JOIN LATERAL`:
+
+```sql
+SELECT a.name, worst.flight, worst.dest, worst.dep_delay
+FROM airlines a
+CROSS JOIN LATERAL (
+    SELECT f.flight, f.dest, f.dep_delay
+    FROM flights f
+    WHERE f.carrier = a.carrier
+    ORDER BY f.dep_delay DESC NULLS LAST
+    LIMIT 2
+) AS worst
+ORDER BY a.name, worst.dep_delay DESC;
+```
+
+This returns the identical 26 rows. Despite the name, `CROSS JOIN LATERAL` does not produce a Cartesian product of airlines and flights. Each airline is paired only with the rows that *its own* subquery returned, which is why an airline whose subquery comes back empty disappears, much as an unmatched row disappears from an `INNER JOIN`.
+
+To keep those airlines, use `LEFT JOIN LATERAL` instead:
+
+```{sql}
+--| connection: con
+--| label: lateral-left-join
+SELECT a.name, worst.flight, worst.dest, worst.dep_delay
+FROM airlines a
+LEFT JOIN LATERAL (
+    SELECT f.flight, f.dest, f.dep_delay
+    FROM flights f
+    WHERE f.carrier = a.carrier
+    ORDER BY f.dep_delay DESC NULLS LAST
+    LIMIT 2
+) AS worst ON true
+ORDER BY a.name, worst.dep_delay DESC;
+```
+
+Now all 16 airlines appear, and the three without flights show `NULL` in the subquery's columns, exactly as unmatched rows do in any `LEFT JOIN`. The odd-looking `ON true` is there because `LEFT JOIN` syntax requires an `ON` clause. The matching already happens inside the subquery, in `WHERE f.carrier = a.carrier`, so there is nothing left for `ON` to check. `ON true` says "every row the subquery returned counts as a match."
+
+The choice between the two follows the same logic as the choice between `INNER JOIN` and `LEFT JOIN`: use `CROSS JOIN LATERAL` (or the comma form) when outer rows with no results should be dropped, and `LEFT JOIN LATERAL ... ON true` when they should be kept.
+
+Top-N-per-group questions like this one can also be answered with the `ROW_NUMBER()` window function, covered in the next chapter. `LATERAL` is often the more direct choice when the outer table is small and you want only a few rows for each outer row, because each subquery can stop as soon as its `LIMIT` is reached.
+
+::: {.callout-note}
+SQL Server and Oracle express the same idea with different keywords: `CROSS APPLY` corresponds to `CROSS JOIN LATERAL`, and `OUTER APPLY` corresponds to `LEFT JOIN LATERAL ... ON true`.
+:::
+
+### Functions in the FROM Clause Are Already Lateral
+
+You have actually used lateral references once already. The [string data chapter](string-data.qmd) split search queries into words with this pattern:
+
+```sql
+FROM catalog_searches AS s,
+     regexp_split_to_table(lower(trim(s.query_text)), '\s+') AS word
+```
+
+The function call refers to `s.query_text`, a column from the table before it, with no `LATERAL` keyword in sight. That works because PostgreSQL treats a function call in the `FROM` clause as lateral automatically. A function that returns a set of rows, such as `regexp_split_to_table()`, `generate_series()`, or `unnest()`, is almost always meant to run once per row of the table beside it, so PostgreSQL does not make you ask.
+
+`unnest()` takes an array and returns one row per element. Paired with `string_to_array()`, it turns a delimited list stored in a single column into separate rows, which is exactly how to fix a column that crams a list into one cell (a problem the normal forms chapter calls a *First Normal Form violation*). A small demonstration table holds orders whose products are stored as comma-separated lists:
+
+```{sql}
+--| connection: con
+--| label: lateral-setup-create
+--| output: false
+CREATE TABLE order_lists (
+    order_id  INTEGER PRIMARY KEY,
+    customer  VARCHAR(50) NOT NULL,
+    products  TEXT
+);
+```
+
+```{sql}
+--| connection: con
+--| label: lateral-setup-insert
+--| output: false
+INSERT INTO order_lists (order_id, customer, products) VALUES
+    (1, 'Alice Smith', 'Laptop, Mouse'),
+    (2, 'Bob Jones',   'Keyboard'),
+    (3, 'Alice Smith', 'Monitor, Keyboard'),
+    (4, 'Carla Diaz',  NULL);
+```
+
+`CROSS JOIN LATERAL` with `unnest()` gives each product its own row:
+
+```{sql}
+--| connection: con
+--| label: lateral-unnest
+SELECT o.order_id, o.customer, product
+FROM order_lists o
+CROSS JOIN LATERAL unnest(string_to_array(o.products, ', ')) AS product;
+```
+
+`string_to_array(o.products, ', ')` turns `'Laptop, Mouse'` into the array `{Laptop,Mouse}`, and `unnest()` turns that array into two rows, each attached to order 1. Because function calls are lateral by default, `LATERAL` is optional here: `CROSS JOIN unnest(...)` or the comma form `FROM order_lists o, unnest(...)` return the same rows. Writing the keyword anyway makes it obvious to a reader that the function depends on the table before it.
+
+Carla's order is missing from the result. Her `products` value is `NULL`, so `unnest()` returns zero rows for it, and `CROSS JOIN LATERAL` drops it like the airlines with no flights. `LEFT JOIN LATERAL ... ON true` keeps it, for the same reason as before:
+
+```{sql}
+--| connection: con
+--| label: lateral-unnest-left
+SELECT o.order_id, o.customer, product
+FROM order_lists o
+LEFT JOIN LATERAL unnest(string_to_array(o.products, ', ')) AS product ON true;
+```
+
+Clean up the demonstration table before moving on:
+
+```{sql}
+--| connection: con
+--| label: lateral-cleanup
+--| output: false
+DROP TABLE order_lists;
+```
+
 ## NOT IN vs. NOT EXISTS: The NULL Trap
 
 `NOT IN` and `NOT EXISTS` both express "rows that have no match in another table," and they often produce identical results, until the subquery's column can contain `NULL`. The `tailnum` column in `flights` is `NULL` for roughly a quarter of all rows (flights with no recorded tail number). Watch what happens when it is used as the target of `NOT IN`:
@@ -332,17 +499,21 @@ None of these tools change what a query is *capable* of expressing; a correlated
 
 ---
 
+**5.** A classmate tries to write a derived table in the `FROM` clause that filters on a column from another table listed earlier in the same `FROM` clause, and PostgreSQL raises an "invalid reference to FROM-clause entry" error. Explain why the reference fails and what adding `LATERAL` changes. Then explain when you would choose `LEFT JOIN LATERAL ... ON true` instead of `CROSS JOIN LATERAL`.
+
+---
+
 ### Practical {.unnumbered}
 
-**5.** Write a query against `flights` that adds a column showing each flight's `dep_delay` alongside the *maximum* `dep_delay` recorded anywhere in the table, using a scalar subquery in the `SELECT` list.
+**6.** Write a query against `flights` that adds a column showing each flight's `dep_delay` alongside the *maximum* `dep_delay` recorded anywhere in the table, using a scalar subquery in the `SELECT` list.
 
 ---
 
-**6.** Write a query that returns every airline from `airlines` whose `carrier` code never appears in `flights`, first using `NOT IN`, then using `NOT EXISTS`. Do the two versions agree in this case? Explain why or why not, referencing whether `flights.carrier` can be `NULL`.
+**7.** Write a query that returns every airline from `airlines` whose `carrier` code never appears in `flights`, first using `NOT IN`, then using `NOT EXISTS`. Do the two versions agree in this case? Explain why or why not, referencing whether `flights.carrier` can be `NULL`.
 
 ---
 
-**7.** Rewrite this nested query as a CTE with at least one intermediate step, and explain in a comment what each step computes:
+**8.** Rewrite this nested query as a CTE with at least one intermediate step, and explain in a comment what each step computes:
 
 ```sql
 SELECT p.manufacturer, plane_counts.num_planes
@@ -360,12 +531,20 @@ GROUP BY p.manufacturer, plane_counts.num_planes;
 
 ---
 
-**8.** Restricting to flights in December (`month = 12`), write a correlated subquery that finds every flight whose `air_time` is longer than the average `air_time` for flights to the same `dest`. Then rewrite it using a CTE that computes each destination's average `air_time` once (computed across the same December flights). Confirm both versions return the same number of rows. If you have time, try removing the `month = 12` restriction from the correlated version and compare how much longer it takes to run.
+**9.** Restricting to flights in December (`month = 12`), write a correlated subquery that finds every flight whose `air_time` is longer than the average `air_time` for flights to the same `dest`. Then rewrite it using a CTE that computes each destination's average `air_time` once (computed across the same December flights). Confirm both versions return the same number of rows. If you have time, try removing the `month = 12` restriction from the correlated version and compare how much longer it takes to run.
 
 ---
 
-**9.** Using the `employees` pattern from this chapter (recreate the table with your own hierarchy of at least three levels and six people), write a recursive CTE that finds everyone below a manager of your choosing, along with each person's depth relative to that manager. Remember to drop the table when you are finished.
+**10.** Using the `employees` pattern from this chapter (recreate the table with your own hierarchy of at least three levels and six people), write a recursive CTE that finds everyone below a manager of your choosing, along with each person's depth relative to that manager. Remember to drop the table when you are finished.
 
 ---
 
-**10.** A colleague suggests replacing a frequently-run CTE with a temporary table instead, arguing it will be faster. Under what circumstances would you agree with them, and under what circumstances would you push back? Justify your answer using the considerations from the final section of this chapter.
+**11.** A colleague suggests replacing a frequently-run CTE with a temporary table instead, arguing it will be faster. Under what circumstances would you agree with them, and under what circumstances would you push back? Justify your answer using the considerations from the final section of this chapter.
+
+---
+
+**12.** Using `LEFT JOIN LATERAL`, write a query that lists every airline in `airlines` alongside its three December flights (`month = 12`) with the longest `air_time`. Airlines with no December flights should still appear, with `NULL` in the flight columns. Then change the query to use `CROSS JOIN LATERAL` and explain which airlines disappear and why.
+
+---
+
+**13.** Recreate the `order_lists` table from this chapter and add a fifth order whose `products` value is an empty string (`''`) rather than `NULL`. Does that order appear in the result when you split the products with `CROSS JOIN LATERAL unnest(...)`? Does it appear with `LEFT JOIN LATERAL ... ON true`? Run `SELECT string_to_array('', ', ')` to see why, and compare the behavior to Carla's `NULL` order. Remember to drop the table when you are finished.

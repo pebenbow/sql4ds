@@ -435,7 +435,7 @@ FROM catalog_searches AS s,
 WHERE s.search_id IN (4, 12);
 ```
 
-Each search contributes as many rows as it has words. Grouping those rows answers a question that would otherwise be hard to ask: which words do patrons search for most often?
+Each search contributes as many rows as it has words. The function can refer to `s.query_text`, a column from the table listed before it, because PostgreSQL treats a function call in the `FROM` clause as *lateral*; the [Subqueries and CTEs](subqueries.qmd) chapter explains what that means. Grouping those rows answers a question that would otherwise be hard to ask: which words do patrons search for most often?
 
 ```{sql}
 --| connection: con

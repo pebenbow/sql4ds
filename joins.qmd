@@ -399,6 +399,8 @@ Accidental cross joins are one of the most common sources of runaway queries in 
 
 Intentional cross joins do have legitimate uses. Generating all possible combinations of two dimensions, such as every country paired with every indicator type to build a complete reporting grid with no gaps, is a situation where a cross join is exactly the right tool.
 
+A close relative, `CROSS JOIN LATERAL`, pairs each row only with rows computed from that row, such as an airline's most delayed flights or the pieces of a delimited list. It is covered in the [Subqueries and CTEs](subqueries.qmd) chapter.
+
 ## Anti-Joins
 
 An **anti-join** returns rows from one table that have **no matching row** in the other table. It is the complement of an inner join. Like `LEFT JOIN`/`RIGHT JOIN`, an anti-join has a direction: a **left anti-join** returns unmatched rows from the left table, a **right anti-join** returns unmatched rows from the right table.
