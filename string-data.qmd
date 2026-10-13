@@ -424,25 +424,25 @@ Regular expressions are compact and easy to get subtly wrong. Build them increme
 
 ## Splitting Text into Rows
 
-`split_part()` returns one piece of a string. Sometimes you want all of the pieces, each on its own row. `regexp_split_to_table(string, pattern)` splits a string wherever the pattern matches and returns one row per piece. Like `generate_series()` in the previous chapter, it goes in the `FROM` clause, here alongside the table whose values it splits:
+`split_part()` returns one piece of a string. Sometimes you want all of the pieces, each on its own row. `regexp_split_to_table(string, pattern)` splits a string wherever the pattern matches and returns one row per piece. Like `generate_series()` in the previous chapter, it goes in the `FROM` clause, here joined with `CROSS JOIN` to the table whose values it splits:
 
 ```{sql}
 --| connection: con
 --| label: split-to-table
 SELECT s.search_id, s.query_text, word
-FROM catalog_searches AS s,
-     regexp_split_to_table(lower(trim(s.query_text)), '\s+') AS word
+FROM catalog_searches AS s
+CROSS JOIN regexp_split_to_table(lower(trim(s.query_text)), '\s+') AS word
 WHERE s.search_id IN (4, 12);
 ```
 
-Each search contributes as many rows as it has words. The function can refer to `s.query_text`, a column from the table listed before it, because PostgreSQL treats a function call in the `FROM` clause as *lateral*; the [Subqueries and CTEs](subqueries.qmd) chapter explains what that means. Grouping those rows answers a question that would otherwise be hard to ask: which words do patrons search for most often?
+Each search contributes as many rows as it has words. The function can refer to `s.query_text`, a column from the table joined before it, because PostgreSQL treats a function call in the `FROM` clause as *lateral*; the [Subqueries and CTEs](subqueries.qmd) chapter explains what that means. Grouping those rows answers a question that would otherwise be hard to ask: which words do patrons search for most often?
 
 ```{sql}
 --| connection: con
 --| label: top-search-words
 SELECT word, COUNT(*) AS searches
-FROM catalog_searches AS s,
-     regexp_split_to_table(lower(trim(s.query_text)), '\s+') AS word
+FROM catalog_searches AS s
+CROSS JOIN regexp_split_to_table(lower(trim(s.query_text)), '\s+') AS word
 WHERE word NOT IN ('the', 'of', 'and', 'a', 'an', 'in', 'to', 'de', 'la', 'for', 'on')
 GROUP BY word
 ORDER BY searches DESC

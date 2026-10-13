@@ -13,7 +13,7 @@ By the end of this chapter, students will be able to:
 - **Write** a Common Table Expression (CTE) using the `WITH` clause to break a complex query into named, readable steps.
 - **Rewrite** a nested subquery as a CTE and explain the readability advantage.
 - **Write** a recursive CTE to traverse a hierarchical data structure such as an organizational chart or category tree.
-- **Write** a `LATERAL` subquery, in the `FROM` clause or with `CROSS JOIN LATERAL` and `LEFT JOIN LATERAL`, to return several rows for each outer row.
+- **Write** a `LATERAL` subquery with `CROSS JOIN LATERAL` or `LEFT JOIN LATERAL` to return several rows for each outer row.
 - **Explain** why set-returning functions such as `unnest()` can refer to earlier tables in the `FROM` clause without the `LATERAL` keyword.
 - **Evaluate** when to use a subquery, a CTE, or a temporary table based on readability, reuse, and performance considerations.
 - **Apply** `NOT EXISTS` as a safer alternative to `NOT IN` when the subquery may return `NULL` values.
@@ -60,6 +60,8 @@ LIMIT 5;
 
 The subquery `(SELECT ROUND(AVG(dep_delay), 1) FROM flights)` computes the average delay across the *entire* `flights` table, a single number, and PostgreSQL repeats that same number on every output row. Nothing about the subquery changes based on which outer row it is attached to; it would return the identical value if it were the only thing in the query. This independence from the outer row is what makes it a scalar subquery rather than the correlated kind introduced next. If a scalar subquery were to somehow return more than one row, the database would raise an error rather than pick one arbitrarily.
 
+![An uncorrelated subquery runs once, and its single value is repeated on every row.](images/subquery_uncorrelated.svg){fig-alt="The scalar subquery SELECT AVG(dep_delay) FROM flights does not refer to the outer query. It reads all 8 flights on its own, runs one time, and returns 9.75. That one value is attached to every one of the 8 outer rows as overall_avg." width="100%"}
+
 ## Subqueries in the WHERE Clause
 
 A subquery can also filter rows by producing a *set* of values for `IN` (or `NOT IN`) to check membership against, rather than a single scalar value. This uncorrelated subquery finds every airport that actually appears as a destination somewhere in `flights`:
@@ -98,6 +100,8 @@ LIMIT 5;
 ```
 
 The inner subquery references `f.carrier`, a column from the outer query `f`. That reference is what makes it correlated: the inner `AVG` is computed separately for each carrier, using whichever carrier the current outer row happens to have. Conceptually, the database picks a row from `flights f`, notices its carrier, computes that carrier's average delay across *all* of `flights`, compares the two, and only then moves on to the next outer row.
+
+![A correlated subquery runs once per outer row, with that row's carrier plugged in. The diagram puts the subquery in the `SELECT` list so every run's result is visible. The `WHERE` version above runs the same way.](images/subquery_correlated.svg){fig-alt="The subquery adds WHERE f2.carrier = f.carrier, so it refers to the outer row. It runs once per outer row, 8 runs in all, each with that row's carrier plugged in: 7.75 for the 4 United flights, 17.5 for the 2 Delta flights, and 6 for the 2 American flights. United's average is computed 4 separate times." width="100%"}
 
 That conceptual re-execution is also the main drawback of correlated subqueries: written naively, they can force the database to scan the inner table once per outer row. The query above stays fast because filtering to a single day keeps the outer row count small, but the same subquery written without that filter, comparing every flight in the table (not just July 4th) against its carrier's average, takes dramatically longer to run over the same data, because the number of times the inner query must conceptually repeat grows with the size of the outer query. The derived table and CTE sections below show how to restructure this exact kind of comparison so the average is computed once, rather than once per row.
 
@@ -244,24 +248,32 @@ Sandra has no manager (`manager_id IS NULL`); Marcus and Priya report to her; To
 --| connection: con
 --| label: recursive-cte
 WITH RECURSIVE reports_to_sandra AS (
-    -- Base case: Sandra herself, at depth 0
-    SELECT employee_id, name, manager_id, 0 AS depth
+    -- Base case: Sandra herself, at depth 0, with no manager
+    SELECT employee_id, name, manager_id,
+           CAST(NULL AS VARCHAR(50)) AS manager_name,
+           0 AS depth
     FROM employees
     WHERE name = 'Sandra'
 
     UNION ALL
 
     -- Recursive case: anyone whose manager is already in the result
-    SELECT e.employee_id, e.name, e.manager_id, r.depth + 1
+    SELECT e.employee_id, e.name, e.manager_id,
+           r.name,
+           r.depth + 1
     FROM employees e
-    JOIN reports_to_sandra r ON e.manager_id = r.employee_id
+    INNER JOIN reports_to_sandra r ON e.manager_id = r.employee_id
 )
-SELECT employee_id, name, depth
+SELECT name, manager_name, depth
 FROM reports_to_sandra
 ORDER BY depth, employee_id;
 ```
 
 A recursive CTE has two parts joined by `UNION ALL`. The **base case** (above the `UNION ALL`) selects the starting row or rows, here just Sandra, at depth 0. The **recursive case** (below it) joins the `employees` table back to the CTE's own name, `reports_to_sandra`, matching each employee's `manager_id` against an `employee_id` already found. The database runs the recursive case repeatedly: the first pass finds Sandra's direct reports (Marcus and Priya, since their `manager_id` matches Sandra's `employee_id`, now at depth 1), the second pass finds *their* reports using the rows the first pass just added (Tom and Elena, depth 2), and so on. Recursion stops automatically once a pass finds no new matching rows, here after Wade is found at depth 3.
+
+The recursive case can also use any column of the row it matched. Each `r` row is the employee's manager, found by the previous pass, so `r.name` is the manager's name and `r.depth + 1` puts the employee one level below that manager. Sandra is at the top, so the base case gives her a `NULL` manager. That `NULL` needs the `CAST`: PostgreSQL decides each column's type from the base case, and a bare `NULL` would be typed as `text`, which does not match the `VARCHAR(50)` values `r.name` supplies in later passes.
+
+![Each pass of a recursive CTE finds the next level of the hierarchy and takes each employee's manager name from the row the previous pass found. `UNION ALL` stacks the passes into the result.](images/recursive_cte.svg){fig-alt="The base case selects Sandra at depth 0, with no manager. Pass 1 joins employees to the rows the previous pass found, matching manager_id to employee_id 1: Marcus and Priya, depth 1, whose manager_name is Sandra. Pass 2 matches ids 2 and 3 and finds Tom and Elena, depth 2, managed by Marcus. Pass 3 matches ids 4 and 5 and finds Wade, depth 3, managed by Tom. Pass 4 looks for manager_id 6, finds no rows, and recursion stops. UNION ALL stacks every pass into the result: Sandra (no manager, 0), Marcus (Sandra, 1), Priya (Sandra, 1), Tom (Marcus, 2), Elena (Marcus, 2), Wade (Tom, 3)." width="100%"}
 
 This is the same logical pattern behind traversing a category tree (find every subcategory, and every subcategory of those subcategories, and so on) or a bill of materials (find every part, and every part that makes up those parts). The base case defines where to start; the recursive case defines how to step from what you already have to the next level out.
 
@@ -276,22 +288,22 @@ DROP TABLE employees;
 
 ## LATERAL: Subqueries That Can See the Outer Row
 
-The subqueries in this chapter so far each come with a trade-off. A correlated subquery can refer to the outer row, but in the `SELECT` list it must return a single value. A derived table can return as many rows and columns as it likes, but it is computed on its own, with no access to the other tables in the `FROM` clause. The `LATERAL` keyword combines the strengths of both: it marks a derived table that is allowed to refer to the tables listed before it, so it can return a whole set of rows *for each outer row*.
+The subqueries in this chapter so far each come with a trade-off. A correlated subquery can refer to the outer row, but in the `SELECT` list it must return a single value. A derived table can return as many rows and columns as it likes, but it is computed on its own, with no access to the other tables in the `FROM` clause. The `LATERAL` keyword combines the strengths of both: it marks a derived table that is allowed to refer to the tables joined before it, so it can return a whole set of rows *for each outer row*.
 
 ### The Problem: Top N per Group
 
-Suppose you want the two most delayed flights for each airline. A scalar subquery cannot do this, because the answer for each airline is two rows of several columns, not one value. A derived table looks promising, since it can return rows, so a first attempt might filter the derived table down to the current airline's flights:
+Suppose you want the two most delayed flights for each airline. A scalar subquery cannot do this, because the answer for each airline is two rows of several columns, not one value. A derived table looks promising, since it can return rows, so a first attempt might join `airlines` to a derived table filtered down to the current airline's flights:
 
 ```sql
 SELECT a.name, worst.flight, worst.dest, worst.dep_delay
-FROM airlines a,
-     (
-         SELECT f.flight, f.dest, f.dep_delay
-         FROM flights f
-         WHERE f.carrier = a.carrier
-         ORDER BY f.dep_delay DESC NULLS LAST
-         LIMIT 2
-     ) AS worst;
+FROM airlines a
+CROSS JOIN (
+    SELECT f.flight, f.dest, f.dep_delay
+    FROM flights f
+    WHERE f.carrier = a.carrier
+    ORDER BY f.dep_delay DESC NULLS LAST
+    LIMIT 2
+) AS worst;
 ```
 
 PostgreSQL rejects this query:
@@ -302,36 +314,15 @@ DETAIL:  There is an entry for table "a", but it cannot be referenced from this 
 HINT:  To reference that table, you must mark this subquery with LATERAL.
 ```
 
-The comma between `airlines a` and the subquery is the implicit join syntax from [the joins chapter](joins.qmd): it pairs every row on the left with every row on the right. Ordinarily, each item in a `FROM` clause is independent of the others. The database computes the derived table once, as if `airlines` were not there, and only then pairs the two. From inside that derived table there is no "current airline" to compare against, so `a.carrier` means nothing.
+Ordinarily, a derived table is independent of the tables it is joined to. The database computes the derived table once, as if `airlines` were not there, and only then pairs its rows with the rows of `airlines`. From inside that derived table there is no "current airline" to compare against, so `a.carrier` means nothing.
 
-### LATERAL in the FROM Clause
+### CROSS JOIN LATERAL
 
-The error message's hint is the fix. Adding `LATERAL` in front of the subquery tells PostgreSQL to evaluate it once for each row of the tables to its left:
+The error message's hint is the fix. Adding `LATERAL` in front of the subquery tells PostgreSQL to evaluate it once for each row of the tables joined before it:
 
 ```{sql}
 --| connection: con
---| label: lateral-from
-SELECT a.name, worst.flight, worst.dest, worst.dep_delay
-FROM airlines a,
-     LATERAL (
-         SELECT f.flight, f.dest, f.dep_delay
-         FROM flights f
-         WHERE f.carrier = a.carrier
-         ORDER BY f.dep_delay DESC NULLS LAST
-         LIMIT 2
-     ) AS worst
-ORDER BY a.name, worst.dep_delay DESC;
-```
-
-Read it the way you read the correlated subquery earlier in this chapter. PostgreSQL takes one row from `airlines`, plugs that row's `carrier` into the subquery, runs it to get that airline's two most delayed flights, and attaches each of those rows to the airline row. Then it moves on to the next airline. The difference from a correlated subquery is the shape of what comes back: a whole table (here, up to two rows of three columns) instead of a single value.
-
-The word *lateral* means "sideways," and the name describes the rule: a `LATERAL` subquery can look sideways at the items listed *before* it in the `FROM` clause, but not at items listed after it.
-
-### LATERAL in JOIN Clauses
-
-`airlines` has 16 rows, but the result above has 26: two flights each for 13 airlines. Three airlines (Alaska, Hawaiian, and Virgin America) have no flights in this data, so their subqueries return zero rows, and an airline with nothing to pair with drops out of the result. The comma behaves this way because it is an implicit `CROSS JOIN`, and the explicit form of the same query uses `CROSS JOIN LATERAL`:
-
-```sql
+--| label: lateral-cross-join
 SELECT a.name, worst.flight, worst.dest, worst.dep_delay
 FROM airlines a
 CROSS JOIN LATERAL (
@@ -344,9 +335,19 @@ CROSS JOIN LATERAL (
 ORDER BY a.name, worst.dep_delay DESC;
 ```
 
-This returns the identical 26 rows. Despite the name, `CROSS JOIN LATERAL` does not produce a Cartesian product of airlines and flights. Each airline is paired only with the rows that *its own* subquery returned, which is why an airline whose subquery comes back empty disappears, much as an unmatched row disappears from an `INNER JOIN`.
+Read it the way you read the correlated subquery earlier in this chapter. PostgreSQL takes one row from `airlines`, plugs that row's `carrier` into the subquery, runs it to get that airline's two most delayed flights, and attaches each of those rows to the airline row. Then it moves on to the next airline. The difference from a correlated subquery is the shape of what comes back: a whole table (here, up to two rows of three columns) instead of a single value.
 
-To keep those airlines, use `LEFT JOIN LATERAL` instead:
+![`LATERAL` runs the subquery once per airline. Each airline is paired only with the rows its own run returned.](images/lateral_cross_join.svg){fig-alt="Each of 4 airlines gets its own run of the subquery, which returns that airline's flights sorted by dep_delay, largest first, with LIMIT 2. American returns f4 and f7, Delta f6 and f2, United f8 and f1 (f5 and f3 are cut by LIMIT 2), and Hawaiian returns 0 rows. With CROSS JOIN LATERAL, each airline is paired only with its own run's rows, giving 6 rows. Hawaiian has nothing to pair with and drops out." width="100%"}
+
+The word *lateral* means "sideways," and the name describes the rule: a `LATERAL` subquery can look sideways at the tables joined *before* it, but not at tables joined after it.
+
+`airlines` has 16 rows, but the result above has 26: two flights each for 13 airlines. Three airlines (Alaska, Hawaiian, and Virgin America) have no flights in this data, so their subqueries return zero rows. Despite the name, `CROSS JOIN LATERAL` does not produce a Cartesian product of airlines and flights. Each airline is paired only with the rows that *its own* subquery returned, so an airline whose subquery comes back empty has nothing to pair with and disappears, much as an unmatched row disappears from an `INNER JOIN`.
+
+You may also see this written as `INNER JOIN LATERAL (...) AS worst ON true`, which returns the same rows. `INNER JOIN` requires an `ON` clause, but the matching already happens inside the subquery, so `ON true` adds nothing. `CROSS JOIN LATERAL` says the same thing without it.
+
+### LEFT JOIN LATERAL
+
+To keep the airlines with no flights, use `LEFT JOIN LATERAL` instead:
 
 ```{sql}
 --| connection: con
@@ -365,7 +366,9 @@ ORDER BY a.name, worst.dep_delay DESC;
 
 Now all 16 airlines appear, and the three without flights show `NULL` in the subquery's columns, exactly as unmatched rows do in any `LEFT JOIN`. The odd-looking `ON true` is there because `LEFT JOIN` syntax requires an `ON` clause. The matching already happens inside the subquery, in `WHERE f.carrier = a.carrier`, so there is nothing left for `ON` to check. `ON true` says "every row the subquery returned counts as a match."
 
-The choice between the two follows the same logic as the choice between `INNER JOIN` and `LEFT JOIN`: use `CROSS JOIN LATERAL` (or the comma form) when outer rows with no results should be dropped, and `LEFT JOIN LATERAL ... ON true` when they should be kept.
+![`LEFT JOIN LATERAL ... ON true` keeps an airline whose subquery returns no rows, with `NULL` in the subquery's columns.](images/lateral_left_join.svg){fig-alt="Each of 4 airlines gets its own run of the subquery, which returns that airline's flights sorted by dep_delay, largest first, with LIMIT 2. American returns f4 and f7, Delta f6 and f2, United f8 and f1 (f5 and f3 are cut by LIMIT 2), and Hawaiian returns 0 rows. With LEFT JOIN LATERAL ... ON true, the result has 7 rows: two per airline with flights, plus Hawaiian with NULL flight and dep_delay." width="100%"}
+
+The choice between the two follows the same logic as the choice between `INNER JOIN` and `LEFT JOIN`: use `CROSS JOIN LATERAL` when outer rows with no results should be dropped, and `LEFT JOIN LATERAL ... ON true` when they should be kept.
 
 Top-N-per-group questions like this one can also be answered with the `ROW_NUMBER()` window function, covered in the next chapter. `LATERAL` is often the more direct choice when the outer table is small and you want only a few rows for each outer row, because each subquery can stop as soon as its `LIMIT` is reached.
 
@@ -378,8 +381,8 @@ SQL Server and Oracle express the same idea with different keywords: `CROSS APPL
 You have actually used lateral references once already. The [string data chapter](string-data.qmd) split search queries into words with this pattern:
 
 ```sql
-FROM catalog_searches AS s,
-     regexp_split_to_table(lower(trim(s.query_text)), '\s+') AS word
+FROM catalog_searches AS s
+CROSS JOIN regexp_split_to_table(lower(trim(s.query_text)), '\s+') AS word
 ```
 
 The function call refers to `s.query_text`, a column from the table before it, with no `LATERAL` keyword in sight. That works because PostgreSQL treats a function call in the `FROM` clause as lateral automatically. A function that returns a set of rows, such as `regexp_split_to_table()`, `generate_series()`, or `unnest()`, is almost always meant to run once per row of the table beside it, so PostgreSQL does not make you ask.
@@ -418,7 +421,9 @@ FROM order_lists o
 CROSS JOIN LATERAL unnest(string_to_array(o.products, ', ')) AS product;
 ```
 
-`string_to_array(o.products, ', ')` turns `'Laptop, Mouse'` into the array `{Laptop,Mouse}`, and `unnest()` turns that array into two rows, each attached to order 1. Because function calls are lateral by default, `LATERAL` is optional here: `CROSS JOIN unnest(...)` or the comma form `FROM order_lists o, unnest(...)` return the same rows. Writing the keyword anyway makes it obvious to a reader that the function depends on the table before it.
+`string_to_array(o.products, ', ')` turns `'Laptop, Mouse'` into the array `{Laptop,Mouse}`, and `unnest()` turns that array into two rows, each attached to order 1. Because function calls are lateral by default, `LATERAL` is optional here: `CROSS JOIN unnest(...)` returns the same rows. Writing the keyword anyway makes it obvious to a reader that the function depends on the table before it.
+
+![`unnest()` runs once per order and turns that order's list into rows.](images/lateral_unnest.svg){fig-alt="Each row of order_lists gets its own run of unnest(string_to_array(products, ', ')). Order 1's 'Laptop, Mouse' becomes the array {Laptop,Mouse} and then 2 rows; order 2 gives 1 row, Keyboard; order 3 gives Monitor and Keyboard; order 4, Carla Diaz, has NULL products, so unnest returns 0 rows. The result has 5 rows, each product paired with its order's order_id and customer. Carla's order drops out; LEFT JOIN LATERAL ... ON true would keep it with a NULL product." width="100%"}
 
 Carla's order is missing from the result. Her `products` value is `NULL`, so `unnest()` returns zero rows for it, and `CROSS JOIN LATERAL` drops it like the airlines with no flights. `LEFT JOIN LATERAL ... ON true` keeps it, for the same reason as before:
 
@@ -499,7 +504,7 @@ None of these tools change what a query is *capable* of expressing; a correlated
 
 ---
 
-**5.** A classmate tries to write a derived table in the `FROM` clause that filters on a column from another table listed earlier in the same `FROM` clause, and PostgreSQL raises an "invalid reference to FROM-clause entry" error. Explain why the reference fails and what adding `LATERAL` changes. Then explain when you would choose `LEFT JOIN LATERAL ... ON true` instead of `CROSS JOIN LATERAL`.
+**5.** A classmate cross joins a table to a derived table that filters on a column from that table, and PostgreSQL raises an "invalid reference to FROM-clause entry" error. Explain why the reference fails and what adding `LATERAL` changes. Then explain when you would choose `LEFT JOIN LATERAL ... ON true` instead of `CROSS JOIN LATERAL`.
 
 ---
 
