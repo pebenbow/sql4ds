@@ -224,7 +224,7 @@ A small standalone table illustrates the mechanism: a manager hierarchy, the sam
 --| output: false
 CREATE TABLE employees (
     employee_id  INTEGER PRIMARY KEY,
-    name         VARCHAR(50) NOT NULL,
+    name         TEXT NOT NULL,
     manager_id   INTEGER REFERENCES employees(employee_id)
 );
 ```
@@ -250,7 +250,7 @@ Sandra has no manager (`manager_id IS NULL`); Marcus and Priya report to her; To
 WITH RECURSIVE reports_to_sandra AS (
     -- Base case: Sandra herself, at depth 0, with no manager
     SELECT employee_id, name, manager_id,
-           CAST(NULL AS VARCHAR(50)) AS manager_name,
+           CAST(NULL AS TEXT) AS manager_name,
            0 AS depth
     FROM employees
     WHERE name = 'Sandra'
@@ -271,7 +271,7 @@ ORDER BY depth, employee_id;
 
 A recursive CTE has two parts joined by `UNION ALL`. The **base case** (above the `UNION ALL`) selects the starting row or rows, here just Sandra, at depth 0. The **recursive case** (below it) joins the `employees` table back to the CTE's own name, `reports_to_sandra`, matching each employee's `manager_id` against an `employee_id` already found. The database runs the recursive case repeatedly: the first pass finds Sandra's direct reports (Marcus and Priya, since their `manager_id` matches Sandra's `employee_id`, now at depth 1), the second pass finds *their* reports using the rows the first pass just added (Tom and Elena, depth 2), and so on. Recursion stops automatically once a pass finds no new matching rows, here after Wade is found at depth 3.
 
-The recursive case can also use any column of the row it matched. Each `r` row is the employee's manager, found by the previous pass, so `r.name` is the manager's name and `r.depth + 1` puts the employee one level below that manager. Sandra is at the top, so the base case gives her a `NULL` manager. That `NULL` needs the `CAST`: PostgreSQL decides each column's type from the base case, and a bare `NULL` would be typed as `text`, which does not match the `VARCHAR(50)` values `r.name` supplies in later passes.
+The recursive case can also use any column of the row it matched. Each `r` row is the employee's manager, found by the previous pass, so `r.name` is the manager's name and `r.depth + 1` puts the employee one level below that manager. Sandra is at the top, so the base case gives her a `NULL` manager. The `CAST` states that `NULL`'s type: PostgreSQL decides each column's type from the base case alone, and the later passes have to match it. A bare `NULL` happens to work here, because PostgreSQL types it as `text`, the same type as `r.name`. If the column held dates or numbers instead, a bare `NULL` would fail with a type mismatch, so casting it is a good habit.
 
 ![Each pass of a recursive CTE finds the next level of the hierarchy and takes each employee's manager name from the row the previous pass found. `UNION ALL` stacks the passes into the result.](images/recursive_cte.svg){fig-alt="The base case selects Sandra at depth 0, with no manager. Pass 1 joins employees to the rows the previous pass found, matching manager_id to employee_id 1: Marcus and Priya, depth 1, whose manager_name is Sandra. Pass 2 matches ids 2 and 3 and finds Tom and Elena, depth 2, managed by Marcus. Pass 3 matches ids 4 and 5 and finds Wade, depth 3, managed by Tom. Pass 4 looks for manager_id 6, finds no rows, and recursion stops. UNION ALL stacks every pass into the result: Sandra (no manager, 0), Marcus (Sandra, 1), Priya (Sandra, 1), Tom (Marcus, 2), Elena (Marcus, 2), Wade (Tom, 3)." width="100%"}
 
@@ -395,7 +395,7 @@ The function call refers to `s.query_text`, a column from the table before it, w
 --| output: false
 CREATE TABLE order_lists (
     order_id  INTEGER PRIMARY KEY,
-    customer  VARCHAR(50) NOT NULL,
+    customer  TEXT NOT NULL,
     products  TEXT
 );
 ```

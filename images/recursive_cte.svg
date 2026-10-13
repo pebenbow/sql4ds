@@ -249,7 +249,7 @@
 <rect x="30" y="690" width="640" height="246" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
 <text x="44" y="712" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">WITH RECURSIVE reports_to_sandra AS (</text>
 <text x="44" y="730" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">    SELECT employee_id, name, manager_id,</text>
-<text x="44" y="748" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">           CAST(NULL AS VARCHAR(50)) AS manager_name, 0 AS depth</text>
+<text x="44" y="748" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">           CAST(NULL AS TEXT) AS manager_name, 0 AS depth</text>
 <text x="44" y="766" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">    FROM employees WHERE name = 'Sandra'</text>
 <text x="44" y="784" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">  UNION ALL</text>
 <text x="44" y="802" font-size="13" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">    SELECT e.employee_id, e.name, e.manager_id,</text>
