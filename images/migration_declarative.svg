@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1290 856" width="1451.25" height="963" role="img" aria-labelledby="title desc" font-family="Helvetica, Arial, sans-serif">
+<title id="title">Imperative vs. declarative migrations</title>
+<desc id="desc">The same change described two ways: add an email column to the customers table, which already has three rows: Ana Lopez, Ben Park, and Cai Wu. Imperative (versioned): you plan the steps yourself and write them in a new migration file, 20250203140000_add_email_to_customers, containing ALTER TABLE customers ADD COLUMN email TEXT. The file is reviewed in source control, and the tool runs every file the database has not run yet, in timestamp order, exactly as written. Declarative (state-based), with Supabase's declarative schemas: you edit supabase/schemas/customers.sql so that CREATE TABLE customers lists id, name, and email. The Supabase CLI compares the schema files with the schema your existing migrations produce, finds that email exists only in the schema files, and writes the difference to a new migration file in supabase/migrations/: alter table public.customers add column email text. You review the generated file, then push it with supabase db push, as usual. Both end the same way: customers gains an email column, NULL for the three existing customers, and every existing row is kept. The difference is what you write and who plans the steps.</desc>
+<defs><marker id="arrow-0072B2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072B2"/></marker><marker id="arrow-009E73" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#009E73"/></marker><marker id="arrow-777777" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#777777"/></marker><marker id="arrow-C98500" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C98500"/></marker><marker id="arrow-D55E00" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#D55E00"/></marker></defs>
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<text x="30" y="36" font-size="20" font-weight="bold" fill="#222222" text-anchor="start">Imperative vs. declarative: who plans the migration?</text>
+<text x="30" y="60" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Same change, same result. Imperative migrations spell out how to get there.</text>
+<text x="30" y="80" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">A declarative schema says where to end up, and the Supabase CLI writes the steps.</text>
+<text x="30" y="114" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">The goal: add an email column to customers, keeping every existing row.</text>
+<text x="1115" y="32" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">customers</text>
+<text x="1198.8" y="32" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">before</text>
+<rect x="1115" y="42" width="145" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="1123" y="60.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<text x="1158" y="60.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="1115" y="68" width="145" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1115" y="68" width="5" height="26" fill="#0072B2"/>
+<text x="1123" y="86.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="1158" y="86.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ana Lopez</text>
+<rect x="1115" y="94" width="145" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1115" y="94" width="5" height="26" fill="#0072B2"/>
+<text x="1123" y="112.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<text x="1158" y="112.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ben Park</text>
+<rect x="1115" y="120" width="145" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1115" y="120" width="5" height="26" fill="#0072B2"/>
+<text x="1123" y="138.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<text x="1158" y="138.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cai Wu</text>
+<line x1="1150" y1="42" x2="1150" y2="146" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1115" y="42" width="145" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="30" y="162" width="1230" height="286" rx="8" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="46" y="196" font-size="18" font-weight="bold" fill="#0072B2" text-anchor="start">Imperative</text>
+<text x="46" y="218" font-size="13" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">versioned: you write the steps</text>
+<text x="46" y="254" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">You plan every step, and</text>
+<text x="46" y="274" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">each one is reviewed as a</text>
+<text x="46" y="294" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">file in source control.</text>
+<text x="46" y="314" font-size="14" font-weight="normal" fill="#555555" text-anchor="start"></text>
+<text x="46" y="334" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">The cost: the planning is on</text>
+<text x="46" y="354" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">you, and that takes expertise.</text>
+<text x="290" y="196" font-size="16" font-weight="bold" fill="#222222"><tspan fill="#D55E00">1</tspan>  What you write</text>
+<text x="640" y="196" font-size="16" font-weight="bold" fill="#222222"><tspan fill="#D55E00">2</tspan>  Who plans the steps</text>
+<text x="1032" y="196" font-size="16" font-weight="bold" fill="#222222"><tspan fill="#D55E00">3</tspan>  The result</text>
+<text x="1032" y="228" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">customers</text>
+<rect x="1032" y="238" width="210" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="1040" y="256.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<text x="1075" y="256.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="1170" y="256.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">email</text>
+<rect x="1032" y="264" width="210" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1032" y="264" width="5" height="26" fill="#0072B2"/>
+<text x="1040" y="282.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="1075" y="282.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ana Lopez</text>
+<rect x="1164" y="266" width="76" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="1170" y="282.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="1032" y="290" width="210" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1032" y="290" width="5" height="26" fill="#0072B2"/>
+<text x="1040" y="308.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<text x="1075" y="308.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ben Park</text>
+<rect x="1164" y="292" width="76" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="1170" y="308.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="1032" y="316" width="210" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1032" y="316" width="5" height="26" fill="#0072B2"/>
+<text x="1040" y="334.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<text x="1075" y="334.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cai Wu</text>
+<rect x="1164" y="318" width="76" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="1170" y="334.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<line x1="1067" y1="238" x2="1067" y2="342" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="1162" y1="238" x2="1162" y2="342" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1032" y="238" width="210" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="1032" y="368" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Every row kept. email is</text>
+<text x="1032" y="388" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">NULL until it is filled in.</text>
+<rect x="290" y="214" width="325" height="80" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="304" y="240" font-size="12" font-weight="bold" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">20250203140000_add_email_to_customers.sql</text>
+<text x="304" y="262" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">ALTER TABLE customers</text>
+<text x="304" y="280" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">    ADD COLUMN email TEXT;</text>
+<text x="640" y="228" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">You do. The tool runs what you wrote.</text>
+<text x="640" y="262" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">supabase/migrations/</text>
+<rect x="640" y="272" width="365" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="648" y="290.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">version</text>
+<text x="783" y="290.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<rect x="640" y="298" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="648" y="316.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250101120000</text>
+<text x="783" y="316.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">create_customers_table</text>
+<rect x="640" y="324" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="648" y="342.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250115093000</text>
+<text x="783" y="342.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">create_orders_table</text>
+<rect x="640" y="350" width="365" height="26" fill="#D3EFE6" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="640" y="350" width="5" height="26" fill="#009E73"/>
+<rect x="642" y="352" width="131" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="648" y="368.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">20250203140000</text>
+<rect x="777" y="352" width="226" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="783" y="368.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">add_email_to_customers</text>
+<line x1="775" y1="272" x2="775" y2="376" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="640" y="272" width="365" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="640" y="402" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Reviewed in source control, then run on each</text>
+<text x="640" y="422" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">database that hasn't run it yet, in order.</text>
+<rect x="30" y="462" width="1230" height="380" rx="8" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="46" y="496" font-size="18" font-weight="bold" fill="#B0558A" text-anchor="start">Declarative</text>
+<text x="46" y="518" font-size="13" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">state-based: you write the end state</text>
+<text x="46" y="554" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">The CLI writes the migration</text>
+<text x="46" y="574" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">file for you. You read it before</text>
+<text x="46" y="594" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">it runs anywhere.</text>
+<text x="46" y="614" font-size="14" font-weight="normal" fill="#555555" text-anchor="start"></text>
+<text x="46" y="634" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">The win: the schema files</text>
+<text x="46" y="654" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">always show the whole</text>
+<text x="46" y="674" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">current design.</text>
+<text x="290" y="496" font-size="16" font-weight="bold" fill="#222222"><tspan fill="#D55E00">1</tspan>  What you write</text>
+<text x="640" y="496" font-size="16" font-weight="bold" fill="#222222"><tspan fill="#D55E00">2</tspan>  Who plans the steps</text>
+<text x="1032" y="496" font-size="16" font-weight="bold" fill="#222222"><tspan fill="#D55E00">3</tspan>  The result</text>
+<text x="1032" y="528" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">customers</text>
+<rect x="1032" y="538" width="210" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="1040" y="556.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">id</text>
+<text x="1075" y="556.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">name</text>
+<text x="1170" y="556.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">email</text>
+<rect x="1032" y="564" width="210" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1032" y="564" width="5" height="26" fill="#0072B2"/>
+<text x="1040" y="582.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">1</text>
+<text x="1075" y="582.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ana Lopez</text>
+<rect x="1164" y="566" width="76" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="1170" y="582.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="1032" y="590" width="210" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1032" y="590" width="5" height="26" fill="#0072B2"/>
+<text x="1040" y="608.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">2</text>
+<text x="1075" y="608.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Ben Park</text>
+<rect x="1164" y="592" width="76" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="1170" y="608.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<rect x="1032" y="616" width="210" height="26" fill="#DCEAF5" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1032" y="616" width="5" height="26" fill="#0072B2"/>
+<text x="1040" y="634.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">3</text>
+<text x="1075" y="634.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">Cai Wu</text>
+<rect x="1164" y="618" width="76" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="1170" y="634.0" font-size="13" font-weight="bold" fill="#D55E00" text-anchor="start" font-style="italic">NULL</text>
+<line x1="1067" y1="538" x2="1067" y2="642" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="1162" y1="538" x2="1162" y2="642" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="1032" y="538" width="210" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<text x="1032" y="668" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Every row kept. email is</text>
+<text x="1032" y="688" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">NULL until it is filled in.</text>
+<rect x="290" y="514" width="325" height="134" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="304" y="540" font-size="12" font-weight="bold" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">supabase/schemas/customers.sql</text>
+<text x="304" y="562" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">CREATE TABLE customers (</text>
+<text x="304" y="580" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">    id    INTEGER PRIMARY KEY,</text>
+<text x="304" y="598" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">    name  TEXT,</text>
+<text x="304" y="616" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">    email TEXT</text>
+<text x="304" y="634" font-size="12" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">);</text>
+<text x="640" y="528" font-size="14" font-weight="bold" fill="#222222" text-anchor="start">The CLI does. You review the file it writes.</text>
+<text x="640" y="562" font-size="14" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">compare</text>
+<text x="707.4" y="562" font-size="12" font-weight="normal" fill="#555555" text-anchor="start" font-style="italic">history vs. desired</text>
+<rect x="640" y="572" width="365" height="26" fill="#E4E4E4" stroke="#A0A0A0" stroke-width="1"/>
+<text x="648" y="590.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">column</text>
+<text x="758" y="590.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">migrations</text>
+<text x="878" y="590.0" font-size="13" font-weight="bold" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">schema files</text>
+<rect x="640" y="598" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="648" y="616.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">id</text>
+<text x="758" y="616.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">yes</text>
+<text x="878" y="616.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">yes</text>
+<rect x="640" y="624" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="648" y="642.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">name</text>
+<text x="758" y="642.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">yes</text>
+<text x="878" y="642.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">yes</text>
+<rect x="640" y="650" width="365" height="26" fill="#FFFFFF" stroke="#A0A0A0" stroke-width="1"/>
+<text x="648" y="668.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">email</text>
+<rect x="753" y="653" width="114" height="20" rx="3" fill="#FFFFFF" stroke="#A8A8A8" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="758" y="668.0" font-size="12" font-weight="normal" fill="#A8A8A8" text-anchor="start" font-style="italic">missing</text>
+<rect x="872" y="652" width="131" height="22" rx="3" fill="#D3EFE6" stroke="#009E73" stroke-width="2"/>
+<text x="878" y="668.0" font-size="13" font-weight="normal" fill="#222222" text-anchor="start">yes</text>
+<line x1="750" y1="572" x2="750" y2="676" stroke="#A0A0A0" stroke-width="1"/>
+<line x1="870" y1="572" x2="870" y2="676" stroke="#A0A0A0" stroke-width="1"/>
+<rect x="640" y="572" width="365" height="104" fill="none" stroke="#777777" stroke-width="1.5"/>
+<rect x="640" y="692" width="365" height="80" rx="8" fill="#FAFAFA" stroke="#A0A0A0" stroke-width="1.5"/>
+<text x="654" y="718" font-size="12" font-weight="bold" fill="#555555" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">20250203140000_add_email_to_customers.sql</text>
+<text x="654" y="740" font-size="11" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">alter table "public"."customers"</text>
+<text x="654" y="758" font-size="11" font-weight="normal" fill="#222222" text-anchor="start" font-family="Consolas, Menlo, 'Courier New', monospace">    add column "email" text;</text>
+<text x="640" y="796" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">Generated into supabase/migrations/, then</text>
+<text x="640" y="816" font-size="14" font-weight="normal" fill="#555555" text-anchor="start">pushed with supabase db push, as usual.</text>
+</svg>
