@@ -80,6 +80,7 @@ book:
         - supabase-setup.qmd
         - supabase-vscode.qmd
         - database-migrations.qmd
+        - declarative-migrations.qmd
 
     - part: labs.qmd
       chapters:

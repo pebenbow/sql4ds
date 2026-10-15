@@ -295,6 +295,8 @@ The most important thing to recognize is that the SQL files in `supabase/migrati
 
 The Supabase CLI adds the convenience of `supabase migration new` and `supabase db push`, and it integrates with the rest of the Supabase platform. But it is a thin layer over the same idea: ordered SQL files, applied in sequence, with a tracking table keeping record of what has been done.
 
+Every tool in this section is **imperative**: you write the steps, and the tool runs them. Some tools work the other way, letting you describe only the schema you want and working out the steps themselves. The next chapter, [Imperative and Declarative Migrations](declarative-migrations.qmd), compares the two approaches.
+
 ## Exercises {.unnumbered}
 
 ### Reflection {.unnumbered}
