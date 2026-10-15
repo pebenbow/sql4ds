@@ -169,6 +169,21 @@ ALTER TABLE customers
 
 The down block is commented out so it does not execute when the migration is applied. It serves as documentation for whoever needs to write the reversal.
 
+## Migrations and Transactions
+
+The [Transactions](transactions.qmd) chapter used `BEGIN`, `COMMIT`, and `ROLLBACK` to make a group of statements succeed or fail together. A migration needs the same guarantee: if the third statement in a file fails, the first two should not stay behind on their own. So should a migration file start with `BEGIN` and end with `COMMIT`?
+
+With the Supabase CLI, no. The CLI already runs each migration file as a single transaction. It sends every statement in the file, together with the insert that records the file in `supabase_migrations.schema_migrations`, to PostgreSQL as one batch, and PostgreSQL commits the batch only if every statement succeeds. If any statement fails, the whole file is rolled back, including the tracking row. The migration is still pending, so you fix the file and run `supabase db push` again.
+
+Adding transaction control of your own works against that:
+
+- **`BEGIN ... COMMIT`** is redundant. Worse, PostgreSQL runs anything after an explicit `COMMIT` in a new transaction of its own, so the tracking insert would no longer be committed together with your changes.
+- **`ROLLBACK`** should never appear in a migration file. It undoes the migration's changes, but the tracking insert that follows still runs on its own, so the file can be recorded as applied when nothing was changed. The files and the database then disagree, the same problem as editing an applied migration.
+
+A few statements cannot run inside a transaction at all: `CREATE INDEX CONCURRENTLY`, `DROP INDEX CONCURRENTLY`, `REINDEX ... CONCURRENTLY`, `VACUUM`, `ALTER SYSTEM`, and `CLUSTER`. The CLI runs these on their own, outside the batch, so a file that contains one is no longer all-or-nothing. If a later statement fails, everything before it has already been committed, but the file is not recorded as applied, and the next push runs it again from the top. Put each of these statements in a migration file of its own.
+
+Not every tool behaves like the Supabase CLI. Some wrap each migration in a transaction, and others run the file exactly as written and leave transactions to you. Running a file with `psql` is one of the latter: by default, each statement commits as soon as it runs. Before you decide whether a migration needs `BEGIN` and `COMMIT`, check what your tool already guarantees.
+
 ## A Complete Workflow
 
 The full cycle for a schema change under this system:
@@ -206,7 +221,7 @@ On a team, the same files usually travel to more than one database. In the hypot
 
 **Keep each migration focused on one logical change.** Small, focused migrations are easier to review, easier to understand three months later, and easier to reverse if necessary.
 
-**Use `IF NOT EXISTS` and `IF EXISTS` defensively.** `CREATE TABLE IF NOT EXISTS` and `DROP TABLE IF EXISTS` make individual statements safe to retry if a migration fails partway through. Without these guards, a partial failure followed by a retry attempt will produce errors on the already-completed statements.
+**Use `IF NOT EXISTS` and `IF EXISTS` defensively.** `CREATE TABLE IF NOT EXISTS` and `DROP TABLE IF EXISTS` make individual statements safe to retry if a migration fails partway through. The Supabase CLI rolls back a failed file as a whole, but a file that contains a statement such as `CREATE INDEX CONCURRENTLY`, or one applied by a tool that does not use transactions, can fail with part of its work already committed. Without these guards, the retry fails on the statements that already ran.
 
 **Test migrations on development before production.** Apply the migration to a development or staging project first. Confirm that the schema looks correct and that any existing data is not corrupted or truncated by the change. Only then push to production.
 
@@ -257,15 +272,17 @@ for file in supabase/migrations/*.sql; do
     exists=$(psql "$DATABASE_URL" -tAc \
         "SELECT 1 FROM schema_migrations WHERE version = '$version'")
     if [ -z "$exists" ]; then
-        psql "$DATABASE_URL" -f "$file"
-        psql "$DATABASE_URL" -c \
-            "INSERT INTO schema_migrations (version) VALUES ('$version')"
+        psql "$DATABASE_URL" -1 -v ON_ERROR_STOP=1 -f "$file" -c \
+            "INSERT INTO schema_migrations (version) VALUES ('$version')" \
+            || { echo "Failed: $version"; exit 1; }
         echo "Applied: $version"
     else
         echo "Skipped (already applied): $version"
     fi
 done
 ```
+
+The `-1` flag (short for `--single-transaction`) wraps the migration file and the tracking insert in one transaction, and `-v ON_ERROR_STOP=1` makes `psql` stop at the first error and report failure, so a migration that fails is rolled back and never recorded as applied. The `exit 1` stops the loop there, so later migrations do not run on top of a failed one. This is the guarantee the Supabase CLI provides on its own (see [Migrations and Transactions](#migrations-and-transactions)).
 
 This is rougher than a dedicated tool, but it is understandable; it works on any system with `psql` installed, and it illustrates exactly what is happening under the hood of every migration framework.
 
