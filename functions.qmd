@@ -9,7 +9,8 @@ By the end of this chapter, students will be able to:
 - **Write** a SQL-language function using `CREATE FUNCTION` that accepts arguments and returns a value.
 - **Write** a PL/pgSQL function using procedural constructs including variables, conditionals (`IF`/`ELSIF`/`ELSE`), and loops.
 - **Call** a user-defined function within a `SELECT` statement or `WHERE` clause.
-- **Classify** a function as `IMMUTABLE`, `STABLE`, or `VOLATILE` and explain how each classification affects query planning and caching.
+- **Distinguish** a scalar function, which returns one value, from a table function, which returns a set of rows.
+- **Write** a table function using `RETURNS TABLE` or `RETURNS SETOF`, and call it in a `FROM` clause.
 
 ```{r}
 #| include: false
@@ -62,9 +63,18 @@ dbExecute(con, "
 
 The previous chapters built views over the `registrar` schema to give a query a permanent, reusable name. A **function** does the same for logic that is not itself a complete query: a calculation, a classification, a small piece of procedural logic that gets reused across many different queries. This chapter uses the `registrar.students` table.
 
+## Scalar and Table Functions
+
+Every function returns something, and what it returns determines where it can be used:
+
+- A **scalar function** returns a single value each time it is called. `UPPER()`, `ROUND()`, and `LENGTH()` are built-in scalar functions: give `ROUND()` one number and it returns one number. Because it produces one value, a scalar function can go anywhere a value can: in the `SELECT` list, in a `WHERE` clause, in a `GROUP BY`, or inside another function call.
+- A **table function** returns a set of rows, each with the same columns. PostgreSQL's documentation calls these *set-returning functions*. The built-in `generate_series()` is one: `SELECT * FROM generate_series(1, 5)` returns five rows. Because it produces rows, a table function goes where a table goes, in the `FROM` clause.
+
+The next two sections write scalar functions, first in plain SQL and then in PL/pgSQL. The section after them writes table functions.
+
 ## SQL-Language Functions
 
-The simplest kind of function wraps a single SQL expression. It is declared with `CREATE FUNCTION`, a parameter list, a `RETURNS` type, and a body written in `LANGUAGE sql`:
+The simplest scalar function wraps a single SQL expression. It is declared with `CREATE FUNCTION`, a parameter list, a `RETURNS` type, and a body written in `LANGUAGE sql`:
 
 ```{sql}
 --| connection: con
@@ -134,36 +144,82 @@ ORDER BY gpa DESC NULLS LAST
 PL/pgSQL also supports loops (`LOOP`, `WHILE`, `FOR`), which matter most once a function needs to process a result set row by row rather than compute a single value from its parameters, a pattern seen again in the [Stored Procedures](procedures.qmd) chapter.
 :::
 
-## Function Volatility
+## Table Functions
 
-PostgreSQL lets a function declare how predictable its output is, which affects whether the planner can cache or skip repeated calls. Three categories exist:
+A view saves a query under a name, but it always runs the same way: there is no way to hand a view a value. A table function fills that gap. It saves a query that takes parameters, and returns that query's rows.
 
-- **`VOLATILE`** (the default): the function can return a different result on every call, even with the same arguments, and may have side effects. PostgreSQL re-evaluates it for every row, every time.
-- **`STABLE`**: the function returns the same result for the same arguments *within a single query*, but may differ between queries (for example, a function that depends on `CURRENT_TIMESTAMP`). PostgreSQL can skip redundant calls within one query, but not cache across queries.
-- **`IMMUTABLE`**: the function always returns the same result for the same arguments, with no dependency on database state at all. PostgreSQL can precompute it, cache it aggressively, and even use it in an [expression index](indexes.qmd).
-
-`registrar.full_name` already exists from earlier in this chapter, so declaring it as `IMMUTABLE` means updating the existing definition rather than creating a new one. `CREATE OR REPLACE FUNCTION` does this in place, the same way `CREATE OR REPLACE VIEW` does for views:
+A table function describes the rows it returns with `RETURNS TABLE`, which lists each output column and its type. This one returns every student whose GPA is at least some minimum:
 
 ```{sql}
 --| connection: con
---| label: replace-immutable-function
+--| label: table-function
 --| output: false
-CREATE OR REPLACE FUNCTION registrar.full_name(first TEXT, last TEXT)
-RETURNS TEXT
+CREATE FUNCTION registrar.students_above(min_gpa NUMERIC)
+RETURNS TABLE (student_id INTEGER, name TEXT, gpa NUMERIC)
 LANGUAGE sql
-IMMUTABLE
 AS $$
-    SELECT first || ' ' || last
+    SELECT s.student_id, registrar.full_name(s.first_name, s.last_name), s.gpa
+    FROM registrar.students s
+    WHERE s.gpa >= min_gpa
 $$
 ```
 
-`full_name` genuinely is immutable: given the same two strings, it always concatenates them the same way, with no reference to a table or the current time. Marking it as such lets PostgreSQL treat it the same way it treats a built-in operator, which matters if it is ever used in a `WHERE` clause or an index. `gpa_status`, by contrast, would technically also qualify as `IMMUTABLE`, since it only depends on its argument, but a mislabeled `VOLATILE` function that is actually stable or immutable is a safer mistake than the reverse: labeling a function `IMMUTABLE` when its result can actually change would let PostgreSQL cache a stale result and return it incorrectly.
+The body is an ordinary query, and its columns must match the `RETURNS TABLE` list in number, order, and type. It also calls `registrar.full_name`, the scalar function from earlier in the chapter: one function can call another.
+
+A table function is called in the `FROM` clause, with its arguments in parentheses, and its result behaves like any table:
+
+```{sql}
+--| connection: con
+--| label: table-function-call
+SELECT *
+FROM registrar.students_above(3.4)
+ORDER BY gpa DESC
+```
+
+```{sql}
+--| connection: con
+--| label: table-function-aggregate
+SELECT COUNT(*) AS honors_students
+FROM registrar.students_above(3.5)
+```
+
+The same query with a different argument returns different rows, which is exactly what a view cannot do.
+
+::: {.callout-warning}
+Inside a SQL function, a column name takes precedence over a parameter with the same name. Had the parameter been named `gpa`, the condition `WHERE s.gpa >= gpa` would compare each row's `gpa` column to itself, which is true for every student with a GPA, and the function would ignore its argument entirely. Give parameters names that cannot collide with a column, such as `min_gpa` here, or a consistent prefix such as `p_`.
+:::
+
+When a table function returns whole rows of an existing table, `RETURNS SETOF` names that table's row type instead of listing every column:
+
+```{sql}
+--| connection: con
+--| label: setof-function
+--| output: false
+CREATE FUNCTION registrar.students_enrolled_on(day DATE)
+RETURNS SETOF registrar.students
+LANGUAGE sql
+AS $$
+    SELECT * FROM registrar.students WHERE enrolled_on = day
+$$
+```
+
+```{sql}
+--| connection: con
+--| label: setof-function-call
+SELECT student_id, first_name, last_name, enrolled_on
+FROM registrar.students_enrolled_on('2023-08-28')
+ORDER BY student_id
+```
+
+`RETURNS SETOF registrar.students` promises rows shaped exactly like `registrar.students`, every column in the same order, so the body's `SELECT *` matches it. Use `RETURNS TABLE` when the function returns its own set of columns, and `RETURNS SETOF` when it returns rows of a table that already exists.
+
+Choosing between a view and a table function comes down to that parameter. A query that always runs the same way, such as the enrollment summary from the [Views](views.qmd) chapter, belongs in a view. A query that needs an input, a minimum GPA or a date, belongs in a table function.
 
 ## Exercises {.unnumbered}
 
 ### Reflection {.unnumbered}
 
-**1.** Explain, in your own words, the difference between `VOLATILE`, `STABLE`, and `IMMUTABLE`, and why mislabeling a function `IMMUTABLE` is more dangerous than leaving it `VOLATILE`.
+**1.** Explain, in your own words, the difference between a scalar function and a table function. Why can `registrar.full_name` appear in a `WHERE` clause, while `registrar.students_above` has to appear in a `FROM` clause?
 
 ---
 
@@ -177,4 +233,17 @@ $$
 
 ---
 
-**4.** Mark `registrar.gpa_status` with the correct volatility classification, using `CREATE OR REPLACE FUNCTION`, and justify your choice in a comment.
+**4.** Write a table function `registrar.students_enrolled_between(start_date DATE, end_date DATE)` that returns each matching student's `student_id`, full name (using `registrar.full_name`), and `enrolled_on`. Call it to list every student who enrolled in 2023, sorted by name.
+
+---
+
+**5.** A colleague writes the following function, expecting it to return the one student with a given email address. Explain, without running it, why it returns every student instead, and fix it.
+
+```sql
+CREATE FUNCTION registrar.student_by_email(email TEXT)
+RETURNS SETOF registrar.students
+LANGUAGE sql
+AS $$
+    SELECT * FROM registrar.students s WHERE s.email = email
+$$;
+```
