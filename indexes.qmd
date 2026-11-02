@@ -294,6 +294,12 @@ writeLines(dbGetQuery(con,
 
 Without an index, this is a sequential scan. A standard index on `dep_delay` would enable a bitmap heap scan, but the heap fetch would still be necessary to retrieve `carrier` and `dest`. Adding those columns to the index via `INCLUDE` eliminates the heap fetch entirely:
 
+```sql
+CREATE INDEX idx_flights_dep_delay_covering
+ON flights(dep_delay)
+INCLUDE (carrier, dest);
+```
+
 ```{r}
 #| label: create-covering-index
 #| include: false
@@ -301,6 +307,12 @@ dbExecute(con,
   "CREATE INDEX idx_flights_dep_delay_covering ON flights(dep_delay) INCLUDE (carrier, dest)"
 )
 ```
+
+The column in parentheses after the table name, `dep_delay`, is the index's **key**: the column the index is sorted by and searched on, exactly as in every index so far. The columns in `INCLUDE` are **payload**: PostgreSQL stores a copy of `carrier` and `dest` in each index entry, but doesn't sort or search by them. They're there only so a query can read them from the index instead of from the heap.
+
+That's different from `CREATE INDEX ... ON flights(dep_delay, carrier, dest)`, which would make all three columns keys and sort the index by all three. Payload columns keep the index's sort order simple, and they let you add columns whose types can't be sorted at all.
+
+With the covering index in place, run the same query again:
 
 ```sql
 EXPLAIN ANALYZE SELECT dep_delay, carrier, dest FROM flights WHERE dep_delay > 120;
