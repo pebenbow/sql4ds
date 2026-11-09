@@ -6,6 +6,7 @@ title: "Security"
 
 By the end of this chapter, students will be able to:
 
+- **Distinguish** authentication from authorization, and identify when PostgreSQL performs each and which features control it.
 - **Explain** the difference between a PostgreSQL role and a user and describe when each term applies.
 - **Create** login roles and group roles using `CREATE ROLE` with appropriate attributes (`LOGIN`, `PASSWORD`, `CONNECTION LIMIT`).
 - **Modify** role attributes using `ALTER ROLE`, including session-level configuration parameters.
@@ -22,6 +23,33 @@ Every database system needs to answer two questions about anyone who connects to
 This chapter covers both halves of that model. The first half explains roles: how to create them, group them, and manage their lifecycle. The second half covers privileges: how to grant and revoke access to specific database objects, and how to structure a clean, maintainable permission model.
 
 The examples assume you are working on your local Docker container, where you have superuser access. Role management requires elevated privileges that are not available on shared or hosted databases, so this is the right environment to practice.
+
+## Authentication and Authorization
+
+Those two questions have names, and PostgreSQL answers them at different moments.
+
+**Authentication** answers *who are you?* It's the act of proving an identity. In PostgreSQL, authentication happens once, when a client connects. The server checks that the role you named exists, that it's allowed to log in, and that you can prove you are that role, usually with its password. If any of those checks fails, you never get a connection:
+
+```
+FATAL:  password authentication failed for user "analyst"
+```
+
+**Authorization** answers *what are you allowed to do?* It decides what an identity that has already been proven may read or change. PostgreSQL makes this check on every statement you run, against every object the statement touches: does the current role hold the right privilege on this schema, this table, or this column, either directly or through a role it belongs to? If not, the statement fails, but your connection stays open:
+
+```
+ERROR:  permission denied for table students
+```
+
+| | Authentication | Authorization |
+|---|---|---|
+| Question | Who are you? | What are you allowed to do? |
+| When | Once, when you connect | On every statement |
+| What PostgreSQL checks | The role exists, has `LOGIN`, and the password is correct | The current role's privileges on each object |
+| Controlled by | `CREATE ROLE ... LOGIN PASSWORD` | `GRANT`, `REVOKE`, and role membership |
+
+The two are independent. A successful login proves who you are and grants nothing else: a brand-new login role can connect, and then can't read any of your tables until someone grants it a privilege. `SET ROLE`, covered below, changes which role's privileges apply, which is authorization, without logging in again, which would be authentication.
+
+Applications add a layer of their own. A web application usually authenticates its *users* itself, with its own log-in form, and then connects to the database as a single application role. The database authenticates and authorizes that role, not the person using the app, so the role's privileges are the most damage any user of the app can do through it.
 
 ## Roles and Users
 
@@ -383,14 +411,16 @@ After these four steps, members of `reporting` can connect, see tables in `publi
 
 4. Explain the two-layer requirement for schema access: why must a role have both `USAGE` on the schema and `SELECT` on the table? What error does each missing grant produce?
 
+5. Explain the difference between authentication and authorization. When does PostgreSQL perform each one, and how does the error you see when each one fails tell you which check stopped you?
+
 ### Coding {.unnumbered}
 
-5. Create a role named `data_analyst` with login access, a password of your choice, and a connection limit of 3. Verify it appears in `pg_roles`.
+6. Create a role named `data_analyst` with login access, a password of your choice, and a connection limit of 3. Verify it appears in `pg_roles`.
 
-6. Create a group role named `read_only` with no login. Then create two login roles, `alice` and `bob`, and add both as members of `read_only`. Query `pg_auth_members` to confirm the memberships.
+7. Create a group role named `read_only` with no login. Then create two login roles, `alice` and `bob`, and add both as members of `read_only`. Query `pg_auth_members` to confirm the memberships.
 
-7. Grant `SELECT` on the `students` table to `alice` directly. Run `\dp students` and confirm the grant appears. Then revoke it and grant to `reporting` instead. Connect as `alice` using `SET ROLE` and verify she can still query the table.
+8. Grant `SELECT` on the `students` table to `alice` directly. Run `\dp students` and confirm the grant appears. Then revoke it and grant to `reporting` instead. Connect as `alice` using `SET ROLE` and verify she can still query the table.
 
-8. Run `GRANT SELECT ON ALL TABLES IN SCHEMA public TO reporting`. Create a new table `courses`. Query it as `alice` using `SET ROLE`. Does it work? Set up `ALTER DEFAULT PRIVILEGES` so that future tables are covered automatically, then drop and recreate `courses` and verify.
+9. Run `GRANT SELECT ON ALL TABLES IN SCHEMA public TO reporting`. Create a new table `courses`. Query it as `alice` using `SET ROLE`. Does it work? Set up `ALTER DEFAULT PRIVILEGES` so that future tables are covered automatically, then drop and recreate `courses` and verify.
 
-9. Implement the complete four-step privilege setup from this chapter against the `university` database. Verify that a member of `reporting` can connect and query tables but cannot create or modify objects.
+10. Implement the complete four-step privilege setup from this chapter against the `university` database. Verify that a member of `reporting` can connect and query tables but cannot create or modify objects.
